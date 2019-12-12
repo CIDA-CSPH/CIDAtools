@@ -8,10 +8,10 @@ proj_setup <- function(path, ...){
 
   ### Setup ReadMe Files ----
   readme <- c(paste0("# ", ProjectName, "  "),
-              paste0("**PI:**", PI, "  "),
-              paste0("**Analyst**:", analyst, "  "),
+              paste0("**PI**: ", PI, "  "),
+              paste0("**Analyst**: ", analyst, "  "),
               "",
-              "Details about the folders:",
+              "Details about the folders: ",
               '',
               "File | Description",
               "---|----------------------------------------------------------",
@@ -54,6 +54,8 @@ proj_setup <- function(path, ...){
   # add R template gitignore
   # (source: https://github.com/github/gitignore/blob/master/R.gitignore)
   gitignore <- paste0(c(gitignore,
+                        "# Random files",
+                        "*.DS_Store",
                         "# History files",
                         ".Rhistory",
                         ".Rapp.history",
