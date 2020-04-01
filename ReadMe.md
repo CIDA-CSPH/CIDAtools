@@ -13,7 +13,7 @@ CreateProject()
 ```
 
 Feel free to set the project name, PI, and analyst via the `ProjectName`, `PI`, or `analyst`
-arguments respectively, and see `?createProject` for more details. If any of these are
+arguments respectively, and see `?CreateProject` for more details. If any of these are
 specified, they are stored as text in a hidden subdirectory called .ProjData, and can
 be called in subsequent R code anywhere in the project using `ProjectName()`, `ProjectPI()`, and
 `ProjectAnalyst()`. 
