@@ -9,7 +9,7 @@ The primary purpose of this package is to house RProject Templates that automati
 To create a new project folder structure, navigate to the main project directory, and run: 
 
 ```
-createProject()
+CreateProject()
 ```
 
 Feel free to set the project name, PI, and analyst via the `ProjectName`, `PI`, or `analyst`
