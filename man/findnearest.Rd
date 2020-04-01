@@ -5,8 +5,12 @@
 \alias{getlower}
 \title{Find the nearest observation to another observation}
 \usage{
-findnearest(x, y, direction = c("both", "ascending", "descending"),
-  returnIndex = FALSE)
+findnearest(
+  x,
+  y,
+  direction = c("both", "ascending", "descending"),
+  returnIndex = FALSE
+)
 
 getlower(x, y, upper = FALSE)
 }

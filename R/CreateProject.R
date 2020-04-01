@@ -1,25 +1,25 @@
-#'Create Project Directory + readmes
+#'Create Project Directory + readme files
 #'
 #'This function creates the standard project organization structure for CIDA
+#'within a folder that already exists.
 #'
 #'@param template Which subdirectories to create
 #'@param path Where should they be created? Default is the working directory.
 #'@param ProjectName Name of project, or "" for blank
 #'@param PI Name of PI and credentials, or "" for blank
 #'@param analyst Name of Analyst(s), or "" for blank
-#'@param sow_path File path where SOW is, will be copied to Admin subdirectory.
-#'  NULL provides file.choose option
 #'
 #'@return This function creates the desired project subdirectories and readmes,
 #'  as well as a standard .gitignore file files. It will not overwrite the file
 #'  however if it does not exist. It does not return anything.
-#'@keywords ReadMe ReadMe.md
+#'@keywords project createproject
+#'
+#'
 #'@export
 CreateProject <- function(
   template = c('Admin', 'Background', 'Code', 'DataRaw',
                'DataProcessed', 'Dissemination', 'Reports'),
-  path = getwd(), ProjectName = "", PI = "", analyst = "",
-  sow_path = NULL) {
+  path = getwd(), ProjectName = "", PI = "", analyst = "") {
 
   # has meta been provided?
   meta <- !all(c(ProjectName, PI, analyst) %in% "")
@@ -136,12 +136,10 @@ CreateProject <- function(
                           "DataProcessed/*",
                           "!*/ReadMe.md"), collapse = '\n')
 
-   ## Copy over SOW
-   if(!length(sow_path))
-     try(sow_path <- file.choose(), silent = T)
+   writeLines(gitignore, con = file.path(path, '.gitignore'))
 
-   if(!length(sow_path))
-     file.copy(sow_path, "./Admin/")
+   ## Copy over SOW
+   message("Project created. Please remember to copy the scope of work to to Admin/ subdirectory.")
 
    invisible(template)
 }

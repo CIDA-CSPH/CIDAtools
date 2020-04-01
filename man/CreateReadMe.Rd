@@ -4,8 +4,11 @@
 \alias{CreateReadMe}
 \title{Create ReadMe.md files}
 \usage{
-CreateReadMe(template = c("Admin", "Background", "Code", "DataRaw",
-  "DataProcessed", "Dissemination", "Reports"), path = getwd())
+CreateReadMe(
+  template = c("Admin", "Background", "Code", "DataRaw", "DataProcessed",
+    "Dissemination", "Reports"),
+  path = getwd()
+)
 }
 \arguments{
 \item{template}{Which ReadMe.md files should be created? Default is all. Partial
