@@ -27,7 +27,9 @@ be called in subsequent R code anywhere in the project using `ProjectName()`, `P
 
 ## Creating a new CIDA report
 
-Templates are available with CIDAtools that can make it easy to create a new CIDA report. 
+**Templates** are useful for creating new documents with the correct CIDA *formatting*.
+
+`CIDAtools` includes templates that can make it easy to create a new CIDA report. 
 To use this functionality in Rstudio, first ensure the package is installed, then: 
 
 1) Click on "New R Markdown" 
@@ -36,13 +38,13 @@ To use this functionality in Rstudio, first ensure the package is installed, the
 
 Alternatively, source code for templates is available in inst/rmarkdown/templates/. 
 
+
 ## Outlines for CIDA reports
 
-Templates are useful for creating new documents with the correct CIDA formatting. 
-Outlines, on the other hand, are intended to provide an idea of what should be included in 
-each type of report. 
+**Outlines** are intended to provide an idea of the *content* necessary within each type of CIDA report. 
 
-CIDAtools includes outlines for the following reports in inst/outlines/: 
+`CIDAtools` includes outlines for the following reports in inst/outlines/: 
+
 - CIDA Analysis Plan 
 - CIDA Comprehensive Report
 - CIDA Exploratory Report
