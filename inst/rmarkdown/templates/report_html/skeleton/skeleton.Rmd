@@ -1,0 +1,88 @@
+---
+title: Report
+author: |
+ | Project: `r CIDAtools::ProjectName()`
+ |
+ | Analyst: `r CIDAtools::ProjectAnalyst()`
+ |
+ | Investigator(s): `r CIDAtools::ProjectPI()`
+ |
+ | Report generated: `r paste(format(Sys.Date(), '%B %d, %Y'))`
+output:
+  html_document:
+    highlight: espresso
+    number_sections: yes
+    theme: yeti
+    toc: yes
+    toc_depth: 2
+    toc_float: yes
+---
+
+```{r, echo=FALSE, out.width='70%', fig.show='hold'}
+logo <- system.file("figures", "sph_cida_wm_blk.png", package="CIDAtools")
+knitr::include_graphics(logo)
+```
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+library(table1)
+```
+
+# Project Summary
+
+# Introduction
+
+Introduction text
+
+# Methods
+
+Methods text
+
+# Results 
+
+## Descriptive Statistics
+
+Tables/Figures/Results section
+
+*Figure 1*
+```{r}
+data("cars")
+plot(cars$speed, cars$dist, pch = 20)
+```
+
+*Table 1*
+```{r}
+
+# See https://cran.r-project.org/web/packages/table1/vignettes/table1-examples.html
+cars$group <- paste0("Group " , rep(1:2,25))
+label(cars$speed) <- "Speed"
+label(cars$dist) <- "Stopping distance"
+units(cars$speed) <- "mph"
+units(cars$dist) <- "ft"
+table1(~speed + dist | group, data = cars)
+```
+
+
+## Main Analysis
+
+# Conclusions
+
+Interpretations, discussion
+
+# References
+
+# Appendix
+
+<!-- footer -->
+
+---
+
+```{r, echo=FALSE, out.width='70%', fig.show='hold'}
+knitr::include_graphics(logo)
+```
+

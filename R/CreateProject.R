@@ -14,7 +14,6 @@
 #'  however if it does not exist. It does not return anything.
 #'@keywords project createproject
 #'
-#'
 #'@export
 CreateProject <- function(
   template = c('Admin', 'Background', 'Code', 'DataRaw',

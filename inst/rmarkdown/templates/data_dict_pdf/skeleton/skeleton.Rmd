@@ -1,0 +1,88 @@
+---
+title: Data Dictionary
+output:
+  pdf_document:
+    fig_caption: yes
+number_sections: yes
+header-includes: 
+  \usepackage{fancyhdr} 
+  \usepackage{graphicx} 
+  \usepackage{eurosym}
+  \usepackage{booktabs,xcolor} 
+  \usepackage{float}
+  \usepackage{caption}
+  \captionsetup[table]{labelformat=empty}
+  \floatplacement{figure}{H}
+  \pagestyle{fancy} 
+  \fancyhf{} 
+  \addtolength{\headheight}{2.0cm}
+  \rfoot{Page \thepage} \fancypagestyle{plain}{\pagestyle{fancy}}
+geometry: margin=0.6in
+---
+
+\rhead{\today}
+\lhead{\includegraphics[width=10cm]{`r system.file("figures",  "sph_cida_wm_blk.png", package = "CIDAtools")`}}
+
+**Project**: `r CIDAtools::ProjectName()` \newline
+**Analyst**: `r CIDAtools::ProjectAnalyst()`\newline
+**Investigator(s)**: `r CIDAtools::ProjectPI()`\newline
+**Date generated**: `r paste(format(Sys.Date(), '%B %d, %Y'))`\newline
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F, message = F, warning = F)
+# set your datasets as objects
+# load(file = '')
+data("cars")
+cars$group <- rep(1:2, each = 25)
+data("iris")
+library(pander)
+```
+
+```{r makedic}
+# set maximum number of values to list
+mVal <- 10
+
+# function to get values
+values <- function(variable){
+  if(is.character(variable)){
+    fxrs <- levels(as.factor(variable))
+  }
+  else fxrs <- unique(variable)
+  if(length(fxrs) > mVal) fxrs <- paste0(">", mVal, " unique values")
+  return(fxrs)
+}
+
+# function to make data dictionary
+makedic <- function(dfname){
+  df <- get(dfname)
+  Values <- lapply(df, values)
+  Values <- sapply(Values, paste0, collapse = ' \\\n ')
+  Type <- sapply(df, class)
+  # POSIXt classes will have 2 classes need to remove one and 
+  # set to date
+  Type <- lapply(Type, sub, pattern = 'POSIXt', replacement = "Date")
+  Type <- sapply(Type, grep, pattern = 'POSI', value = T, invert = T)
+  dic <- data.frame(Variables = names(df), Type = Type, 
+                    "Unique Values" = Values, 
+                    stringsAsFactors = F, row.names = NULL, 
+                    check.names = F)
+  return(dic)
+}
+
+dataframes <- ls()[sapply(ls(), function(x) is.data.frame(get(x)))]
+printtbl <- function(dfname){
+  set.alignment('left')
+  pander(makedic(dfname), caption = paste0("'", dfname, "' data set"))
+  return()
+}
+
+``` 
+
+
+```{r tables, results = 'asis'}
+panderOptions('knitr.auto.asis', FALSE)
+panderOptions('keep.line.breaks', TRUE)
+# panderOptions('table.split.cells', Inf)
+# panderOptions('table.split.table', Inf)
+invisible(sapply(dataframes, printtbl))
+```

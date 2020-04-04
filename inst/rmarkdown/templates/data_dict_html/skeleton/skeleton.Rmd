@@ -1,40 +1,54 @@
 ---
-geometry: margin=0.6in
+title: "Data Dictionary"
+author: |
+  | Project: `r CIDAtools::ProjectName()`
+  | Analyst: `r CIDAtools::ProjectAnalyst()`
+  | Investigator(s): `r CIDAtools::ProjectPI()`
+  | Date generated: `r paste(format(Sys.Date(), '%B %d, %Y'))`
 output:
   html_document:
-    df_print: paged
-  pdf_document:
-    fig_caption: yes
+    highlight: espresso
+    number_sections: yes
+    theme: yeti
 ---
 
-```{r global_options, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
-knitr::opts_knit$set(root.dir = '../')
+```{r, echo=FALSE, out.width='70%', fig.show='hold'}
+logo <- system.file("figures", "sph_cida_wm_blk.png", package="CIDAtools")
+knitr::include_graphics(logo)
 ```
 
-**DATA DICTIONARY**  
-**Project:** `r CIDAtools::ProjectName()`    
-**PI:** `r CIDAtools::ProjectPI()`  
-**Prepared By:** `r CIDAtools::ProjectAnalyst()`  
-**Date:** `r paste(format(Sys.Date(), '%m/%d/%Y'))`  
+---
 
 ```{r setup, include=FALSE}
-# set your data
-# load(file = '')
+knitr::opts_chunk$set(echo = F, message = F, warning = F)
 library(pander)
 ```
 
-```{r makedic}
+```{r load_data}
+
+# set your datasets as objects
+# load(file = '')
+
+## Placeholder: 
+data("cars")
+cars$group <- rep(1:2, each = 25)
+data("iris")
+
 # set maximum number of values to list
-mVal <- 25
+mVal <- 10
+
+## No need to change anything else
+```
+
+```{r makedic}
 
 # function to get values
 values <- function(variable){
   if(is.character(variable)){
     fxrs <- levels(as.factor(variable))
   }
-  else fxrs <- levels(variable)
-  if(length(fxrs) > mVal) fxrs <- NULL
+  else fxrs <- unique(variable)
+  if(length(fxrs) > mVal) fxrs <- paste0(">", mVal, " unique values")
   return(fxrs)
 }
 
@@ -48,19 +62,17 @@ makedic <- function(dfname){
   # set to date
   Type <- lapply(Type, sub, pattern = 'POSIXt', replacement = "Date")
   Type <- sapply(Type, grep, pattern = 'POSI', value = T, invert = T)
-  dic <- data.frame(Variables = names(df), Type, 
-                    Values = Values, 
-                    stringsAsFactors = F, row.names = NULL)
   dic <- data.frame(Variables = names(df), Type = Type, 
-                    Values = Values, 
-                    stringsAsFactors = F, row.names = NULL)
+                    "Unique Values" = Values, 
+                    stringsAsFactors = F, row.names = NULL, 
+                    check.names = F)
   return(dic)
 }
 
 dataframes <- ls()[sapply(ls(), function(x) is.data.frame(get(x)))]
 printtbl <- function(dfname){
   set.alignment('left')
-  pander(makedic(dfname), caption = dfname)
+  pander(makedic(dfname), caption = paste0("'", dfname, "' data set"))
   return()
 }
 

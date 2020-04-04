@@ -1,0 +1,65 @@
+---
+title: "Report"
+author: |
+  | Project: `r CIDAtools::ProjectName()`
+  | Analyst: `r CIDAtools::ProjectAnalyst()`
+  | Investigator(s): `r CIDAtools::ProjectPI()`
+  | Report generated: `r paste(format(Sys.Date(), '%B %d, %Y'))`
+output: 
+  CIDAtools::CIDA_word_document:
+    toc: false
+---
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+library(arsenal)
+```
+
+# Project Summary
+
+# Introduction
+
+Introduction text
+
+# Methods
+
+Methods text
+
+# Results 
+
+## Descriptive Statistics
+
+Tables/Figures/Results section
+
+*Figure 1*
+```{r}
+data("cars")
+plot(cars$speed, cars$dist, pch = 20)
+```
+
+*Table 1*
+```{r, results = "asis"}
+
+# See https://cran.r-project.org/web/packages/table1/vignettes/table1-examples.html
+cars$group <- paste0("Group " , rep(1:2,25))
+
+tab1 <- tableby(group~., data = cars)
+summary(tab1)
+```
+
+
+## Main Analysis
+
+# Conclusions
+
+Interpretations, discussion
+
+# References
+
+# Appendix
+

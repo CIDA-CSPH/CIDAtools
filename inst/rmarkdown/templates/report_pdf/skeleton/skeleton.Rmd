@@ -1,0 +1,92 @@
+---
+title: Report
+output:
+  pdf_document: 
+    fig_caption: yes
+    number_sections: yes
+header-includes: 
+  \usepackage{fancyhdr} 
+  \usepackage{graphicx} 
+  \usepackage{eurosym}
+  \usepackage{booktabs,xcolor} 
+  \usepackage{float}
+  \floatplacement{figure}{H}
+  \pagestyle{fancy} 
+  \fancyhf{} 
+  \addtolength{\headheight}{1.0cm}
+  \rfoot{Page \thepage} \fancypagestyle{plain}{\pagestyle{fancy}}
+geometry: margin=1in
+---
+
+\rhead{\today}
+\lhead{\includegraphics[width=10cm]{`r system.file("figures",  "sph_cida_wm_blk.png", package = "CIDAtools")`}}
+
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+library(CIDAtools)
+```
+
+**Project**: `r CIDAtools::ProjectName()` \newline
+**Analyst**: `r CIDAtools::ProjectAnalyst()`\newline
+**Investigator(s)**: `r CIDAtools::ProjectPI()`\newline
+**Report generated**: `r paste(format(Sys.Date(), '%B %d, %Y'))`\newline
+
+
+# Project Summary
+
+# Introduction
+
+Introduction text
+
+# Methods
+
+Methods text
+
+# Results 
+
+## Descriptive Statistics
+
+Tables/Figures/Results section
+
+```{r, fig.cap="Scatterplot"}
+data("cars")
+plot(cars$speed, cars$dist, pch = 20)
+```
+
+
+```{r}
+cars$group <- paste0("Group " , rep(1:2,25))
+# See: https://cran.r-project.org/web/packages/furniture/vignettes/Table1.html
+furniture::table1(
+  cars,
+  "Speed (mph)"  = speed,
+  "Distance (mi)" = dist,
+  splitby = ~ group,
+  test = TRUE,
+  type = c("simple", "condensed"), 
+  output = "latex", 
+  align = "c", 
+  caption = "Sample characteristics"
+) %>% 
+  kable_styling(latex_options = "hold_position")
+```
+
+## Main Analysis
+
+# Conclusions
+
+Interpretations, discussion
+
+# References
+
+# Appendix
+
+
