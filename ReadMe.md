@@ -36,6 +36,19 @@ To use this functionality in Rstudio, first ensure the package is installed, the
 
 Alternatively, source code for templates is available in inst/rmarkdown/templates/. 
 
+## Outlines for CIDA reports
+
+Templates are useful for creating new documents with the correct CIDA formatting. 
+Outlines, on the other hand, are intended to provide an idea of what should be included in 
+each type of report. 
+
+CIDAtools includes outlines for the following reports in inst/outlines/: 
+- CIDA Analysis Plan 
+- CIDA Comprehensive Report
+- CIDA Exploratory Report
+- CIDA Omics Study Report
+- CIDA Study Design 
+
 ## Using snippets
 
 CIDA functions can be used in snippets (if you have a header snippet already in your Rstudio options):
