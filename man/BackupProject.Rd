@@ -8,7 +8,8 @@ BackupProject(
   path_from = getwd(),
   subdir_to = "Projects",
   path_to = NULL,
-  exclude = c(".DS_Store", ".Rproj.user", ".git")
+  exclude = c(".DS_Store", ".Rproj.user", ".git"),
+  recreate = TRUE
 )
 }
 \arguments{
@@ -22,6 +23,9 @@ if specified).}
 
 \item{exclude}{files/folders NOT to be backed up to the P-drive (useful for
 larger files that don't change often). Currently not used.}
+
+\item{recreate}{should backup be created from the ground up?
+(can take longer, but useful for projects with many changes)}
 }
 \value{
 This function has verbose output to ensure the back up is working, and
