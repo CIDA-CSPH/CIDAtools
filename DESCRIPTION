@@ -6,6 +6,7 @@ Authors@R:
   person("Ryan", "Peterson", email = "ryan.a.peterson@cuanschutz.edu", role = c("aut", "cre")))
 Description: This package contains the numerous templates and tools to make life at CIDA (part of the Colorado School of Public Health) happier and more efficient!
 Depends: R (>= 3.4.0)
+Imports: dplyr
 Suggests: git2r, 
           survey, 
           xlsx, 

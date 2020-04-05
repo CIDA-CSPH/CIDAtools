@@ -51,6 +51,23 @@ Alternatively, source code for templates is available in inst/rmarkdown/template
 - CIDA Omics Study Report [[download]](https://github.com/CIDA-CSPH/CIDAtools/raw/master/inst/outlines/CIDA%20Omics%20Outline.docx)
 - CIDA Study Design [[download]](https://github.com/CIDA-CSPH/CIDAtools/raw/master/inst/outlines/CIDA%20Study%20Design%20Outline.docx)
 
+## Backing up CIDA projects 
+
+CIDA project data and reports should be either kept on the CIDA shared drive (the P drive), or backed up (i.e. copied) to the drive on a regular basis. 
+
+Since the P drive can sometimes be slow to read/write on, CIDA members can work on a project locally if they regularly back up the project to the P drive. To help with this, we've written the function `BackupProject` which will automatically back up a project folder to the P drive (to the "Projects" subdirectory by default, but this can be specified with the `subdir_to` argument). Alternatively, the main project folder can simply be copied and pasted to the P drive manually. 
+
+Within a project directory, run:
+```
+BackupProject()
+```
+
+This will copy over the entire local project (all files and directories) to a project of the same name in the P drive. A backup_info.md file will also be produced that indicates when the backup was performed. 
+
+If the project directory already exists in the P drive, only files/directories that have changed since the last backup will be copied over. This speeds up the process. 
+
+Files located in the backup directory that are not in the project directory are not deleted. This means if you have large files, anytime you rename them and re-run the backup function, the storage needed will double since both files will remain in the backup folder. To avoid this, specify "recreate = TRUE" to fully recreate the current directory from the ground up. 
+
 ## Using snippets
 
 CIDA functions can be used in snippets (if you have a header snippet already in your Rstudio options):
