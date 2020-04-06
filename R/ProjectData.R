@@ -78,6 +78,10 @@ ProjectAnalyst <- function(){
     ProjData <- read.dcf(file.path('../.ProjData/Data.dcf'), all = T)
     if('analyst' %in% names(ProjData)) return(ProjData$analyst)
   }
+  if(file.exists(file.path('../../.ProjData/Data.dcf'))){
+    ProjData <- read.dcf(file.path('../../.ProjData/Data.dcf'), all = T)
+    if('analyst' %in% names(ProjData)) return(ProjData$analyst)
+  }
   if(!is.null(getOption('CIDAtools.analyst'))){
     return(getOption('CIDAtools.analyst'))
   }
@@ -103,6 +107,10 @@ ProjectName <- function(){
     ProjData <- read.dcf(file.path('../.ProjData/Data.dcf'), all = T)
     if('ProjectName' %in% names(ProjData)) return(ProjData$ProjectName)
   }
+  if(file.exists(file.path('../../.ProjData/Data.dcf'))){
+    ProjData <- read.dcf(file.path('../../.ProjData/Data.dcf'), all = T)
+    if('ProjectName' %in% names(ProjData)) return(ProjData$ProjectName)
+  }
   return('')
 }
 
@@ -122,6 +130,10 @@ ProjectPI <- function(){
   }
   if(file.exists(file.path('../.ProjData/Data.dcf'))){
     ProjData <- read.dcf(file.path('../.ProjData/Data.dcf'), all = T)
+    if('PI' %in% names(ProjData)) return(ProjData$PI)
+  }
+  if(file.exists(file.path('../../.ProjData/Data.dcf'))){
+    ProjData <- read.dcf(file.path('../../.ProjData/Data.dcf'), all = T)
     if('PI' %in% names(ProjData)) return(ProjData$PI)
   }
   return('')
