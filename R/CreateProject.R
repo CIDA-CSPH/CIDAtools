@@ -49,8 +49,9 @@ CreateProject <- function(
 
 
   # write to readme file
-  writeLines(paste0(readme, collapse = '\n'),
-             con = file.path(path, "ReadMe.md"))
+  if(!file.exists(file.path(path, "ReadMe.md")))
+    writeLines(paste0(readme, collapse = '\n'),
+               con = file.path(path, "ReadMe.md"))
 
   # Create subdirectory readmes
   CreateReadMe(template = template, path = path)

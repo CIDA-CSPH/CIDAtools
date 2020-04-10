@@ -13,7 +13,11 @@ devtools::install_github('CIDA-CSPH/CIDAtools')
 
 ## Creating a new project
 
-To create a new project folder structure, navigate to the main project directory, and run: 
+After `CIDAtools` is installed, a new CIDA project can be created using the
+Rstudio GUI (File>New Project>New Directory>New CIDA Project).
+
+Or, to create a new project folder structure from the R console, 
+navigate to the main project directory, and run: 
 
 ```
 CreateProject()
@@ -53,7 +57,7 @@ Alternatively, source code for templates is available in inst/rmarkdown/template
 
 ## Backing up CIDA projects 
 
-CIDA project data and reports should be either kept on the CIDA shared drive (the P drive), or backed up (i.e. copied) to the drive on a regular basis. 
+CIDA project data and reports should be either kept on the CIDA shared drive (the P drive), or backed up (i.e. copied) to the shared drive on a regular basis. 
 
 Since the P drive can sometimes be slow to read/write on, CIDA members can work on a project locally if they regularly back up the project to the P drive. To help with this, we've written the function `BackupProject` which will automatically back up a project folder to the P drive (to the "Projects" subdirectory by default, but this can be specified with the `subdir_to` argument). Alternatively, the main project folder can simply be copied and pasted to the P drive manually. 
 
@@ -66,7 +70,7 @@ This will copy over the entire local project (all files and directories) to a pr
 
 If the project directory already exists in the P drive, only files/directories that have changed since the last backup will be copied over. This speeds up the process. 
 
-Files located in the backup directory that are not in the project directory are not deleted. This means if you have large files, anytime you rename them and re-run the backup function, the storage needed will double since both files will remain in the backup folder. To avoid this, specify "recreate = TRUE" to fully recreate the current directory from the ground up. 
+Files located in the backup directory that are not in the project directory are not deleted. This means if you have large files, anytime you rename them and re-run the backup function, the storage needed will double since both files will remain in the backup folder. To avoid this, specify `recreate = TRUE` to fully recreate the current directory from the ground up. 
 
 ## Using snippets
 
@@ -88,5 +92,5 @@ This package also contains functions for reading excel files with color columns
 and the Table1 function. 
 
 Please feel free to file an issue request if you encounter errors or would like 
-to request new features.  
+to request new features.  If reporting a bug, please provide a reproducible example. 
 
