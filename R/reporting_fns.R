@@ -42,16 +42,16 @@ pvalr <- function(pvals, sig.limit = .001, digits = 3, html = FALSE) {
 #' @param ... other options to be passed to kable, such as caption, align, etc.
 #'
 #' @return HTML or Latex output for pretty tables
+#' @importFrom dplyr `%>%`
 #' @export
 
 list_kables <- function(tabs, bo = c("striped", "condensed"), ...) {
-  library(kableExtra)
 
   idx <- sapply(tabs, nrow)
 
   tabs %>%
-    bind_rows() %>%
-    kable(...) %>%
-    kable_styling(bo, full_width = FALSE) %>%
-    group_rows(index = idx)
+    dplyr::bind_rows() %>%
+    knitr::kable(...) %>%
+    kableExtra::kable_styling(bo, full_width = FALSE) %>%
+    kableExtra::group_rows(index = idx)
 }

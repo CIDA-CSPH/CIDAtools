@@ -52,11 +52,11 @@ Alternatively, source code for templates is available in inst/rmarkdown/template
 
 `CIDAtools` includes outlines for the following reports in inst/outlines/: 
 
-- CIDA Analysis Plan [[download]](https://github.com/CIDA-CSPH/CIDAtools/raw/master/inst/outlines/CIDA%20Analysis%20Plan%20Outline.docx)
-- CIDA Comprehensive Report [[download]](https://github.com/CIDA-CSPH/CIDAtools/raw/master/inst/outlines/CIDA%20Comprehensive%20Report%20Outline.docx)
-- CIDA Exploratory Report [[download]](https://github.com/CIDA-CSPH/CIDAtools/raw/master/inst/outlines/CIDA%20Exploratory%20Report%20Outline.docx)
-- CIDA Omics Study Report [[download]](https://github.com/CIDA-CSPH/CIDAtools/raw/master/inst/outlines/CIDA%20Omics%20Outline.docx)
-- CIDA Study Design [[download]](https://github.com/CIDA-CSPH/CIDAtools/raw/master/inst/outlines/CIDA%20Study%20Design%20Outline.docx)
+- CIDA Analysis Plan [[download]](https://github.com/CIDA-CSPH/CIDAtools/raw/master/inst/outlines/CIDA-Analysis-Plan-Outline.docx)
+- CIDA Comprehensive Report [[download]](https://github.com/CIDA-CSPH/CIDAtools/raw/master/inst/outlines/CIDA-Comprehensive-Report-Outline.docx)
+- CIDA Exploratory Report [[download]](https://github.com/CIDA-CSPH/CIDAtools/raw/master/inst/outlines/CIDA-Exploratory-Report-Outline.docx)
+- CIDA Omics Study Report [[download]](https://github.com/CIDA-CSPH/CIDAtools/raw/master/inst/outlines/CIDA-Omics-Outline.docx)
+- CIDA Study Design [[download]](https://github.com/CIDA-CSPH/CIDAtools/raw/master/inst/outlines/CIDA-Study-Design-Outline.docx)
 
 ## Backing up CIDA projects 
 

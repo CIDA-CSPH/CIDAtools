@@ -2,3 +2,4 @@
 ^\.Rproj\.user$
 ^ReadMe.md
 hex_sticker.R
+^\.travis\.yml$

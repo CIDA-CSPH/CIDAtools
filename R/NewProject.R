@@ -2,14 +2,12 @@ proj_setup <- function(path, ...){
   # ensure path exists
   dir.create(path, recursive = TRUE, showWarnings = FALSE)
   dots <- list(...)
-  attach(dots)
-  on.exit(detach(dots))
   ProjectName <- paste0(path)
 
   ### Setup ReadMe Files ----
   readme <- c(paste0("# ", ProjectName, "  "),
-              paste0("**PI**: ", PI, "  "),
-              paste0("**Analyst**: ", analyst, "  "),
+              paste0("**PI**: ", dots$PI, "  "),
+              paste0("**Analyst**: ", dots$analyst, "  "),
               "",
               "Details about the folders: ",
               '',
@@ -36,9 +34,9 @@ proj_setup <- function(path, ...){
 
   ### Create Meta File ----
   # for project info
-  if(meta){
+  if(dots$meta){
     dir.create(paste0(path, '/.ProjData'))
-    ProjData <- list(ProjectName = ProjectName, PI = PI, analyst = analyst)
+    ProjData <- list(ProjectName = dots$ProjectName, PI = dots$PI, analyst = dots$analyst)
     write.dcf(ProjData, file.path(path, '/.ProjData/Data.dcf'))
   }
 
@@ -95,7 +93,7 @@ proj_setup <- function(path, ...){
                         "*.knit.md"), collapse = '\n')
 
   # by file type
-  if(nodata == 'By File Type'){
+  if(dots$nodata == 'By File Type'){
     gitignore <- paste0(c(gitignore,
                           "# R Data files",
                           "*.RData",
@@ -116,7 +114,7 @@ proj_setup <- function(path, ...){
     }
 
     # by Folder
-    if(nodata == "By Location"){
+    if(dots$nodata == "By Location"){
       gitignore <- paste0(c(gitignore,
                             "DataRaw/*",
                             "DataProcessed/*",
@@ -126,18 +124,18 @@ proj_setup <- function(path, ...){
 
 
     # git initialize
-    if(git_init){
+    if(dots$git_init){
       if (!requireNamespace('git2r', quietly = T)) {
         warning('git2r is required for git initialization')
       } else{
         tryCatch({
         writeLines(gitignore, con = file.path(path, '.gitignore'))
         repo <- git2r::init(path)
-        if(remote_origin != '') git2r::remote_add(repo, 'origin', remote_origin)
-        if(initcommit) {
+        if(dots$remote_origin != '') git2r::remote_add(repo, 'origin', dots$remote_origin)
+        if(dots$initcommit) {
           git2r::add(repo, 'ReadMe.md')
           git2r::commit(repo, message = 'Initial Commit')
-          if(remote_origin != '') {
+          if(dots$remote_origin != '') {
           system(paste('cd', path, '&& git push -u origin master'))
           }
         }
