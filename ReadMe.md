@@ -41,7 +41,7 @@ To use this functionality in Rstudio, first ensure the package is installed, the
 
 1) Click on "New R Markdown" 
 2) In the pop-up, select "From template"
-3) You should see CIDA report templates to chooose from. 
+3) You should see CIDA report templates to choose from. 
 
 Alternatively, source code for templates is available in inst/rmarkdown/templates/. 
 
