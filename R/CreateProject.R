@@ -138,8 +138,27 @@ CreateProject <- function(
 
    writeLines(gitignore, con = file.path(path, '.gitignore'))
 
+   # Create .Rproj file
+   rproj <- paste0(c("Version: 1.0",
+                     "",
+                     "RestoreWorkspace: Default",
+                     "SaveWorkspace: Default",
+                     "AlwaysSaveHistory: Default",
+                     "",
+                     "EnableCodeIndexing: Yes",
+                     "UseSpacesForTab: Yes",
+                     "NumSpacesForTab: 2",
+                     "Encoding: UTF-8",
+                     "",
+                     "RnwWeave: knitr",
+                     "LaTeX: pdfLaTeX"), collapse = "\n")
+
+   if(!file.exists(file.path(path, paste0(basename(getwd()), ".Rproj"))))
+      writeLines(rproj, con = file.path(path, paste0(basename(getwd()), ".Rproj")))
+
    ## Copy over SOW
    message("Project created. Please remember to copy the scope of work to to Admin/ subdirectory.")
 
    invisible(template)
 }
+
