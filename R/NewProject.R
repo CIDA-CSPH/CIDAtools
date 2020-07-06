@@ -2,6 +2,7 @@ proj_setup <- function(path, ...){
   # ensure path exists
   dir.create(path, recursive = TRUE, showWarnings = FALSE)
   dots <- list(...)
+
   ProjectName <- paste0(path)
 
   ### Setup ReadMe Files ----
@@ -36,7 +37,7 @@ proj_setup <- function(path, ...){
   # for project info
   if(dots$meta){
     dir.create(paste0(path, '/.ProjData'))
-    ProjData <- list(ProjectName = dots$ProjectName, PI = dots$PI, analyst = dots$analyst)
+    ProjData <- list(ProjectName = ProjectName, PI = dots$PI, analyst = dots$analyst)
     write.dcf(ProjData, file.path(path, '/.ProjData/Data.dcf'))
   }
 
@@ -129,24 +130,21 @@ proj_setup <- function(path, ...){
         warning('git2r is required for git initialization')
       } else{
         tryCatch({
-        writeLines(gitignore, con = file.path(path, '.gitignore'))
-        repo <- git2r::init(path)
-        if(dots$remote_origin != '') git2r::remote_add(repo, 'origin', dots$remote_origin)
-        if(dots$initcommit) {
-          git2r::add(repo, 'ReadMe.md')
-          git2r::commit(repo, message = 'Initial Commit')
-          if(dots$remote_origin != '') {
-          system(paste('cd', path, '&& git push -u origin master'))
+          writeLines(gitignore, con = file.path(path, '.gitignore'))
+          repo <- git2r::init(path)
+          if(dots$remote_origin != '') git2r::remote_add(repo, 'origin', dots$remote_origin)
+          if(dots$initcommit) {
+            git2r::add(repo, 'ReadMe.md')
+            git2r::commit(repo, message = 'Initial Commit')
+            if(dots$remote_origin != '') {
+            system(paste('cd', path, '&& git push -u origin master'))
+            }
           }
-        }
         }, error = function(e){
           paste0('There was an error setting up the git repo',
                  e)
         })
       }
     }
-
-
-
 }
 
