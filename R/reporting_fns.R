@@ -10,13 +10,13 @@
 #' @return A character vector of "pretty" p values
 #' @export
 #'
-pvalr <- function(pvals, sig.limit = .001, digits = 3, html = FALSE) {
+pvalr <- function(pvals, sig.limit = .001, digits = 3, html = FALSE, equal_sign = "") {
 
   roundr <- function(x, digits = 1) {
     res <- sprintf(paste0('%.', digits, 'f'), x)
     zzz <- paste0('0.', paste(rep('0', digits), collapse = ''))
     res[res == paste0('-', zzz)] <- zzz
-    res
+    paste0(equal_sign, res)
   }
 
   sapply(pvals, function(x, sig.limit) {
@@ -27,8 +27,9 @@ pvalr <- function(pvals, sig.limit = .001, digits = 3, html = FALSE) {
         return(sprintf('&lt; %s', format(sig.limit))) else
       return(sprintf('< %s', format(sig.limit)))
     if (x > .1)
-      return(roundr(x, digits = 2)) else
-    return(roundr(x, digits = digits))
+      return(roundr(x, digits = 2)) else if (x <.01)
+        return(roundr(x, digits = 3)) else
+          return(roundr(x, digits = digits))
   }, sig.limit = sig.limit)
 }
 
