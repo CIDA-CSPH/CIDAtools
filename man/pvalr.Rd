@@ -4,7 +4,7 @@
 \alias{pvalr}
 \title{Pretty p-values}
 \usage{
-pvalr(pvals, sig.limit = 0.001, digits = 3, html = FALSE)
+pvalr(pvals, sig.limit = 0.001, digits = 3, html = FALSE, equal_sign = "")
 }
 \arguments{
 \item{pvals}{a vector of numeric p-values}
@@ -14,6 +14,8 @@ pvalr(pvals, sig.limit = 0.001, digits = 3, html = FALSE)
 \item{digits}{how many digits to print?}
 
 \item{html}{uses the HTML symbol instead of normal < symbol}
+
+\item{equal_sign}{character value to append to front of p-value}
 }
 \value{
 A character vector of "pretty" p values

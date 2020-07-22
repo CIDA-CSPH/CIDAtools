@@ -6,6 +6,7 @@
 #' @param sig.limit A lower threshold below which to print "<sig.limit"
 #' @param digits how many digits to print?
 #' @param html uses the HTML symbol instead of normal < symbol
+#' @param equal_sign character value to append to front of p-value
 #'
 #' @return A character vector of "pretty" p values
 #' @export
