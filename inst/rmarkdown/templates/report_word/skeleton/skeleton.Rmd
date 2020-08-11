@@ -1,13 +1,12 @@
 ---
 title: "Report"
-author: |
-  | Project: `r CIDAtools::ProjectName()`
-  | Analyst: `r CIDAtools::ProjectAnalyst()`
-  | Investigator(s): `r CIDAtools::ProjectPI()`
-  | Report generated: `r paste(format(Sys.Date(), '%B %d, %Y'))`
+csl: numeric_citations.csl
+subtitle: "**Project**: `r CIDAtools::ProjectName()`  \n**Analyst**: `r CIDAtools::ProjectAnalyst()`   \n**Investigator**(s): `r CIDAtools::ProjectPI()`  \n **Date**: `r paste(format(Sys.Date(), '%B %d, %Y'))`"
 output: 
-  CIDAtools::CIDA_word_document:
+  word_document:
     toc: false
+    reference_docx: word_style.docx # or word_style_alt2.docx
+bibliography: bib.bib
 ---
 
 ---
@@ -24,7 +23,7 @@ library(arsenal)
 
 # Introduction
 
-Introduction text
+Introduction text, here is a reference: [@mice].
 
 # Methods
 

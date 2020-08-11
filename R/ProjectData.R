@@ -136,6 +136,8 @@ ProjectPI <- function(){
     ProjData <- read.dcf(file.path('../../.ProjData/Data.dcf'), all = T)
     if('PI' %in% names(ProjData)) return(ProjData$PI)
   }
+
+
   return('')
 }
 
@@ -167,4 +169,3 @@ SetProjectData <- function(Parameter, Value){
   ProjData[Parameter] <- Value
   write.dcf(ProjData, file.path('.ProjData/Data.dcf'))
 }
-
