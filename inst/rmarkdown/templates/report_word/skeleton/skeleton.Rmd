@@ -5,7 +5,7 @@ subtitle: "**Project**: `r CIDAtools::ProjectName()`  \n**Analyst**: `r CIDAtool
 output: 
   word_document:
     toc: false
-    reference_docx: word_style.docx # or word_style_alt2.docx
+    reference_docx: word_style.docx 
 bibliography: bib.bib
 ---
 

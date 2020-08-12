@@ -45,6 +45,9 @@ To use this functionality in Rstudio, first ensure the package is installed, the
 
 Alternatively, source code for templates is available in inst/rmarkdown/templates/. 
 
+Note: the CIDA Word report template contains multiple files, which are needed to specify the format for Word output. 
+Therefore, CIDA Word reports must have their own subdirectory to start. 
+
 
 ## Outlines for CIDA reports
 
