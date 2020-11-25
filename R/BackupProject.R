@@ -29,9 +29,9 @@ BackupProject <- function(path_from = getwd(),
 
   # Get proper path to Shared drive
   if(is.null(path_to)) {
-    path_to <- file.path("/Volumes/CBC/Shared", subdir_to)
+    path_to <- file.path("/Volumes/CIDA/Shared/", subdir_to)
     if(tolower(Sys.info()['sysname']) == "windows")
-      path_to <- file.path("P:/CBC/Shared", subdir_to)
+      path_to <- file.path("P:/CIDA/Shared", subdir_to)
   }
 
   # Make sure P drive is mounted
