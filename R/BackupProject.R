@@ -4,9 +4,9 @@
 #'can either be existing (in which only changed files/folders are updated), or
 #'nonexisting, in which case a full project backup is created.
 #'
+#'@param subdir_to Subdirectory within shared drive to back up to
 #'@param path_from Path from where the folders should be copied (project
 #'  directory location).
-#'@param subdir_to Subdirectory within shared drive to back up to
 #'@param path_to Path to where the folders should be copied (P drive, only used
 #'  if specified).
 #'@param exclude files/folders NOT to be backed up to the P-drive (useful for
@@ -18,11 +18,11 @@
 #'  ultimately returns a success indicator that's returned by file.copy.
 #'
 #'@export
-BackupProject <- function(path_from = getwd(),
-                          subdir_to = "Projects",
+BackupProject <- function(subdir_to = "Projects",
+                          path_from = getwd(),
                           path_to = NULL,
                           exclude = c(".DS_Store", ".Rproj.user", ".git"),
-                          recreate = TRUE) {
+                          recreate = FALSE) {
 
   # Check args, make into absolute paths
   path_from <- normalizePath(path_from)
