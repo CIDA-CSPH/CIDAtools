@@ -153,8 +153,8 @@ CreateProject <- function(
                      "RnwWeave: knitr",
                      "LaTeX: pdfLaTeX"), collapse = "\n")
 
-   if(!file.exists(file.path(path, paste0(basename(getwd()), ".Rproj"))))
-      writeLines(rproj, con = file.path(path, paste0(basename(getwd()), ".Rproj")))
+   if(!file.exists(file.path(path, paste0(basename(path), ".Rproj"))))
+      writeLines(rproj, con = file.path(path, paste0(basename(path), ".Rproj")))
 
    ## Copy over SOW
    message("Project created. Please remember to copy the scope of work to to Admin/ subdirectory.")
