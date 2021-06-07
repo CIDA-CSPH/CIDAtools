@@ -1,7 +1,4 @@
 
-[![Travis-CI Build
-Status](https://travis-ci.org/CIDA-CSPH/CIDAtools.svg?branch=master)](https://travis-ci.org/CIDA-CSPH/CIDAtools)
-
 <img src="inst/figures/CIDAtoolshex.png" alt="CIDAtools" width="259" height="300"/>
 
 This package contains numerous templates and tools to make life at CIDA (part 
