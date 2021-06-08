@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 
 SAS macros in CIDAtools can be searched below, and their source code is available [here](https://github.com/CIDA-CSPH/CIDAtools/tree/master/inst/sas). 
 
-```{r}
+```{r, eval=rmarkdown::pandoc_available("1.12.3")}
 path <- system.file("sas", package = "CIDAtools")
 
   if(length(path)) {
