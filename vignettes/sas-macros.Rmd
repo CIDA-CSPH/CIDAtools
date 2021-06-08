@@ -1,0 +1,40 @@
+---
+title: "CIDA SAS Macros"
+date: "Last updated: `r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{CIDA SAS Macros}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  echo = FALSE
+)
+```
+
+
+## List of SAS macros
+
+```{r}
+sas_files <- list.files(path = file.path(system.file(package="CIDAtools"), "sas/"), full.names = T)
+
+keywords <- sapply(sas_files, function(f) {
+  lines <- readLines(f)
+  keys <- lines[grepl("Keywords", lines, ignore.case = T)]
+  gsub("\\*|\\* |Keywords: |;", "", keys, ignore.case = T)
+})
+
+sas_index <- data.frame(
+  name = list.files(path = file.path(system.file(package="CIDAtools"), "sas/")), 
+  keywords = keywords, row.names = NULL
+)
+```
+
+```{r}
+DT::datatable(sas_index)
+```
+

@@ -1,3 +1,4 @@
+[![R-CMD-check](https://github.com/CIDA-CSPH/CIDAtools/workflows/R-CMD-check/badge.svg)](https://github.com/CIDA-CSPH/CIDAtools/actions)
 
 <img src="inst/figures/CIDAtoolshex.png" alt="CIDAtools" width="259" height="300"/>
 
