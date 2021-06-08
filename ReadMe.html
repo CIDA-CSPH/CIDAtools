@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>NA • CIDAtools</title>
+<title>CIDAtools  • CIDAtools</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="NA" />
+<meta property="og:title" content="CIDAtools " />
 
 
 
@@ -114,16 +114,20 @@
 <div class="row">
   <div class="contents col-md-9">
     <div class="page-header">
-      <h1>NA</h1>
+      <h1>CIDAtools </h1>
     </div>
 
+<div id="cidatools-" class="section level1">
 
 <p><a href="https://github.com/CIDA-CSPH/CIDAtools/actions"><img src="https://github.com/CIDA-CSPH/CIDAtools/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></p>
-<p><img src="inst/figures/CIDAtoolshex.png" alt="CIDAtools" width="259" height="300"></p>
+<div id="overview" class="section level2">
+<h2 class="hasAnchor">
+<a href="#overview" class="anchor"></a>Overview</h2>
 <p>This package contains numerous templates and tools to make life at CIDA (part of the Colorado School of Public Health) happier and more efficient!</p>
 <p>To install <code>CIDAtools</code> on your local machine:</p>
 <pre><code># install.packages("devtools")
 devtools::install_github('CIDA-CSPH/CIDAtools')</code></pre>
+</div>
 <div id="creating-a-new-project" class="section level2">
 <h2 class="hasAnchor">
 <a href="#creating-a-new-project" class="anchor"></a>Creating a new project</h2>
@@ -170,6 +174,11 @@ devtools::install_github('CIDA-CSPH/CIDAtools')</code></pre>
 <p>If the project directory already exists in the P drive, only files/directories that have changed since the last backup will be copied over. This speeds up the process.</p>
 <p>Files located in the backup directory that are not in the project directory are not deleted. This means if you have large files, anytime you rename them and re-run the backup function, the storage needed will double since both files will remain in the backup folder. To avoid this, specify <code>recreate = TRUE</code> to fully recreate the current directory from the ground up.</p>
 </div>
+<div id="documentation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#documentation" class="anchor"></a>Documentation</h2>
+<p>The package website is available <a href="https://cida-csph.github.io/CIDAtools">here</a>. We plan to keep track of SAS macros and useful R packages in Article there (package vignettes).</p>
+</div>
 <div id="using-snippets" class="section level2">
 <h2 class="hasAnchor">
 <a href="#using-snippets" class="anchor"></a>Using snippets</h2>
@@ -188,7 +197,7 @@ devtools::install_github('CIDA-CSPH/CIDAtools')</code></pre>
 <p>This package also contains functions for reading excel files with color columns and the Table1 function.</p>
 <p>Please feel free to file an issue request if you encounter errors or would like to request new features. If reporting a bug, please provide a reproducible example.</p>
 </div>
-
+</div>
 
   </div>
 
