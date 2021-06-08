@@ -20,7 +20,10 @@ knitr::opts_chunk$set(
 ## List of SAS macros
 
 ```{r}
-sas_files <- list.files(path = system.file("sas", package = "mypackage"), full.names = T)
+path <- system.file("sas", package = "CIDAtools")
+
+if(length(path)) {
+  sas_files <- list.files(path, full.names = T)
 
 keywords <- sapply(sas_files, function(f) {
   lines <- readLines(f)
@@ -29,9 +32,14 @@ keywords <- sapply(sas_files, function(f) {
 })
 
 sas_index <- data.frame(
-  name = list.files(path = "./inst/sas/", full.names = F), 
+  name = list.files(path, full.names = F), 
   keywords = keywords, row.names = NULL
 )
+} else {
+  sas_index <- data.frame()
+}
+
+
 ```
 
 ```{r}
