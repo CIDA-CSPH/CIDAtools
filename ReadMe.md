@@ -1,6 +1,8 @@
+# CIDAtools <a href='https://cida-csph.github.io/CIDAtools'><img src='inst/figures/CIDAtoolshex.png' align="right" height="139" /></a>
+
 [![R-CMD-check](https://github.com/CIDA-CSPH/CIDAtools/workflows/R-CMD-check/badge.svg)](https://github.com/CIDA-CSPH/CIDAtools/actions)
 
-<img src="inst/figures/CIDAtoolshex.png" alt="CIDAtools" width="259" height="300"/>
+## Overview
 
 This package contains numerous templates and tools to make life at CIDA (part 
 of the Colorado School of Public Health) happier and more efficient!
@@ -75,6 +77,11 @@ This will copy over the entire local project (all files and directories) to a pr
 If the project directory already exists in the P drive, only files/directories that have changed since the last backup will be copied over. This speeds up the process. 
 
 Files located in the backup directory that are not in the project directory are not deleted. This means if you have large files, anytime you rename them and re-run the backup function, the storage needed will double since both files will remain in the backup folder. To avoid this, specify `recreate = TRUE` to fully recreate the current directory from the ground up. 
+
+## Documentation
+
+The package website is available [here](https://cida-csph.github.io/CIDAtools). 
+We plan to keep track of SAS macros and useful R packages in Article there (package vignettes). 
 
 ## Using snippets
 
