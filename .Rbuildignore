@@ -5,3 +5,5 @@ hex_sticker.R
 ^\.travis\.yml$
 ^\.github$
 ^codecov\.yml$
+^doc$
+^Meta$
