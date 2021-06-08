@@ -19,6 +19,7 @@ Suggests:
     arsenal,
     rmarkdown,
     DT,
+    markdown
     covr
 License: CC0
 Encoding: UTF-8
