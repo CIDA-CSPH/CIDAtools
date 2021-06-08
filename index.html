@@ -71,7 +71,78 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-This package contains the numerous templates and tools to make life at CIDA (part of the Colorado School of Public Health) happier and more efficient!
+
+
+<p><img src="inst/figures/CIDAtoolshex.png" alt="CIDAtools" width="259" height="300"></p>
+<p>This package contains numerous templates and tools to make life at CIDA (part of the Colorado School of Public Health) happier and more efficient!</p>
+<p>To install <code>CIDAtools</code> on your local machine:</p>
+<pre><code># install.packages("devtools")
+devtools::install_github('CIDA-CSPH/CIDAtools')</code></pre>
+<div id="creating-a-new-project" class="section level2">
+<h2 class="hasAnchor">
+<a href="#creating-a-new-project" class="anchor"></a>Creating a new project</h2>
+<p>After <code>CIDAtools</code> is installed, a new CIDA project can be created using the Rstudio GUI (File&gt;New Project&gt;New Directory&gt;New CIDA Project).</p>
+<p>Or, to create a new project folder structure from the R console, navigate to the main project directory, and run:</p>
+<pre><code><a href="reference/CreateProject.html">CreateProject()</a></code></pre>
+<p>Feel free to set the project name, PI, and analyst via the <code>ProjectName</code>, <code>PI</code>, or <code>analyst</code> arguments respectively, and see <code><a href="reference/CreateProject.html">?CreateProject</a></code> for more details. If any of these are specified, they are stored as text in a hidden subdirectory called .ProjData, and can be called in subsequent R code anywhere in the project using <code><a href="reference/ProjectName.html">ProjectName()</a></code>, <code><a href="reference/ProjectPI.html">ProjectPI()</a></code>, and <code><a href="reference/ProjectAnalyst.html">ProjectAnalyst()</a></code>.</p>
+</div>
+<div id="creating-a-new-cida-report" class="section level2">
+<h2 class="hasAnchor">
+<a href="#creating-a-new-cida-report" class="anchor"></a>Creating a new CIDA report</h2>
+<p><strong>Templates</strong> are useful for creating new documents with the correct CIDA <em>formatting</em>.</p>
+<p><code>CIDAtools</code> includes templates that can make it easy to create a new CIDA report. To use this functionality in Rstudio, first ensure the package is installed, then:</p>
+<p>1) Click on “New R Markdown” 2) In the pop-up, select “From template” 3) You should see CIDA report templates to choose from.</p>
+<p>Alternatively, source code for templates is available in inst/rmarkdown/templates/.</p>
+<p>Note: the CIDA Word report template contains multiple files, which are needed to specify the format for Word output. Therefore, CIDA Word reports must have their own subdirectory to start.</p>
+</div>
+<div id="outlines-for-cida-reports" class="section level2">
+<h2 class="hasAnchor">
+<a href="#outlines-for-cida-reports" class="anchor"></a>Outlines for CIDA reports</h2>
+<p><strong>Outlines</strong> are intended to provide an idea of the <em>content</em> necessary within each type of CIDA report.</p>
+<p><code>CIDAtools</code> includes outlines for the following reports in inst/outlines/:</p>
+<ul>
+<li>CIDA Analysis Plan <a href="https://github.com/CIDA-CSPH/CIDAtools/raw/master/inst/outlines/CIDA-Analysis-Plan-Outline.docx">[download]</a>
+</li>
+<li>CIDA Comprehensive Report <a href="https://github.com/CIDA-CSPH/CIDAtools/raw/master/inst/outlines/CIDA-Comprehensive-Report-Outline.docx">[download]</a>
+</li>
+<li>CIDA Exploratory Report <a href="https://github.com/CIDA-CSPH/CIDAtools/raw/master/inst/outlines/CIDA-Exploratory-Report-Outline.docx">[download]</a>
+</li>
+<li>CIDA Omics Study Report <a href="https://github.com/CIDA-CSPH/CIDAtools/raw/master/inst/outlines/CIDA-Omics-Outline.docx">[download]</a>
+</li>
+<li>CIDA Study Design <a href="https://github.com/CIDA-CSPH/CIDAtools/raw/master/inst/outlines/CIDA-Study-Design-Outline.docx">[download]</a>
+</li>
+</ul>
+</div>
+<div id="backing-up-cida-projects" class="section level2">
+<h2 class="hasAnchor">
+<a href="#backing-up-cida-projects" class="anchor"></a>Backing up CIDA projects</h2>
+<p>CIDA project data and reports should be either kept on the CIDA shared drive (the P drive), or backed up (i.e. copied) to the shared drive on a regular basis.</p>
+<p>Since the P drive can sometimes be slow to read/write on, CIDA members can work on a project locally if they regularly back up the project to the P drive. To help with this, we’ve written the function <code>BackupProject</code> which will automatically back up a project folder to the P drive (to the “Projects” subdirectory by default, but this can be specified with the <code>subdir_to</code> argument). Alternatively, the main project folder can simply be copied and pasted to the P drive manually.</p>
+<p>Within a project directory, run:</p>
+<pre><code><a href="reference/BackupProject.html">BackupProject()</a></code></pre>
+<p>This will copy over the entire local project (all files and directories) to a project of the same name in the P drive. A backup_info.md file will also be produced that indicates when the backup was performed.</p>
+<p>If the project directory already exists in the P drive, only files/directories that have changed since the last backup will be copied over. This speeds up the process.</p>
+<p>Files located in the backup directory that are not in the project directory are not deleted. This means if you have large files, anytime you rename them and re-run the backup function, the storage needed will double since both files will remain in the backup folder. To avoid this, specify <code>recreate = TRUE</code> to fully recreate the current directory from the ground up.</p>
+</div>
+<div id="using-snippets" class="section level2">
+<h2 class="hasAnchor">
+<a href="#using-snippets" class="anchor"></a>Using snippets</h2>
+<p>CIDA functions can be used in snippets (if you have a header snippet already in your Rstudio options):</p>
+<p>Example of a header snippet using Project Data:</p>
+<pre><code>snippet header
+    ###########################################
+    # Project: `r CIDAtools::ProjectName()`
+    # Author: `r CIDAtools::ProjectAnalyst()`
+    # Date: `r paste(format(Sys.Date(), '%m/%d/%Y'))`
+    # #########################################</code></pre>
+</div>
+<div id="other-functionality" class="section level2">
+<h2 class="hasAnchor">
+<a href="#other-functionality" class="anchor"></a>Other functionality</h2>
+<p>This package also contains functions for reading excel files with color columns and the Table1 function.</p>
+<p>Please feel free to file an issue request if you encounter errors or would like to request new features. If reporting a bug, please provide a reproducible example.</p>
+</div>
+
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -90,7 +161,13 @@ This package contains the numerous templates and tools to make life at CIDA (par
 </ul>
 </div>
 
-  </div>
+  <div class="dev-status">
+<h2>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/CIDA-CSPH/CIDAtools/actions"><img src="https://github.com/CIDA-CSPH/CIDAtools/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
+</ul>
+</div>
+</div>
 </div>
 
 
