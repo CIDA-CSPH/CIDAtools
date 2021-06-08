@@ -5,3 +5,20 @@ knitr::opts_chunk$set(
   echo = FALSE
 )
 
+## -----------------------------------------------------------------------------
+sas_files <- list.files(path = system.file("sas", package = "mypackage"), full.names = T)
+
+keywords <- sapply(sas_files, function(f) {
+  lines <- readLines(f)
+  keys <- lines[grepl("Keywords", lines, ignore.case = T)]
+  gsub("\\*|\\* |Keywords: |;", "", keys, ignore.case = T)
+})
+
+sas_index <- data.frame(
+  name = list.files(path = "./inst/sas/", full.names = F), 
+  keywords = keywords, row.names = NULL
+)
+
+## -----------------------------------------------------------------------------
+DT::datatable(sas_index)
+

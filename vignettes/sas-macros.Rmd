@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 ## List of SAS macros
 
 ```{r}
-sas_files <- list.files(path = "./inst/sas/", full.names = T)
+sas_files <- list.files(path = system.file("sas", package = "mypackage"), full.names = T)
 
 keywords <- sapply(sas_files, function(f) {
   lines <- readLines(f)
