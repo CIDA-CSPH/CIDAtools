@@ -4,3 +4,7 @@
 hex_sticker.R
 ^\.travis\.yml$
 ^\.git
+^\.github$
+^codecov\.yml$
+^doc$
+^Meta$
