@@ -225,3 +225,66 @@ sum_ignore_NA <- function(...){
     sum(numbers, na.rm = T)
   })
 }
+
+#' Vectorized power estimates
+#'
+#'
+#' This function allows you to use power.t.test, power.prop.test, etc in
+#' vectorized fashion and return a table of results
+#'
+#' @param fun What is the function to calculate power
+#' @param ... other arguments to pass to power_fn, possibly vectorized
+#' @return tibble of results
+#' @export
+#'
+
+vec_power <- function(fun = stats::power.t.test, ...){
+
+  args <- list(...)
+  params <- expand.grid(args, stringsAsFactors = FALSE)[,length(args):1]
+
+  results <- broom::tidy(do.call(fun, params[1,]))
+  for(i in 1:nrow(params)) {
+    results[i,] <- broom::tidy(do.call(fun, params[i,]))
+  }
+
+  results <- dplyr::bind_cols(results, params[!(names(params) %in% names(results))])
+
+  return(results)
+}
+
+#' Get CIDA drive path
+#'
+#' This function attempts to get the proper path for the CIDA drive either on Windows or Mac.
+#'
+#' @param path (optional) a path to a particular place in the CIDA drive
+#'
+#' @return full (absolute) file path of CIDA drive
+#' @export
+#'
+#' @examples
+#' # Read data from P1234PIname project
+#' \dontrun{
+#' df <- read.csv(CIDA_drive_path("Projects/P1234PIname/DataRaw/data.csv"))
+#' }
+#'
+
+CIDA_drive_path <- function(path = ""){
+
+  OS <- .Platform$OS.type
+
+  if (OS == "unix"){
+    temp_path <- "/Volumes/CIDA" # MAC file path
+  } else if (OS == "windows"){
+    temp_path <- "P:/" # windows file path
+  } else {
+    stop("OS could not be identified")
+  }
+
+  fpath <- file.path(temp_path, path)
+
+  if(!dir.exists(fpath) & !file.exists(fpath))
+    warning("nothing found at path, check spelling and ensure drive is mounted")
+
+  return(file.path(temp_path, path))
+}
