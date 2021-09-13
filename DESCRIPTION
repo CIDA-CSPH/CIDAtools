@@ -7,7 +7,9 @@ Authors@R:
   person("Caroline", "Ledbetter", role = c("aut")))
 Description: This package contains the numerous templates and tools to make life at CIDA (part of the Colorado School of Public Health) happier and more efficient!
 Depends: R (>= 3.4.0)
-Imports: dplyr, broom
+Imports: 
+    dplyr,
+    generics
 Suggests: 
     git2r, 
     survey, 
@@ -24,5 +26,5 @@ Suggests:
 License: CC0
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 VignetteBuilder: knitr

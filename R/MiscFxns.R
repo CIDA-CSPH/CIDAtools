@@ -235,6 +235,10 @@ sum_ignore_NA <- function(...){
 #' @param fun What is the function to calculate power
 #' @param ... other arguments to pass to power_fn, possibly vectorized
 #' @return tibble of results
+#'
+#' @importFrom generics tidy
+#' @importFrom stats na.omit
+#'
 #' @export
 #'
 
@@ -243,12 +247,12 @@ vec_power <- function(fun = stats::power.t.test, ...){
   args <- list(...)
   params <- expand.grid(args, stringsAsFactors = FALSE)[,length(args):1]
 
-  results <- broom::tidy(do.call(fun, params[1,]))
+  results <- tidy(do.call(fun, params[1,]))
   for(i in 1:nrow(params)) {
     res <- try(do.call(fun, params[i,]), silent = TRUE)
     results[i,] <- NA
     if(class(res)[1] != "try-error")
-      results[i,] <- broom::tidy(res)
+      results[i,] <- tidy(res)
   }
 
   results <- dplyr::bind_cols(results, params[!(names(params) %in% names(results))])
@@ -256,6 +260,11 @@ vec_power <- function(fun = stats::power.t.test, ...){
   return(na.omit(results))
 }
 
+# Helper for pwr package version of power fns.
+tidy.power.htest <- function(x, ...) {
+  class(x) <- "list"
+  as.data.frame(x)
+}
 
 #' Get CIDA drive path
 #'
