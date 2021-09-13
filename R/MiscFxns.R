@@ -245,13 +245,17 @@ vec_power <- function(fun = stats::power.t.test, ...){
 
   results <- broom::tidy(do.call(fun, params[1,]))
   for(i in 1:nrow(params)) {
-    results[i,] <- broom::tidy(do.call(fun, params[i,]))
+    res <- try(do.call(fun, params[i,]), silent = TRUE)
+    results[i,] <- NA
+    if(class(res)[1] != "try-error")
+      results[i,] <- broom::tidy(res)
   }
 
   results <- dplyr::bind_cols(results, params[!(names(params) %in% names(results))])
 
-  return(results)
+  return(na.omit(results))
 }
+
 
 #' Get CIDA drive path
 #'
