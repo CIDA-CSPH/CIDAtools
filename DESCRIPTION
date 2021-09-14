@@ -6,7 +6,7 @@ Authors@R:
   person("Ryan", "Peterson", email = "ryan.a.peterson@cuanschutz.edu", role = c("aut", "cre")),
   person("Caroline", "Ledbetter", role = c("aut")))
 Description: This package contains the numerous templates and tools to make life at CIDA (part of the Colorado School of Public Health) happier and more efficient!
-Depends: R (>= 3.4.0)
+Depends: R (>= 3.5.0)
 Imports: 
     dplyr,
     generics
@@ -21,7 +21,6 @@ Suggests:
     arsenal,
     rmarkdown,
     DT,
-    markdown,
     covr
 License: CC0
 Encoding: UTF-8
