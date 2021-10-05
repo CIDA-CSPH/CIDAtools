@@ -26,7 +26,7 @@
 #' @importFrom table1 stats.default
 #' @keywords table1 tableone characteristic
 #' @examples
-#' # Fake data
+#' # Synthetic data
 #' df = data.frame(
 #'     `Age` = c(10,12,14,18,20,19,28,33, rep(NA, 4)),
 #'     `Sex` = c(rep("Female", 4), rep("Male", 4), rep(NA, 4)),
@@ -74,191 +74,194 @@ cida_table1 <- function(data,
                         exclude_missing_percent = FALSE,
                         compute_pval = FALSE,
                         ...) {
-    # Check variables are in provided data
-    if (any(!(includeVars %in% colnames(df)))) {
-        stop("A selected variabled in includeVars was not found in the data provided")
-    }
-    labels = list(
-        variables = sapply(includeVars, list, simplify = TRUE),
-        groups = sapply(group_labels, list, simplify = TRUE)
+  # Check variables are in provided data
+  if (any(!(includeVars %in% colnames(df))) &
+      if (!is.null(names(includeVars))) {
+        any(!(names(includeVars) %in% colnames(df)))
+      } else {
+        TRUE
+      }) {
+    stop("A selected variabled in includeVars was not found in the data provided")
+  }
+  labels = list(
+    variables = sapply(includeVars, list, simplify = TRUE),
+    groups = sapply(group_labels, list, simplify = TRUE)
+  )
+
+  if (isTRUE(include_total)) {
+    strata <- c(list(Total = data), split(data, data[, stratifyBy]))
+  } else {
+    strata <- split(data, data[, stratifyBy])
+  }
+
+  .with_p <- expression(
+    table1::table1(
+      strata,
+      labels,
+      groupspan = group_label_span,
+      extra.col = list(`<i>p</i>-value` =
+                         pvalue),
+      topclass = "Rtable1-zebra Rtable1-shade",
+      caption = caption,
+      footnote = c(footnote, p_footnote)
     )
+  )
 
-    if (isTRUE(include_total)) {
-        strata <- c(list(Total = data), split(data, data[, stratifyBy]))
-    } else {
-        strata <- split(data, data[, stratifyBy])
-    }
-
-    .with_p <- expression(
-        table1::table1(
-            strata,
-            labels,
-            groupspan = group_label_span,
-            extra.col = list(`<i>p</i>-value` =
-                                 pvalue),
-            topclass = "Rtable1-zebra Rtable1-shade",
-            caption = caption,
-            footnote = c(footnote, p_footnote)
-        )
+  .with_p_median_missingP <- expression(
+    table1::table1(
+      strata,
+      labels,
+      groupspan = group_label_span,
+      extra.col = list(`<i>p</i>-value` =
+                         pvalue),
+      render.continuous =
+        my.render.cont,
+      render.missing = my.render.miss,
+      topclass = "Rtable1-zebra Rtable1-shade",
+      caption = caption,
+      footnote = c(footnote, p_footnote)
     )
+  )
 
-    .with_p_median_missingP <- expression(
-        table1::table1(
-            strata,
-            labels,
-            groupspan = group_label_span,
-            extra.col = list(`<i>p</i>-value` =
-                                 pvalue),
-            render.continuous =
-                my.render.cont,
-            render.missing = my.render.miss,
-            topclass = "Rtable1-zebra Rtable1-shade",
-            caption = caption,
-            footnote = c(footnote, p_footnote)
-        )
+  .with_p_median <- expression(
+    table1::table1(
+      strata,
+      labels,
+      groupspan = group_label_span,
+      extra.col = list(`<i>p</i>-value` =
+                         pvalue),
+      render.continuous = my.render.cont,
+      topclass = "Rtable1-zebra Rtable1-shade",
+      caption = caption,
+      footnote = c(footnote, p_footnote)
     )
+  )
 
-    .with_p_median <- expression(
-        table1::table1(
-            strata,
-            labels,
-            groupspan = group_label_span,
-            extra.col = list(`<i>p</i>-value` =
-                                 pvalue),
-            render.continuous = my.render.cont,
-            topclass = "Rtable1-zebra Rtable1-shade",
-            caption = caption,
-            footnote = c(footnote, p_footnote)
-        )
+  .with_p_missingP <- expression(
+    table1::table1(
+      strata,
+      labels,
+      groupspan = group_label_span,
+      extra.col = list(`<i>p</i>-value` =
+                         pvalue),
+      render.missing = my.render.miss,
+      topclass = "Rtable1-zebra Rtable1-shade",
+      caption = caption,
+      footnote = c(footnote, p_footnote)
     )
+  )
 
-    .with_p_missingP <- expression(
-        table1::table1(
-            strata,
-            labels,
-            groupspan = group_label_span,
-            extra.col = list(`<i>p</i>-value` =
-                                 pvalue),
-            render.missing = my.render.miss,
-            topclass = "Rtable1-zebra Rtable1-shade",
-            caption = caption,
-            footnote = c(footnote, p_footnote)
-        )
+  .no_p <- expression(
+    table1::table1(
+      strata,
+      labels,
+      groupspan = group_label_span,
+      topclass = "Rtable1-zebra Rtable1-shade",
+      caption = caption,
+      footnote = footnote
     )
-
-    .no_p <- expression(
-        table1::table1(
-            strata,
-            labels,
-            groupspan = group_label_span,
-            topclass = "Rtable1-zebra Rtable1-shade",
-            caption = caption,
-            footnote = footnote
-        )
+  )
+  .no_p_median_missingP <- expression(
+    table1::table1(
+      strata,
+      labels,
+      groupspan = group_label_span,
+      render.continuous =
+        my.render.cont,
+      render.missing = my.render.miss,
+      topclass = "Rtable1-zebra Rtable1-shade",
+      caption = caption,
+      footnote = footnote
     )
-    .no_p_median_missingP <- expression(
-        table1::table1(
-            strata,
-            labels,
-            groupspan = group_label_span,
-            render.continuous =
-                my.render.cont,
-            render.missing = my.render.miss,
-            topclass = "Rtable1-zebra Rtable1-shade",
-            caption = caption,
-            footnote = footnote
-        )
+  )
+
+  .no_p_median <- expression(
+    table1::table1(
+      strata,
+      labels,
+      groupspan = group_label_span,
+      render.continuous = my.render.cont,
+      topclass = "Rtable1-zebra Rtable1-shade",
+      caption = caption,
+      footnote = footnote
     )
+  )
 
-    .no_p_median <- expression(
-        table1::table1(
-            strata,
-            labels,
-            groupspan = group_label_span,
-            render.continuous = my.render.cont,
-            topclass = "Rtable1-zebra Rtable1-shade",
-            caption = caption,
-            footnote = footnote
-        )
+  .no_p_missingP <- expression(
+    table1::table1(
+      strata,
+      labels,
+      groupspan = group_label_span,
+      render.missing = my.render.miss,
+      topclass = "Rtable1-zebra Rtable1-shade",
+      caption = caption,
+      footnote = footnote
     )
-
-    .no_p_missingP <- expression(
-        table1::table1(
-            strata,
-            labels,
-            groupspan = group_label_span,
-            render.missing = my.render.miss,
-            topclass = "Rtable1-zebra Rtable1-shade",
-            caption = caption,
-            footnote = footnote
-        )
-    )
+  )
 
 
-    p_footnote <- c(
-        "
+  p_footnote <- c(
+    "
         <p style=font-size:12px;><b><i>p</i>-values computed as follows:</b></p>",
-        "&ensp; Numeric data with 2 groups -- t-test",
-        "&ensp; Numeric data with more than 2 groups -- ANOVA",
-        "&ensp; Categorical data with any cell  value < 5 -- Fishers exact test",
-        "&ensp; Categerical data with all cell values >= 5 -- Chi-square test of independence"
-    )
+    "&ensp; Numeric data with 2 groups -- t-test",
+    "&ensp; Numeric data with more than 2 groups -- ANOVA",
+    "&ensp; Categorical data with any cell  value < 5 -- Fishers exact test",
+    "&ensp; Categerical data with all cell values >= 5 -- Chi-square test of independence"
+  )
 
-    if (isTRUE(exclude_mean)) {
-        my.render.cont <- function(x) {
-            with(
-                stats.apply.rounding(stats.default(x), digits = 3),
-                c(
-                    "",
-                    "Median [Min, Max]" =
-                        sprintf("%s [%s, %s]", MEDIAN, MIN, MAX)
-                )
-            )
-        }
+  if (isTRUE(exclude_mean)) {
+    my.render.cont <- function(x) {
+      with(
+        stats.apply.rounding(stats.default(x), digits = 3),
+        c("",
+          "Median [Min, Max]" =
+            sprintf("%s [%s, %s]", MEDIAN, MIN, MAX))
+      )
+    }
 
-        if (isTRUE(exclude_missing_percent)) {
-            my.render.miss <- function(x) {
-                with(
-                    stats.apply.rounding(stats.default(is.na(x)), digits = 1)$Yes,
-                    c("Missing" = sprintf("%s", FREQ))
-                )
-            }
+    if (isTRUE(exclude_missing_percent)) {
+      my.render.miss <- function(x) {
+        with(
+          stats.apply.rounding(stats.default(is.na(x)), digits = 1)$Yes,
+          c("Missing" = sprintf("%s", FREQ))
+        )
+      }
 
-            if (isTRUE(compute_pval)) {
-                eval(.with_p_median_missingP)
-            } else {
-                eval(.no_p_median_missingP)
-            }
-
-        } else {
-            if (isTRUE(compute_pval)) {
-                eval(.with_p_median)
-            } else {
-                eval(.no_p_median)
-            }
-        }
+      if (isTRUE(compute_pval)) {
+        eval(.with_p_median_missingP)
+      } else {
+        eval(.no_p_median_missingP)
+      }
 
     } else {
-        if (isTRUE(exclude_missing_percent)) {
-            my.render.miss <- function(x) {
-                with(
-                    stats.apply.rounding(stats.default(is.na(x)), digits = 1)$Yes,
-                    c("Missing" = sprintf("%s", FREQ))
-                )
-            }
-
-            if (isTRUE(compute_pval)) {
-                eval(.with_p_missingP)
-            } else {
-                eval(.no_p_missingP)
-            }
-
-        } else {
-            if (isTRUE(compute_pval)) {
-                eval(.with_p)
-            } else {
-                eval(.no_p)
-            }
-        }
+      if (isTRUE(compute_pval)) {
+        eval(.with_p_median)
+      } else {
+        eval(.no_p_median)
+      }
     }
+
+  } else {
+    if (isTRUE(exclude_missing_percent)) {
+      my.render.miss <- function(x) {
+        with(
+          stats.apply.rounding(stats.default(is.na(x)), digits = 1)$Yes,
+          c("Missing" = sprintf("%s", FREQ))
+        )
+      }
+
+      if (isTRUE(compute_pval)) {
+        eval(.with_p_missingP)
+      } else {
+        eval(.no_p_missingP)
+      }
+
+    } else {
+      if (isTRUE(compute_pval)) {
+        eval(.with_p)
+      } else {
+        eval(.no_p)
+      }
+    }
+  }
 }
