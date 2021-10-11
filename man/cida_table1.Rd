@@ -55,7 +55,7 @@ This is a function created to provide characteristics of a study group with
 an option to stratify by some variable (usually an exposure).
 }
 \examples{
-# Fake data
+# Synthetic data
 df = data.frame(
     `Age` = c(10,12,14,18,20,19,28,33, rep(NA, 4)),
     `Sex` = c(rep("Female", 4), rep("Male", 4), rep(NA, 4)),
@@ -64,6 +64,7 @@ df = data.frame(
     `Group` = c(rep('Control', 4), rep('Heart Disease', 4), rep('Lung Disease', 4)),
      check.names = FALSE
     )
+# Table 1 with no p-values
 cida_table1(data = df,
             includeVars = c("Age", "Sex", "Smoking Status", "IL-8"),
             stratifyBy = "Group",
@@ -74,8 +75,57 @@ cida_table1(data = df,
             include_total = FALSE,
             compute_pval = FALSE)
 
+# Table 1 with p-values, no mean, no percent missing
 cida_table1(data = df,
             includeVars = c("Age", "Sex", "Smoking Status", "IL-8"),
+            stratifyBy = "Group",
+            group_labels = c("", "Group", ""),
+            group_label_span = c(1, 3, 1),
+            caption = "TABLE 1",
+            footnote = "My table 1",
+            exclude_mean = TRUE,
+            exclude_missing_percent = TRUE,
+            include_total = TRUE,
+            compute_pval = TRUE)
+
+# Table 1 styling the output
+# You can also rename the variables like this (name in data = new name)
+cida_table1(data = df,
+            includeVars = c("Age" = "age", "Sex" = "sex", "Smoking Status" = "smoking", "IL-8"= "Interleukin 8"),
+            stratifyBy = "Group",
+            group_labels = c("", "Group", ""),
+            group_label_span = c(1, 3, 1),
+            caption = "TABLE 1",
+            footnote = "My table 1",
+            exclude_mean = TRUE,
+            exclude_missing_percent = TRUE,
+            include_total = TRUE,
+            compute_pval = TRUE)
+
+# Tables are html so you can customize them using html and css
+cida_table1(data = df,
+            includeVars = c("Age" = "age",
+                            "Sex" = "<span style = 'background-color:pink;'>sex</span>", # Highlight pink
+                            "Smoking Status" = "<span style='color:purple; font-family:Snell Roundhand; font-size:1.5em; font-weight:900;'>smoking status</span>",
+                            "IL-8"= "Interleukin 8&beta;"), # &beta; is html for greek lowercase beta
+            stratifyBy = "Group",
+            group_labels = c("", "Group", ""),
+            group_label_span = c(1, 3, 1),
+            caption = "TABLE 1",
+            footnote = "My table 1",
+            exclude_mean = TRUE,
+            exclude_missing_percent = TRUE,
+            include_total = TRUE,
+            compute_pval = TRUE)
+
+# You can add icons if you like
+
+cida_table1(data = df,
+            includeVars = c("Age" = "age", "Sex" = "sex",
+                            "Smoking Status" = "<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+                            <span>Smoking Status </span>
+                            <i class='fa fa-medkit'></i>", # Medkit icon
+                            "IL-8"= "Interleukin 8&beta;"),
             stratifyBy = "Group",
             group_labels = c("", "Group", ""),
             group_label_span = c(1, 3, 1),
