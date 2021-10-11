@@ -16,6 +16,7 @@ cida_table1(
   exclude_mean = FALSE,
   exclude_missing_percent = FALSE,
   compute_pval = FALSE,
+  exportWord = FALSE,
   ...
 )
 }
@@ -73,7 +74,8 @@ cida_table1(data = df,
             caption = "TABLE 1",
             footnote = "My table 1",
             include_total = FALSE,
-            compute_pval = FALSE)
+            compute_pval = FALSE,
+            exportWord = FALSE)
 
 # Table 1 with p-values, no mean, no percent missing
 cida_table1(data = df,
@@ -86,7 +88,8 @@ cida_table1(data = df,
             exclude_mean = TRUE,
             exclude_missing_percent = TRUE,
             include_total = TRUE,
-            compute_pval = TRUE)
+            compute_pval = TRUE,
+            exportWord = FALSE)
 
 # Table 1 styling the output
 # You can also rename the variables like this (name in data = new name)
@@ -100,7 +103,8 @@ cida_table1(data = df,
             exclude_mean = TRUE,
             exclude_missing_percent = TRUE,
             include_total = TRUE,
-            compute_pval = TRUE)
+            compute_pval = TRUE,
+            exportWord = FALSE)
 
 # Tables are html so you can customize them using html and css
 cida_table1(data = df,
@@ -116,7 +120,8 @@ cida_table1(data = df,
             exclude_mean = TRUE,
             exclude_missing_percent = TRUE,
             include_total = TRUE,
-            compute_pval = TRUE)
+            compute_pval = TRUE,
+            exportWord = FALSE)
 
 # You can add icons if you like
 
@@ -134,7 +139,8 @@ cida_table1(data = df,
             exclude_mean = TRUE,
             exclude_missing_percent = TRUE,
             include_total = TRUE,
-            compute_pval = TRUE)
+            compute_pval = TRUE,
+            exportWord = FALSE)
 
 }
 \keyword{characteristic}

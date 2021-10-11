@@ -24,6 +24,7 @@
 #' @importFrom table1 table1
 #' @importFrom table1 stats.apply.rounding
 #' @importFrom table1 stats.default
+#' @import flextable
 #' @keywords table1 tableone characteristic
 #' @examples
 #' # Synthetic data
@@ -44,7 +45,8 @@
 #'             caption = "TABLE 1",
 #'             footnote = "My table 1",
 #'             include_total = FALSE,
-#'             compute_pval = FALSE)
+#'             compute_pval = FALSE,
+#'             exportWord = FALSE)
 #'
 #' # Table 1 with p-values, no mean, no percent missing
 #' cida_table1(data = df,
@@ -57,7 +59,8 @@
 #'             exclude_mean = TRUE,
 #'             exclude_missing_percent = TRUE,
 #'             include_total = TRUE,
-#'             compute_pval = TRUE)
+#'             compute_pval = TRUE,
+#'             exportWord = FALSE)
 #'
 #' # Table 1 styling the output
 #' # You can also rename the variables like this (name in data = new name)
@@ -71,7 +74,8 @@
 #'             exclude_mean = TRUE,
 #'             exclude_missing_percent = TRUE,
 #'             include_total = TRUE,
-#'             compute_pval = TRUE)
+#'             compute_pval = TRUE,
+#'             exportWord = FALSE)
 #'
 #' # Tables are html so you can customize them using html and css
 #` # use a different color and font for smoking status
@@ -89,7 +93,8 @@
 #'             exclude_mean = TRUE,
 #'             exclude_missing_percent = TRUE,
 #'             include_total = TRUE,
-#'             compute_pval = TRUE)
+#'             compute_pval = TRUE,
+#'             exportWord = FALSE)
 #'
 #' # You can add icons if you like
 #'
@@ -107,13 +112,15 @@
 #'             exclude_mean = TRUE,
 #'             exclude_missing_percent = TRUE,
 #'             include_total = TRUE,
-#'             compute_pval = TRUE)
+#'             compute_pval = TRUE,
+#'             exportWord = FALSE)
 #'
 #' @export
 #'
 
 
 
+# Function to generate a table 1
 cida_table1 <- function(data,
                         includeVars,
                         stratifyBy,
@@ -125,7 +132,9 @@ cida_table1 <- function(data,
                         exclude_mean = FALSE,
                         exclude_missing_percent = FALSE,
                         compute_pval = FALSE,
+                        exportWord = FALSE,
                         ...) {
+  suppressMessages(require(flextable))
   # Check variables are in provided data
   if (any(!(includeVars %in% colnames(df))) &
       if (!is.null(names(includeVars))) {
@@ -155,7 +164,7 @@ cida_table1 <- function(data,
                          pvalue),
       topclass = "Rtable1-zebra Rtable1-shade",
       caption = caption,
-      footnote = c(footnote, p_footnote)
+      footnote = c(footnote, p_footnotes)
     )
   )
 
@@ -200,6 +209,66 @@ cida_table1 <- function(data,
       topclass = "Rtable1-zebra Rtable1-shade",
       caption = caption,
       footnote = c(footnote, p_footnote)
+    )
+  )
+
+  .with_p_wordExport <- expression(
+    table1::table1(
+      strata,
+      labels,
+      groupspan = group_label_span,
+      extra.col = list(`<i>p</i>-value` =
+                         pvalue),
+      topclass = "Rtable1-zebra Rtable1-shade",
+      caption = caption,
+      footnote = paste(footnote, word_p_footnote, sep = "")
+    )
+  )
+
+  .with_p_median_missingP_wordExport <-
+    expression(
+      table1::table1(
+        strata,
+        labels,
+        groupspan = group_label_span,
+        extra.col = list(`<i>p</i>-value` =
+                           pvalue),
+        render.continuous =
+          my.render.cont,
+        render.missing = my.render.miss,
+        topclass =
+          "Rtable1-zebra Rtable1-shade",
+        caption = caption,
+        footnote = paste(footnote, word_p_footnote, sep = "")
+      )
+    )
+
+  .with_p_median_wordExport <- expression(
+    table1::table1(
+      strata,
+      labels,
+      groupspan = group_label_span,
+      extra.col = list(`<i>p</i>-value` =
+                         pvalue),
+      render.continuous =
+        my.render.cont,
+      topclass = "Rtable1-zebra Rtable1-shade",
+      caption = caption,
+      footnote = paste(footnote, word_p_footnote, sep = "")
+    )
+  )
+
+  .with_p_missingP_wordExport <- expression(
+    table1::table1(
+      strata,
+      labels,
+      groupspan = group_label_span,
+      extra.col = list(`<i>p</i>-value` =
+                         pvalue),
+      render.missing = my.render.miss,
+      topclass = "Rtable1-zebra Rtable1-shade",
+      caption = caption,
+      footnote = paste(footnote, word_p_footnote, sep = "")
     )
   )
 
@@ -251,7 +320,13 @@ cida_table1 <- function(data,
     )
   )
 
-
+  word_p_footnote <- "
+  p-values computed as follows:
+    Numeric data with 2 groups -- t-test
+    Numeric data with more than 2 groups -- ANOVA
+    Categorical data with any cell value < 5 -- Fishers exact test
+    Categorical data with all cell values >= 5 -- Chi-square test of independence
+  "
   p_footnote <- c(
     "
         <p style=font-size:12px;><b><i>p</i>-values computed as follows:</b></p>",
@@ -280,14 +355,24 @@ cida_table1 <- function(data,
       }
 
       if (isTRUE(compute_pval)) {
-        eval(.with_p_median_missingP)
+        if (isTRUE(exportWord)) {
+          eval(.with_p_median_missingP_wordExport)
+        } else {
+          eval(.with_p_median_missingP)
+        }
+
       } else {
         eval(.no_p_median_missingP)
       }
 
     } else {
       if (isTRUE(compute_pval)) {
-        eval(.with_p_median)
+        if (isTRUE(exportWord)) {
+          eval(.with_p_median_wordExport)
+        } else {
+          eval(.with_p_median)
+        }
+
       } else {
         eval(.no_p_median)
       }
@@ -303,14 +388,24 @@ cida_table1 <- function(data,
       }
 
       if (isTRUE(compute_pval)) {
-        eval(.with_p_missingP)
+        if (isTRUE(exportWord)) {
+          eval(.with_p_missingP_wordExport)
+        } else {
+          eval(.with_p_missingP)
+        }
+
       } else {
         eval(.no_p_missingP)
       }
 
     } else {
       if (isTRUE(compute_pval)) {
-        eval(.with_p)
+        if (isTRUE(exportWord)) {
+          eval(.with_p_wordExport)
+        } else {
+          eval(.with_p)
+        }
+
       } else {
         eval(.no_p)
       }
