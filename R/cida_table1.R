@@ -136,9 +136,9 @@ cida_table1 <- function(data,
                         ...) {
   suppressMessages(require(flextable))
   # Check variables are in provided data
-  if (any(!(includeVars %in% colnames(df))) &
+  if (any(!(includeVars %in% colnames(data))) &
       if (!is.null(names(includeVars))) {
-        any(!(names(includeVars) %in% colnames(df)))
+        any(!(names(includeVars) %in% colnames(data)))
       } else {
         TRUE
       }) {
