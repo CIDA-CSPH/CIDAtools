@@ -133,6 +133,7 @@ cida_table1 <- function(data,
                         exclude_missing_percent = FALSE,
                         compute_pval = FALSE,
                         exportWord = FALSE,
+                        useSciNotation = FALSE,
                         ...) {
   suppressMessages(require(flextable))
   # Check variables are in provided data
@@ -144,7 +145,12 @@ cida_table1 <- function(data,
       }) {
     stop("A selected variabled in includeVars was not found in the data provided")
   }
-  labels = list(
+
+  sci_notation <- function(x, ...) {
+    return(formatC(as.numeric(x), digits = 2, format = "e"))
+  }
+
+  labels <- list(
     variables = sapply(includeVars, list, simplify = TRUE),
     groups = sapply(group_labels, list, simplify = TRUE)
   )
@@ -153,6 +159,49 @@ cida_table1 <- function(data,
     strata <- c(list(Total = data), split(data, data[, stratifyBy]))
   } else {
     strata <- split(data, data[, stratifyBy])
+  }
+
+  if (isTRUE(exclude_mean) & isTRUE(useSciNotation)){
+    my.render.cont <- function(x) {
+      with(
+        stats.apply.rounding(stats.default(x), digits = 3, rounding.fn = sci_notation),
+        c("",
+          "Median [Min, Max]" =
+            sprintf("%s [%s, %s]", MEDIAN, MIN, MAX))
+      )
+    }
+  }
+
+  else if (isTRUE(exclude_mean)){
+    my.render.cont <- function(x) {
+      with(
+        stats.apply.rounding(stats.default(x), digits = 3),
+        c("",
+          "Median [Min, Max]" =
+            sprintf("%s [%s, %s]", MEDIAN, MIN, MAX))
+      )
+    }
+  }
+
+  else if (isTRUE(useSciNotation)){
+    my.render.cont <- function(x) {
+      with(
+        stats.apply.rounding(stats.default(x), digits = 3, rounding.fn = sci_notation),
+        c("",
+          "Mean (SD)" = sprintf("%s (%s)", MEAN, SD),
+          "Median [Min, Max]" =
+            sprintf("%s [%s, %s]", MEDIAN, MIN, MAX))
+      )
+    }
+  }
+
+  if (isTRUE(exclude_missing_percent)){
+    my.render.miss <- function(x) {
+      with(
+        stats.apply.rounding(stats.default(is.na(x)), digits = 1)$Yes,
+        c("Missing" = sprintf("%s", FREQ))
+      )
+    }
   }
 
   .with_p <- expression(
@@ -164,7 +213,7 @@ cida_table1 <- function(data,
                          pvalue),
       topclass = "Rtable1-zebra Rtable1-shade",
       caption = caption,
-      footnote = c(footnote, p_footnotes)
+      footnote = c(footnote, p_footnote)
     )
   )
 
@@ -336,25 +385,12 @@ cida_table1 <- function(data,
     "&ensp; Categerical data with all cell values >= 5 -- Chi-square test of independence"
   )
 
-  if (isTRUE(exclude_mean)) {
-    my.render.cont <- function(x) {
-      with(
-        stats.apply.rounding(stats.default(x), digits = 3),
-        c("",
-          "Median [Min, Max]" =
-            sprintf("%s [%s, %s]", MEDIAN, MIN, MAX))
-      )
-    }
+  if (isTRUE(exclude_mean)|isTRUE(useSciNotation)) {
 
     if (isTRUE(exclude_missing_percent)) {
-      my.render.miss <- function(x) {
-        with(
-          stats.apply.rounding(stats.default(is.na(x)), digits = 1)$Yes,
-          c("Missing" = sprintf("%s", FREQ))
-        )
-      }
 
       if (isTRUE(compute_pval)) {
+
         if (isTRUE(exportWord)) {
           eval(.with_p_median_missingP_wordExport)
         } else {
@@ -380,14 +416,9 @@ cida_table1 <- function(data,
 
   } else {
     if (isTRUE(exclude_missing_percent)) {
-      my.render.miss <- function(x) {
-        with(
-          stats.apply.rounding(stats.default(is.na(x)), digits = 1)$Yes,
-          c("Missing" = sprintf("%s", FREQ))
-        )
-      }
 
       if (isTRUE(compute_pval)) {
+
         if (isTRUE(exportWord)) {
           eval(.with_p_missingP_wordExport)
         } else {
@@ -400,6 +431,7 @@ cida_table1 <- function(data,
 
     } else {
       if (isTRUE(compute_pval)) {
+
         if (isTRUE(exportWord)) {
           eval(.with_p_wordExport)
         } else {
