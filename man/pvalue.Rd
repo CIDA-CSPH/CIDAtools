@@ -4,10 +4,12 @@
 \alias{pvalue}
 \title{Internal function for p-value calculation in cida_table1}
 \usage{
-pvalue(x, ...)
+pvalue(x, name, ...)
 }
 \arguments{
 \item{x}{the row_variable}
+
+\item{name}{the variables name}
 
 \item{...}{arguments passed to S3 methods}
 }

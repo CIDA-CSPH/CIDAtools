@@ -19,6 +19,10 @@
 #' of missing data and only returns counts
 #' @param compute_pval Bool; Default \code{FALSE}. Computes p-values for
 #' `inludeVars` and add a p-value column in the table.
+#' @param nonParametricVars Vector; of the variable names you would like
+#' non-parametric testing to be conducted on for p-values returned
+#' @param exportWord Bool; whether to export the table in a nice format into word
+#' @param useSciNotation Bool; Use scientific notation for large/small continuous variables
 #' @return  an html table with N and percentages for categorical variables, mean
 #' , SD, Median, and Range for numeric variables. Returns p-values if specified.
 #' @importFrom table1 table1
@@ -46,6 +50,7 @@
 #'             footnote = "My table 1",
 #'             include_total = FALSE,
 #'             compute_pval = FALSE,
+#'             nonParametricVars = NULL,
 #'             exportWord = FALSE)
 #'
 #' # Table 1 with p-values, no mean, no percent missing
@@ -60,6 +65,7 @@
 #'             exclude_missing_percent = TRUE,
 #'             include_total = TRUE,
 #'             compute_pval = TRUE,
+#'             nonParametricVars = NULL,
 #'             exportWord = FALSE)
 #'
 #' # Table 1 styling the output
@@ -75,6 +81,7 @@
 #'             exclude_missing_percent = TRUE,
 #'             include_total = TRUE,
 #'             compute_pval = TRUE,
+#'             nonParametricVars = c("Age", "IL-8"), # Uses original name
 #'             exportWord = FALSE)
 #'
 #' # Tables are html so you can customize them using html and css
@@ -94,6 +101,7 @@
 #'             exclude_missing_percent = TRUE,
 #'             include_total = TRUE,
 #'             compute_pval = TRUE,
+#'             nonParametricVars = NULL,
 #'             exportWord = FALSE)
 #'
 #' # You can add icons if you like
@@ -113,6 +121,7 @@
 #'             exclude_missing_percent = TRUE,
 #'             include_total = TRUE,
 #'             compute_pval = TRUE,
+#'             nonParametricVars = NULL,
 #'             exportWord = FALSE)
 #'
 #' @export
@@ -132,6 +141,7 @@ cida_table1 <- function(data,
                         exclude_mean = FALSE,
                         exclude_missing_percent = FALSE,
                         compute_pval = FALSE,
+                        nonParametricVars = NULL,
                         exportWord = FALSE,
                         useSciNotation = FALSE,
                         ...) {
@@ -376,16 +386,24 @@ cida_table1 <- function(data,
 
   word_p_footnote <- "
   p-values computed as follows:
-    Numeric data with 2 groups -- t-test
-    Numeric data with more than 2 groups -- ANOVA
+    Parametric
+      Numeric data with 2 groups -- t-test
+      Numeric data with more than 2 groups -- ANOVA
+    Non-parametric
+      Numeric data with 2 groups -- Wilcoxon-test
+      Numeric data with more than 2 groups -- Kruskal-Wallis test
     Categorical data with any cell value < 5 -- Fishers exact test
     Categorical data with all cell values >= 5 -- Chi-square test of independence
   "
   p_footnote <- c(
     "
         <p style=font-size:12px;><b><i>p</i>-values computed as follows:</b></p>",
-    "&ensp; Numeric data with 2 groups -- t-test",
-    "&ensp; Numeric data with more than 2 groups -- ANOVA",
+    "&ensp; Parametric",
+    "&ensp; &ensp; Numeric data with 2 groups -- t-test",
+    "&ensp; &ensp; Numeric data with more than 2 groups -- ANOVA",
+    "&ensp; Non-parametric",
+    "&ensp; &ensp; Numeric data with 2 groups -- Wilcoxon-test",
+    "&ensp; &ensp; Numeric data with more than 2 groups -- Kruskal-Wallis test",
     "&ensp; Categorical data with any cell  value < 5 -- Fishers exact test",
     "&ensp; Categerical data with all cell values >= 5 -- Chi-square test of independence"
   )

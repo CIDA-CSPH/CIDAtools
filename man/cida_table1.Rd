@@ -16,7 +16,9 @@ cida_table1(
   exclude_mean = FALSE,
   exclude_missing_percent = FALSE,
   compute_pval = FALSE,
+  nonParametricVars = NULL,
   exportWord = FALSE,
+  useSciNotation = FALSE,
   ...
 )
 }
@@ -44,6 +46,13 @@ of missing data and only returns counts}
 
 \item{compute_pval}{Bool; Default \code{FALSE}. Computes p-values for
 `inludeVars` and add a p-value column in the table.}
+
+\item{nonParametricVars}{Vector; of the variable names you would like
+non-parametric testing to be conducted on for p-values returned}
+
+\item{exportWord}{Bool; whether to export the table in a nice format into word}
+
+\item{useSciNotation}{Bool; Use scientific notation for large/small continuous variables}
 
 \item{footnoot}{Optional; Adds a footnote to the table}
 }
@@ -75,6 +84,7 @@ cida_table1(data = df,
             footnote = "My table 1",
             include_total = FALSE,
             compute_pval = FALSE,
+            nonParametricVars = NULL,
             exportWord = FALSE)
 
 # Table 1 with p-values, no mean, no percent missing
@@ -89,6 +99,7 @@ cida_table1(data = df,
             exclude_missing_percent = TRUE,
             include_total = TRUE,
             compute_pval = TRUE,
+            nonParametricVars = NULL,
             exportWord = FALSE)
 
 # Table 1 styling the output
@@ -104,6 +115,7 @@ cida_table1(data = df,
             exclude_missing_percent = TRUE,
             include_total = TRUE,
             compute_pval = TRUE,
+            nonParametricVars = c("Age", "IL-8"), # Uses original name
             exportWord = FALSE)
 
 # Tables are html so you can customize them using html and css
@@ -121,6 +133,7 @@ cida_table1(data = df,
             exclude_missing_percent = TRUE,
             include_total = TRUE,
             compute_pval = TRUE,
+            nonParametricVars = NULL,
             exportWord = FALSE)
 
 # You can add icons if you like
@@ -140,6 +153,7 @@ cida_table1(data = df,
             exclude_missing_percent = TRUE,
             include_total = TRUE,
             compute_pval = TRUE,
+            nonParametricVars = NULL,
             exportWord = FALSE)
 
 }
