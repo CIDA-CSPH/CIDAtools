@@ -147,7 +147,7 @@ cida_table1 <- function(data,
   }
 
   sci_notation <- function(x, ...) {
-    if (!is.na(x) & (x >= 1000 | x <= 0.0001)){
+    if (!is.na(x) & (x >= 1000 | x <= 0.001)){
       return(formatC(as.numeric(x), digits = 2, format = "e"))
     } else {
       return(paste(round(as.numeric(x), 3)))
