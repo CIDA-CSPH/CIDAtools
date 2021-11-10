@@ -9,14 +9,15 @@ Description: This package contains the numerous templates and tools to make life
 Depends: R (>= 3.5.0)
 Imports: 
     dplyr,
-    generics
+    generics,
+    flextable,
+    table1
 Suggests: 
     git2r, 
     survey, 
     xlsx, 
     knitr,
     kableExtra,
-    table1,
     pander, 
     arsenal,
     rmarkdown,
