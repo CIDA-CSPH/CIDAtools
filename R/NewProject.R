@@ -3,7 +3,7 @@ proj_setup <- function(path, ...){
   dir.create(path, recursive = TRUE, showWarnings = FALSE)
   dots <- list(...)
 
-  ProjectName <- paste0(path)
+  ProjectName <- paste0(basename(getwd()), " ", path)
 
   ### Setup ReadMe Files ----
   readme <- c(paste0("# ", ProjectName, "  "),
