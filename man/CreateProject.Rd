@@ -5,8 +5,8 @@
 \title{Create Project Directory + readme files}
 \usage{
 CreateProject(
-  template = c("Admin", "Background", "Code", "DataRaw", "DataProcessed",
-    "Dissemination", "Reports"),
+  template = c("01_Raw_data", "02_Analysis", "03_Working_files", "04_Processed",
+    "05_Admin"),
   path = getwd(),
   ProjectName = "",
   PI = "",
@@ -18,11 +18,11 @@ CreateProject(
 
 \item{path}{Where should they be created? Default is the working directory.}
 
-\item{ProjectName}{Name of project, or "" for blank}
+\item{ProjectName}{Name of project, which should be the year of the dataset; "" for blank}
 
-\item{PI}{Name of PI and credentials, or "" for blank}
+\item{PI}{Name and credentials of PI who provided raw data, i.e., lead contact for data questions; "" for blank}
 
-\item{analyst}{Name of Analyst(s), or "" for blank}
+\item{analyst}{Name of Analyst(s) who wrote the analysis code, i.e., lead contact for code questions; "" for blank}
 }
 \value{
 This function creates the desired project subdirectories and readmes,

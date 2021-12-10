@@ -1,5 +1,5 @@
 Binding: proj_setup
-Title: New CIDA Project
+Title: New OPP Project
 OpenFiles: ReadMe.md
 
 Parameter: PI
@@ -8,7 +8,7 @@ Label: Principal Investigator
 Default:
 Position: Right
 
-Parameter: analyst
+Parameter: Analyst
 Widget: TextInput
 Label: Analyst
 Default:
@@ -17,7 +17,7 @@ Position: Right
 Parameter: git_init
 Widget: CheckboxInput
 Label: Initialize Git Repo?
-Default: On
+Default: Off
 Position: Left
 
 Parameter: remote_origin
@@ -29,7 +29,7 @@ Position: Right
 Parameter:initcommit
 Widget:CheckboxInput
 Label:Initial Commit with ReadMe?
-Default: On
+Default: Off
 Position:Left
 
 Parameter: nodata
@@ -42,6 +42,6 @@ Position: Left
 Parameter: meta
 Widget: CheckboxInput
 Label: Store Project Data
-Default: On
+Default: Off
 Position: Left
 

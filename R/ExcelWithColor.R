@@ -19,7 +19,9 @@
 #' colour columns. If the list of colour columns is longer only the first n
 #' elements will be used where n is the number of sheets with a warning.
 #' @return A data frame for one sheet or a list of data frames for multiple sheets
-#' @export
+#'
+#' SP COMMENT 2021-12-09: remove export
+#' export
 #' @keywords Excel colour color xlsx
 #'
 read.xlsx.withcolor <- function(file, colorColumns, sheet = NULL, header = T){

@@ -11,18 +11,20 @@
 #'however if it does not exists. It does not return anything.
 #'@keywords ReadMe ReadMe.md
 #'@export
-CreateReadMe <- function(template = c('Admin', 'Background', 'Code', 'DataRaw',
-                                      'DataProcessed', 'Dissemination',
-                                      'Reports'), path = getwd()){
+CreateReadMe <- function(template = c('01_Raw_data',
+                                      '02_Analysis',
+                                      '03_Working_files',
+                                      '04_Processed',
+                                      '05_Admin'), path = getwd()){
   # set which ReadMe.md files to create
   template <- match.arg(template, several.ok = T)
 
   # create list with lines for each template
   readme <- list()
 
-  readme$Admin <- c("# Admin  ",
+  readme$'01_Raw_data' <- c("# 01_Raw_data  ",
                     "  ",
-                    "This folder contains the scope of work and other relevant files from CIDA admin.  ",
+                    "This folder contains all raw data files (e.g., metadata, Ecotone data, Pathtrack data).  ",
                     "  ",
                     "Details about the files:  ",
                     "  ",
@@ -30,41 +32,36 @@ CreateReadMe <- function(template = c('Admin', 'Background', 'Code', 'DataRaw',
                     "---|---------------------------------------------------------------------",
                     "  ",
                     "")
-  readme$Background <- c("# Background  ",
+  readme$'02_Analysis' <- c("# 02_Analysis  ",
                          "  ",
-                         "This folder contains documents provided by investigators and the data analysis plan.  ",
+                         "This folder contains all R and RMarkdown scripts for processing raw data.  ",
                          "  ",
                          "Details about the files:  ",
                          "  ",
                          "File | Description",
                          "---|---------------------------------------------------------------------",
                          "  ")
-  readme$Code <- c("This folder contains all the code.  ",
-                   "  ",
-                   "Details about the files in this folder:",
-                   "  ",
-                   "File | Description",
-                   "---|---------------------------------------------------------------------",
-                   "  ")
-  readme$DataProcessed <- c("# Processed Data  ",
+  readme$'03_Working_files' <- c("# 03_Working_files  ",
                             "  ",
+                            "This folder contains any data products created by analysis scripts, but not intended to be final data products, e.g. tidied datasets.  ",
                             "Scripts that created the files in this folder:  ",
                             "  ",
                             "File | Script | Description",
                             "---|------------------|---------------------------------------------------",
                             "  ")
-  readme$DataRaw <- c("# Raw Data",
+  readme$'04_Processed' <- c("# 04_Processed ",
                       "  ",
-                      "Details about the files:  ",
+                      "This folder contains all FINALIZED data products intended for dissemination to outside collaborator or repositories, e.g. Movebank.  ",
+                      "Scripts that created the files in this folder:  ",
                       "  ",
-                      "File | Details",
+                      "File | Script | Description",
                       "---|---------------------------------------------------------------------",
                       "    ",
                       "  ")
 
-  readme$Dissemination <- c("# Dissemination",
+  readme$'05_Admin' <- c("# 05_Admin ",
                             "  ",
-                            "This folder contains abstracts, posters, papers and anything else produced for dissemination.  ",
+                            "This folder contains abstracts, reports, papers, and any other miscellaneous metadata associated with this project.  ",
                             "  ",
                             "Details about the files:  ",
                             "  ",
@@ -72,15 +69,6 @@ CreateReadMe <- function(template = c('Admin', 'Background', 'Code', 'DataRaw',
                             "---|---------------------------------------------------------------------",
                             "  ",
                             "  ")
-  readme$Reports <- c("# Reports",
-                      "  ",
-                      "This folder contains the rmardown scripts and pdf output of reports.  ",
-                      "  ",
-                      "Details about the files:  ",
-                      "  ",
-                      "File | Description",
-                      "---|---------------------------------------------------------------------",
-                      "  ")
 
   # Function for creating the directory
   createDir <- function(x){

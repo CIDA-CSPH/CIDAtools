@@ -5,9 +5,9 @@
 #'
 #'@param template Which subdirectories to create
 #'@param path Where should they be created? Default is the working directory.
-#'@param ProjectName Name of project, or "" for blank
-#'@param PI Name of PI and credentials, or "" for blank
-#'@param analyst Name of Analyst(s), or "" for blank
+#'@param ProjectName Name of project, which should be the year of the dataset; "" for blank
+#'@param PI Name and credentials of PI who provided raw data, i.e., lead contact for data questions; "" for blank
+#'@param analyst Name of Analyst(s) who wrote the analysis code, i.e., lead contact for code questions; "" for blank
 #'
 #'@return This function creates the desired project subdirectories and readmes,
 #'  as well as a standard .gitignore file files. It will not overwrite the file
@@ -16,8 +16,11 @@
 #'
 #'@export
 CreateProject <- function(
-  template = c('Admin', 'Background', 'Code', 'DataRaw',
-               'DataProcessed', 'Dissemination', 'Reports'),
+  template = c('01_Raw_data',
+               '02_Analysis',
+               '03_Working_files',
+               '04_Processed',
+               '05_Admin'),
   path = getwd(), ProjectName = "", PI = "", analyst = "") {
 
   # has meta been provided?
@@ -36,16 +39,16 @@ CreateProject <- function(
               '',
               "File | Description",
               "---|----------------------------------------------------------",
-              paste("Admin | contains the scope of work and other",
-                    "administrative documents"),
-              paste("Background | contains the background information for",
-                    "the analysis"),
-              "Code | contains all R scripts for this project",
-              "DataRaw | contain all raw data provided by investigators",
-              "DataProcessed | contains the processed data used for analysis",
-              paste("Dissemination | contains any materials produced for",
-                    "dissemination, ie. Abstracts, Posters, Papers"),
-              "Reports | contains all output, rmarkdown files and report")
+              paste("01_Raw_data | contains all raw data (metadata and",
+                    "GPS data) provided by data contact"),
+              "02_Analysis | contains all R scripts for this project",
+              paste("03_Working_files | contains all data produced by analysis",
+                    "scripts, but not final data products; e.g., tidied data"),
+              paste("04_Processed | contain all final processed data outputs for",
+                    "distribution; e.g. Movebank"),
+              paste("05_Admin | contains miscellaneous administrative files,",
+                    "e.g. Abstracts, Reports, Papers")
+              )
 
 
   # write to readme file
@@ -132,8 +135,9 @@ CreateProject <- function(
 
   # by Folder
    gitignore <- paste0(c(gitignore,
-                          "DataRaw/*",
-                          "DataProcessed/*",
+                          "01_Raw_data/*",
+                          "03_Working_files/*",
+                          "04_Processed/*",
                           "!*/ReadMe.md"), collapse = '\n')
 
    writeLines(gitignore, con = file.path(path, '.gitignore'))
@@ -157,7 +161,7 @@ CreateProject <- function(
       writeLines(rproj, con = file.path(path, paste0(basename(path), ".Rproj")))
 
    ## Copy over SOW
-   message("Project created. Please remember to copy the scope of work to to Admin/ subdirectory.")
+   message("Project created. Go process some bird tracks!")
 
    invisible(template)
 }

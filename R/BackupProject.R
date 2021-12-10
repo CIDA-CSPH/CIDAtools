@@ -17,7 +17,8 @@
 #'@return This function has verbose output to ensure the back up is working, and
 #'  ultimately returns a success indicator that's returned by file.copy.
 #'
-#'@export
+#'SP COMMENT 2021-12-09: remove export
+#'export
 BackupProject <- function(subdir_to = "Projects",
                           path_from = getwd(),
                           path_to = NULL,

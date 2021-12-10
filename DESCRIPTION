@@ -1,5 +1,5 @@
-Package: CIDAtools
-Title: This package contains tools for CIDA projects
+Package: OPPtools
+Title: This package contains tools to set up standardized OPP projects, forked from CIDAtools
 Version: 0.0.3.0
 Authors@R: 
   c(person("CIDA Research Tools Committee", role = c("aut")), 

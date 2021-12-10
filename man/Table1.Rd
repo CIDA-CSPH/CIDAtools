@@ -96,6 +96,11 @@ To use the lineBreaks use \code{panderOptions('keep.line.breaks', TRUE)}
 \item \code{data.frame}: unweighted table 1
 }}
 
+\keyword{2021-12-09:}
+\keyword{COMMENT}
+\keyword{SP}
 \keyword{characteristic}
+\keyword{export}
+\keyword{remove}
 \keyword{table1}
 \keyword{tableone}

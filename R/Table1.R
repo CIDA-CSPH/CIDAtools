@@ -49,7 +49,9 @@
 #'
 #' To use the lineBreaks use \code{panderOptions('keep.line.breaks', TRUE)}
 #' @keywords table1 tableone characteristic
-#' @export
+#'
+#' SP COMMENT 2021-12-09: remove export
+#' export
 #'
 
 

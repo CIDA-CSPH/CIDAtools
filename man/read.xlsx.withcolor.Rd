@@ -20,6 +20,9 @@ or names to read.}
 }
 \value{
 A data frame for one sheet or a list of data frames for multiple sheets
+
+SP COMMENT 2021-12-09: remove export
+export
 }
 \description{
 Reads in the fill colour of excel workbooks. Creates a data frame for each

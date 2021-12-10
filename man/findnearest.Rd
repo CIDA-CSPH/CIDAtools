@@ -46,5 +46,8 @@ This function finds the nearest y to every x. Y's may be duplicated.
 \references{
 This function borrowed heavily from this stack exchange post:
 https://stats.stackexchange.com/questions/161379/quickly-finding-nearest-time-observation
+
+SP COMMENT 2021-12-09: remove export
+export
 }
 \keyword{findnearest}

@@ -30,6 +30,9 @@ larger files that don't change often). Currently not used.}
 \value{
 This function has verbose output to ensure the back up is working, and
  ultimately returns a success indicator that's returned by file.copy.
+
+SP COMMENT 2021-12-09: remove export
+export
 }
 \description{
 This function backs up a CIDA project to the shared (P) CIDA drive. The backup directory

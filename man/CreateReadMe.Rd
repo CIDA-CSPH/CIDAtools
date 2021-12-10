@@ -5,8 +5,8 @@
 \title{Create ReadMe.md files}
 \usage{
 CreateReadMe(
-  template = c("Admin", "Background", "Code", "DataRaw", "DataProcessed",
-    "Dissemination", "Reports"),
+  template = c("01_Raw_data", "02_Analysis", "03_Working_files", "04_Processed",
+    "05_Admin"),
   path = getwd()
 )
 }
