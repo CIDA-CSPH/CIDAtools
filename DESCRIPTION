@@ -10,7 +10,10 @@ Description: This package contains the numerous templates and tools to make life
 Depends: R (>= 3.5.0)
 Imports: 
     dplyr,
-    generics
+    magrittr,
+    generics,
+    move,
+    sf
 Suggests: 
     git2r, 
     survey, 
