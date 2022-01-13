@@ -2,7 +2,8 @@
 % Please edit documentation in R/OPPFunctions.R
 \name{opp_download_data}
 \alias{opp_download_data}
-\title{Downloads OPP tracking data from movebank with options to export .csv and .shp files}
+\title{Download OPP tracking data from Movebank with options
+to export .csv and .shp files.}
 \usage{
 opp_download_data(
   study,
@@ -38,6 +39,7 @@ to working directory}
 \item{export_name}{File name for saved outputs.}
 }
 \description{
-This function downloads OPP tracking data from Movebank and returns a dataframe,
-sf points, and sf lines. Optional argument to save outputs as .csv and .shp files
+This function downloads OPP tracking data from Movebank
+and returns a dataframe, sf points, and sf lines.
+Optional argument to save outputs as .csv and .shp files
 }
