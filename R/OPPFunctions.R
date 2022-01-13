@@ -1,7 +1,9 @@
-#'Downloads OPP tracking data from movebank with options to export .csv and .shp files
+#' Download OPP tracking data from Movebank with options
+#' to export .csv and .shp files.
 #'
-#'This function downloads OPP tracking data from Movebank and returns a dataframe,
-#'sf points, and sf lines. Optional argument to save outputs as .csv and .shp files
+#' This function downloads OPP tracking data from Movebank
+#' and returns a dataframe, sf points, and sf lines.
+#' Optional argument to save outputs as .csv and .shp files
 #'
 #'@param study Movebank project id.
 #'@param login Stored Movebank login credentials if provided, otherwise function
@@ -16,7 +18,6 @@
 #'@param export_name File name for saved outputs.
 #
 #'@export
-
 
 opp_download_data <- function(study,
                               login = NULL,
@@ -93,4 +94,46 @@ opp_download_data <- function(study,
   # return list with [1] raw dataframe, [2] sf points, [3] sf lines
   out
 
+}
+
+#' Prepare raw Ecotone data for Movebank upload.
+#'
+#' This function modifies raw Ecotone GPS data to remove
+#' any records without lat/long values, inserts a "behavior"
+#' column to indicate when a tagged bird is at the colony,
+#' adds a timestamp column ("Date_2") if not already there,
+#' and removes any duplicate detections. The function also
+#' inserts lat/long coordinates for the colony location for
+#' periods when the bird is at the colony.
+#'
+#'
+#'@param data Input Ecotone data to be modified.
+#'@param colony_lon Longitude of home colony of tagged bird.
+#'@param colony_lat Latitude of home colony of tagged bird.
+#'@param tz Timezone of GPS timestamps. Default "UTC".
+#
+#'@export
+
+prep_ecotone <- function(data,
+                         colony_lon,
+                         colony_lat,
+                         tz = "UTC") {
+  data$Latitude[data$In.range == 1] <- colony_lat
+  data$Longitude[data$In.range == 1] <- colony_lon
+  data$Behaviour <- ifelse(data$In.range == 1, 'At colony', NA)
+  data <- subset(data, !is.na(data$Latitude))
+
+  if(any(grepl("Date_2", names(data))) == FALSE){
+    data$Date_2 <- as.POSIXct(paste0(data$Year, "-",
+                                     data$Month, "-",
+                                     data$Day, " ",
+                                     data$Hour, ":",
+                                     data$Minute, ":",
+                                     data$Second),
+                              format = "%Y-%m-%d %H:%M:%S",
+                              tz = tz)
+  }
+
+  data <- data[duplicated(data[,c('Logger.ID','Date_2')]) == F,]
+  data
 }
