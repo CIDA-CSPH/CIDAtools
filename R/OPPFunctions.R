@@ -137,3 +137,22 @@ prep_ecotone <- function(data,
   data <- data[duplicated(data[,c('Logger.ID','Date_2')]) == F,]
   data
 }
+
+#' Prepare Pathtrack data for Movebank upload.
+#'
+#' This simple function processes Pathtrack data that has
+#' been exported from Pathtrack Host software for Movebank
+#' upload. It removes any records in Pathtrack data that
+#' have `null` latitude or longitude values.
+#' Unlike `prep_ecotone()`, this function makes no assumptions
+#' on the bird's location when latitude/longitude are null.
+#'
+#'
+#'@param data Input Pathtrack data to be modified.
+#
+#'@export
+
+prep_pathtrack <- function(data) {
+  data <- data[!is.na(data$Lat > 0) & !is.na(data$Long > 0),]
+  data
+  }
