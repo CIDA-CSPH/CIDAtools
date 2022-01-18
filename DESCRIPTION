@@ -3,6 +3,7 @@ Title: This package contains tools to set up standardized OPP projects, forked a
 Version: 0.0.3.0
 Authors@R: 
   c(person("Sarah", "Popov", email = "sarah.popov@mail.mcgill.ca", role = c("aut")),
+  c(person("Allison", "Patterson", email = "allisonglider@gmail.com", role = c("aut")),
   person("CIDA Research Tools Committee", role = c("aut")), 
   person("Ryan", "Peterson", email = "ryan.a.peterson@cuanschutz.edu", role = c("aut", "cre")),
   person("Caroline", "Ledbetter", role = c("aut")))
