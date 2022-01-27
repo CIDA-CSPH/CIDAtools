@@ -5,11 +5,12 @@
 #' and returns a dataframe, sf points, and sf lines.
 #' Optional argument to save outputs as .csv and .shp files
 #'
-#'@param study Movebank project id.
+#'@param study List of Movebank project ids.
 #'@param login Stored Movebank login credentials if provided, otherwise function
 #'will prompt users to enter credentials.
 #'@param start_month Earliest month (1-12) to include in output.
 #'@param end_month Latest month (1-12) to include in output.
+#'@param season Vector describing the season data can be applied to, eg. 'Breeding (Jun-Jul)
 #'@param export_csv Logical, should a .csv file be written.
 #'@param export_points Logical, should a .shp point file be written.
 #'@param export_tracks Logical, should a .shp line file be written.
@@ -23,6 +24,7 @@ opp_download_data <- function(study,
                               login = NULL,
                               start_month = NULL,
                               end_month = NULL,
+                              season = NULL,
                               export_csv = T,
                               export_points = T,
                               export_tracks = T,
@@ -37,64 +39,84 @@ opp_download_data <- function(study,
 
   # Ask for movebank credentials if not provided
   if (is.null(login)) login <- move::movebankLogin()
+  if (is.null(season)) season <- NA
 
-  # Download data from movebank
-  mb_data <- move::getMovebankData(study = study, login = login,
-                             removeDuplicatedTimestamps = TRUE,
-                             includeExtraSensors = FALSE,
-                             deploymentAsIndividuals = FALSE,
-                             includeOutliers = FALSE)
+  out_data <- out_points <- out_tracks <- data.frame()
 
-  # Extract the minimal fields required
-  gps_data <- as(mb_data, 'data.frame') %>%
-    dplyr::select(timestamp, location_long, location_lat, sensor_type,
-                  ring_id,
-                  deployment_id, taxon_canonical_name) %>%
-    dplyr::mutate(
-      timestamp = as.POSIXct(timestamp), # make times POSIXct for compatibility with OGR
-      month = as.numeric(strftime(timestamp, '%m')) # add numeric month field
+  for (ss in study) {
+
+    # Download data from movebank
+    mb_data <- move::getMovebankData(study = ss, login = login,
+                                     removeDuplicatedTimestamps = TRUE,
+                                     includeExtraSensors = FALSE,
+                                     deploymentAsIndividuals = TRUE,
+                                     includeOutliers = FALSE)
+
+    # Extract the minimal fields required
+    gps_data <- as(mb_data, 'data.frame') %>%
+      dplyr::select(timestamp, location_long, location_lat, sensor_type,
+                    local_identifier, ring_id, taxon_canonical_name, sex,
+                    animal_life_stage, animal_reproductive_condition, number_of_events,
+                    study_site, deploy_on_longitude, deploy_on_latitude,
+                    deployment_id, tag_id, individual_id) %>%
+      dplyr::mutate(
+        timestamp = as.POSIXct(timestamp), # make times POSIXct for compatibility with OGR
+        year = as.numeric(strftime(timestamp, '%Y')),
+        month = as.numeric(strftime(timestamp, '%m')), # add numeric month field
+        season = season,
+        sex = ifelse(sex == ' ' | is.na(sex), 'u', sex)
+      )
+
+    # Subset data to months if provided
+    if (is.null(start_month) == FALSE) gps_data <- subset(gps_data, gps_data$month >= start_month)
+    if (is.null(end_month) == FALSE) gps_data <- subset(gps_data, gps_data$month <= end_month)
+
+    # Make sf points object
+    gps_points <- sf::st_as_sf(gps_data,
+                               coords = c('location_long', 'location_lat'),
+                               crs = mb_data@proj4string@projargs # use movebank proj
     )
 
-  # Subset data to months if provided
-  if (is.null(start_month) == FALSE) gps_data <- subset(gps_data, gps_data$month >= start_month)
-  if (is.null(end_month) == FALSE) gps_data <- subset(gps_data, gps_data$month <= end_month)
+    # Make sf lines object
+    gps_tracks <- gps_points %>%
+      dplyr::group_by(local_identifier, ring_id, taxon_canonical_name, sex,
+                      animal_life_stage, animal_reproductive_condition, number_of_events,
+                      study_site, deploy_on_longitude, deploy_on_latitude,
+                      deployment_id, tag_id, individual_id) %>%
+      dplyr::summarise(
+        start_time = min(timestamp),
+        end_time = max(timestamp),
+        number_locations = dplyr::n(),
+        do_union = FALSE,
+        .groups = 'drop') %>%
+      sf::st_cast("LINESTRING")
 
-  # Make sf points object
-  gps_points <- sf::st_as_sf(gps_data,
-                         coords = c('location_long', 'location_lat'),
-                         crs = mb_data@proj4string@projargs # use movebank proj
-  )
-
-  # Make sf lines object
-  gps_tracks <- gps_points %>%
-    dplyr::group_by(sensor_type,ring_id,deployment_id,taxon_canonical_name) %>%
-    dplyr::summarise(
-      start_time = min(timestamp),
-      end_time = max(timestamp),
-      number_locations = dplyr::n(),
-      do_union = FALSE,
-      .groups = 'drop') %>%
-    sf::st_cast("LINESTRING")
+    out_data <- rbind(out_data, gps_data)
+    out_points <- rbind(out_points, gps_points)
+    out_tracks <- rbind(out_tracks, gps_tracks)
+  }
 
   # Make a list of objects to return
   out <- list(
-    data = gps_data,
-    points = gps_points,
-    tracks = gps_tracks
+    data = out_data,
+    points = out_points,
+    tracks = out_tracks
   )
 
   # Create dsn for writeOGR
   dsn <- ifelse(is.null(export_location), getwd(), export_location)
 
   # Export requested files
-  if (export_csv == T) write.csv(gps_data, paste0(export_location,'/',export_name, "_data.csv"), row.names = F)
-  if (export_points == T) rgdal::writeOGR(as(gps_points, 'Spatial'), dsn = dsn, layer = paste0(export_name, "_points.shp"), driver = 'ESRI Shapefile', overwrite_layer = TRUE)
-  if (export_tracks == T) rgdal::writeOGR(as(gps_tracks, 'Spatial'), dsn = dsn, layer = paste0(export_name, "_tracks.shp"), driver = 'ESRI Shapefile', overwrite_layer = TRUE)
+  if (export_csv == T) write.csv(out_data, paste0(export_location,'/',export_name, "_data.csv"), row.names = F)
+  if (export_points == T) rgdal::writeOGR(as(out_points, 'Spatial'), dsn = dsn, layer = paste0(export_name, "_points"), driver = 'ESRI Shapefile', overwrite_layer = TRUE)
+  if (export_tracks == T) rgdal::writeOGR(as(out_tracks, 'Spatial'), dsn = dsn, layer = paste0(export_name, "_tracks"), driver = 'ESRI Shapefile', overwrite_layer = TRUE)
 
   # return list with [1] raw dataframe, [2] sf points, [3] sf lines
   out
 
 }
+
+# -----
 
 #' Prepare raw Ecotone data for Movebank upload.
 #'

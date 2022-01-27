@@ -10,6 +10,7 @@ opp_download_data(
   login = NULL,
   start_month = NULL,
   end_month = NULL,
+  season = NULL,
   export_csv = T,
   export_points = T,
   export_tracks = T,
@@ -18,7 +19,7 @@ opp_download_data(
 )
 }
 \arguments{
-\item{study}{Movebank project id.}
+\item{study}{List of Movebank project ids.}
 
 \item{login}{Stored Movebank login credentials if provided, otherwise function
 will prompt users to enter credentials.}
@@ -26,6 +27,8 @@ will prompt users to enter credentials.}
 \item{start_month}{Earliest month (1-12) to include in output.}
 
 \item{end_month}{Latest month (1-12) to include in output.}
+
+\item{season}{Vector describing the season data can be applied to, eg. 'Breeding (Jun-Jul)}
 
 \item{export_csv}{Logical, should a .csv file be written.}
 
