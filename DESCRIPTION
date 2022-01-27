@@ -2,13 +2,11 @@ Package: OPPtools
 Title: This package contains tools to set up standardized OPP projects, forked and modified from CIDAtools
 Version: 0.0.3.0
 Authors@R: 
-c(
-  person("Sarah", "Popov", email = "sarah.popov@mail.mcgill.ca", role = c("aut")),
+  c(person("Sarah", "Popov", email = "sarah.popov@mail.mcgill.ca", role = c("aut")),
   person("Allison", "Patterson", email = "allisonglider@gmail.com", role = c("aut")),
   person("CIDA Research Tools Committee", role = c("aut")), 
   person("Ryan", "Peterson", email = "ryan.a.peterson@cuanschutz.edu", role = c("aut", "cre")),
-  person("Caroline", "Ledbetter", role = c("aut"))
-  )
+  person("Caroline", "Ledbetter", role = c("aut")))
 Description: This package contains the numerous templates and tools to make life at CIDA (part of the Colorado School of Public Health) happier and more efficient!
 Depends: R (>= 3.5.0)
 Imports: 
