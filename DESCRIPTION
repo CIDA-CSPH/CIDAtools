@@ -14,19 +14,10 @@ Imports:
     magrittr,
     generics,
     move,
-    sf
-Suggests: 
-    git2r, 
-    survey, 
-    xlsx, 
-    knitr,
-    kableExtra,
-    table1,
-    pander, 
-    arsenal,
-    rmarkdown,
-    DT,
-    covr
+    sf,
+    track2KBA,
+    sp,
+    rgdal
 License: CC0
 Encoding: UTF-8
 LazyData: true
