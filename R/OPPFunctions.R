@@ -215,7 +215,7 @@ prep_pathtrack <- function(data) {
 #'                               filename = NULL)
 #'
 #'interp_data <- ctcrw_interpolation(data = dataset, innerBuff  = 5, returnBuff = 10,
-#'                            duration   = 2,timestep = '60 min',show_plots = T)
+#'                            duration   = 2,timestep = '60 min', showPlots = T)
 #'@export
 #'
 
