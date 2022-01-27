@@ -160,6 +160,8 @@ prep_ecotone <- function(data,
   data
 }
 
+# -----
+
 #' Prepare Pathtrack data for Movebank upload.
 #'
 #' This simple function processes Pathtrack data that has
@@ -178,3 +180,146 @@ prep_pathtrack <- function(data) {
   data <- data[!is.na(data$Lat > 0) & !is.na(data$Long > 0),]
   data
   }
+
+# -----
+
+#' Interpolate GPS locations at a set time interval using a continuous time correlated
+#' random walk (ctcrw) model
+#'
+#' This function is a wrapper for momentuHMM::crawlWrap(), which uses the crawl
+#' package to fit ctcrw model to GPS tracks at a user-defined time interval. The
+#' function is currently designed to handle GPS data from centra place foraging birds.
+#' It takes tracking data downloaded from Movebank using track2KBA::move2KBA().
+#' Initial data processing identifies foraging trips away from the colony using
+#' track2KBA::tripSplit(). The function returns a list with three SpatialPoints objects:
+#' (1) original tracking data, (2) colony location, and (3) interpolated locations. All
+#' spatial objects are in the same custom Lambert equal area projection centered on the
+#' colony.
+#'
+#'
+#'@param data Tracking data downloaded directly from movebank using track2KBA::move2kba.
+#'@param innerBuff  minimum distance (km)  from the colony to be considered in a trip,
+#'value passed to track2KBA::tripSplit()
+#'@param returnBuff outer buffer (km)  to capture incomplete return trips to be considered in a trip,
+#'value passed to track2KBA::tripSplit()
+#'@param duration minimum time (hrs) away from colony  to be considered in a trip,
+#'value passed to track2KBA::tripSplit()
+#'@param timestep string indicating time step for track interpolation, eg. '10 min', '1 hour', '1 day'
+#'@param showPlots TRUE/FALSE should plots of interpolated tracks against original data be produced
+#'@param theta starting values for ctcrw parameter optimization, see ?crawl::crwMLE for details
+#'
+#'@examples
+#'dataset <- track2KBA::move2KBA(movebankID = 1895716931,
+#'                               user = rstudioapi::askForPassword(prompt = 'Movebank username:'),
+#'                               password = rstudioapi::askForPassword(prompt = 'Movebank password:'),
+#'                               filename = NULL)
+#'
+#'interp_data <- ctcrw_interpolation(data = dataset, innerBuff  = 5, returnBuff = 10,
+#'                            duration   = 2,timestep = '60 min',show_plots = T)
+#'@export
+#'
+
+ctcrw_interpolation <- function(data, # list of 2 data frames returned by track2KBA::move2kba()
+                         innerBuff,      # (km) minimum distance from the colony to be in a trip
+                         returnBuff,     # (km) outer buffer to capture incomplete return trips
+                         duration,      # (hrs) minimum trip duration
+                         timestep,
+                         showPlots = F,
+                         theta = c(8,2) # Theta parameters passed to crawl
+) {
+
+  tracks <- data$data
+  colony <- data$site
+
+  # Generate custom laea projection centered on colony
+  myCRS <- paste0(
+    '+proj=laea',
+    ' +lat_0=', colony$Latitude,
+    ' +lon_0=', colony$Longitude
+  )
+
+  # Create SpatialPoints object for colony
+  col_loc <- sp::SpatialPoints(colony, proj4string = sp::CRS('+proj=longlat'))
+  col_loc <- sp::spTransform(col_loc, myCRS)
+
+  # Create SpatialPoints object of raw tracking data
+  orig_loc <- sp::SpatialPointsDataFrame(coords = tracks[,c('Longitude', 'Latitude')],
+                                         data = tracks, proj4string = sp::CRS('+proj=longlat'))
+  orig_loc <- sp::spTransform(orig_loc, myCRS)
+  orig_loc$ColDist <- sp::spDistsN1(orig_loc, col_loc)
+
+  trips <- track2KBA::tripSplit(
+    dataGroup  = tracks, # data formatted using formatFields()
+    colony     = colony, # data on colony location - can be extracted from movebank data using move2KBA()
+    innerBuff  = innerBuff,      # (km) minimum distance from the colony to be in a trip
+    returnBuff = returnBuff,     # (km) outer buffer to capture incomplete return trips
+    duration   = duration,      # (hrs) minimum trip duration
+    rmNonTrip  = T    # T/F removes times when not in trips
+  )
+
+  trips <- subset(trips, trips$ColDist > ifelse(innerBuff < 1, innerBuff * 1000, 1000))
+  trips <- sp::spTransform(trips, sp::CRS(myCRS))
+  trips$time <- trips$DateTime
+  trips$Bird <- trips$ID
+  trips$ID <- trips$tripID
+  trips <- trips[,c('Bird', 'ID', 'time', 'ColDist')]
+
+  crwOut <- momentuHMM::crawlWrap(obsData=trips, timeStep=timestep,
+                      theta=theta, fixPar=c(NA,NA),
+                      method = 'Nelder-Mead')
+
+  pred <- data.frame(crwOut$crwPredict) %>%
+    dplyr::filter(locType == 'p') %>%
+    dplyr::select(Bird, ID, time, ColDist, mu.x, mu.y, se.mu.x, se.mu.y) %>%
+    dplyr::mutate(Bird = substr(ID, 1, 10)) %>%
+    dplyr::rename(tripID = ID, ID = Bird, DateTime = time)
+
+  pred <- sp::SpatialPointsDataFrame(coords = pred[,c('mu.x', 'mu.y')],
+                                 data = pred[,c('ID', 'tripID', 'DateTime', 'ColDist',
+                                                'se.mu.x', 'se.mu.y')],
+                                 proj4string = sp::CRS(myCRS)
+  )
+
+  # re-calculate distance from colony for all interpolated locations
+  pred$ColDist <- sp::spDistsN1(pred, col_loc)
+
+  out <- list(
+    data = orig_loc,
+    site = col_loc,
+    interp = pred,
+    crawl_fit = crwOut$crwFits
+  )
+
+  if (showPlots == T) {
+    bb <- unique(pred$ID)
+    idx <- seq(1,length(bb), by = 4)
+
+    for (i in idx) {
+
+      intdat <- pred[pred$ID %in% bb[i:(i+3)],]@data
+      obsdat <- orig_loc[orig_loc$ID %in% bb[i:(i+3)],]@data
+
+      p <- ggplot(obsdat, aes(x = DateTime, y = ColDist/1000)) +
+        geom_line(linetype = 3) +
+        geom_point(size = 0.9)  +
+        geom_line(data = intdat, aes(x = DateTime, y = ColDist/1000, group = tripID), linetype = 3, col = 'red') +
+        geom_point(data = intdat, aes(x = DateTime, y = ColDist/1000), size = 0.9, col = 'red') +
+        geom_hline(yintercept = innerBuff, linetype = 2, col = 'blue') +
+        facet_wrap(facets = . ~ ID, nrow = 2, scales = 'free') +
+        labs(x = 'Time', y = 'Distance from colony (km)') +
+        scale_x_datetime(date_labels = '%b-%d') +
+        theme(
+          text = element_text(size = 8)
+        )
+
+      print(p)
+      readline('Next plot [enter]')
+
+    }
+  }
+
+  return(out)
+}
+
+
+#'
