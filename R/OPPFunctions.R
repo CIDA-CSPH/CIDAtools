@@ -239,7 +239,8 @@ ctcrw_interpolation <- function(data, # list of 2 data frames returned by track2
   )
 
   # Create SpatialPoints object for colony
-  col_loc <- sp::SpatialPoints(colony, proj4string = sp::CRS('+proj=longlat'))
+  col_loc <- sp::SpatialPointsDataFrame(colony, data = colony,
+                                        proj4string = sp::CRS('+proj=longlat'))
   col_loc <- sp::spTransform(col_loc, myCRS)
 
   # Create SpatialPoints object of raw tracking data
@@ -276,9 +277,14 @@ ctcrw_interpolation <- function(data, # list of 2 data frames returned by track2
 
   pred <- sp::SpatialPointsDataFrame(coords = pred[,c('mu.x', 'mu.y')],
                                  data = pred[,c('ID', 'tripID', 'DateTime', 'ColDist',
+                                                'mu.x', 'mu.y',
                                                 'se.mu.x', 'se.mu.y')],
                                  proj4string = sp::CRS(myCRS)
   )
+  pred_longlat <- sp::spTransform(pred, sp::CRS('+proj=longlat'))
+  pred$Longitude <- sp::coordinates(pred_longlat)[,1]
+  pred$Latitude <- sp::coordinates(pred_longlat)[,2]
+
 
   # re-calculate distance from colony for all interpolated locations
   pred$ColDist <- sp::spDistsN1(pred, col_loc)
