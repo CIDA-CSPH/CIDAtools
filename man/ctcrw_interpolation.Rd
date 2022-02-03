@@ -47,9 +47,11 @@ my_trips <- opp_get_trips(data = my_track2kba, innerBuff  = 5, returnBuff = 20,
                          duration  = 2, gapLimit = 100, missingLocs = 0.2,
                          showPlots = TRUE)
 
-my_interp <- ctcrw_interpolation(data = my_trips, site = my_track2kba$site,
-                                type = c('Complete', 'Incomplete', 'Gappy'),
-                                timestep = '10 min', showPlots = T,
-                                duration   = 2,timestep = '60 min',
-                                showPlots = T)
+my_interp <- ctcrw_interpolation(data = my_trips,
+                                site = my_track2kba$site,
+                                type = c('Complete','Incomplete'),
+                                timestep = '10 min',
+                                showPlots = T,
+                                theta = c(8,2)
+)
 }
