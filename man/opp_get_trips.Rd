@@ -42,21 +42,12 @@ a wrapper for track2KBA::tripSplit that applies custom criteria for classifying
 trips.
 }
 \examples{
+my_data <- opp_download_data(study = c(1247096889),login = NULL, start_month = NULL,
+                            end_month = NULL,season = NULL)
 
-my_data <- opp_download_data(study = c(1247096889),
-login = NULL,
-start_month = NULL,
-end_month = NULL,
-season = NULL
-)
-my_track2ka <- opp2KBA(data = my_data)
+my_track2kba <- opp2KBA(data = my_data)
 
-my_trips <- opp_get_trips(data = my_track2ka,
-innerBuff  = 5,
-returnBuff = 20,
-duration  = 2,
-gapLimit = 100,
-missingLocs = 0.2,
-showPlots = TRUE)
-
+my_trips <- opp_get_trips(data = my_track2kba, innerBuff  = 5, returnBuff = 20,
+                         duration  = 2, gapLimit = 100, missingLocs = 0.2,
+                         showPlots = TRUE)
 }

@@ -33,9 +33,9 @@ The function can be passed a list of movebank study IDs and will append
 data from all studies.
 }
 \examples{
-
 # download ANMU project data from two studies, for May only
 my_data <- opp_download_data(study = c(1895716931, 1897273090),
-login = NULL, start_month = 5, end_month = 5, season = 'Incubation')
+                            login = NULL, start_month = 5, end_month = 5,
+                            season = 'Incubation')
 
 }
