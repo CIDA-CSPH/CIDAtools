@@ -249,11 +249,13 @@ opp_get_trips <- function(data,
     dplyr::mutate(
       dt = as.numeric(difftime(DateTime, dplyr::lag(DateTime), units = 'hour')),
       dt = ifelse(is.na(dt), 0, dt),
+      n = dplyr::n(),
       tripTime = as.numeric(difftime(max(DateTime), min(DateTime), units = 'hour')),
       Type = NA,
       Type = ifelse(ColDist[1] > returnBuff * 1000 | ColDist[dplyr::n()] > returnBuff * 1000, 'Incomplete', Type),
       Type = ifelse(max(dt, na.rm = T) > tripTime * missingLocs, 'Gappy', Type),
       Type = ifelse(tripID == -1, 'Non-trip', Type),
+      Type = ifelse(n < 3, 'Non-trip', Type),
       Type = ifelse(is.na(Type), 'Complete', Type)
     )
 
@@ -271,7 +273,7 @@ opp_get_trips <- function(data,
       p <- ggplot2::ggplot(intdat) +
         ggplot2::geom_line(ggplot2::aes(x = DateTime, y = ColDist/1000), linetype = 3) +
         ggplot2::geom_point(size = 0.9, ggplot2::aes(x = DateTime, y = ColDist/1000, col = Type))  +
-        ggplot2::geom_hline(yintercept = c(innerBuff, returnBuff), linetype = 3, col = 'black') +
+        ggplot2::geom_hline(yintercept = c(innerBuff, returnBuff), linetype = 2, col = 'black') +
         ggplot2::facet_wrap(facets = . ~ ID, nrow = 3, scales = 'free') +
         ggplot2::labs(x = 'Time', y = 'Distance from colony (km)', col = 'Trip type') +
         ggplot2::geom_blank(data = dummy, ggplot2::aes(col = Type)) +
@@ -353,7 +355,7 @@ ctcrw_interpolation <- function(data,
   # Create SpatialPoints object of raw tracking data
   orig_loc <- sp::spTransform(data, myCRS)
   # re-calculate distance from colony for all original locations
-  if (nrow(site_loc) == 1)  orig_loc$ColDist <- sp::spDistsN1(pred, site_loc)
+  if (nrow(site_loc) == 1)  orig_loc$ColDist <- sp::spDistsN1(orig_loc, site_loc)
   if (nrow(site_loc) > 1) {
     orig_loc$ColDist <- NA
     for (id in site_loc$ID) {
@@ -376,7 +378,7 @@ ctcrw_interpolation <- function(data,
   pred <- data.frame(crwOut$crwPredict) %>%
     dplyr::filter(locType == 'p') %>%
     dplyr::select(Bird, ID, time, ColDist, mu.x, mu.y, se.mu.x, se.mu.y) %>%
-    dplyr::mutate(Bird = substr(ID, 1, 10)) %>%
+    tidyr::separate('ID', c('Bird', NA), sep = '_', remove = FALSE) %>%
     dplyr::rename(tripID = ID, ID = Bird, DateTime = time)
 
   pred <- sp::SpatialPointsDataFrame(coords = pred[,c('mu.x', 'mu.y')],
