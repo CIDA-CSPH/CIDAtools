@@ -1,59 +1,50 @@
-#' Download OPP tracking data from Movebank with options
-#' to export .csv and .shp files.
+#' Download OPP tracking data from Movebank
 #'
-#' This function downloads OPP tracking data from Movebank
-#' and returns a dataframe, sf points, and sf lines.
-#' Optional argument to save outputs as .csv and .shp files
+#' @description This function downloads OPP tracking data from Movebank and returns a
+#' dataframe with combined tracking and reference data for all deployments.
 #'
-#'@param study List of Movebank project ids.
-#'@param login Stored Movebank login credentials if provided, otherwise function
+#' @param study List of Movebank project ids.
+#' @param login Stored Movebank login credentials if provided, otherwise function
 #'will prompt users to enter credentials.
-#'@param start_month Earliest month (1-12) to include in output.
-#'@param end_month Latest month (1-12) to include in output.
-#'@param season Vector describing the season data can be applied to, eg. 'Breeding (Jun-Jul)
-#'@param export_csv Logical, should a .csv file be written.
-#'@param export_points Logical, should a .shp point file be written.
-#'@param export_tracks Logical, should a .shp line file be written.
-#'@param export_location Path to folder where results should be saved, defaults
-#'to working directory
-#'@param export_name File name for saved outputs.
-#
+#' @param start_month Earliest month (1-12) to include in output.
+#' @param end_month Latest month (1-12) to include in output.
+#' @param season Vector describing the season data can be applied to, eg. 'Breeding (Jun-Jul)'
+#'
+#' @details The function can be passed a list of movebank study IDs and will append
+#'data from all studies.
+#'
+#' @examples
+#'# download ANMU project data from two studies, for May only
+#'my_data <- opp_download_data(study = c(1895716931, 1897273090),
+#'                             login = NULL, start_month = 5, end_month = 5,
+#'                             season = 'Incubation')
+#'
 #'@export
 
 opp_download_data <- function(study,
                               login = NULL,
                               start_month = NULL,
                               end_month = NULL,
-                              season = NULL,
-                              export_csv = T,
-                              export_points = T,
-                              export_tracks = T,
-                              export_location = NULL,
-                              export_name = NULL
+                              season = NULL
 ) {
-
-  # Check that export file name was provided
-  if (is.null(export_name) & (export_csv == T | export_points == T | export_tracks == T)) {
-    stop("An export_name must be provided if data are being exported")
-  }
 
   # Ask for movebank credentials if not provided
   if (is.null(login)) login <- move::movebankLogin()
   if (is.null(season)) season <- NA
 
-  out_data <- out_points <- out_tracks <- data.frame()
+  out_data <- data.frame()
 
   for (ss in study) {
 
     # Download data from movebank
-    mb_data <- move::getMovebankData(study = ss, login = login,
+    mb_data <- suppressMessages(move::getMovebankData(study = ss, login = login,
                                      removeDuplicatedTimestamps = TRUE,
                                      includeExtraSensors = FALSE,
                                      deploymentAsIndividuals = TRUE,
-                                     includeOutliers = FALSE)
+                                     includeOutliers = FALSE))
 
     # Extract the minimal fields required
-    gps_data <- as(mb_data, 'data.frame') %>%
+    loc_data <- as(mb_data, 'data.frame') %>%
       dplyr::select(timestamp, location_long, location_lat, sensor_type,
                     local_identifier, ring_id, taxon_canonical_name, sex,
                     animal_life_stage, animal_reproductive_condition, number_of_events,
@@ -68,52 +59,66 @@ opp_download_data <- function(study,
       )
 
     # Subset data to months if provided
-    if (is.null(start_month) == FALSE) gps_data <- subset(gps_data, gps_data$month >= start_month)
-    if (is.null(end_month) == FALSE) gps_data <- subset(gps_data, gps_data$month <= end_month)
+    if (is.null(start_month) == FALSE) loc_data <- subset(loc_data, loc_data$month >= start_month)
+    if (is.null(end_month) == FALSE) loc_data <- subset(loc_data, loc_data$month <= end_month)
 
-    # Make sf points object
-    gps_points <- sf::st_as_sf(gps_data,
-                               coords = c('location_long', 'location_lat'),
-                               crs = mb_data@proj4string@projargs # use movebank proj
-    )
+    if (mb_data@proj4string@projargs != "+proj=longlat +datum=WGS84 +no_defs") {
+      warning(paste('CRS for', ss, 'is not longlat. be careful if joining data from multiple studies in different coordinate systems'), call. = FALSE)
+    }
 
-    # Make sf lines object
-    gps_tracks <- gps_points %>%
-      dplyr::group_by(local_identifier, ring_id, taxon_canonical_name, sex,
-                      animal_life_stage, animal_reproductive_condition, number_of_events,
-                      study_site, deploy_on_longitude, deploy_on_latitude,
-                      deployment_id, tag_id, individual_id) %>%
-      dplyr::summarise(
-        start_time = min(timestamp),
-        end_time = max(timestamp),
-        number_locations = dplyr::n(),
-        do_union = FALSE,
-        .groups = 'drop') %>%
-      sf::st_cast("LINESTRING")
+    out_data <- rbind(out_data, loc_data)
 
-    out_data <- rbind(out_data, gps_data)
-    out_points <- rbind(out_points, gps_points)
-    out_tracks <- rbind(out_tracks, gps_tracks)
   }
 
-  # Make a list of objects to return
-  out <- list(
-    data = out_data,
-    points = out_points,
-    tracks = out_tracks
-  )
+  out_data
 
-  # Create dsn for writeOGR
-  dsn <- ifelse(is.null(export_location), getwd(), export_location)
+}
 
-  # Export requested files
-  if (export_csv == T) write.csv(out_data, paste0(export_location,'/',export_name, "_data.csv"), row.names = F)
-  if (export_points == T) rgdal::writeOGR(as(out_points, 'Spatial'), dsn = dsn, layer = paste0(export_name, "_points"), driver = 'ESRI Shapefile', overwrite_layer = TRUE)
-  if (export_tracks == T) rgdal::writeOGR(as(out_tracks, 'Spatial'), dsn = dsn, layer = paste0(export_name, "_tracks"), driver = 'ESRI Shapefile', overwrite_layer = TRUE)
+# -----
 
-  # return list with [1] raw dataframe, [2] sf points, [3] sf lines
+#' Converts movebank data to format required for track2KBA
+#'
+#' @description Takes tracking data downloaded from Movebank using OPPTools::opp_download_data
+#' and converts it to the format needed for track2KBA
+#'
+#' @param data A dataframe obtained using OPPTools::opp_download_data
+#'
+#' @details This extracts location, timestamp and deployment data from movebank data
+#' and returns a list of dataframes that can be passed to functions in track2KBA.
+#' This is useful if the user wants to filter the data downloaded from movebank based on
+#' fields contained within the reference data (e.g. sex, animal_reproductive_condition)
+#'
+#' @returns Returns a list object of length two, containing tracking data
+#' (accessed using: dataset$data) and study site location information
+#' (accessed using: dataset$site).
+#' @examples
+#'my_data <- opp_download_data(study = c(1247096889),login = NULL, start_month = NULL,
+#'                             end_month = NULL,season = NULL)
+#'
+#'my_track2kba <- opp2KBA(data = my_data)
+#'
+#' @export
+
+opp2KBA <- function(data
+) {
+  locs <- data %>%
+    dplyr::select(deployment_id, timestamp, location_lat, location_long) %>%
+    dplyr::rename(ID = deployment_id,
+                  DateTime = timestamp,
+                  Latitude = location_lat,
+                  Longitude = location_long)
+
+  sites <- data %>%
+    dplyr::select(deployment_id, deploy_on_latitude, deploy_on_longitude) %>%
+    dplyr::rename(ID = deployment_id,
+                  Latitude = deploy_on_latitude,
+                  Longitude = deploy_on_longitude) %>%
+    unique()
+  row.names(sites) <- 1:nrow(sites)
+
+  out <- list(data = locs, site = sites)
+
   out
-
 }
 
 # -----
@@ -183,91 +188,190 @@ prep_pathtrack <- function(data) {
 
 # -----
 
+#' Identify foraging trips in tracking data
+
+#' @description Uses criteria related to distance from colony, trip duration, and size of gaps
+#' in tracking data to identify and classify trips from a nest or colony. It is
+#' a wrapper for track2KBA::tripSplit that applies custom criteria for classifying
+#' trips.
+#'
+#' @param data Tracking data formated using track2KBA or opp2KBA
+#' @param innerBuff Minimum distance (km) from the colony to be in a trip.
+#' Used to label trips as 'Non-trip'. Defaults to 5
+#' @param returnBuff Outer distance (km) to capture trips that start and end
+#' away from the colony. Used to label trips as 'Incomplete'. Defaults to 20.
+#' @param duration Minimum trip duration (hrs)
+#' @param gapLimit Maximum time between points to be considered too large to be
+#' a contiguous tracking event. Can be used to ensure that deployments on the
+#' same animal in different years do not get combined into extra long trips.
+#' Defaults to 100 days.
+#' @param missingLocs Proportion (0-1) of trip duration that a gap in consecutive
+#' locations should not exceed. Used to label trips as 'Gappy'. Defaults to 0.2.
+#' @param showPlots Logical (T/F), should plots showing trip classification by generated?
+#'
+#' @examples
+#'my_data <- opp_download_data(study = c(1247096889),login = NULL, start_month = NULL,
+#'                             end_month = NULL,season = NULL)
+#'
+#'my_track2kba <- opp2KBA(data = my_data)
+#'
+#'my_trips <- opp_get_trips(data = my_track2kba, innerBuff  = 5, returnBuff = 20,
+#'                          duration  = 2, gapLimit = 100, missingLocs = 0.2,
+#'                          showPlots = TRUE)
+#' @export
+
+
+opp_get_trips <- function(data,
+                          innerBuff  = 5, # (km) minimum distance from the colony to be in a trip
+                          returnBuff = 20, # (km) outer buffer to capture incomplete return trips
+                          duration  = 2, # (hrs) minimum trip duration
+                          gapLimit = 100,
+                          missingLocs = 0.2, # Percentage of trip duration that a gap in consecutive locations should not exceed
+                          showPlots = TRUE
+) {
+
+  trips <- track2KBA::tripSplit(
+    dataGroup  = data$data, # data formatted using formatFields()
+    colony     = data$site, # data on colony location - can be extracted from movebank data using move2KBA()
+    innerBuff  = innerBuff,      # (km) minimum distance from the colony to be in a trip
+    returnBuff = returnBuff,     # (km) outer buffer to capture incomplete return trips
+    duration   = duration,      # (hrs) minimum trip duration
+    gapLimit = gapLimit, # (days) time between points to be considered too large to be a contiguous tracking event
+    rmNonTrip  = F,    # T/F removes times when not in trips
+    nests = ifelse(nrow(data$site) > 1, TRUE, FALSE)
+  )
+
+  trips <- trips[order(trips$ID, trips$DateTime),]
+  trips$tripID[trips$ColDist <= innerBuff * 1000] <- -1
+
+  trips_type <- trips@data %>%
+    dplyr::group_by(ID, tripID) %>%
+    dplyr::mutate(
+      dt = as.numeric(difftime(DateTime, dplyr::lag(DateTime), units = 'hour')),
+      dt = ifelse(is.na(dt), 0, dt),
+      tripTime = as.numeric(difftime(max(DateTime), min(DateTime), units = 'hour')),
+      Type = NA,
+      Type = ifelse(ColDist[1] > returnBuff * 1000 | ColDist[dplyr::n()] > returnBuff * 1000, 'Incomplete', Type),
+      Type = ifelse(max(dt, na.rm = T) > tripTime * missingLocs, 'Gappy', Type),
+      Type = ifelse(tripID == -1, 'Non-trip', Type),
+      Type = ifelse(is.na(Type), 'Complete', Type)
+    )
+
+  trips$Type <- trips_type$Type
+
+  bb <- unique(trips_type$ID)
+  idx <- seq(1,length(bb), by = 4)
+  dummy <- data.frame(Type = c('Non-trip', 'Incomplete', 'Gappy', 'Complete'))
+
+  if (showPlots == TRUE) {
+    for (i in idx) {
+
+      intdat <- trips_type[trips_type$ID %in% bb[i:(i+3)],]
+
+      p <- ggplot2::ggplot(intdat) +
+        ggplot2::geom_line(ggplot2::aes(x = DateTime, y = ColDist/1000), linetype = 3) +
+        ggplot2::geom_point(size = 0.9, ggplot2::aes(x = DateTime, y = ColDist/1000, col = Type))  +
+        ggplot2::geom_hline(yintercept = c(innerBuff, returnBuff), linetype = 3, col = 'black') +
+        ggplot2::facet_wrap(facets = . ~ ID, nrow = 3, scales = 'free') +
+        ggplot2::labs(x = 'Time', y = 'Distance from colony (km)', col = 'Trip type') +
+        ggplot2::geom_blank(data = dummy, ggplot2::aes(col = Type)) +
+        ggplot2::scale_color_viridis_d() +
+        ggplot2::theme_light() +
+        ggplot2::theme(
+          text = ggplot2::element_text(size = 8)
+        )
+
+      print(p)
+      readline('Next plot [enter]')
+
+    }
+  }
+  return(trips)
+}
+
+# -----
+
 #' Interpolate GPS locations at a set time interval using a continuous time correlated
 #' random walk (ctcrw) model
 #'
-#' This function is a wrapper for momentuHMM::crawlWrap(), which uses the crawl
-#' package to fit ctcrw model to GPS tracks at a user-defined time interval. The
-#' function is currently designed to handle GPS data from centra place foraging birds.
-#' It takes tracking data downloaded from Movebank using track2KBA::move2KBA().
-#' Initial data processing identifies foraging trips away from the colony using
-#' track2KBA::tripSplit(). The function returns a list with three SpatialPoints objects:
-#' (1) original tracking data, (2) colony location, and (3) interpolated locations. All
-#' spatial objects are in the same custom Lambert equal area projection centered on the
-#' colony.
+#' @description This function is a wrapper for momentuHMM::crawlWrap(), which
+#' uses the crawl package to fit ctcrw model to GPS tracks at a user-defined
+#' time interval. The function is currently designed to handle GPS data from
+#' central place foraging birds. It takes tracking data, where trips have been
+#' identified and classified using OPPTools::opp_get_trips(). The function
+#' returns a list with four objects: (1) original tracking data (as SPDF),
+#' (2) colony location (as SPDF), (3) interpolated locations (as SPDF), and (4)
+#' a list of CRAWL fits for each trip. All spatial objects are in the same custom
+#' Lambert equal area projection centered on the colony.
 #'
 #'
-#'@param data Tracking data downloaded directly from movebank using track2KBA::move2kba.
-#'@param innerBuff  minimum distance (km)  from the colony to be considered in a trip,
-#'value passed to track2KBA::tripSplit()
-#'@param returnBuff outer buffer (km)  to capture incomplete return trips to be considered in a trip,
-#'value passed to track2KBA::tripSplit()
-#'@param duration minimum time (hrs) away from colony  to be considered in a trip,
-#'value passed to track2KBA::tripSplit()
+#'@param data Trip data ouptut from OPPTools::opp_get_trips().
+#'@param type List indicating the types of trips to include in interpolation.
+#'Possible values are: 'Complete', 'Incomplete', 'Gappy', and 'Non-trip'. Default is 'Complete'.
 #'@param timestep string indicating time step for track interpolation, eg. '10 min', '1 hour', '1 day'
 #'@param showPlots TRUE/FALSE should plots of interpolated tracks against original data be produced
 #'@param theta starting values for ctcrw parameter optimization, see ?crawl::crwMLE for details
 #'
 #'@examples
-#'dataset <- track2KBA::move2KBA(movebankID = 1895716931,
-#'                               user = rstudioapi::askForPassword(prompt = 'Movebank username:'),
-#'                               password = rstudioapi::askForPassword(prompt = 'Movebank password:'),
-#'                               filename = NULL)
+#'my_data <- opp_download_data(study = c(1247096889),login = NULL, start_month = NULL,
+#'                             end_month = NULL,season = NULL)
 #'
-#'interp_data <- ctcrw_interpolation(data = dataset, innerBuff  = 5, returnBuff = 10,
-#'                            duration   = 2,timestep = '60 min', showPlots = T)
+#'my_track2kba <- opp2KBA(data = my_data)
+#'
+#'my_trips <- opp_get_trips(data = my_track2kba, innerBuff  = 5, returnBuff = 20,
+#'                          duration  = 2, gapLimit = 100, missingLocs = 0.2,
+#'                          showPlots = TRUE)
+#'
+#'my_interp <- ctcrw_interpolation(data = my_trips, site = my_track2kba$site,
+#'                                 type = c('Complete', 'Incomplete', 'Gappy'),
+#'                                 timestep = '10 min', showPlots = T,
+#'                                 duration   = 2,timestep = '60 min',
+#'                                 showPlots = T)
 #'@export
 #'
-
-ctcrw_interpolation <- function(data, # list of 2 data frames returned by track2KBA::move2kba()
-                         innerBuff,      # (km) minimum distance from the colony to be in a trip
-                         returnBuff,     # (km) outer buffer to capture incomplete return trips
-                         duration,      # (hrs) minimum trip duration
-                         timestep,
-                         showPlots = F,
-                         theta = c(8,2) # Theta parameters passed to crawl
+#'
+ctcrw_interpolation <- function(data,
+                                site,
+                                type,
+                                timestep = '20 min',
+                                showPlots = T,
+                                theta = c(8,2)
 ) {
-
-  tracks <- data$data
-  colony <- data$site
 
   # Generate custom laea projection centered on colony
   myCRS <- paste0(
     '+proj=laea',
-    ' +lat_0=', colony$Latitude,
-    ' +lon_0=', colony$Longitude
+    ' +lat_0=', mean(site$Latitude),
+    ' +lon_0=', mean(site$Latitude)
   )
 
   # Create SpatialPoints object for colony
-  col_loc <- sp::SpatialPointsDataFrame(colony, data = colony,
-                                        proj4string = sp::CRS('+proj=longlat'))
-  col_loc <- sp::spTransform(col_loc, myCRS)
+  site_loc <- sp::SpatialPointsDataFrame(site[,c('Longitude','Latitude')], data = site,
+                                         proj4string = sp::CRS('+proj=longlat'))
+  site_loc <- sp::spTransform(site_loc, myCRS)
 
   # Create SpatialPoints object of raw tracking data
-  orig_loc <- sp::SpatialPointsDataFrame(coords = tracks[,c('Longitude', 'Latitude')],
-                                         data = tracks, proj4string = sp::CRS('+proj=longlat'))
-  orig_loc <- sp::spTransform(orig_loc, myCRS)
-  orig_loc$ColDist <- sp::spDistsN1(orig_loc, col_loc)
+  orig_loc <- sp::spTransform(data, myCRS)
+  # re-calculate distance from colony for all original locations
+  if (nrow(site_loc) == 1)  orig_loc$ColDist <- sp::spDistsN1(pred, site_loc)
+  if (nrow(site_loc) > 1) {
+    orig_loc$ColDist <- NA
+    for (id in site_loc$ID) {
+      orig_loc$ColDist[orig_loc$ID == id] <- sp::spDistsN1(orig_loc[orig_loc$ID == id,], site_loc[site_loc$ID == id,])
+    }
+  }
 
-  trips <- track2KBA::tripSplit(
-    dataGroup  = tracks, # data formatted using formatFields()
-    colony     = colony, # data on colony location - can be extracted from movebank data using move2KBA()
-    innerBuff  = innerBuff,      # (km) minimum distance from the colony to be in a trip
-    returnBuff = returnBuff,     # (km) outer buffer to capture incomplete return trips
-    duration   = duration,      # (hrs) minimum trip duration
-    rmNonTrip  = T    # T/F removes times when not in trips
-  )
+  interp_loc <- subset(orig_loc, orig_loc$Type %in% type)
+  interp_loc$time <- interp_loc$DateTime
+  interp_loc$Bird <- interp_loc$ID
+  interp_loc$ID <- interp_loc$tripID
+  interp_loc <- interp_loc[,c('Bird', 'ID', 'time', 'ColDist')]
 
-  trips <- subset(trips, trips$ColDist > ifelse(innerBuff < 1, innerBuff * 1000, 1000))
-  trips <- sp::spTransform(trips, sp::CRS(myCRS))
-  trips$time <- trips$DateTime
-  trips$Bird <- trips$ID
-  trips$ID <- trips$tripID
-  trips <- trips[,c('Bird', 'ID', 'time', 'ColDist')]
-
-  crwOut <- momentuHMM::crawlWrap(obsData=trips, timeStep=timestep,
-                      theta=theta, fixPar=c(NA,NA),
-                      method = 'Nelder-Mead')
+  crwOut <- momentuHMM::crawlWrap(obsData = interp_loc,
+                                  timeStep = timestep,
+                                  theta = theta,
+                                  fixPar = c(NA,NA),
+                                  method = 'Nelder-Mead')
 
   pred <- data.frame(crwOut$crwPredict) %>%
     dplyr::filter(locType == 'p') %>%
@@ -276,22 +380,28 @@ ctcrw_interpolation <- function(data, # list of 2 data frames returned by track2
     dplyr::rename(tripID = ID, ID = Bird, DateTime = time)
 
   pred <- sp::SpatialPointsDataFrame(coords = pred[,c('mu.x', 'mu.y')],
-                                 data = pred[,c('ID', 'tripID', 'DateTime', 'ColDist',
-                                                'mu.x', 'mu.y',
-                                                'se.mu.x', 'se.mu.y')],
-                                 proj4string = sp::CRS(myCRS)
+                                     data = pred[,c('ID', 'tripID', 'DateTime', 'ColDist',
+                                                    'mu.x', 'mu.y',
+                                                    'se.mu.x', 'se.mu.y')],
+                                     proj4string = sp::CRS(myCRS)
   )
+
   pred_longlat <- sp::spTransform(pred, sp::CRS('+proj=longlat'))
   pred$Longitude <- sp::coordinates(pred_longlat)[,1]
   pred$Latitude <- sp::coordinates(pred_longlat)[,2]
 
-
   # re-calculate distance from colony for all interpolated locations
-  pred$ColDist <- sp::spDistsN1(pred, col_loc)
+  if (nrow(site_loc) == 1)  pred$ColDist <- sp::spDistsN1(pred, site_loc)
+  if (nrow(site_loc) > 1) {
+    pred$ColDist <- NA
+    for (i in 1:nrow(site_loc)) {
+      pred$ColDist[pred$ID == site_loc$ID[i]] <- sp::spDistsN1(pred[pred$ID == site_loc$ID[i],], site_loc[site_loc$ID == site_loc$ID[i],])
+    }
+  }
 
   out <- list(
     data = orig_loc,
-    site = col_loc,
+    site = site_loc,
     interp = pred,
     crawl_fit = crwOut$crwFits
   )
@@ -299,23 +409,24 @@ ctcrw_interpolation <- function(data, # list of 2 data frames returned by track2
   if (showPlots == T) {
     bb <- unique(pred$ID)
     idx <- seq(1,length(bb), by = 4)
+    pal <- hcl.colors(4, "viridis")
 
     for (i in idx) {
 
       intdat <- pred[pred$ID %in% bb[i:(i+3)],]@data
       obsdat <- orig_loc[orig_loc$ID %in% bb[i:(i+3)],]@data
 
-      p <- ggplot(obsdat, aes(x = DateTime, y = ColDist/1000)) +
-        geom_line(linetype = 3) +
-        geom_point(size = 0.9)  +
-        geom_line(data = intdat, aes(x = DateTime, y = ColDist/1000, group = tripID), linetype = 3, col = 'red') +
-        geom_point(data = intdat, aes(x = DateTime, y = ColDist/1000), size = 0.9, col = 'red') +
-        geom_hline(yintercept = innerBuff, linetype = 2, col = 'blue') +
-        facet_wrap(facets = . ~ ID, nrow = 2, scales = 'free') +
-        labs(x = 'Time', y = 'Distance from colony (km)') +
-        scale_x_datetime(date_labels = '%b-%d') +
-        theme(
-          text = element_text(size = 8)
+      p <- ggplot2::ggplot(obsdat, ggplot2::aes(x = DateTime, y = ColDist/1000)) +
+        ggplot2::geom_line(linetype = 3, col = pal[1]) +
+        ggplot2::geom_point(size = 1.5, col = pal[1])  +
+        ggplot2::geom_line(data = intdat, ggplot2::aes(x = DateTime, y = ColDist/1000, group = tripID), linetype = 3, col = pal[3]) +
+        ggplot2::geom_point(data = intdat, ggplot2::aes(x = DateTime, y = ColDist/1000), size = 0.9, col = pal[3], shape = 1) +
+        ggplot2::facet_wrap(facets = . ~ ID, nrow = 2, scales = 'free') +
+        ggplot2::labs(x = 'Time', y = 'Distance from colony (km)') +
+        ggplot2::scale_x_datetime(date_labels = '%b-%d') +
+        ggplot2::theme_light() +
+        ggplot2::theme(
+          text = ggplot2::element_text(size = 8)
         )
 
       print(p)
@@ -326,6 +437,3 @@ ctcrw_interpolation <- function(data, # list of 2 data frames returned by track2
 
   return(out)
 }
-
-
-#'

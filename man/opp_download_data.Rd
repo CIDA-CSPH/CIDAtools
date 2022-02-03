@@ -2,20 +2,14 @@
 % Please edit documentation in R/OPPFunctions.R
 \name{opp_download_data}
 \alias{opp_download_data}
-\title{Download OPP tracking data from Movebank with options
-to export .csv and .shp files.}
+\title{Download OPP tracking data from Movebank}
 \usage{
 opp_download_data(
   study,
   login = NULL,
   start_month = NULL,
   end_month = NULL,
-  season = NULL,
-  export_csv = T,
-  export_points = T,
-  export_tracks = T,
-  export_location = NULL,
-  export_name = NULL
+  season = NULL
 )
 }
 \arguments{
@@ -28,21 +22,20 @@ will prompt users to enter credentials.}
 
 \item{end_month}{Latest month (1-12) to include in output.}
 
-\item{season}{Vector describing the season data can be applied to, eg. 'Breeding (Jun-Jul)}
-
-\item{export_csv}{Logical, should a .csv file be written.}
-
-\item{export_points}{Logical, should a .shp point file be written.}
-
-\item{export_tracks}{Logical, should a .shp line file be written.}
-
-\item{export_location}{Path to folder where results should be saved, defaults
-to working directory}
-
-\item{export_name}{File name for saved outputs.}
+\item{season}{Vector describing the season data can be applied to, eg. 'Breeding (Jun-Jul)'}
 }
 \description{
-This function downloads OPP tracking data from Movebank
-and returns a dataframe, sf points, and sf lines.
-Optional argument to save outputs as .csv and .shp files
+This function downloads OPP tracking data from Movebank and returns a
+dataframe with combined tracking and reference data for all deployments.
+}
+\details{
+The function can be passed a list of movebank study IDs and will append
+data from all studies.
+}
+\examples{
+# download ANMU project data from two studies, for May only
+my_data <- opp_download_data(study = c(1895716931, 1897273090),
+                            login = NULL, start_month = 5, end_month = 5,
+                            season = 'Incubation')
+
 }

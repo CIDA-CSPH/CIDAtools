@@ -7,25 +7,18 @@ random walk (ctcrw) model}
 \usage{
 ctcrw_interpolation(
   data,
-  innerBuff,
-  returnBuff,
-  duration,
-  timestep,
-  showPlots = F,
+  site,
+  type,
+  timestep = "20 min",
+  showPlots = T,
   theta = c(8, 2)
 )
 }
 \arguments{
-\item{data}{Tracking data downloaded directly from movebank using track2KBA::move2kba.}
+\item{data}{Trip data ouptut from OPPTools::opp_get_trips().}
 
-\item{innerBuff}{minimum distance (km)  from the colony to be considered in a trip,
-value passed to track2KBA::tripSplit()}
-
-\item{returnBuff}{outer buffer (km)  to capture incomplete return trips to be considered in a trip,
-value passed to track2KBA::tripSplit()}
-
-\item{duration}{minimum time (hrs) away from colony  to be considered in a trip,
-value passed to track2KBA::tripSplit()}
+\item{type}{List indicating the types of trips to include in interpolation.
+Possible values are: 'Complete', 'Incomplete', 'Gappy', and 'Non-trip'. Default is 'Complete'.}
 
 \item{timestep}{string indicating time step for track interpolation, eg. '10 min', '1 hour', '1 day'}
 
@@ -34,22 +27,29 @@ value passed to track2KBA::tripSplit()}
 \item{theta}{starting values for ctcrw parameter optimization, see ?crawl::crwMLE for details}
 }
 \description{
-This function is a wrapper for momentuHMM::crawlWrap(), which uses the crawl
-package to fit ctcrw model to GPS tracks at a user-defined time interval. The
-function is currently designed to handle GPS data from centra place foraging birds.
-It takes tracking data downloaded from Movebank using track2KBA::move2KBA().
-Initial data processing identifies foraging trips away from the colony using
-track2KBA::tripSplit(). The function returns a list with three SpatialPoints objects:
-(1) original tracking data, (2) colony location, and (3) interpolated locations. All
-spatial objects are in the same custom Lambert equal area projection centered on the
-colony.
+This function is a wrapper for momentuHMM::crawlWrap(), which
+uses the crawl package to fit ctcrw model to GPS tracks at a user-defined
+time interval. The function is currently designed to handle GPS data from
+central place foraging birds. It takes tracking data, where trips have been
+identified and classified using OPPTools::opp_get_trips(). The function
+returns a list with four objects: (1) original tracking data (as SPDF),
+(2) colony location (as SPDF), (3) interpolated locations (as SPDF), and (4)
+a list of CRAWL fits for each trip. All spatial objects are in the same custom
+Lambert equal area projection centered on the colony.
 }
 \examples{
-dataset <- track2KBA::move2KBA(movebankID = 1895716931,
-                              user = rstudioapi::askForPassword(prompt = 'Movebank username:'),
-                              password = rstudioapi::askForPassword(prompt = 'Movebank password:'),
-                              filename = NULL)
+my_data <- opp_download_data(study = c(1247096889),login = NULL, start_month = NULL,
+                            end_month = NULL,season = NULL)
 
-interp_data <- ctcrw_interpolation(data = dataset, innerBuff  = 5, returnBuff = 10,
-                           duration   = 2,timestep = '60 min',show_plots = T)
+my_track2kba <- opp2KBA(data = my_data)
+
+my_trips <- opp_get_trips(data = my_track2kba, innerBuff  = 5, returnBuff = 20,
+                         duration  = 2, gapLimit = 100, missingLocs = 0.2,
+                         showPlots = TRUE)
+
+my_interp <- ctcrw_interpolation(data = my_trips, site = my_track2kba$site,
+                                type = c('Complete', 'Incomplete', 'Gappy'),
+                                timestep = '10 min', showPlots = T,
+                                duration   = 2,timestep = '60 min',
+                                showPlots = T)
 }
