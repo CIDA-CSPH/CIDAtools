@@ -8,3 +8,4 @@ hex_sticker.R
 ^codecov\.yml$
 ^doc$
 ^Meta$
+^data-raw$
