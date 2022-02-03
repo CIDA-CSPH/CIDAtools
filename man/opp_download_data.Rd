@@ -2,8 +2,7 @@
 % Please edit documentation in R/OPPFunctions.R
 \name{opp_download_data}
 \alias{opp_download_data}
-\title{Download OPP tracking data from Movebank with options
-to export .csv and .shp files.}
+\title{Download OPP tracking data from Movebank}
 \usage{
 opp_download_data(
   study,
@@ -38,4 +37,5 @@ data from all studies.
 # download ANMU project data from two studies, for May only
 my_data <- opp_download_data(study = c(1895716931, 1897273090),
 login = NULL, start_month = 5, end_month = 5, season = 'Incubation')
+
 }

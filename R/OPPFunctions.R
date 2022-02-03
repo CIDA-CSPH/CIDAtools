@@ -1,25 +1,24 @@
-#' Download OPP tracking data from Movebank with options
-#' to export .csv and .shp files.
+#' Download OPP tracking data from Movebank
 #'
-#' This function downloads OPP tracking data from Movebank and returns a
+#' @description This function downloads OPP tracking data from Movebank and returns a
 #' dataframe with combined tracking and reference data for all deployments.
 #'
-#'@param study List of Movebank project ids.
-#'@param login Stored Movebank login credentials if provided, otherwise function
+#' @param study List of Movebank project ids.
+#' @param login Stored Movebank login credentials if provided, otherwise function
 #'will prompt users to enter credentials.
-#'@param start_month Earliest month (1-12) to include in output.
-#'@param end_month Latest month (1-12) to include in output.
-#'@param season Vector describing the season data can be applied to, eg. 'Breeding (Jun-Jul)'
+#' @param start_month Earliest month (1-12) to include in output.
+#' @param end_month Latest month (1-12) to include in output.
+#' @param season Vector describing the season data can be applied to, eg. 'Breeding (Jun-Jul)'
 #'
-#'@details The function can be passed a list of movebank study IDs and will append
+#' @details The function can be passed a list of movebank study IDs and will append
 #'data from all studies.
 #'
-#'@examples
+#' @examples
 #'
 #'# download ANMU project data from two studies, for May only
 #'my_data <- opp_download_data(study = c(1895716931, 1897273090),
 #'login = NULL, start_month = 5, end_month = 5, season = 'Incubation')
-
+#'
 #'@export
 
 opp_download_data <- function(study,
@@ -73,6 +72,54 @@ opp_download_data <- function(study,
 
   out_data
 
+}
+
+# -----
+
+#' Converts movebank data to format required for track2KBA
+#'
+#' @description Takes tracking data downloaded from Movebank using OPPTools::opp_download_data
+#' and converts it to the format needed for track2KBA
+#'
+#' @param data A dataframe obtained using OPPTools::opp_download_data
+#'
+#' @details This extracts location, timestamp and deployment data from movebank data
+#' and returns a list of dataframes that can be passed to functions in track2KBA.
+#' This is useful if the user wants to filter the data downloaded from movebank based on
+#' fields contained within the reference data (e.g. sex, animal_reproductive_condition)
+#'
+#' @returns Returns a list object of length two, containing tracking data
+#' (accessed using: dataset$data) and study site location information
+#' (accessed using: dataset$site).
+#' @examples
+#'
+#' # download ANMU project data from two studies, for May only
+#' my_data <- opp_download_data(study = c(1895716931, 1897273090),
+#' login = NULL, start_month = 5, end_month = 5, season = 'Incubation')
+#' my_track2ka <- opp2KBA(data = my_data)
+#'
+#' @export
+
+opp2KBA <- function(data
+) {
+  locs <- data %>%
+    dplyr::select(deployment_id, timestamp, location_lat, location_long) %>%
+    dplyr::rename(ID = deployment_id,
+                  DateTime = timestamp,
+                  Latitude = location_lat,
+                  Longitude = location_long)
+
+  sites <- data %>%
+    dplyr::select(deployment_id, deploy_on_latitude, deploy_on_longitude) %>%
+    dplyr::rename(ID = deployment_id,
+                  Latitude = deploy_on_latitude,
+                  Longitude = deploy_on_longitude) %>%
+    unique()
+  row.names(sites) <- 1:nrow(sites)
+
+  out <- list(data = locs, site = sites)
+
+  out
 }
 
 # -----
@@ -139,6 +186,120 @@ prep_pathtrack <- function(data) {
   data <- data[!is.na(data$Lat > 0) & !is.na(data$Long > 0),]
   data
   }
+
+# -----
+
+#' Identify foraging trips in tracking data
+
+#' @description Uses criteria related to distance from colony, trip duration, and size of gaps
+#' in tracking data to identify and classify trips from a nest or colony. It is
+#' a wrapper for track2KBA::tripSplit that applies custom criteria for classifying
+#' trips.
+#'
+#' @param data Tracking data formated using track2KBA or opp2KBA
+#' @param innerBuff Minimum distance (km) from the colony to be in a trip.
+#' Used to label trips as 'Non-trip'. Defaults to 5
+#' @param returnBuff Outer distance (km) to capture trips that start and end
+#' away from the colony. Used to label trips as 'Incomplete'. Defaults to 20.
+#' @param duration Minimum trip duration (hrs)
+#' @param gapLimit Maximum time between points to be considered too large to be
+#' a contiguous tracking event. Can be used to ensure that deployments on the
+#' same animal in different years do not get combined into extra long trips.
+#' Defaults to 100 days.
+#' @param missingLocs Proportion (0-1) of trip duration that a gap in consecutive
+#' locations should not exceed. Used to label trips as 'Gappy'. Defaults to 0.2.
+#' @param showPlots Logical (T/F), should plots showing trip classification by generated?
+#'
+#' @examples
+#'
+#' my_data <- opp_download_data(study = c(1247096889),
+#' login = NULL,
+#' start_month = NULL,
+#' end_month = NULL,
+#' season = NULL
+#' )
+#' my_track2ka <- opp2KBA(data = my_data)
+#'
+#' my_trips <- opp_get_trips(data = my_track2ka,
+#' innerBuff  = 5,
+#' returnBuff = 20,
+#' duration  = 2,
+#' gapLimit = 100,
+#' missingLocs = 0.2,
+#' showPlots = TRUE)
+#'
+#' @export
+
+
+opp_get_trips <- function(data,
+                          innerBuff  = 5, # (km) minimum distance from the colony to be in a trip
+                          returnBuff = 20, # (km) outer buffer to capture incomplete return trips
+                          duration  = 2, # (hrs) minimum trip duration
+                          gapLimit = 100,
+                          missingLocs = 0.2, # Percentage of trip duration that a gap in consecutive locations should not exceed
+                          showPlots = TRUE
+) {
+
+  trips <- track2KBA::tripSplit(
+    dataGroup  = data$data, # data formatted using formatFields()
+    colony     = data$site, # data on colony location - can be extracted from movebank data using move2KBA()
+    innerBuff  = innerBuff,      # (km) minimum distance from the colony to be in a trip
+    returnBuff = returnBuff,     # (km) outer buffer to capture incomplete return trips
+    duration   = duration,      # (hrs) minimum trip duration
+    gapLimit = gapLimit, # (days) time between points to be considered too large to be a contiguous tracking event
+    rmNonTrip  = F,    # T/F removes times when not in trips
+    nests = ifelse(nrow(data$site) > 1, TRUE, FALSE)
+  )
+
+  trips_type <- trips@data %>%
+    dplyr::mutate(
+      tripID = ifelse(ColDist <= innerBuff * 1000, -1, tripID)
+    ) %>%
+    dplyr::group_by(ID, tripID) %>%
+    dplyr::arrange(DateTime) %>%
+    dplyr::mutate(
+      dt = as.numeric(difftime(DateTime, dplyr::lag(DateTime), units = 'hour')),
+      dt = ifelse(is.na(dt), 0, dt),
+      tripTime = as.numeric(difftime(max(DateTime), min(DateTime), units = 'hour')),
+      Type = NA,
+      Type = ifelse(ColDist[1] > returnBuff * 1000 | ColDist[dplyr::n()] > returnBuff * 1000, 'Incomplete', Type),
+      Type = ifelse(max(dt, na.rm = T) > tripTime * missingLocs, 'Gappy', Type),
+      Type = ifelse(tripID == -1, 'Non-trip', Type),
+      Type = ifelse(is.na(Type), 'Complete', Type)
+    )
+
+  trips$Type <- trips_type$Type
+
+  bb <- unique(trips_type$ID)
+  idx <- seq(1,length(bb), by = 4)
+  dummy <- data.frame(Type = c('Non-trip', 'Incomplete', 'Gappy', 'Complete'))
+
+  if (showPlots == TRUE) {
+    for (i in idx) {
+
+      intdat <- trips_type[trips_type$ID %in% bb[i:(i+3)],]
+
+      p <- ggplot(intdat) +
+        geom_line(aes(x = DateTime, y = ColDist/1000), linetype = 3) +
+        geom_point(size = 0.9, aes(x = DateTime, y = ColDist/1000, col = Type))  +
+        geom_hline(yintercept = c(innerBuff, returnBuff), linetype = 3, col = 'black') +
+        facet_wrap(facets = . ~ ID, nrow = 3, scales = 'free') +
+        labs(x = 'Time', y = 'Distance from colony (km)', col = 'Trip type') +
+        #scale_x_datetime(date_breaks = '2 day', date_labels = '%b-%d') +
+        geom_blank(data = dummy, aes(col = Type)) +
+        scale_color_viridis_d() +
+        theme_light() +
+        theme(
+          text = element_text(size = 8)
+        )
+
+      print(p)
+      readline('Next plot [enter]')
+
+    }
+  }
+  trips
+}
 
 # -----
 
