@@ -197,7 +197,6 @@ prep_pathtrack <- function(data) {
 #' colony. The function returns a proj4 string.
 #'
 #' @param data Movebank data as returned by opp_download_data.
-#' @param interactive Logical (T/F), do you want to explore tracks with an interative map? Default FALSE.
 #'
 #' @examples
 #' data(murres)
@@ -223,10 +222,13 @@ colCRS <- function(
 #' using opp_download_data to visualize tracks.
 #'
 #' @param data Movebank data as returned by opp_download_data.
+#' @param interactive Logical (T/F), do you want to explore tracks with an interative map? Default FALSE.
 #'
 #' @examples
 #' data(murres)
 #' opp_map(murres)
+#'
+#' @export
 
 opp_map <- function(data, # Data as downloaded from Movebank
                     interactive = FALSE) {
