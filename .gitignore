@@ -6,3 +6,4 @@
 /Meta/
 .DS_Store
 inst/doc
+*temp/

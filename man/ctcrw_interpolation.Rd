@@ -17,7 +17,8 @@ ctcrw_interpolation(
 \arguments{
 \item{data}{Trip data ouptut from OPPTools::opp_get_trips().}
 
-\item{site}{Vector containing coordinates of the study site, in the same format as site information downloaded using opp_download_data. Column names must be "Latitude" and "Longitude".}
+\item{site}{Vector containing coordinates of the study site, in the same
+format as site information returned by OPPtools::opp2KBA or track2KBA::move2KBA.}
 
 \item{type}{List indicating the types of trips to include in interpolation.
 Possible values are: 'Complete', 'Incomplete', 'Gappy', and 'Non-trip'. Default is 'Complete'.}
@@ -49,9 +50,11 @@ my_trips <- opp_get_trips(data = my_track2kba, innerBuff  = 5, returnBuff = 20,
                          duration  = 2, gapLimit = 100, missingLocs = 0.2,
                          showPlots = TRUE)
 
-my_interp <- ctcrw_interpolation(data = my_trips, site = my_track2kba$site,
-                                type = c('Complete', 'Incomplete', 'Gappy'),
-                                timestep = '10 min', showPlots = T,
-                                duration   = 2,timestep = '60 min',
-                                showPlots = T)
+my_interp <- ctcrw_interpolation(data = my_trips,
+                                site = my_track2kba$site,
+                                type = c('Complete','Incomplete'),
+                                timestep = '10 min',
+                                showPlots = T,
+                                theta = c(8,2)
+)
 }
