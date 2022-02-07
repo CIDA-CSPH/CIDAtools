@@ -27,4 +27,5 @@ RoxygenNote: 7.1.2
 VignetteBuilder: knitr
 Suggests: 
     rmarkdown,
-    knitr
+    knitr,
+    maps
