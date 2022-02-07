@@ -184,7 +184,182 @@ prep_ecotone <- function(data,
 prep_pathtrack <- function(data) {
   data <- data[!is.na(data$Lat > 0) & !is.na(data$Long > 0),]
   data
+}
+
+# -----
+
+#' Define a custom equal-area CRS centered on your study site
+#'
+#' @description This function takes a Movebank data object and
+#' creates an equal-area projection ceneterd on the Movebank
+#' study site. In the case of central-place foraging seabirds,
+#' this effectively equates to a CRS centered on the seabird
+#' colony. The function returns a proj4 string.
+#'
+#' @param data Movebank data as returned by opp_download_data.
+#'
+#' @examples
+#' data(murres)
+#' colCRS(murres)
+#'
+#' @export
+
+colCRS <- function(
+  data # Movebank data object
+  ) {
+  return(paste0(
+    '+proj=laea',
+    ' +lat_0=', mean(data$site$Latitude),
+    ' +lon_0=', mean(data$site$Longitude)
+  ))
+}
+
+# -----
+
+#' Plot raw tracks from Movebank download
+#'
+#' @description Quickly plot Movebank data downloaded
+#' using opp_download_data to visualize tracks.
+#'
+#' @param data Movebank data as returned by opp_download_data.
+#' @param interactive Logical (T/F), do you want to explore tracks with an interative map? Default FALSE.
+#'
+#' @examples
+#' data(murres)
+#' opp_map(murres)
+#'
+#' @export
+
+opp_map <- function(data, # Data as downloaded from Movebank
+                    interactive = FALSE) {
+
+  # Check if maps installed
+  # maps is used to add simple land features to map
+  if (!requireNamespace("maps", quietly = TRUE)) {
+    stop("Packages \"maps\"is needed. Please install it.",
+         call. = FALSE)
   }
+  # Check if mapview is installed
+  # mapview is used for interactive mode
+  if (interactive == TRUE){
+    if (!requireNamespace("mapview", quietly = TRUE)) {
+      stop("Packages \"mapview\"is needed. Please install it.",
+           call. = FALSE)
+    }
+  }
+  # Make ID factor so it plots w appropriate color scheme
+  data$data$ID <- as.factor(data$data$ID)
+
+  # Convert Movebank data df to sf object
+  raw_tracks <- sf::st_as_sf(data$data,
+                             coords = c("Longitude", "Latitude"),
+                             crs = '+proj=longlat')
+
+  # Extract bounds
+  coordsets <- sf::st_bbox(raw_tracks)
+
+  trackplot <- ggplot2::ggplot(raw_tracks) +
+    ggplot2::geom_sf(data = raw_tracks,
+                     ggplot2::aes(col = ID),
+                     fill = NA) +
+    ggplot2::coord_sf(xlim = c(coordsets$xmin, coordsets$xmax),
+                      ylim = c(coordsets$ymin, coordsets$ymax),
+                      expand = TRUE) +
+    ggplot2::borders("world", colour = "black", fill = NA) +
+    ggplot2::geom_point(data = data$site,
+                        ggplot2::aes(x = .data$Longitude,
+                                     y = .data$Latitude),
+                        fill = "dark orange",
+                        color = "black",
+                        pch = 21,
+                        size = 2.5) +
+    ggplot2::theme(panel.background = ggplot2::element_rect(fill = "white",
+                                                            colour = "black"),
+                   legend.position = "none",
+                   panel.border = ggplot2::element_rect(colour = "black",
+                                                        fill = NA,
+                                                        size = 1)) +
+    ggplot2::ylab("Latitude") +
+    ggplot2::xlab("Longitude")
+
+  if(interactive == FALSE){
+    print(trackplot)
+  } else {
+    mapview::mapview(raw_tracks, zcol = "ID")
+  }
+}
+
+# -----
+
+#' Explore trip data within given tracks
+#'
+#' @description This function calculates the distance from the
+#' study site for each GPS point within a Movebank object and
+#' then produces track time vs. distance from origin site plots.
+#' Using this function will allow you to assign reasonable
+#' estimates for minimum and maximum trip duration and distance
+#' for the opp_get_trips function.
+#'
+#' @param data Movebank data as returned by opp_download_data.
+#'
+#' @examples
+#' data(murres)
+#' opp_explore_trips(murres)
+#'
+#' @export
+
+opp_explore_trips <- function(data) {
+
+  # Make ID factor so it plots w appropriate color scheme
+  data$data$ID <- as.factor(data$data$ID)
+
+  # Create custom equal-area CRS centered on colony
+  colCRS <- colCRS(data)
+
+  # Extract study site as GPS trips origin
+  origin <- sf::st_as_sf(data$site,
+                         coords = c("Longitude", "Latitude"),
+                         crs = '+proj=longlat') %>%
+    sf::st_transform(crs = colCRS)
+
+  # Convert Movebank data df to sf object
+  raw_tracks <- sf::st_as_sf(data$data,
+                             coords = c("Longitude", "Latitude"),
+                             crs = '+proj=longlat') %>%
+    sf::st_transform(crs = colCRS)
+
+  # Add distance to colony as column
+  raw_tracks$ColDist <- sf::st_distance(raw_tracks$geometry,
+                                        origin,
+                                        by_element = TRUE) %>%
+    as.numeric()
+
+  # Plot 4 plots per page
+  bb <- unique(raw_tracks$ID)
+  idx <- seq(1,length(bb), by = 4)
+
+  for (i in idx) {
+
+    plotdat <- raw_tracks[raw_tracks$ID %in% bb[i:(i+3)],]
+
+    p <- ggplot2::ggplot(plotdat,
+                         ggplot2::aes(x = DateTime,
+                                      y = ColDist/1000)) +
+      ggplot2::geom_point(size = 0.5, col = "black")  +
+      ggplot2::facet_wrap(facets = . ~ ID, nrow = 2, scales = 'free') +
+      ggplot2::labs(x = 'Time', y = 'Distance from colony (km)') +
+      ggplot2::scale_x_datetime(date_labels = '%b-%d') +
+      ggplot2::scale_y_continuous(labels = scales::comma) +
+      ggplot2::theme_light() +
+      ggplot2::theme(
+        text = ggplot2::element_text(size = 8)
+      )
+
+    print(p)
+    readline('Next plot [enter]')
+
+  }
+}
 
 # -----
 
@@ -308,6 +483,7 @@ opp_get_trips <- function(data,
 #'
 #'
 #'@param data Trip data ouptut from OPPTools::opp_get_trips().
+#'@param site Vector containing coordinates of the study site, in the same format as site information downloaded using opp_download_data. Column names must be "Latitude" and "Longitude".
 #'@param type List indicating the types of trips to include in interpolation.
 #'Possible values are: 'Complete', 'Incomplete', 'Gappy', and 'Non-trip'. Default is 'Complete'.
 #'@param timestep string indicating time step for track interpolation, eg. '10 min', '1 hour', '1 day'
