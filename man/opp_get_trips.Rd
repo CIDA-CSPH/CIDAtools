@@ -11,7 +11,8 @@ opp_get_trips(
   duration = 2,
   gapLimit = 100,
   missingLocs = 0.2,
-  showPlots = TRUE
+  showPlots = TRUE,
+  plotsPerPage = 4
 )
 }
 \arguments{
@@ -34,6 +35,9 @@ Defaults to 100 days.}
 locations should not exceed. Used to label trips as 'Gappy'. Defaults to 0.2.}
 
 \item{showPlots}{Logical (T/F), should plots showing trip classification by generated?}
+
+\item{plotsPerPage}{Numeric indicating the number of individuals to include
+in a single plot. Defaults to 4.}
 }
 \description{
 Uses criteria related to distance from colony, trip duration, and size of gaps

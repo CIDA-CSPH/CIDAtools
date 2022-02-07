@@ -391,7 +391,8 @@ opp_explore_trips <- function(data) {
       )
 
     print(p)
-    readline('Next plot [enter]')
+    message('Press [enter] to see next plot')
+    readline('')
 
   }
 
@@ -419,6 +420,8 @@ opp_explore_trips <- function(data) {
 #' @param missingLocs Proportion (0-1) of trip duration that a gap in consecutive
 #' locations should not exceed. Used to label trips as 'Gappy'. Defaults to 0.2.
 #' @param showPlots Logical (T/F), should plots showing trip classification by generated?
+#' @param plotsPerPage Numeric indicating the number of individuals to include
+#' in a single plot. Defaults to 4.
 #'
 #' @examples
 #'my_data <- opp_download_data(study = c(1247096889),login = NULL, start_month = NULL,
@@ -438,7 +441,8 @@ opp_get_trips <- function(data,
                           duration  = 2, # (hrs) minimum trip duration
                           gapLimit = 100,
                           missingLocs = 0.2, # Percentage of trip duration that a gap in consecutive locations should not exceed
-                          showPlots = TRUE
+                          showPlots = TRUE,
+                          plotsPerPage = 4
 ) {
 
   trips <- track2KBA::tripSplit(
@@ -473,29 +477,31 @@ opp_get_trips <- function(data,
   trips$Type <- trips_type$Type
 
   bb <- unique(trips_type$ID)
-  idx <- seq(1,length(bb), by = 4)
+  idx <- seq(1,length(bb), by = plotsPerPage)
   dummy <- data.frame(Type = c('Non-trip', 'Incomplete', 'Gappy', 'Complete'))
 
   if (showPlots == TRUE) {
     for (i in idx) {
 
-      intdat <- trips_type[trips_type$ID %in% bb[i:(i+3)],]
+      intdat <- trips_type[trips_type$ID %in% bb[i:(i+(plotsPerPage-1))],]
 
       p <- ggplot2::ggplot(intdat) +
         ggplot2::geom_line(ggplot2::aes(x = DateTime, y = ColDist/1000), linetype = 3) +
-        ggplot2::geom_point(size = 0.9, ggplot2::aes(x = DateTime, y = ColDist/1000, col = Type))  +
+        ggplot2::geom_point(size = 1, ggplot2::aes(x = DateTime, y = ColDist/1000, col = Type))  +
         ggplot2::geom_hline(yintercept = c(innerBuff, returnBuff), linetype = 2, col = 'black') +
-        ggplot2::facet_wrap(facets = . ~ ID, nrow = 3, scales = 'free') +
+        ggplot2::facet_wrap(facets = . ~ ID, ncol = 2, scales = 'free') +
         ggplot2::labs(x = 'Time', y = 'Distance from colony (km)', col = 'Trip type') +
         ggplot2::geom_blank(data = dummy, ggplot2::aes(col = Type)) +
         ggplot2::scale_color_viridis_d() +
         ggplot2::theme_light() +
         ggplot2::theme(
-          text = ggplot2::element_text(size = 8)
+          text = ggplot2::element_text(size = 10)
         )
 
       print(p)
-      readline('Next plot [enter]')
+      message('Press [enter] to see next plot')
+      readline('')
+
 
     }
   }
@@ -519,7 +525,8 @@ opp_get_trips <- function(data,
 #'
 #'
 #'@param data Trip data ouptut from OPPTools::opp_get_trips().
-#'@param site Vector containing coordinates of the study site, in the same format as site information downloaded using opp_download_data. Column names must be "Latitude" and "Longitude".
+#'@param site Vector containing coordinates of the study site, in the same
+#'format as site information returned by OPPtools::opp2KBA or track2KBA::move2KBA.
 #'@param type List indicating the types of trips to include in interpolation.
 #'Possible values are: 'Complete', 'Incomplete', 'Gappy', and 'Non-trip'. Default is 'Complete'.
 #'@param timestep string indicating time step for track interpolation, eg. '10 min', '1 hour', '1 day'
@@ -536,11 +543,13 @@ opp_get_trips <- function(data,
 #'                          duration  = 2, gapLimit = 100, missingLocs = 0.2,
 #'                          showPlots = TRUE)
 #'
-#'my_interp <- ctcrw_interpolation(data = my_trips, site = my_track2kba$site,
-#'                                 type = c('Complete', 'Incomplete', 'Gappy'),
-#'                                 timestep = '10 min', showPlots = T,
-#'                                 duration   = 2,timestep = '60 min',
-#'                                 showPlots = T)
+#'my_interp <- ctcrw_interpolation(data = my_trips,
+#'                                 site = my_track2kba$site,
+#'                                 type = c('Complete','Incomplete'),
+#'                                 timestep = '10 min',
+#'                                 showPlots = T,
+#'                                 theta = c(8,2)
+#')
 #'@export
 #'
 #'
@@ -644,7 +653,8 @@ ctcrw_interpolation <- function(data,
         )
 
       print(p)
-      readline('Next plot [enter]')
+      message('Press [enter] to see next plot')
+      readline('')
 
     }
   }
