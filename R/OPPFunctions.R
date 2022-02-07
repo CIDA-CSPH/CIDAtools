@@ -55,7 +55,7 @@ opp_download_data <- function(study,
         year = as.numeric(strftime(timestamp, '%Y')),
         month = as.numeric(strftime(timestamp, '%m')), # add numeric month field
         season = season,
-        sex = ifelse(sex == ' ' | is.na(sex), 'u', sex)
+        sex = ifelse(sex == '' | sex == ' ' | is.na(sex), 'u', sex)
       )
 
     # Subset data to months if provided
@@ -191,10 +191,13 @@ prep_pathtrack <- function(data) {
 #' Define a custom equal-area CRS centered on your study site
 #'
 #' @description This function takes a Movebank data object and
-#' creates an equal-area projection ceneterd on the Movebank
-#' study site. In the case of central-place foraging seabirds,
-#' this effectively equates to a CRS centered on the seabird
-#' colony. The function returns a proj4 string.
+#' creates an equal-area projection centered on the Movebank
+#' deploy on locations. In the case of central-place foraging
+#' seabirds, this effectively equates to a CRS centered on the
+#' seabird colony. In cases where multiple deploy on locations
+#' are present within the data it centers of the projection on
+#' the mean latitude and longitude of all deployment locations.
+#' The function returns a proj4 string.
 #'
 #' @param data Movebank data as returned by opp_download_data.
 #'
@@ -204,13 +207,11 @@ prep_pathtrack <- function(data) {
 #'
 #' @export
 
-colCRS <- function(
-  data # Movebank data object
-  ) {
+colCRS <- function(data) {
   return(paste0(
     '+proj=laea',
-    ' +lat_0=', mean(data$site$Latitude),
-    ' +lon_0=', mean(data$site$Longitude)
+    ' +lat_0=', mean(data$deploy_on_latitude),
+    ' +lon_0=', mean(data$deploy_on_longitude)
   ))
 }
 
@@ -230,7 +231,7 @@ colCRS <- function(
 #'
 #' @export
 
-opp_map <- function(data, # Data as downloaded from Movebank
+opp_map <- function(data,
                     interactive = FALSE) {
 
   # Check if maps installed
@@ -247,12 +248,17 @@ opp_map <- function(data, # Data as downloaded from Movebank
            call. = FALSE)
     }
   }
+
+  # Trim down dataset
+  site <- unique(data[,c("deploy_on_longitude", "deploy_on_latitude")])
+  data <- data[,c("deployment_id", "location_long", "location_lat")]
+
   # Make ID factor so it plots w appropriate color scheme
-  data$data$ID <- as.factor(data$data$ID)
+  data$deployment_id <- as.factor(data$deployment_id)
 
   # Convert Movebank data df to sf object
-  raw_tracks <- sf::st_as_sf(data$data,
-                             coords = c("Longitude", "Latitude"),
+  raw_tracks <- sf::st_as_sf(data,
+                             coords = c("location_long", "location_lat"),
                              crs = '+proj=longlat')
 
   # Extract bounds
@@ -260,15 +266,15 @@ opp_map <- function(data, # Data as downloaded from Movebank
 
   trackplot <- ggplot2::ggplot(raw_tracks) +
     ggplot2::geom_sf(data = raw_tracks,
-                     ggplot2::aes(col = ID),
+                     ggplot2::aes(col = deployment_id),
                      fill = NA) +
     ggplot2::coord_sf(xlim = c(coordsets$xmin, coordsets$xmax),
                       ylim = c(coordsets$ymin, coordsets$ymax),
                       expand = TRUE) +
     ggplot2::borders("world", colour = "black", fill = NA) +
-    ggplot2::geom_point(data = data$site,
-                        ggplot2::aes(x = .data$Longitude,
-                                     y = .data$Latitude),
+    ggplot2::geom_point(data = site,
+                        ggplot2::aes(x = deploy_on_longitude,
+                                     y = deploy_on_latitude),
                         fill = "dark orange",
                         color = "black",
                         pch = 21,
@@ -285,8 +291,9 @@ opp_map <- function(data, # Data as downloaded from Movebank
   if(interactive == FALSE){
     print(trackplot)
   } else {
-    mapview::mapview(raw_tracks, zcol = "ID")
+    mapview::mapview(raw_tracks, zcol = "deployment_id")
   }
+
 }
 
 # -----
@@ -311,42 +318,70 @@ opp_map <- function(data, # Data as downloaded from Movebank
 opp_explore_trips <- function(data) {
 
   # Make ID factor so it plots w appropriate color scheme
-  data$data$ID <- as.factor(data$data$ID)
+  data$deployment_id <- as.factor(data$deployment_id)
 
   # Create custom equal-area CRS centered on colony
   colCRS <- colCRS(data)
 
-  # Extract study site as GPS trips origin
-  origin <- sf::st_as_sf(data$site,
-                         coords = c("Longitude", "Latitude"),
-                         crs = '+proj=longlat') %>%
-    sf::st_transform(crs = colCRS)
+  # Extract deploy on sites as GPS trips origin
+  # If there's only one deploy on loc, origin will be
+  # one point. Otherwise it will be a point for each
+  # deployment_id.
+  if (nrow(unique(data[,c("deploy_on_longitude", "deploy_on_latitude")])) == 1){
+    origin <- unique(data[,c("deploy_on_longitude", "deploy_on_latitude")]) %>%
+      sf::st_as_sf(coords = c("deploy_on_longitude", "deploy_on_latitude"),
+                   crs = '+proj=longlat') %>%
+      sf::st_transform(crs = colCRS)
+  } else {
+    origin <- unique(data[,c("deployment_id", "deploy_on_longitude", "deploy_on_latitude")]) %>%
+      sf::st_as_sf(coords = c("deploy_on_longitude", "deploy_on_latitude"),
+                   crs = '+proj=longlat') %>%
+      sf::st_transform(crs = colCRS)
+  }
 
   # Convert Movebank data df to sf object
-  raw_tracks <- sf::st_as_sf(data$data,
-                             coords = c("Longitude", "Latitude"),
+  raw_tracks <- sf::st_as_sf(data,
+                             coords = c("location_long", "location_lat"),
                              crs = '+proj=longlat') %>%
     sf::st_transform(crs = colCRS)
 
   # Add distance to colony as column
-  raw_tracks$ColDist <- sf::st_distance(raw_tracks$geometry,
-                                        origin,
-                                        by_element = TRUE) %>%
-    as.numeric()
+  if (nrow(origin) == 1) {
+    raw_tracks$ColDist <- sf::st_distance(raw_tracks$geometry,
+                                          origin) %>%
+      as.numeric()
+  } else {
+
+    ColDist <- numeric(0)
+
+    for (id in origin$deployment_id) {
+
+      o <- origin[origin$deployment_id == id, ]
+      t <- raw_tracks[raw_tracks$deployment_id == id, ]
+
+      ColDist <- append(ColDist,
+                        sf::st_distance(t, o) %>%
+                          as.numeric()
+      )
+
+    }
+
+    raw_tracks$ColDist <- ColDist
+  }
 
   # Plot 4 plots per page
-  bb <- unique(raw_tracks$ID)
+  bb <- unique(raw_tracks$deployment_id)
   idx <- seq(1,length(bb), by = 4)
 
   for (i in idx) {
 
-    plotdat <- raw_tracks[raw_tracks$ID %in% bb[i:(i+3)],]
+    plotdat <- raw_tracks[raw_tracks$deployment_id %in% bb[i:(i+3)],]
 
     p <- ggplot2::ggplot(plotdat,
-                         ggplot2::aes(x = DateTime,
+                         ggplot2::aes(x = timestamp,
                                       y = ColDist/1000)) +
       ggplot2::geom_point(size = 0.5, col = "black")  +
-      ggplot2::facet_wrap(facets = . ~ ID, nrow = 2, scales = 'free') +
+      ggplot2::facet_wrap(facets = . ~ deployment_id, nrow = 2, scales = 'free') +
       ggplot2::labs(x = 'Time', y = 'Distance from colony (km)') +
       ggplot2::scale_x_datetime(date_labels = '%b-%d') +
       ggplot2::scale_y_continuous(labels = scales::comma) +
@@ -359,6 +394,7 @@ opp_explore_trips <- function(data) {
     readline('Next plot [enter]')
 
   }
+
 }
 
 # -----

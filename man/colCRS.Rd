@@ -11,10 +11,13 @@ colCRS(data)
 }
 \description{
 This function takes a Movebank data object and
-creates an equal-area projection ceneterd on the Movebank
-study site. In the case of central-place foraging seabirds,
-this effectively equates to a CRS centered on the seabird
-colony. The function returns a proj4 string.
+creates an equal-area projection centered on the Movebank
+deploy on locations. In the case of central-place foraging
+seabirds, this effectively equates to a CRS centered on the
+seabird colony. In cases where multiple deploy on locations
+are present within the data it centers of the projection on
+the mean latitude and longitude of all deployment locations.
+The function returns a proj4 string.
 }
 \examples{
 data(murres)
