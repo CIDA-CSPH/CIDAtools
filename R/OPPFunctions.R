@@ -184,7 +184,99 @@ prep_ecotone <- function(data,
 prep_pathtrack <- function(data) {
   data <- data[!is.na(data$Lat > 0) & !is.na(data$Long > 0),]
   data
+}
+
+# -----
+
+#' Define a custom equal-area CRS centered on your study site
+#'
+#' @description This function takes a Movebank data object and
+#' creates an equal-area projection ceneterd on the Movebank
+#' study site. In the case of central-place foraging seabirds,
+#' this effectively equates to a CRS centered on the seabird
+#' colony. The function returns a proj4 string.
+#'
+#' @param data Movebank data as returned by opp_download_data.
+#'
+#' @examples
+#' data(murres)
+#' colCRS(murres)
+#'
+#' @export
+
+colCRS <- function(
+  data # Movebank data object
+  ) {
+  return(paste0(
+    '+proj=laea',
+    ' +lat_0=', mean(data$site$Latitude),
+    ' +lon_0=', mean(data$site$Latitude)
+  ))
+}
+
+# -----
+
+#' Plot raw tracks from Movebank download
+#'
+#' @description Quickly plot Movebank data downloaded
+#' using opp_download_data to visualize tracks.
+#'
+#' @param data Movebank data as returned by opp_download_data.
+#'
+#' @examples
+#' data(murres)
+#' opp_map(murres)
+
+opp_map <- function(data # Data as downloaded from Movebank
+                    ) {
+
+  # Check if maps installed
+  # maps is used to add simple land features to map
+  if (!requireNamespace("maps", quietly = TRUE)) {
+    stop("Packages \"maps\"is needed. Please install it.",
+         call. = FALSE)
   }
+
+  # Make ID factor so it plots w appropriate color scheme
+  data$data$ID <- as.factor(data$data$ID)
+
+  # Create custom equal-area CRS centered on colony
+  colCRS <- colCRS(data)
+
+  # Convert Movebank data df to sf object
+  raw_tracks <- sf::st_as_sf(data$data,
+                             coords = c("Longitude", "Latitude"),
+                             crs = colCRS)
+
+  # Extract bounds
+  coordsets <- sf::st_bbox(raw_tracks)
+
+  trackplot <- ggplot2::ggplot(raw_tracks) +
+    ggplot2::geom_sf(data = raw_tracks,
+                     ggplot2::aes(col = ID),
+                     fill = NA) +
+    ggplot2::coord_sf(xlim = c(coordsets$xmin, coordsets$xmax),
+                      ylim = c(coordsets$ymin, coordsets$ymax),
+                      expand = TRUE) +
+    ggplot2::borders("world", colour = "black", fill = NA) +
+    ggplot2::geom_point(data = data$site,
+                        ggplot2::aes(x = .data$Longitude,
+                                     y = .data$Latitude),
+                        fill = "dark orange",
+                        color = "black",
+                        pch = 21,
+                        size = 2.5) +
+    ggplot2::theme(panel.background = ggplot2::element_rect(fill = "white",
+                                                            colour = "black"),
+                   legend.position = "none",
+                   panel.border = ggplot2::element_rect(colour = "black",
+                                                        fill = NA,
+                                                        size = 1)) +
+    ggplot2::ylab("Latitude") +
+    ggplot2::xlab("Longitude")
+
+  print(trackplot)
+}
 
 # -----
 
