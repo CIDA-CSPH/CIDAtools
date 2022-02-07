@@ -483,6 +483,7 @@ opp_get_trips <- function(data,
 #'
 #'
 #'@param data Trip data ouptut from OPPTools::opp_get_trips().
+#'@param site Vector containing coordinates of the study site, in the same format as site information downloaded using opp_download_data. Column names must be "Latitude" and "Longitude".
 #'@param type List indicating the types of trips to include in interpolation.
 #'Possible values are: 'Complete', 'Incomplete', 'Gappy', and 'Non-trip'. Default is 'Complete'.
 #'@param timestep string indicating time step for track interpolation, eg. '10 min', '1 hour', '1 day'
