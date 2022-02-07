@@ -289,6 +289,78 @@ opp_map <- function(data, # Data as downloaded from Movebank
 
 # -----
 
+#' Explore trip data within given tracks
+#'
+#' @description This function calculates the distance from the
+#' study site for each GPS point within a Movebank object and
+#' then produces track time vs. distance from origin site plots.
+#' Using this function will allow you to assign reasonable
+#' estimates for minimum and maximum trip duration and distance
+#' for the opp_get_trips function.
+#'
+#' @param data Movebank data as returned by opp_download_data.
+#'
+#' @examples
+#' data(murres)
+#' opp_explore_trips(murres)
+#'
+#' @export
+
+opp_explore_trips <- function(data) {
+
+  # Make ID factor so it plots w appropriate color scheme
+  data$data$ID <- as.factor(data$data$ID)
+
+  # Create custom equal-area CRS centered on colony
+  colCRS <- colCRS(data)
+
+  # Extract study site as GPS trips origin
+  origin <- sf::st_as_sf(data$site,
+                         coords = c("Longitude", "Latitude"),
+                         crs = '+proj=longlat') %>%
+    sf::st_transform(crs = colCRS)
+
+  # Convert Movebank data df to sf object
+  raw_tracks <- sf::st_as_sf(data$data,
+                             coords = c("Longitude", "Latitude"),
+                             crs = '+proj=longlat') %>%
+    sf::st_transform(crs = colCRS)
+
+  # Add distance to colony as column
+  raw_tracks$ColDist <- sf::st_distance(raw_tracks$geometry,
+                                        origin,
+                                        by_element = TRUE) %>%
+    as.numeric()
+
+  # Plot 4 plots per page
+  bb <- unique(raw_tracks$ID)
+  idx <- seq(1,length(bb), by = 4)
+
+  for (i in idx) {
+
+    plotdat <- raw_tracks[raw_tracks$ID %in% bb[i:(i+3)],]
+
+    p <- ggplot2::ggplot(plotdat,
+                         ggplot2::aes(x = DateTime,
+                                      y = ColDist/1000)) +
+      ggplot2::geom_point(size = 0.5, col = "black")  +
+      ggplot2::facet_wrap(facets = . ~ ID, nrow = 2, scales = 'free') +
+      ggplot2::labs(x = 'Time', y = 'Distance from colony (km)') +
+      ggplot2::scale_x_datetime(date_labels = '%b-%d') +
+      ggplot2::scale_y_continuous(labels = scales::comma) +
+      ggplot2::theme_light() +
+      ggplot2::theme(
+        text = ggplot2::element_text(size = 8)
+      )
+
+    print(p)
+    readline('Next plot [enter]')
+
+  }
+}
+
+# -----
+
 #' Identify foraging trips in tracking data
 
 #' @description Uses criteria related to distance from colony, trip duration, and size of gaps
