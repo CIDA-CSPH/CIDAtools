@@ -197,6 +197,7 @@ prep_pathtrack <- function(data) {
 #' colony. The function returns a proj4 string.
 #'
 #' @param data Movebank data as returned by opp_download_data.
+#' @param interactive Logical (T/F), do you want to explore tracks with an interative map? Default FALSE.
 #'
 #' @examples
 #' data(murres)
@@ -210,7 +211,7 @@ colCRS <- function(
   return(paste0(
     '+proj=laea',
     ' +lat_0=', mean(data$site$Latitude),
-    ' +lon_0=', mean(data$site$Latitude)
+    ' +lon_0=', mean(data$site$Longitude)
   ))
 }
 
@@ -227,8 +228,8 @@ colCRS <- function(
 #' data(murres)
 #' opp_map(murres)
 
-opp_map <- function(data # Data as downloaded from Movebank
-                    ) {
+opp_map <- function(data, # Data as downloaded from Movebank
+                    interactive = FALSE) {
 
   # Check if maps installed
   # maps is used to add simple land features to map
@@ -236,17 +237,21 @@ opp_map <- function(data # Data as downloaded from Movebank
     stop("Packages \"maps\"is needed. Please install it.",
          call. = FALSE)
   }
-
+  # Check if mapview is installed
+  # mapview is used for interactive mode
+  if (interactive == TRUE){
+    if (!requireNamespace("mapview", quietly = TRUE)) {
+      stop("Packages \"mapview\"is needed. Please install it.",
+           call. = FALSE)
+    }
+  }
   # Make ID factor so it plots w appropriate color scheme
   data$data$ID <- as.factor(data$data$ID)
-
-  # Create custom equal-area CRS centered on colony
-  colCRS <- colCRS(data)
 
   # Convert Movebank data df to sf object
   raw_tracks <- sf::st_as_sf(data$data,
                              coords = c("Longitude", "Latitude"),
-                             crs = colCRS)
+                             crs = '+proj=longlat')
 
   # Extract bounds
   coordsets <- sf::st_bbox(raw_tracks)
@@ -275,7 +280,11 @@ opp_map <- function(data # Data as downloaded from Movebank
     ggplot2::ylab("Latitude") +
     ggplot2::xlab("Longitude")
 
-  print(trackplot)
+  if(interactive == FALSE){
+    print(trackplot)
+  } else {
+    mapview::mapview(raw_tracks, zcol = "ID")
+  }
 }
 
 # -----
