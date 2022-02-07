@@ -555,7 +555,7 @@ opp_get_trips <- function(data,
 #'
 ctcrw_interpolation <- function(data,
                                 site,
-                                type,
+                                type = "Complete",
                                 timestep = '20 min',
                                 showPlots = T,
                                 theta = c(8,2)

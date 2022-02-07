@@ -8,7 +8,7 @@ random walk (ctcrw) model}
 ctcrw_interpolation(
   data,
   site,
-  type,
+  type = "Complete",
   timestep = "20 min",
   showPlots = T,
   theta = c(8, 2)
