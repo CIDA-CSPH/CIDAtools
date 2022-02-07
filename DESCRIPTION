@@ -28,4 +28,5 @@ VignetteBuilder: knitr
 Suggests: 
     rmarkdown,
     knitr,
-    maps
+    maps,
+    mapview
