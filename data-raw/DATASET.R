@@ -1,9 +1,7 @@
 # imports example murre data from Movebank
+# user must provide Movebank credentials to successfully download
 
-murres <- track2KBA::move2KBA(movebankID = 	248994009,
-                              user = rstudioapi::askForPassword(prompt = 'Movebank username:'),
-                              password = rstudioapi::askForPassword(prompt = 'Movebank password:'),
-                              filename = NULL)
+murres <- opp_download_data(248994009)
 
 usethis::use_data(murres, overwrite = T)
 
