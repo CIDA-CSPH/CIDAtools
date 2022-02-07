@@ -17,6 +17,9 @@ ctcrw_interpolation(
 \arguments{
 \item{data}{Trip data ouptut from OPPTools::opp_get_trips().}
 
+\item{site}{Vector containing coordinates of the study site, in the same
+format as site information returned by OPPtools::opp2KBA or track2KBA::move2KBA.}
+
 \item{type}{List indicating the types of trips to include in interpolation.
 Possible values are: 'Complete', 'Incomplete', 'Gappy', and 'Non-trip'. Default is 'Complete'.}
 

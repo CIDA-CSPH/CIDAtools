@@ -356,7 +356,8 @@ opp_explore_trips <- function(data) {
       )
 
     print(p)
-    readline('Next plot [enter]')
+    readline('')
+    message('Press [enter] to see next plot')
 
   }
 }
@@ -459,7 +460,8 @@ opp_get_trips <- function(data,
         )
 
       print(p)
-      readline('Next plot [enter]')
+      readline('')
+      message('Press [enter] to see next plot')
 
     }
   }
@@ -483,7 +485,8 @@ opp_get_trips <- function(data,
 #'
 #'
 #'@param data Trip data ouptut from OPPTools::opp_get_trips().
-#'@param site Vector containing coordinates of the study site, in the same format as site information downloaded using opp_download_data. Column names must be "Latitude" and "Longitude".
+#'@param site Vector containing coordinates of the study site, in the same
+#'format as site information returned by OPPtools::opp2KBA or track2KBA::move2KBA.
 #'@param type List indicating the types of trips to include in interpolation.
 #'Possible values are: 'Complete', 'Incomplete', 'Gappy', and 'Non-trip'. Default is 'Complete'.
 #'@param timestep string indicating time step for track interpolation, eg. '10 min', '1 hour', '1 day'
@@ -610,7 +613,8 @@ ctcrw_interpolation <- function(data,
         )
 
       print(p)
-      readline('Next plot [enter]')
+      readline('')
+      message('Press [enter] to see next plot')
 
     }
   }
