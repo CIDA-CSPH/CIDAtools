@@ -7,9 +7,14 @@
 
 # Function to automatically compute p-vals
 pvalue <- function(x, name, ...) {
-  # Get indicator parameter from environment
-  include_total = mget("include_total", env = parent.frame(7))[[1]]
-  nonParametricVars = mget("nonParametricVars", env = parent.frame(7))[[1]]
+  # Get indicator parameter from dots
+  # print(x)
+  # print(name)
+  # args = list(...)
+  # include_total = args$include_total
+  # nonParametricVars = args$nonParametricVars
+  include_total = mget("include_total", envir = parent.frame(7))[[1]]
+  nonParametricVars = mget("nonParametricVars", envir = parent.frame(7))[[1]]
   # Construct vectors of data y, and groups (strata) g
   if (isTRUE(include_total)) {
     y <- unlist(x[-1]) # -1 to remove `total` group from computations

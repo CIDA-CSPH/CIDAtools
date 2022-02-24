@@ -10,7 +10,7 @@
 #' @param group_labels Higher level labels for you stratified groups
 #' @param group_label_span The span of columns for each group in `group_labels`
 #' @param caption Optional; Adds a caption to the table
-#' @param footnoot Optional; Adds a footnote to the table
+#' @param footnote Optional; Adds a footnote to the table
 #' @param include_total Bool; Default \code{TRUE}. Includes a column of the
 #' summation of all the stratified groups.
 #' @param exclude_mean Bool; Default \code{FALSE}. Excludes the mean
@@ -18,7 +18,7 @@
 #' @param exclude_missing Bool; Default \code{FALSE}. Excludes percentages
 #' of missing data and only returns counts
 #' @param compute_pval Bool; Default \code{FALSE}. Computes p-values for
-#' `inludeVars` and add a p-value column in the table.
+#' `includeVars` and add a p-value column in the table.
 #' @param nonParametricVars Vector; of the variable names you would like
 #' non-parametric testing to be conducted on for p-values returned
 #' @param exportWord Bool; whether to export the table in a nice format into word
@@ -28,6 +28,7 @@
 #' @importFrom table1 table1
 #' @importFrom table1 stats.apply.rounding
 #' @importFrom table1 stats.default
+#' @importFrom stats aov kruskal.test t.test wilcox.test
 #' @import flextable
 #' @keywords table1 tableone characteristic
 #' @examples
@@ -71,7 +72,10 @@
 #' # Table 1 styling the output
 #' # You can also rename the variables like this (name in data = new name)
 #' cida_table1(data = df,
-#'             includeVars = c("Age" = "age", "Sex" = "sex", "Smoking Status" = "smoking", "IL-8"= "Interleukin 8"),
+#'             includeVars = c("Age" = "age",
+#'              "Sex" = "sex",
+#'               "Smoking Status" = "smoking",
+#'                "IL-8"= "Interleukin 8"),
 #'             stratifyBy = "Group",
 #'             group_labels = c("", "Group", ""),
 #'             group_label_span = c(1, 3, 1),
@@ -89,9 +93,16 @@
 #` # Use greek letters for IL-8
 #' cida_table1(data = df,
 #'             includeVars = c("Age" = "age",
-#'                             "Sex" = "<span style = 'background-color:pink;'>sex</span>", # Highlight pink
-#'                             "Smoking Status" = "<span style='color:purple; font-family:Snell Roundhand; font-size:1.5em; font-weight:900;'>smoking status</span>",
-#'                             "IL-8"= "Interleukin 8&beta;"), # &beta; is html for greek lowercase beta
+#'                             "Sex" =
+#'                             "<span style =
+#'                             'background-color:pink;'>sex</span>", # Highlight pink
+#'                             "Smoking Status" =
+#'                             "<span style='color:purple;
+#'                              font-family:Snell Roundhand;
+#'                              font-size:1.5em;
+#'                              font-weight:900;'>smoking status</span>",
+#'                             "IL-8"=
+#'                             "Interleukin 8&beta;"), # &beta; is html for greek lowercase beta
 #'             stratifyBy = "Group",
 #'             group_labels = c("", "Group", ""),
 #'             group_label_span = c(1, 3, 1),
@@ -108,7 +119,9 @@
 #'
 #' cida_table1(data = df,
 #'             includeVars = c("Age" = "age", "Sex" = "sex",
-#'                             "Smoking Status" = "<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+#'                             "Smoking Status" =
+#'                             "<link rel='stylesheet'
+#'                             href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
 #'                             <span>Smoking Status </span>
 #'                             <i class='fa fa-medkit'></i>", # Medkit icon
 #'                             "IL-8"= "Interleukin 8&beta;"),
@@ -143,8 +156,8 @@ cida_table1 <- function(data,
                         compute_pval = FALSE,
                         nonParametricVars = NULL,
                         exportWord = FALSE,
-                        useSciNotation = FALSE,
-                        ...) {
+                        useSciNotation = FALSE
+                        ) {
 
   # Check variables are in provided data
   if (any(!(includeVars %in% colnames(data))) &
