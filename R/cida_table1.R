@@ -15,7 +15,7 @@
 #' summation of all the stratified groups.
 #' @param exclude_mean Bool; Default \code{FALSE}. Excludes the mean
 #' for numerical variables.
-#' @param exclude_missing_percent Bool; Default \code{FALSE}. Excludes percentages
+#' @param exclude_missing Bool; Default \code{FALSE}. Excludes percentages
 #' of missing data and only returns counts
 #' @param compute_pval Bool; Default \code{FALSE}. Computes p-values for
 #' `inludeVars` and add a p-value column in the table.
@@ -62,7 +62,7 @@
 #'             caption = "TABLE 1",
 #'             footnote = "My table 1",
 #'             exclude_mean = TRUE,
-#'             exclude_missing_percent = TRUE,
+#'             exclude_missing = TRUE,
 #'             include_total = TRUE,
 #'             compute_pval = TRUE,
 #'             nonParametricVars = NULL,
@@ -78,7 +78,7 @@
 #'             caption = "TABLE 1",
 #'             footnote = "My table 1",
 #'             exclude_mean = TRUE,
-#'             exclude_missing_percent = TRUE,
+#'             exclude_missing = TRUE,
 #'             include_total = TRUE,
 #'             compute_pval = TRUE,
 #'             nonParametricVars = c("Age", "IL-8"), # Uses original name
@@ -98,7 +98,7 @@
 #'             caption = "TABLE 1",
 #'             footnote = "My table 1",
 #'             exclude_mean = TRUE,
-#'             exclude_missing_percent = TRUE,
+#'             exclude_missing = TRUE,
 #'             include_total = TRUE,
 #'             compute_pval = TRUE,
 #'             nonParametricVars = NULL,
@@ -118,7 +118,7 @@
 #'             caption = "TABLE 1",
 #'             footnote = "My table 1",
 #'             exclude_mean = TRUE,
-#'             exclude_missing_percent = TRUE,
+#'             exclude_missing = TRUE,
 #'             include_total = TRUE,
 #'             compute_pval = TRUE,
 #'             nonParametricVars = NULL,
@@ -139,7 +139,7 @@ cida_table1 <- function(data,
                         footnote = NULL,
                         include_total = TRUE,
                         exclude_mean = FALSE,
-                        exclude_missing_percent = FALSE,
+                        exclude_missing = FALSE,
                         compute_pval = FALSE,
                         nonParametricVars = NULL,
                         exportWord = FALSE,
@@ -210,11 +210,11 @@ cida_table1 <- function(data,
     }
   }
 
-  if (isTRUE(exclude_missing_percent)){
+  if (isTRUE(exclude_missing)){
     my.render.miss <- function(x) {
       with(
         stats.apply.rounding(stats.default(is.na(x)), digits = 1)$Yes,
-        c("Missing" = sprintf("%s", FREQ))
+        c()
       )
     }
   }
@@ -401,16 +401,16 @@ cida_table1 <- function(data,
     "&ensp; Parametric",
     "&ensp; &ensp; Numeric data with 2 groups -- t-test",
     "&ensp; &ensp; Numeric data with more than 2 groups -- ANOVA",
-    "&ensp; Non-parametric",
-    "&ensp; &ensp; Numeric data with 2 groups -- Wilcoxon-test",
-    "&ensp; &ensp; Numeric data with more than 2 groups -- Kruskal-Wallis test",
+    "&ensp; <span style = 'color:blue;'>Non-parametric</span>",
+    "&ensp; &ensp; <span style = 'color:blue;'>Numeric data with 2 groups -- Wilcoxon-test</span>",
+    "&ensp; &ensp; <span style = 'color:blue;'>Numeric data with more than 2 groups -- Kruskal-Wallis test</span>",
     "&ensp; Categorical data with any cell  value < 5 -- Fishers exact test",
     "&ensp; Categerical data with all cell values >= 5 -- Chi-square test of independence"
   )
 
   if (isTRUE(exclude_mean)|isTRUE(useSciNotation)) {
 
-    if (isTRUE(exclude_missing_percent)) {
+    if (isTRUE(exclude_missing)) {
 
       if (isTRUE(compute_pval)) {
 
@@ -438,7 +438,7 @@ cida_table1 <- function(data,
     }
 
   } else {
-    if (isTRUE(exclude_missing_percent)) {
+    if (isTRUE(exclude_missing)) {
 
       if (isTRUE(compute_pval)) {
 

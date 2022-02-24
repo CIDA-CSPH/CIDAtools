@@ -38,7 +38,7 @@ pvalue <- function(x, name, ...) {
         else if (length(levels(g)) > 2) {
             p <- summary(aov(y ~ g))[[1]][["Pr(>F)"]][1]
         } else {
-            p <- t.test(y ~ g)$p.value
+          tryCatch(expr = {p <- t.test(y ~ g)$p.value}, error = function(e){p <<- NA})
         }
 
     } else {
@@ -58,9 +58,23 @@ pvalue <- function(x, name, ...) {
     }
     # Format the p-value, using an HTML entity for the less-than sign.
     # The initial empty string places the output on the line below the variable label.
-    c("", sub(
-        "<",
-        "&lt;",
-        format.pval(round(p, digits = 3), eps = 0.0001, scientific = FALSE)
-    ))
+    c(
+      "",
+      if (name %in% nonParametricVars) {
+        paste(
+          "<span style = 'color:blue;'>", sub(
+            "<",
+            "&lt;",
+            format.pval(round(p, digits = 3), eps = 0.0001, scientific = FALSE)
+          ), "</span>"
+        )
+      } else {
+        sub(
+          "<",
+          "&lt;",
+          format.pval(round(p, digits = 3), eps = 0.0001, scientific = FALSE)
+        )
+      }
+
+    )
 }
