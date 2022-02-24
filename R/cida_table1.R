@@ -145,7 +145,7 @@ cida_table1 <- function(data,
                         exportWord = FALSE,
                         useSciNotation = FALSE,
                         ...) {
-  suppressMessages(require(flextable))
+
   # Check variables are in provided data
   if (any(!(includeVars %in% colnames(data))) &
       if (!is.null(names(includeVars))) {
