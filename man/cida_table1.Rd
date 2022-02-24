@@ -14,7 +14,7 @@ cida_table1(
   footnote = NULL,
   include_total = TRUE,
   exclude_mean = FALSE,
-  exclude_missing_percent = FALSE,
+  exclude_missing = FALSE,
   compute_pval = FALSE,
   nonParametricVars = NULL,
   exportWord = FALSE,
@@ -41,7 +41,7 @@ summation of all the stratified groups.}
 \item{exclude_mean}{Bool; Default \code{FALSE}. Excludes the mean
 for numerical variables.}
 
-\item{exclude_missing_percent}{Bool; Default \code{FALSE}. Excludes percentages
+\item{exclude_missing}{Bool; Default \code{FALSE}. Excludes percentages
 of missing data and only returns counts}
 
 \item{compute_pval}{Bool; Default \code{FALSE}. Computes p-values for
@@ -96,7 +96,7 @@ cida_table1(data = df,
             caption = "TABLE 1",
             footnote = "My table 1",
             exclude_mean = TRUE,
-            exclude_missing_percent = TRUE,
+            exclude_missing = TRUE,
             include_total = TRUE,
             compute_pval = TRUE,
             nonParametricVars = NULL,
@@ -112,7 +112,7 @@ cida_table1(data = df,
             caption = "TABLE 1",
             footnote = "My table 1",
             exclude_mean = TRUE,
-            exclude_missing_percent = TRUE,
+            exclude_missing = TRUE,
             include_total = TRUE,
             compute_pval = TRUE,
             nonParametricVars = c("Age", "IL-8"), # Uses original name
@@ -130,7 +130,7 @@ cida_table1(data = df,
             caption = "TABLE 1",
             footnote = "My table 1",
             exclude_mean = TRUE,
-            exclude_missing_percent = TRUE,
+            exclude_missing = TRUE,
             include_total = TRUE,
             compute_pval = TRUE,
             nonParametricVars = NULL,
@@ -150,7 +150,7 @@ cida_table1(data = df,
             caption = "TABLE 1",
             footnote = "My table 1",
             exclude_mean = TRUE,
-            exclude_missing_percent = TRUE,
+            exclude_missing = TRUE,
             include_total = TRUE,
             compute_pval = TRUE,
             nonParametricVars = NULL,

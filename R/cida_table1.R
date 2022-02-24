@@ -401,9 +401,9 @@ cida_table1 <- function(data,
     "&ensp; Parametric",
     "&ensp; &ensp; Numeric data with 2 groups -- t-test",
     "&ensp; &ensp; Numeric data with more than 2 groups -- ANOVA",
-    "&ensp; <span style = 'color:blue;'>Non-parametric</span>",
-    "&ensp; &ensp; <span style = 'color:blue;'>Numeric data with 2 groups -- Wilcoxon-test</span>",
-    "&ensp; &ensp; <span style = 'color:blue;'>Numeric data with more than 2 groups -- Kruskal-Wallis test</span>",
+    "&ensp; Non-parametric",
+    "&ensp; &ensp; Numeric data with 2 groups -- Wilcoxon-test",
+    "&ensp; &ensp; Numeric data with more than 2 groups -- Kruskal-Wallis test",
     "&ensp; Categorical data with any cell  value < 5 -- Fishers exact test",
     "&ensp; Categerical data with all cell values >= 5 -- Chi-square test of independence"
   )
