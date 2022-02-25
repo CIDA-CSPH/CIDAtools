@@ -54,7 +54,13 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">pvalue</span><span class="op">(</span><span class="va">x</span>, <span class="va">name</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">pvalue</span><span class="op">(</span>
+  <span class="va">x</span>,
+  <span class="va">name</span>,
+  <span class="va">...</span>,
+  include_total <span class="op">=</span> <span class="va">include_total</span>,
+  nonParametricVars <span class="op">=</span> <span class="va">nonParametricVars</span>
+<span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -65,6 +71,13 @@
 <dd><p>the variables name</p></dd>
 <dt>...</dt>
 <dd><p>arguments passed to S3 methods</p></dd>
+<dt>include_total</dt>
+<dd><p>an indicator to whether the overall variable summaries
+are included in the table. Used to ensure that p-values are only computed
+across grouped variables.</p></dd>
+<dt>nonParametricVars</dt>
+<dd><p>a vector of the names of the variables that should
+use non-parametric hypothesis testing</p></dd>
 </dl></div>
 
   </div>
