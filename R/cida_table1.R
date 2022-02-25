@@ -190,7 +190,7 @@ cida_table1 <- function(data,
   }
 
   if (isTRUE(exclude_mean) & isTRUE(useSciNotation)){
-    my.render.cont <- function(x) {
+    my.render.cont <- function(x, ...) {
       with(
         stats.apply.rounding(stats.default(x), digits = 3, rounding.fn = sci_notation),
         c("",
@@ -201,7 +201,7 @@ cida_table1 <- function(data,
   }
 
   else if (isTRUE(exclude_mean)){
-    my.render.cont <- function(x) {
+    my.render.cont <- function(x, ...) {
       with(
         stats.apply.rounding(stats.default(x), digits = 3),
         c("",
@@ -212,7 +212,7 @@ cida_table1 <- function(data,
   }
 
   else if (isTRUE(useSciNotation)){
-    my.render.cont <- function(x) {
+    my.render.cont <- function(x, ...) {
       with(
         stats.apply.rounding(stats.default(x), digits = 3, rounding.fn = sci_notation),
         c("",
@@ -224,7 +224,7 @@ cida_table1 <- function(data,
   }
 
   if (isTRUE(exclude_missing)){
-    my.render.miss <- function(x) {
+    my.render.miss <- function(x, ...) {
       with(
         stats.apply.rounding(stats.default(is.na(x)), digits = 1)$Yes,
         c()
@@ -241,7 +241,9 @@ cida_table1 <- function(data,
                          pvalue),
       topclass = "Rtable1-zebra Rtable1-shade",
       caption = caption,
-      footnote = c(footnote, p_footnote)
+      footnote = c(footnote, p_footnote),
+      include_total=include_total,
+      nonParametricVars=nonParametricVars
     )
   )
 
@@ -257,7 +259,9 @@ cida_table1 <- function(data,
       render.missing = my.render.miss,
       topclass = "Rtable1-zebra Rtable1-shade",
       caption = caption,
-      footnote = c(footnote, p_footnote)
+      footnote = c(footnote, p_footnote),
+      include_total=include_total,
+      nonParametricVars=nonParametricVars
     )
   )
 
@@ -271,7 +275,9 @@ cida_table1 <- function(data,
       render.continuous = my.render.cont,
       topclass = "Rtable1-zebra Rtable1-shade",
       caption = caption,
-      footnote = c(footnote, p_footnote)
+      footnote = c(footnote, p_footnote),
+      include_total=include_total,
+      nonParametricVars=nonParametricVars
     )
   )
 
@@ -285,7 +291,9 @@ cida_table1 <- function(data,
       render.missing = my.render.miss,
       topclass = "Rtable1-zebra Rtable1-shade",
       caption = caption,
-      footnote = c(footnote, p_footnote)
+      footnote = c(footnote, p_footnote),
+      include_total=include_total,
+      nonParametricVars=nonParametricVars
     )
   )
 
@@ -298,7 +306,9 @@ cida_table1 <- function(data,
                          pvalue),
       topclass = "Rtable1-zebra Rtable1-shade",
       caption = caption,
-      footnote = paste(footnote, word_p_footnote, sep = "")
+      footnote = paste(footnote, word_p_footnote, sep = ""),
+      include_total=include_total,
+      nonParametricVars=nonParametricVars
     )
   )
 
@@ -316,7 +326,9 @@ cida_table1 <- function(data,
         topclass =
           "Rtable1-zebra Rtable1-shade",
         caption = caption,
-        footnote = paste(footnote, word_p_footnote, sep = "")
+        footnote = paste(footnote, word_p_footnote, sep = ""),
+        include_total=include_total,
+        nonParametricVars=nonParametricVars
       )
     )
 
@@ -331,7 +343,9 @@ cida_table1 <- function(data,
         my.render.cont,
       topclass = "Rtable1-zebra Rtable1-shade",
       caption = caption,
-      footnote = paste(footnote, word_p_footnote, sep = "")
+      footnote = paste(footnote, word_p_footnote, sep = ""),
+      include_total=include_total,
+      nonParametricVars=nonParametricVars
     )
   )
 
@@ -345,7 +359,9 @@ cida_table1 <- function(data,
       render.missing = my.render.miss,
       topclass = "Rtable1-zebra Rtable1-shade",
       caption = caption,
-      footnote = paste(footnote, word_p_footnote, sep = "")
+      footnote = paste(footnote, word_p_footnote, sep = ""),
+      include_total=include_total,
+      nonParametricVars=nonParametricVars
     )
   )
 

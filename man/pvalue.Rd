@@ -4,7 +4,13 @@
 \alias{pvalue}
 \title{Internal function for p-value calculation in cida_table1}
 \usage{
-pvalue(x, name, ...)
+pvalue(
+  x,
+  name,
+  ...,
+  include_total = include_total,
+  nonParametricVars = nonParametricVars
+)
 }
 \arguments{
 \item{x}{the row_variable}
@@ -12,6 +18,13 @@ pvalue(x, name, ...)
 \item{name}{the variables name}
 
 \item{...}{arguments passed to S3 methods}
+
+\item{include_total}{an indicator to whether the overall variable summaries
+are included in the table. Used to ensure that p-values are only computed
+across grouped variables.}
+
+\item{nonParametricVars}{a vector of the names of the variables that should
+use non-parametric hypothesis testing}
 }
 \description{
 Internal function for p-value calculation in cida_table1

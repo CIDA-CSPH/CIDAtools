@@ -3,18 +3,21 @@
 #' @param x the row_variable
 #' @param name the variables name
 #' @param ... arguments passed to S3 methods
+#' @param include_total an indicator to whether the overall variable summaries
+#' are included in the table. Used to ensure that p-values are only computed
+#' across grouped variables.
+#' @param nonParametricVars a vector of the names of the variables that should
+#' use non-parametric hypothesis testing
 #'
 
 # Function to automatically compute p-vals
-pvalue <- function(x, name, ...) {
-  # Get indicator parameter from dots
-  # print(x)
-  # print(name)
-  # args = list(...)
-  # include_total = args$include_total
-  # nonParametricVars = args$nonParametricVars
-  include_total = mget("include_total", envir = parent.frame(7))[[1]]
-  nonParametricVars = mget("nonParametricVars", envir = parent.frame(7))[[1]]
+pvalue <- function(x,
+                   name,
+                   ...,
+                   include_total = include_total,
+                   nonParametricVars = nonParametricVars) {
+
+
   # Construct vectors of data y, and groups (strata) g
   if (isTRUE(include_total)) {
     y <- unlist(x[-1]) # -1 to remove `total` group from computations
