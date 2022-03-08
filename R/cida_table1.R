@@ -25,9 +25,7 @@
 #' @param useSciNotation Bool; Use scientific notation for large/small continuous variables
 #' @return  an html table with N and percentages for categorical variables, mean
 #' , SD, Median, and Range for numeric variables. Returns p-values if specified.
-#' @importFrom table1 table1
-#' @importFrom table1 stats.apply.rounding
-#' @importFrom table1 stats.default
+#' @importFrom table1 table1 stats.apply.rounding stats.default
 #' @importFrom stats aov kruskal.test t.test wilcox.test
 #' @import flextable
 #' @keywords table1 tableone characteristic
