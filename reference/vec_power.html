@@ -27,7 +27,7 @@ vectorized fashion and return a table of results"><!-- mathjax --><script src="h
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -62,15 +62,298 @@ vectorized fashion and return a table of results</p>
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>fun</dt>
-<dd><p>What is the function to calculate power</p></dd>
+<dd><p>a power calculating function; &lt;function&gt;</p></dd>
 <dt>...</dt>
-<dd><p>other arguments to pass to power_fn, possibly vectorized</p></dd>
+<dd><p>the arguments for the power calculating function assigned to `fun`;</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     <p>tibble of results</p>
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># single non-vectorized output</span></span>
+<span class="r-in"><span class="fu">vec_power</span><span class="op">(</span>fun <span class="op">=</span> <span class="va">power.t.test</span>, n <span class="op">=</span> <span class="fl">100</span>, delta <span class="op">=</span> <span class="fl">1</span>, sd <span class="op">=</span> <span class="fl">1</span>, sig.level <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     n delta sd sig.level     power alternative                        note</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 100     1  1      0.05 0.9999998   two.sided n is number in *each* group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                method</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Two-sample t test power calculation</span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># multiple vectorized output</span></span>
+<span class="r-in"><span class="fu">vec_power</span><span class="op">(</span>fun <span class="op">=</span> <span class="va">power.t.test</span>, n <span class="op">=</span> <span class="fl">80</span><span class="op">:</span><span class="fl">100</span>, delta <span class="op">=</span> <span class="fl">1</span>, sd <span class="op">=</span> <span class="fl">1</span>, sig.level <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      n delta sd sig.level     power alternative                        note</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   80     1  1      0.05 0.9999924   two.sided n is number in *each* group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   81     1  1      0.05 0.9999937   two.sided n is number in *each* group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   82     1  1      0.05 0.9999947   two.sided n is number in *each* group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   83     1  1      0.05 0.9999956   two.sided n is number in *each* group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5   84     1  1      0.05 0.9999963   two.sided n is number in *each* group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6   85     1  1      0.05 0.9999969   two.sided n is number in *each* group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7   86     1  1      0.05 0.9999974   two.sided n is number in *each* group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8   87     1  1      0.05 0.9999979   two.sided n is number in *each* group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9   88     1  1      0.05 0.9999982   two.sided n is number in *each* group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10  89     1  1      0.05 0.9999985   two.sided n is number in *each* group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11  90     1  1      0.05 0.9999988   two.sided n is number in *each* group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12  91     1  1      0.05 0.9999990   two.sided n is number in *each* group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13  92     1  1      0.05 0.9999992   two.sided n is number in *each* group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14  93     1  1      0.05 0.9999993   two.sided n is number in *each* group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15  94     1  1      0.05 0.9999994   two.sided n is number in *each* group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16  95     1  1      0.05 0.9999995   two.sided n is number in *each* group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17  96     1  1      0.05 0.9999996   two.sided n is number in *each* group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18  97     1  1      0.05 0.9999997   two.sided n is number in *each* group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19  98     1  1      0.05 0.9999997   two.sided n is number in *each* group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20  99     1  1      0.05 0.9999998   two.sided n is number in *each* group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21 100     1  1      0.05 0.9999998   two.sided n is number in *each* group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                 method</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15 Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16 Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17 Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18 Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19 Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20 Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21 Two-sample t test power calculation</span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># every combination of arguments vectorized output</span></span>
+<span class="r-in"><span class="fu">vec_power</span><span class="op">(</span>fun <span class="op">=</span> <span class="va">power.t.test</span>, n <span class="op">=</span> <span class="fl">90</span><span class="op">:</span><span class="fl">100</span>, delta <span class="op">=</span> <span class="fl">1</span>, sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, length<span class="op">=</span><span class="fl">10</span><span class="op">)</span>, sig.level <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       n delta        sd sig.level     power alternative</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    90     1 0.0000000      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    91     1 0.0000000      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    92     1 0.0000000      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    93     1 0.0000000      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    94     1 0.0000000      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6    95     1 0.0000000      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7    96     1 0.0000000      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8    97     1 0.0000000      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9    98     1 0.0000000      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10   99     1 0.0000000      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11  100     1 0.0000000      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12   90     1 0.1111111      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13   91     1 0.1111111      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14   92     1 0.1111111      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15   93     1 0.1111111      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16   94     1 0.1111111      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17   95     1 0.1111111      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18   96     1 0.1111111      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19   97     1 0.1111111      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20   98     1 0.1111111      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21   99     1 0.1111111      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22  100     1 0.1111111      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23   90     1 0.2222222      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24   91     1 0.2222222      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25   92     1 0.2222222      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26   93     1 0.2222222      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27   94     1 0.2222222      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28   95     1 0.2222222      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29   96     1 0.2222222      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30   97     1 0.2222222      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31   98     1 0.2222222      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32   99     1 0.2222222      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33  100     1 0.2222222      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34   90     1 0.3333333      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35   91     1 0.3333333      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36   92     1 0.3333333      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37   93     1 0.3333333      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38   94     1 0.3333333      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39   95     1 0.3333333      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40   96     1 0.3333333      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41   97     1 0.3333333      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42   98     1 0.3333333      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43   99     1 0.3333333      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44  100     1 0.3333333      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45   90     1 0.4444444      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46   91     1 0.4444444      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47   92     1 0.4444444      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48   93     1 0.4444444      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49   94     1 0.4444444      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 50   95     1 0.4444444      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51   96     1 0.4444444      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 52   97     1 0.4444444      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 53   98     1 0.4444444      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 54   99     1 0.4444444      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 55  100     1 0.4444444      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 56   90     1 0.5555556      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 57   91     1 0.5555556      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 58   92     1 0.5555556      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 59   93     1 0.5555556      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 60   94     1 0.5555556      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 61   95     1 0.5555556      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 62   96     1 0.5555556      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 63   97     1 0.5555556      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 64   98     1 0.5555556      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 65   99     1 0.5555556      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 66  100     1 0.5555556      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 67   90     1 0.6666667      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 68   91     1 0.6666667      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 69   92     1 0.6666667      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 70   93     1 0.6666667      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 71   94     1 0.6666667      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 72   95     1 0.6666667      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 73   96     1 0.6666667      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 74   97     1 0.6666667      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 75   98     1 0.6666667      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 76   99     1 0.6666667      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 77  100     1 0.6666667      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 78   90     1 0.7777778      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 79   91     1 0.7777778      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 80   92     1 0.7777778      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 81   93     1 0.7777778      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 82   94     1 0.7777778      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 83   95     1 0.7777778      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84   96     1 0.7777778      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 85   97     1 0.7777778      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 86   98     1 0.7777778      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 87   99     1 0.7777778      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 88  100     1 0.7777778      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 89   90     1 0.8888889      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 90   91     1 0.8888889      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 91   92     1 0.8888889      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 92   93     1 0.8888889      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 93   94     1 0.8888889      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 94   95     1 0.8888889      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 95   96     1 0.8888889      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 96   97     1 0.8888889      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 97   98     1 0.8888889      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 98   99     1 0.8888889      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 99  100     1 0.8888889      0.05 1.0000000   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100  90     1 1.0000000      0.05 0.9999988   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 101  91     1 1.0000000      0.05 0.9999990   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 102  92     1 1.0000000      0.05 0.9999992   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 103  93     1 1.0000000      0.05 0.9999993   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 104  94     1 1.0000000      0.05 0.9999994   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 105  95     1 1.0000000      0.05 0.9999995   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 106  96     1 1.0000000      0.05 0.9999996   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 107  97     1 1.0000000      0.05 0.9999997   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 108  98     1 1.0000000      0.05 0.9999997   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 109  99     1 1.0000000      0.05 0.9999998   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 110 100     1 1.0000000      0.05 0.9999998   two.sided</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                            note                              method</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5   n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6   n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7   n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8   n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9   n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 50  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 52  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 53  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 54  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 55  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 56  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 57  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 58  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 59  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 60  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 61  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 62  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 63  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 64  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 65  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 66  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 67  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 68  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 69  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 70  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 71  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 72  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 73  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 74  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 75  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 76  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 77  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 78  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 79  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 80  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 81  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 82  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 83  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 85  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 86  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 87  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 88  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 89  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 90  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 91  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 92  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 93  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 94  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 95  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 96  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 97  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 98  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 99  n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100 n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 101 n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 102 n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 103 n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 104 n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 105 n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 106 n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 107 n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 108 n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 109 n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 110 n is number in *each* group Two-sample t test power calculation</span>
+<span class="r-in"></span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>
