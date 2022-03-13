@@ -232,12 +232,22 @@ sum_ignore_NA <- function(...){
 #' This function allows you to use power.t.test, power.prop.test, etc in
 #' vectorized fashion and return a table of results
 #'
-#' @param fun What is the function to calculate power
-#' @param ... other arguments to pass to power_fn, possibly vectorized
+#' @param fun a power calculating function; <function>
+#' @param ... the arguments for the power calculating function assigned to `fun`;
 #' @return tibble of results
 #'
 #' @importFrom generics tidy
 #' @importFrom stats na.omit
+#'
+#' @examples
+#' # single non-vectorized output
+#' vec_power(fun = power.t.test, n = 100, delta = 1, sd = 1, sig.level = 0.05)
+#'
+#' # multiple vectorized output
+#' vec_power(fun = power.t.test, n = 80:100, delta = 1, sd = 1, sig.level = 0.05)
+#'
+#' # every combination of arguments vectorized output
+#' vec_power(fun = power.t.test, n = 90:100, delta = 1, sd = seq(0, 1, length=10), sig.level = 0.05)
 #'
 #' @export
 #'

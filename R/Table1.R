@@ -68,6 +68,7 @@ Table1.data.frame <- function(data, rowvars, colvar, sigfig = 4,
                               emphasis = c('b', 's', 'n'),
                               MedIQR = NULL, asTable = TRUE, lineBreaks = T,
                               tight = TRUE, verbose = FALSE, ...){
+  message("The Table1() function is no longer being maintained and will be deprecated in a future release of CIDAtools. Please use cida_table1() instead.")
   # set the home calling environment
   thisisthehomecallingenvironment <- T
 

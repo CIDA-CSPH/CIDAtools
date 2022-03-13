@@ -7,9 +7,9 @@
 vec_power(fun = stats::power.t.test, ...)
 }
 \arguments{
-\item{fun}{What is the function to calculate power}
+\item{fun}{a power calculating function; <function>}
 
-\item{...}{other arguments to pass to power_fn, possibly vectorized}
+\item{...}{the arguments for the power calculating function assigned to `fun`;}
 }
 \value{
 tibble of results
@@ -17,4 +17,15 @@ tibble of results
 \description{
 This function allows you to use power.t.test, power.prop.test, etc in
 vectorized fashion and return a table of results
+}
+\examples{
+# single non-vectorized output
+vec_power(fun = power.t.test, n = 100, delta = 1, sd = 1, sig.level = 0.05)
+
+# multiple vectorized output
+vec_power(fun = power.t.test, n = 80:100, delta = 1, sd = 1, sig.level = 0.05)
+
+# every combination of arguments vectorized output
+vec_power(fun = power.t.test, n = 90:100, delta = 1, sd = seq(0, 1, length=10), sig.level = 0.05)
+
 }
