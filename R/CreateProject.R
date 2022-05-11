@@ -8,6 +8,7 @@
 #'@param ProjectName Name of project, or "" for blank
 #'@param PI Name of PI and credentials, or "" for blank
 #'@param analyst Name of Analyst(s), or "" for blank
+#'@param location Location of project on CIDA Drive, or "" for blank
 #'
 #'@return This function creates the desired project subdirectories and readmes,
 #'  as well as a standard .gitignore file files. It will not overwrite the file
@@ -18,7 +19,7 @@
 CreateProject <- function(
   template = c('Admin', 'Background', 'Code', 'DataRaw',
                'DataProcessed', 'Dissemination', 'Reports'),
-  path = getwd(), ProjectName = "", PI = "", analyst = "") {
+  path = getwd(), ProjectName = "", PI = "", analyst = "", location = "") {
 
   # has meta been provided?
   meta <- !all(c(ProjectName, PI, analyst) %in% "")
@@ -31,6 +32,7 @@ CreateProject <- function(
   readme <- c(paste0("**Project Name**:", ProjectName, "  "),
               paste0("**PI**:", PI, "  "),
               paste0("**Analyst**:", analyst, "  "),
+              paste0("**Location**:", proj.location.handler(location), "  "),
               "",
               "Details about the folders:",
               '',
@@ -59,7 +61,8 @@ CreateProject <- function(
   # Add .ProjData directory containing metadata
   if(meta){
     dir.create(paste0(path, '/.ProjData'))
-    ProjData <- list(ProjectName = ProjectName, PI = PI, analyst = analyst)
+    ProjData <- list(ProjectName = ProjectName, PI = PI,
+                     analyst = analyst, location = location)
     write.dcf(ProjData, file.path(path, '/.ProjData/Data.dcf'))
   }
 
