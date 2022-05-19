@@ -10,7 +10,8 @@ CreateProject(
   path = getwd(),
   ProjectName = "",
   PI = "",
-  analyst = ""
+  analyst = "",
+  location = ""
 )
 }
 \arguments{
@@ -23,6 +24,8 @@ CreateProject(
 \item{PI}{Name of PI and credentials, or "" for blank}
 
 \item{analyst}{Name of Analyst(s), or "" for blank}
+
+\item{location}{Location of project on CIDA Drive, or "" for blank}
 }
 \value{
 This function creates the desired project subdirectories and readmes,

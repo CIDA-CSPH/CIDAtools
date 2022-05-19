@@ -141,6 +141,34 @@ ProjectPI <- function(){
   return('')
 }
 
+#' Get Project location on CIDA Drive
+#'
+#' @param path (optional) a relative path to a particular place in the project
+#'
+#' @return full (absolute) file path including the project location on CIDA drive
+#' @export
+#'
+#' @examples
+#' # Read data from current project
+#' \dontrun{
+#' df <- read.csv(ProjectLocation("DataRaw/my_proj_data.csv"))
+#' }
+#'
+
+ProjectLocation <- function(path = ''){
+  if(file.exists(file.path('.ProjData/Data.dcf'))){
+    ProjData <- read.dcf(file.path('.ProjData/Data.dcf'), all = T)
+    if('location' %in% names(ProjData)){
+      temp_path <- CIDA_drive_path(ProjData$location)
+      fpath <- file.path(temp_path, path)
+    } else{
+      stop('Project location not found, use SetProjectData("location", x).')
+    }
+  }
+
+  return(fpath)
+}
+
 #' Set data for project
 #'
 #' Allows you to set misc project data parameters
@@ -159,6 +187,9 @@ SetProjectData <- function(Parameter, Value){
   if(length(Value) > 1) {
     warning('Only First String is Used')
     Value <- Value[1]
+  }
+  if(Parameter=='location'){
+    Value <- proj.location.handler(Value)
   }
   if(file.exists(file.path('.ProjData/Data.dcf'))){
     ProjData <- read.dcf(file.path('.ProjData/Data.dcf'), all = T)
