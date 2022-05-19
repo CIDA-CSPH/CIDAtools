@@ -151,7 +151,7 @@ ProjectPI <- function(){
 #' @examples
 #' # Read data from current project
 #' \dontrun{
-#' df <- read.csv(ProjectLocation("DataRaw/my_proj_data.csv”))
+#' df <- read.csv(ProjectLocation("DataRaw/my_proj_data.csv"))
 #' }
 #'
 
