@@ -58,35 +58,46 @@ nonexisting, in which case a full project backup is created.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">BackupProject</span><span class="op">(</span>
-  subdir_to <span class="op">=</span> <span class="st">"Projects"</span>,
-  path_from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,
-  path_to <span class="op">=</span> <span class="cn">NULL</span>,
-  exclude <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">".DS_Store"</span>, <span class="st">".Rproj.user"</span>, <span class="st">".git"</span><span class="op">)</span>,
-  recreate <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">BackupProject</span><span class="op">(</span></span>
+<span>  subdir_to <span class="op">=</span> <span class="st">"Projects"</span>,</span>
+<span>  path_from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  path_to <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  exclude <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">".DS_Store"</span>, <span class="st">".Rproj.user"</span>, <span class="st">".git"</span><span class="op">)</span>,</span>
+<span>  recreate <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>subdir_to</dt>
 <dd><p>Subdirectory within shared drive to back up to</p></dd>
+
+
 <dt>path_from</dt>
 <dd><p>Path from where the folders should be copied (project
 directory location).</p></dd>
+
+
 <dt>path_to</dt>
 <dd><p>Path to where the folders should be copied (P drive, only used
 if specified).</p></dd>
+
+
 <dt>exclude</dt>
 <dd><p>files/folders NOT to be backed up to the P-drive (useful for
 larger files that don't change often). Currently not used.</p></dd>
+
+
 <dt>recreate</dt>
 <dd><p>should backup be created from the ground up?
 (can take longer, but useful for projects with many changes)</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>This function has verbose output to ensure the back up is working, and
+    
+
+<p>This function has verbose output to ensure the back up is working, and
  ultimately returns a success indicator that's returned by file.copy.</p>
     </div>
 
@@ -102,7 +113,7 @@ larger files that don't change often). Currently not used.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

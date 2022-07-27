@@ -56,35 +56,48 @@ within a folder that already exists.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">CreateProject</span><span class="op">(</span>
-  template <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Admin"</span>, <span class="st">"Background"</span>, <span class="st">"Code"</span>, <span class="st">"DataRaw"</span>, <span class="st">"DataProcessed"</span>,
-    <span class="st">"Dissemination"</span>, <span class="st">"Reports"</span><span class="op">)</span>,
-  path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,
-  ProjectName <span class="op">=</span> <span class="st">""</span>,
-  PI <span class="op">=</span> <span class="st">""</span>,
-  analyst <span class="op">=</span> <span class="st">""</span>,
-  location <span class="op">=</span> <span class="st">""</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">CreateProject</span><span class="op">(</span></span>
+<span>  template <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Admin"</span>, <span class="st">"Background"</span>, <span class="st">"Code"</span>, <span class="st">"DataRaw"</span>, <span class="st">"DataProcessed"</span>,</span>
+<span>    <span class="st">"Dissemination"</span>, <span class="st">"Reports"</span><span class="op">)</span>,</span>
+<span>  path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  ProjectName <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  PI <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  analyst <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  location <span class="op">=</span> <span class="st">""</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>template</dt>
 <dd><p>Which subdirectories to create</p></dd>
+
+
 <dt>path</dt>
 <dd><p>Where should they be created? Default is the working directory.</p></dd>
+
+
 <dt>ProjectName</dt>
 <dd><p>Name of project, or "" for blank</p></dd>
+
+
 <dt>PI</dt>
 <dd><p>Name of PI and credentials, or "" for blank</p></dd>
+
+
 <dt>analyst</dt>
 <dd><p>Name of Analyst(s), or "" for blank</p></dd>
+
+
 <dt>location</dt>
 <dd><p>Location of project on CIDA Drive, or "" for blank</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>This function creates the desired project subdirectories and readmes,
+    
+
+<p>This function creates the desired project subdirectories and readmes,
  as well as a standard .gitignore file files. It will not overwrite the file
  however if it does not exist. It does not return anything.</p>
     </div>
@@ -101,7 +114,7 @@ within a folder that already exists.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

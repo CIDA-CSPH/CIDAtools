@@ -56,89 +56,118 @@ an option to stratify by some variable (usually an exposure).</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">cida_table1</span><span class="op">(</span>
-  <span class="va">data</span>,
-  <span class="va">includeVars</span>,
-  <span class="va">stratifyBy</span>,
-  <span class="va">group_labels</span>,
-  <span class="va">group_label_span</span>,
-  caption <span class="op">=</span> <span class="cn">NULL</span>,
-  footnote <span class="op">=</span> <span class="cn">NULL</span>,
-  include_total <span class="op">=</span> <span class="cn">TRUE</span>,
-  exclude_mean <span class="op">=</span> <span class="cn">FALSE</span>,
-  exclude_missing <span class="op">=</span> <span class="cn">FALSE</span>,
-  compute_pval <span class="op">=</span> <span class="cn">FALSE</span>,
-  nonParametricVars <span class="op">=</span> <span class="cn">NULL</span>,
-  exportWord <span class="op">=</span> <span class="cn">FALSE</span>,
-  useSciNotation <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cida_table1</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  <span class="va">includeVars</span>,</span>
+<span>  <span class="va">stratifyBy</span>,</span>
+<span>  <span class="va">group_labels</span>,</span>
+<span>  <span class="va">group_label_span</span>,</span>
+<span>  caption <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  footnote <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  include_total <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  exclude_mean <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  exclude_missing <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  compute_pval <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  nonParametricVars <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  exportWord <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  useSciNotation <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>data</dt>
 <dd><p>A data frame with data</p></dd>
+
+
 <dt>includeVars</dt>
 <dd><p>A vector of variable names you wish to include in the table.</p></dd>
+
+
 <dt>stratifyBy</dt>
 <dd><p>The group by which you wish to stratify your table</p></dd>
+
+
 <dt>group_labels</dt>
 <dd><p>Higher level labels for you stratified groups</p></dd>
+
+
 <dt>group_label_span</dt>
 <dd><p>The span of columns for each group in `group_labels`</p></dd>
+
+
 <dt>caption</dt>
 <dd><p>Optional; Adds a caption to the table</p></dd>
+
+
 <dt>footnote</dt>
 <dd><p>Optional; Adds a footnote to the table</p></dd>
+
+
 <dt>include_total</dt>
 <dd><p>Bool; Default <code>TRUE</code>. Includes a column of the
 summation of all the stratified groups.</p></dd>
+
+
 <dt>exclude_mean</dt>
 <dd><p>Bool; Default <code>FALSE</code>. Excludes the mean
 for numerical variables.</p></dd>
+
+
 <dt>exclude_missing</dt>
 <dd><p>Bool; Default <code>FALSE</code>. Excludes percentages
 of missing data and only returns counts</p></dd>
+
+
 <dt>compute_pval</dt>
 <dd><p>Bool; Default <code>FALSE</code>. Computes p-values for
 `includeVars` and add a p-value column in the table.</p></dd>
+
+
 <dt>nonParametricVars</dt>
 <dd><p>Vector; of the variable names you would like
 non-parametric testing to be conducted on for p-values returned</p></dd>
+
+
 <dt>exportWord</dt>
 <dd><p>Bool; whether to export the table in a nice format into word</p></dd>
+
+
 <dt>useSciNotation</dt>
 <dd><p>Bool; Use scientific notation for large/small continuous variables</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>an html table with N and percentages for categorical variables, mean
+    
+
+<p>an html table with N and percentages for categorical variables, mean
 , SD, Median, and Range for numeric variables. Returns p-values if specified.</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Synthetic data</span></span>
-<span class="r-in"><span class="va">df</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span class="r-in">    `Age` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>,<span class="fl">12</span>,<span class="fl">14</span>,<span class="fl">18</span>,<span class="fl">20</span>,<span class="fl">19</span>,<span class="fl">28</span>,<span class="fl">33</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">    `Sex` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Female"</span>, <span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">    `Smoking Status` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">'Former'</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">'Current'</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">'Never'</span>, <span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">    `IL-8` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fl">35</span>, sd <span class="op">=</span> <span class="fl">7</span><span class="op">)</span>,</span>
-<span class="r-in">    `Group` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">'Control'</span>, <span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">'Heart Disease'</span>, <span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">'Lung Disease'</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">     check.names <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span class="r-in">    <span class="op">)</span></span>
-<span class="r-in"><span class="co"># Table 1 with no p-values</span></span>
-<span class="r-in"><span class="fu">cida_table1</span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>,</span>
-<span class="r-in">            includeVars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Age"</span>, <span class="st">"Sex"</span>, <span class="st">"Smoking Status"</span>, <span class="st">"IL-8"</span><span class="op">)</span>,</span>
-<span class="r-in">            stratifyBy <span class="op">=</span> <span class="st">"Group"</span>,</span>
-<span class="r-in">            group_labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Group"</span><span class="op">)</span>,</span>
-<span class="r-in">            group_label_span <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span>,</span>
-<span class="r-in">            caption <span class="op">=</span> <span class="st">"TABLE 1"</span>,</span>
-<span class="r-in">            footnote <span class="op">=</span> <span class="st">"My table 1"</span>,</span>
-<span class="r-in">            include_total <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span class="r-in">            compute_pval <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span class="r-in">            nonParametricVars <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span class="r-in">            exportWord <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Synthetic data</span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    `Age` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>,<span class="fl">12</span>,<span class="fl">14</span>,<span class="fl">18</span>,<span class="fl">20</span>,<span class="fl">19</span>,<span class="fl">28</span>,<span class="fl">33</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    `Sex` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Female"</span>, <span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    `Smoking Status` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">'Former'</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">'Current'</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">'Never'</span>, <span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    `IL-8` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fl">35</span>, sd <span class="op">=</span> <span class="fl">7</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    `Group` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">'Control'</span>, <span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">'Heart Disease'</span>, <span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">'Lung Disease'</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>     check.names <span class="op">=</span> <span class="cn">FALSE</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Table 1 with no p-values</span></span></span>
+<span class="r-in"><span><span class="fu">cida_table1</span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>,</span></span>
+<span class="r-in"><span>            includeVars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Age"</span>, <span class="st">"Sex"</span>, <span class="st">"Smoking Status"</span>, <span class="st">"IL-8"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>            stratifyBy <span class="op">=</span> <span class="st">"Group"</span>,</span></span>
+<span class="r-in"><span>            group_labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Group"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>            group_label_span <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>            caption <span class="op">=</span> <span class="st">"TABLE 1"</span>,</span></span>
+<span class="r-in"><span>            footnote <span class="op">=</span> <span class="st">"My table 1"</span>,</span></span>
+<span class="r-in"><span>            include_total <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>            compute_pval <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>            nonParametricVars <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
+<span class="r-in"><span>            exportWord <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;table class="Rtable1-zebra Rtable1-shade"&gt;&lt;caption&gt;TABLE 1&lt;/caption&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;thead&gt;</span>
@@ -242,33 +271,33 @@ non-parametric testing to be conducted on for p-values returned</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;/tr&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tr&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='rowlabel'&gt;Mean (SD)&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td&gt;35.0 (6.23)&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td&gt;32.2 (15.7)&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td&gt;36.5 (1.41)&lt;/td&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td&gt;33.2 (1.80)&lt;/td&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td&gt;36.7 (6.35)&lt;/td&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td&gt;35.3 (2.65)&lt;/td&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;/tr&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tr&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='rowlabel lastrow'&gt;Median [Min, Max]&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;33.3 [29.6, 44.0]&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;31.5 [18.7, 47.2]&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;36.3 [35.3, 38.0]&lt;/td&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;33.7 [30.7, 34.8]&lt;/td&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;36.8 [29.6, 43.8]&lt;/td&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;34.9 [32.5, 38.8]&lt;/td&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;/tr&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;/tbody&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;/table&gt;</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Table 1 with p-values, no mean, no percent missing</span></span>
-<span class="r-in"><span class="fu">cida_table1</span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>,</span>
-<span class="r-in">            includeVars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Age"</span>, <span class="st">"Sex"</span>, <span class="st">"Smoking Status"</span>, <span class="st">"IL-8"</span><span class="op">)</span>,</span>
-<span class="r-in">            stratifyBy <span class="op">=</span> <span class="st">"Group"</span>,</span>
-<span class="r-in">            group_labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">""</span>, <span class="st">"Group"</span>, <span class="st">""</span><span class="op">)</span>,</span>
-<span class="r-in">            group_label_span <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span>,</span>
-<span class="r-in">            caption <span class="op">=</span> <span class="st">"TABLE 1"</span>,</span>
-<span class="r-in">            footnote <span class="op">=</span> <span class="st">"My table 1"</span>,</span>
-<span class="r-in">            exclude_mean <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">            exclude_missing <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">            include_total <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">            compute_pval <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">            nonParametricVars <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span class="r-in">            exportWord <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Table 1 with p-values, no mean, no percent missing</span></span></span>
+<span class="r-in"><span><span class="fu">cida_table1</span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>,</span></span>
+<span class="r-in"><span>            includeVars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Age"</span>, <span class="st">"Sex"</span>, <span class="st">"Smoking Status"</span>, <span class="st">"IL-8"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>            stratifyBy <span class="op">=</span> <span class="st">"Group"</span>,</span></span>
+<span class="r-in"><span>            group_labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">""</span>, <span class="st">"Group"</span>, <span class="st">""</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>            group_label_span <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>            caption <span class="op">=</span> <span class="st">"TABLE 1"</span>,</span></span>
+<span class="r-in"><span>            footnote <span class="op">=</span> <span class="st">"My table 1"</span>,</span></span>
+<span class="r-in"><span>            exclude_mean <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>            exclude_missing <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>            include_total <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>            compute_pval <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>            nonParametricVars <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
+<span class="r-in"><span>            exportWord <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;table class="Rtable1-zebra Rtable1-shade"&gt;&lt;caption&gt;TABLE 1&lt;/caption&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;thead&gt;</span>
@@ -391,33 +420,33 @@ non-parametric testing to be conducted on for p-values returned</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;/tr&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tr&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='rowlabel lastrow'&gt;Median [Min, Max]&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;35.3 [18.7, 47.2]&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;33.3 [29.6, 44.0]&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;31.5 [18.7, 47.2]&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;36.3 [35.3, 38.0]&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;0.824&lt;/td&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;34.4 [29.6, 43.8]&lt;/td&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;33.7 [30.7, 34.8]&lt;/td&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;36.8 [29.6, 43.8]&lt;/td&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;34.9 [32.5, 38.8]&lt;/td&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;0.508&lt;/td&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;/tr&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;/tbody&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;/table&gt;</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Table 1 styling the output</span></span>
-<span class="r-in"><span class="co"># You can also rename the variables like this (name in data = new name)</span></span>
-<span class="r-in"><span class="fu">cida_table1</span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>,</span>
-<span class="r-in">            includeVars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Age"</span> <span class="op">=</span> <span class="st">"age"</span>,</span>
-<span class="r-in">             <span class="st">"Sex"</span> <span class="op">=</span> <span class="st">"sex"</span>,</span>
-<span class="r-in">              <span class="st">"Smoking Status"</span> <span class="op">=</span> <span class="st">"smoking"</span>,</span>
-<span class="r-in">               <span class="st">"IL-8"</span><span class="op">=</span> <span class="st">"Interleukin 8"</span><span class="op">)</span>,</span>
-<span class="r-in">            stratifyBy <span class="op">=</span> <span class="st">"Group"</span>,</span>
-<span class="r-in">            group_labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">""</span>, <span class="st">"Group"</span>, <span class="st">""</span><span class="op">)</span>,</span>
-<span class="r-in">            group_label_span <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span>,</span>
-<span class="r-in">            caption <span class="op">=</span> <span class="st">"TABLE 1"</span>,</span>
-<span class="r-in">            footnote <span class="op">=</span> <span class="st">"My table 1"</span>,</span>
-<span class="r-in">            exclude_mean <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">            exclude_missing <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">            include_total <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">            compute_pval <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">            nonParametricVars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Age"</span>, <span class="st">"IL-8"</span><span class="op">)</span>, <span class="co"># Uses original name</span></span>
-<span class="r-in">            exportWord <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Table 1 styling the output</span></span></span>
+<span class="r-in"><span><span class="co"># You can also rename the variables like this (name in data = new name)</span></span></span>
+<span class="r-in"><span><span class="fu">cida_table1</span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>,</span></span>
+<span class="r-in"><span>            includeVars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Age"</span> <span class="op">=</span> <span class="st">"age"</span>,</span></span>
+<span class="r-in"><span>             <span class="st">"Sex"</span> <span class="op">=</span> <span class="st">"sex"</span>,</span></span>
+<span class="r-in"><span>              <span class="st">"Smoking Status"</span> <span class="op">=</span> <span class="st">"smoking"</span>,</span></span>
+<span class="r-in"><span>               <span class="st">"IL-8"</span><span class="op">=</span> <span class="st">"Interleukin 8"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>            stratifyBy <span class="op">=</span> <span class="st">"Group"</span>,</span></span>
+<span class="r-in"><span>            group_labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">""</span>, <span class="st">"Group"</span>, <span class="st">""</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>            group_label_span <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>            caption <span class="op">=</span> <span class="st">"TABLE 1"</span>,</span></span>
+<span class="r-in"><span>            footnote <span class="op">=</span> <span class="st">"My table 1"</span>,</span></span>
+<span class="r-in"><span>            exclude_mean <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>            exclude_missing <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>            include_total <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>            compute_pval <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>            nonParametricVars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Age"</span>, <span class="st">"IL-8"</span><span class="op">)</span>, <span class="co"># Uses original name</span></span></span>
+<span class="r-in"><span>            exportWord <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;table class="Rtable1-zebra Rtable1-shade"&gt;&lt;caption&gt;TABLE 1&lt;/caption&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;thead&gt;</span>
@@ -540,39 +569,39 @@ non-parametric testing to be conducted on for p-values returned</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;/tr&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tr&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='rowlabel lastrow'&gt;Median [Min, Max]&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;35.3 [18.7, 47.2]&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;33.3 [29.6, 44.0]&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;31.5 [18.7, 47.2]&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;36.3 [35.3, 38.0]&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;0.735&lt;/td&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;34.4 [29.6, 43.8]&lt;/td&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;33.7 [30.7, 34.8]&lt;/td&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;36.8 [29.6, 43.8]&lt;/td&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;34.9 [32.5, 38.8]&lt;/td&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;0.491&lt;/td&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;/tr&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;/tbody&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;/table&gt;</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Tables are html so you can customize them using html and css</span></span>
-<span class="r-in"><span class="fu">cida_table1</span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>,</span>
-<span class="r-in">            includeVars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Age"</span> <span class="op">=</span> <span class="st">"age"</span>,</span>
-<span class="r-in">                            <span class="st">"Sex"</span> <span class="op">=</span></span>
-<span class="r-in">                            <span class="st">"&lt;span style =</span>
-<span class="r-in">                            'background-color:pink;'&gt;sex&lt;/span&gt;"</span>, <span class="co"># Highlight pink</span></span>
-<span class="r-in">                            <span class="st">"Smoking Status"</span> <span class="op">=</span></span>
-<span class="r-in">                            <span class="st">"&lt;span style='color:purple;</span>
-<span class="r-in">                             font-family:Snell Roundhand;</span>
-<span class="r-in">                             font-size:1.5em;</span>
-<span class="r-in">                             font-weight:900;'&gt;smoking status&lt;/span&gt;"</span>,</span>
-<span class="r-in">                            <span class="st">"IL-8"</span><span class="op">=</span></span>
-<span class="r-in">                            <span class="st">"Interleukin 8&amp;beta;"</span><span class="op">)</span>, <span class="co"># &amp;beta; is html for greek lowercase beta</span></span>
-<span class="r-in">            stratifyBy <span class="op">=</span> <span class="st">"Group"</span>,</span>
-<span class="r-in">            group_labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">""</span>, <span class="st">"Group"</span>, <span class="st">""</span><span class="op">)</span>,</span>
-<span class="r-in">            group_label_span <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span>,</span>
-<span class="r-in">            caption <span class="op">=</span> <span class="st">"TABLE 1"</span>,</span>
-<span class="r-in">            footnote <span class="op">=</span> <span class="st">"My table 1"</span>,</span>
-<span class="r-in">            exclude_mean <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">            exclude_missing <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">            include_total <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">            compute_pval <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">            nonParametricVars <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span class="r-in">            exportWord <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Tables are html so you can customize them using html and css</span></span></span>
+<span class="r-in"><span><span class="fu">cida_table1</span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>,</span></span>
+<span class="r-in"><span>            includeVars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Age"</span> <span class="op">=</span> <span class="st">"age"</span>,</span></span>
+<span class="r-in"><span>                            <span class="st">"Sex"</span> <span class="op">=</span></span></span>
+<span class="r-in"><span>                            <span class="st">"&lt;span style =</span></span></span>
+<span class="r-in"><span><span class="st">                            'background-color:pink;'&gt;sex&lt;/span&gt;"</span>, <span class="co"># Highlight pink</span></span></span>
+<span class="r-in"><span>                            <span class="st">"Smoking Status"</span> <span class="op">=</span></span></span>
+<span class="r-in"><span>                            <span class="st">"&lt;span style='color:purple;</span></span></span>
+<span class="r-in"><span><span class="st">                             font-family:Snell Roundhand;</span></span></span>
+<span class="r-in"><span><span class="st">                             font-size:1.5em;</span></span></span>
+<span class="r-in"><span><span class="st">                             font-weight:900;'&gt;smoking status&lt;/span&gt;"</span>,</span></span>
+<span class="r-in"><span>                            <span class="st">"IL-8"</span><span class="op">=</span></span></span>
+<span class="r-in"><span>                            <span class="st">"Interleukin 8&amp;beta;"</span><span class="op">)</span>, <span class="co"># &amp;beta; is html for greek lowercase beta</span></span></span>
+<span class="r-in"><span>            stratifyBy <span class="op">=</span> <span class="st">"Group"</span>,</span></span>
+<span class="r-in"><span>            group_labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">""</span>, <span class="st">"Group"</span>, <span class="st">""</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>            group_label_span <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>            caption <span class="op">=</span> <span class="st">"TABLE 1"</span>,</span></span>
+<span class="r-in"><span>            footnote <span class="op">=</span> <span class="st">"My table 1"</span>,</span></span>
+<span class="r-in"><span>            exclude_mean <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>            exclude_missing <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>            include_total <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>            compute_pval <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>            nonParametricVars <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
+<span class="r-in"><span>            exportWord <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;table class="Rtable1-zebra Rtable1-shade"&gt;&lt;caption&gt;TABLE 1&lt;/caption&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;thead&gt;</span>
@@ -699,36 +728,36 @@ non-parametric testing to be conducted on for p-values returned</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;/tr&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tr&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='rowlabel lastrow'&gt;Median [Min, Max]&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;35.3 [18.7, 47.2]&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;33.3 [29.6, 44.0]&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;31.5 [18.7, 47.2]&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;36.3 [35.3, 38.0]&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;0.824&lt;/td&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;34.4 [29.6, 43.8]&lt;/td&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;33.7 [30.7, 34.8]&lt;/td&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;36.8 [29.6, 43.8]&lt;/td&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;34.9 [32.5, 38.8]&lt;/td&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;0.508&lt;/td&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;/tr&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;/tbody&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;/table&gt;</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># You can add icons if you like</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">cida_table1</span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>,</span>
-<span class="r-in">            includeVars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Age"</span> <span class="op">=</span> <span class="st">"age"</span>, <span class="st">"Sex"</span> <span class="op">=</span> <span class="st">"sex"</span>,</span>
-<span class="r-in">                            <span class="st">"Smoking Status"</span> <span class="op">=</span></span>
-<span class="r-in">                            <span class="st">"&lt;link rel='stylesheet'</span>
-<span class="r-in">                            href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'&gt;</span>
-<span class="r-in">                            &lt;span&gt;Smoking Status &lt;/span&gt;</span>
-<span class="r-in">                            &lt;i class='fa fa-medkit'&gt;&lt;/i&gt;"</span>, <span class="co"># Medkit icon</span></span>
-<span class="r-in">                            <span class="st">"IL-8"</span><span class="op">=</span> <span class="st">"Interleukin 8&amp;beta;"</span><span class="op">)</span>,</span>
-<span class="r-in">            stratifyBy <span class="op">=</span> <span class="st">"Group"</span>,</span>
-<span class="r-in">            group_labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">""</span>, <span class="st">"Group"</span>, <span class="st">""</span><span class="op">)</span>,</span>
-<span class="r-in">            group_label_span <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span>,</span>
-<span class="r-in">            caption <span class="op">=</span> <span class="st">"TABLE 1"</span>,</span>
-<span class="r-in">            footnote <span class="op">=</span> <span class="st">"My table 1"</span>,</span>
-<span class="r-in">            exclude_mean <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">            exclude_missing <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">            include_total <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">            compute_pval <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">            nonParametricVars <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span class="r-in">            exportWord <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># You can add icons if you like</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">cida_table1</span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>,</span></span>
+<span class="r-in"><span>            includeVars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Age"</span> <span class="op">=</span> <span class="st">"age"</span>, <span class="st">"Sex"</span> <span class="op">=</span> <span class="st">"sex"</span>,</span></span>
+<span class="r-in"><span>                            <span class="st">"Smoking Status"</span> <span class="op">=</span></span></span>
+<span class="r-in"><span>                            <span class="st">"&lt;link rel='stylesheet'</span></span></span>
+<span class="r-in"><span><span class="st">                            href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'&gt;</span></span></span>
+<span class="r-in"><span><span class="st">                            &lt;span&gt;Smoking Status &lt;/span&gt;</span></span></span>
+<span class="r-in"><span><span class="st">                            &lt;i class='fa fa-medkit'&gt;&lt;/i&gt;"</span>, <span class="co"># Medkit icon</span></span></span>
+<span class="r-in"><span>                            <span class="st">"IL-8"</span><span class="op">=</span> <span class="st">"Interleukin 8&amp;beta;"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>            stratifyBy <span class="op">=</span> <span class="st">"Group"</span>,</span></span>
+<span class="r-in"><span>            group_labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">""</span>, <span class="st">"Group"</span>, <span class="st">""</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>            group_label_span <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>            caption <span class="op">=</span> <span class="st">"TABLE 1"</span>,</span></span>
+<span class="r-in"><span>            footnote <span class="op">=</span> <span class="st">"My table 1"</span>,</span></span>
+<span class="r-in"><span>            exclude_mean <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>            exclude_missing <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>            include_total <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>            compute_pval <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>            nonParametricVars <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
+<span class="r-in"><span>            exportWord <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;table class="Rtable1-zebra Rtable1-shade"&gt;&lt;caption&gt;TABLE 1&lt;/caption&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;thead&gt;</span>
@@ -854,15 +883,15 @@ non-parametric testing to be conducted on for p-values returned</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;/tr&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tr&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='rowlabel lastrow'&gt;Median [Min, Max]&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;35.3 [18.7, 47.2]&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;33.3 [29.6, 44.0]&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;31.5 [18.7, 47.2]&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;36.3 [35.3, 38.0]&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;0.824&lt;/td&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;34.4 [29.6, 43.8]&lt;/td&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;33.7 [30.7, 34.8]&lt;/td&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;36.8 [29.6, 43.8]&lt;/td&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;34.9 [32.5, 38.8]&lt;/td&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;td class='lastrow'&gt;0.508&lt;/td&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;/tr&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;/tbody&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;/table&gt;</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -877,7 +906,7 @@ non-parametric testing to be conducted on for p-values returned</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

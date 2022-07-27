@@ -53,14 +53,14 @@
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a></h2>
 <p>This package contains numerous templates and tools to make life at CIDA (part of the Colorado School of Public Health) happier and more efficient!</p>
 <p>To install <code>CIDAtools</code> on your local machine:</p>
-<pre><code><span class="co"># install.packages("devtools")</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">'CIDA-CSPH/CIDAtools'</span><span class="op">)</span></code></pre>
+<pre><code><span><span class="co"># install.packages("devtools")</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">'CIDA-CSPH/CIDAtools'</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="creating-a-new-project">Creating a new project<a class="anchor" aria-label="anchor" href="#creating-a-new-project"></a></h2>
 <p>After <code>CIDAtools</code> is installed, a new CIDA project can be created using the Rstudio GUI (File&gt;New Project&gt;New Directory&gt;New CIDA Project).</p>
 <p>Or, to create a new project folder structure from the R console, navigate to the main project directory, and run:</p>
-<pre><code><span class="fu"><a href="reference/CreateProject.html">CreateProject</a></span><span class="op">(</span><span class="op">)</span></code></pre>
+<pre><code><span><span class="fu"><a href="reference/CreateProject.html">CreateProject</a></span><span class="op">(</span><span class="op">)</span></span></code></pre>
 <p>Feel free to set the project name, PI, and analyst via the <code>ProjectName</code>, <code>PI</code>, or <code>analyst</code> arguments respectively, and see <code><a href="reference/CreateProject.html">?CreateProject</a></code> for more details. If any of these are specified, they are stored as text in a hidden subdirectory called .ProjData, and can be called in subsequent R code anywhere in the project using <code><a href="reference/ProjectName.html">ProjectName()</a></code>, <code><a href="reference/ProjectPI.html">ProjectPI()</a></code>, and <code><a href="reference/ProjectAnalyst.html">ProjectAnalyst()</a></code>.</p>
 </div>
 <div class="section level2">
@@ -93,7 +93,7 @@
 <p>CIDA project data and reports should be either kept on the CIDA shared drive (the P drive), or backed up (i.e. copied) to the shared drive on a regular basis.</p>
 <p>Since the P drive can sometimes be slow to read/write on, CIDA members can work on a project locally if they regularly back up the project to the P drive. To help with this, we’ve written the function <code>BackupProject</code> which will automatically back up a project folder to the P drive (to the “Projects” subdirectory by default, but this can be specified with the <code>subdir_to</code> argument). Alternatively, the main project folder can simply be copied and pasted to the P drive manually.</p>
 <p>Within a project directory, run:</p>
-<pre><code><span class="fu"><a href="reference/BackupProject.html">BackupProject</a></span><span class="op">(</span><span class="op">)</span></code></pre>
+<pre><code><span><span class="fu"><a href="reference/BackupProject.html">BackupProject</a></span><span class="op">(</span><span class="op">)</span></span></code></pre>
 <p>This will copy over the entire local project (all files and directories) to a project of the same name in the P drive. A backup_info.md file will also be produced that indicates when the backup was performed.</p>
 <p>If the project directory already exists in the P drive, only files/directories that have changed since the last backup will be copied over. This speeds up the process.</p>
 <p>Files located in the backup directory that are not in the project directory are not deleted. This means if you have large files, anytime you rename them and re-run the backup function, the storage needed will double since both files will remain in the backup folder. To avoid this, specify <code>recreate = TRUE</code> to fully recreate the current directory from the ground up.</p>
@@ -135,7 +135,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

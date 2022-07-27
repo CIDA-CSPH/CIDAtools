@@ -56,32 +56,37 @@ vectorized fashion and return a table of results</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">vec_power</span><span class="op">(</span>fun <span class="op">=</span> <span class="fu">stats</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/stats/power.t.test.html" class="external-link">power.t.test</a></span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">vec_power</span><span class="op">(</span>fun <span class="op">=</span> <span class="fu">stats</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/stats/power.t.test.html" class="external-link">power.t.test</a></span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>fun</dt>
 <dd><p>a power calculating function; &lt;function&gt;</p></dd>
+
+
 <dt>...</dt>
 <dd><p>the arguments for the power calculating function assigned to `fun`;</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>tibble of results</p>
+    
+
+<p>tibble of results</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># single non-vectorized output</span></span>
-<span class="r-in"><span class="fu">vec_power</span><span class="op">(</span>fun <span class="op">=</span> <span class="va">power.t.test</span>, n <span class="op">=</span> <span class="fl">100</span>, delta <span class="op">=</span> <span class="fl">1</span>, sd <span class="op">=</span> <span class="fl">1</span>, sig.level <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># single non-vectorized output</span></span></span>
+<span class="r-in"><span><span class="fu">vec_power</span><span class="op">(</span>fun <span class="op">=</span> <span class="va">power.t.test</span>, n <span class="op">=</span> <span class="fl">100</span>, delta <span class="op">=</span> <span class="fl">1</span>, sd <span class="op">=</span> <span class="fl">1</span>, sig.level <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     n delta sd sig.level     power alternative                        note</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 100     1  1      0.05 0.9999998   two.sided n is number in *each* group</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                method</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 Two-sample t test power calculation</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># multiple vectorized output</span></span>
-<span class="r-in"><span class="fu">vec_power</span><span class="op">(</span>fun <span class="op">=</span> <span class="va">power.t.test</span>, n <span class="op">=</span> <span class="fl">80</span><span class="op">:</span><span class="fl">100</span>, delta <span class="op">=</span> <span class="fl">1</span>, sd <span class="op">=</span> <span class="fl">1</span>, sig.level <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># multiple vectorized output</span></span></span>
+<span class="r-in"><span><span class="fu">vec_power</span><span class="op">(</span>fun <span class="op">=</span> <span class="va">power.t.test</span>, n <span class="op">=</span> <span class="fl">80</span><span class="op">:</span><span class="fl">100</span>, delta <span class="op">=</span> <span class="fl">1</span>, sd <span class="op">=</span> <span class="fl">1</span>, sig.level <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      n delta sd sig.level     power alternative                        note</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1   80     1  1      0.05 0.9999924   two.sided n is number in *each* group</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   81     1  1      0.05 0.9999937   two.sided n is number in *each* group</span>
@@ -126,9 +131,9 @@ vectorized fashion and return a table of results</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 19 Two-sample t test power calculation</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 20 Two-sample t test power calculation</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 21 Two-sample t test power calculation</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># every combination of arguments vectorized output</span></span>
-<span class="r-in"><span class="fu">vec_power</span><span class="op">(</span>fun <span class="op">=</span> <span class="va">power.t.test</span>, n <span class="op">=</span> <span class="fl">90</span><span class="op">:</span><span class="fl">100</span>, delta <span class="op">=</span> <span class="fl">1</span>, sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, length<span class="op">=</span><span class="fl">10</span><span class="op">)</span>, sig.level <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># every combination of arguments vectorized output</span></span></span>
+<span class="r-in"><span><span class="fu">vec_power</span><span class="op">(</span>fun <span class="op">=</span> <span class="va">power.t.test</span>, n <span class="op">=</span> <span class="fl">90</span><span class="op">:</span><span class="fl">100</span>, delta <span class="op">=</span> <span class="fl">1</span>, sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, length<span class="op">=</span><span class="fl">10</span><span class="op">)</span>, sig.level <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       n delta        sd sig.level     power alternative</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    90     1 0.0000000      0.05 1.0000000   two.sided</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2    91     1 0.0000000      0.05 1.0000000   two.sided</span>
@@ -351,7 +356,7 @@ vectorized fashion and return a table of results</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 108 n is number in *each* group Two-sample t test power calculation</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 109 n is number in *each* group Two-sample t test power calculation</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 110 n is number in *each* group Two-sample t test power calculation</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -366,7 +371,7 @@ vectorized fashion and return a table of results</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

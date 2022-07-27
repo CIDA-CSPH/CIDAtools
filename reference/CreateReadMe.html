@@ -56,11 +56,11 @@ file structure</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">CreateReadMe</span><span class="op">(</span>
-  template <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Admin"</span>, <span class="st">"Background"</span>, <span class="st">"Code"</span>, <span class="st">"DataRaw"</span>, <span class="st">"DataProcessed"</span>,
-    <span class="st">"Dissemination"</span>, <span class="st">"Reports"</span><span class="op">)</span>,
-  path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">CreateReadMe</span><span class="op">(</span></span>
+<span>  template <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Admin"</span>, <span class="st">"Background"</span>, <span class="st">"Code"</span>, <span class="st">"DataRaw"</span>, <span class="st">"DataProcessed"</span>,</span>
+<span>    <span class="st">"Dissemination"</span>, <span class="st">"Reports"</span><span class="op">)</span>,</span>
+<span>  path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -68,12 +68,17 @@ file structure</p>
     <dl><dt>template</dt>
 <dd><p>Which ReadMe.md files should be created? Default is all. Partial
 matching does work.</p></dd>
+
+
 <dt>path</dt>
 <dd><p>Where should they be created? Default is the working directory.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>This function creates the desired readme files. It will not overwrite the file
+    
+
+<p>This function creates the desired readme files. It will not overwrite the file
 however if it does not exists. It does not return anything.</p>
     </div>
 
@@ -89,7 +94,7 @@ however if it does not exists. It does not return anything.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

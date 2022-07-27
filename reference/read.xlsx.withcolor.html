@@ -58,26 +58,35 @@ each colour column specified.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">read.xlsx.withcolor</span><span class="op">(</span><span class="va">file</span>, <span class="va">colorColumns</span>, sheet <span class="op">=</span> <span class="cn">NULL</span>, header <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">read.xlsx.withcolor</span><span class="op">(</span><span class="va">file</span>, <span class="va">colorColumns</span>, sheet <span class="op">=</span> <span class="cn">NULL</span>, header <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>file</dt>
 <dd><p>the path to the file you intend to read. Can be an xls or xlsx format.</p></dd>
+
+
 <dt>colorColumns</dt>
 <dd><p>column numbers for which you want to read the colour,
 for multiple sheets pass a list for each sheet (see details). For no colour
 columns pass zero.</p></dd>
+
+
 <dt>sheet</dt>
 <dd><p>NULL(default) for all sheets otherwise a vector of sheet numbers
 or names to read.</p></dd>
+
+
 <dt>header</dt>
 <dd><p>should the 1st row be read in as a header? defaults to T.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A data frame for one sheet or a list of data frames for multiple sheets</p>
+    
+
+<p>A data frame for one sheet or a list of data frames for multiple sheets</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -102,7 +111,7 @@ elements will be used where n is the number of sheets with a warning.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

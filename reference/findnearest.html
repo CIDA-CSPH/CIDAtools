@@ -54,38 +54,51 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">findnearest</span><span class="op">(</span>
-  <span class="va">x</span>,
-  <span class="va">y</span>,
-  direction <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"both"</span>, <span class="st">"ascending"</span>, <span class="st">"descending"</span><span class="op">)</span>,
-  returnIndex <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span>
-
-<span class="fu">getlower</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, upper <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">findnearest</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  <span class="va">y</span>,</span>
+<span>  direction <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"both"</span>, <span class="st">"ascending"</span>, <span class="st">"descending"</span><span class="op">)</span>,</span>
+<span>  returnIndex <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">getlower</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, upper <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p>a vector to find matches for</p></dd>
+
+
 <dt>y</dt>
 <dd><p>a vector to find the matches</p></dd>
+
+
 <dt>direction</dt>
 <dd><p>default = both, ascending for only y matches before x and
 descending for only y matches after x.</p></dd>
+
+
 <dt>returnIndex</dt>
 <dd><p>should an index of the mathced y values be returned
 instead of the matched list.</p></dd>
+
+
 <dt>upper</dt>
 <dd><p>upper value?</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a list of length 2 with a y matched to every x, note if direction =
+    
+
+<p>a list of length 2 with a y matched to every x, note if direction =
 'ascending' or 'descending', NAs will be returned for x values with no y
 values before or after, respectively. OR an index of matched y values if
-<code>returnIndex = TRUE</code>.
-indexes of y for each x</p>
+<code>returnIndex = TRUE</code>.</p>
+
+
+<p>indexes of y for each x</p>
     </div>
     <div id="functions">
     <h2>Functions</h2>
@@ -110,7 +123,7 @@ https://stats.stackexchange.com/questions/161379/quickly-finding-nearest-time-ob
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

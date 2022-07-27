@@ -60,25 +60,25 @@ name formatting can be removed with the option: emphasis = 'n'.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">Table1</span><span class="op">(</span><span class="va">data</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for data.frame</span>
-<span class="fu">Table1</span><span class="op">(</span>
-  <span class="va">data</span>,
-  <span class="va">rowvars</span>,
-  <span class="va">colvar</span>,
-  sigfig <span class="op">=</span> <span class="fl">4</span>,
-  rowvar_names <span class="op">=</span> <span class="cn">NULL</span>,
-  incl_missing <span class="op">=</span> <span class="cn">TRUE</span>,
-  incl_pvalues <span class="op">=</span> <span class="cn">FALSE</span>,
-  emphasis <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"b"</span>, <span class="st">"s"</span>, <span class="st">"n"</span><span class="op">)</span>,
-  MedIQR <span class="op">=</span> <span class="cn">NULL</span>,
-  asTable <span class="op">=</span> <span class="cn">TRUE</span>,
-  lineBreaks <span class="op">=</span> <span class="cn">T</span>,
-  tight <span class="op">=</span> <span class="cn">TRUE</span>,
-  verbose <span class="op">=</span> <span class="cn">FALSE</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">Table1</span><span class="op">(</span><span class="va">data</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for data.frame</span></span>
+<span><span class="fu">Table1</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  <span class="va">rowvars</span>,</span>
+<span>  <span class="va">colvar</span>,</span>
+<span>  sigfig <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  rowvar_names <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  incl_missing <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  incl_pvalues <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  emphasis <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"b"</span>, <span class="st">"s"</span>, <span class="st">"n"</span><span class="op">)</span>,</span>
+<span>  MedIQR <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  asTable <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  lineBreaks <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>  tight <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -86,45 +86,74 @@ name formatting can be removed with the option: emphasis = 'n'.</p>
     <dl><dt>data</dt>
 <dd><p>the data frame or design object of the data you which to
 characterize</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Arguments passed through methods to table 1.</p></dd>
+
+
 <dt>rowvars</dt>
 <dd><p>A vector of row positions or names.</p></dd>
+
+
 <dt>colvar</dt>
 <dd><p>The position or name of the variable to stratify by, set
 to <code>NULL</code> for no stratification.(p values cannot be returned if
 <code>NULL</code>)</p></dd>
+
+
 <dt>sigfig</dt>
 <dd><p>The number of significant digits to use for mean, sd, median,
 and IQR.</p></dd>
+
+
 <dt>rowvar_names</dt>
 <dd><p>An optional vector of row names to be used for
 variables. Must be the same length and in the same order as rowvars.</p></dd>
+
+
 <dt>incl_missing</dt>
 <dd><p>Set to <code>TRUE</code> to include missing values (default)</p></dd>
+
+
 <dt>incl_pvalues</dt>
 <dd><p>Set to <code>TRUE</code> to include p values (p values are only
 calculated on non missing observations) (default = <code>FALSE</code>)</p></dd>
+
+
 <dt>emphasis</dt>
 <dd><p>Set to <code>'s'</code> for to indent categories for categorical values,
 <code>'b'</code> to bold just variable names, and <code>'n'</code> for no emphasis.</p></dd>
+
+
 <dt>MedIQR</dt>
 <dd><p>optional vector of continuous variables to return median and
 IQR instead of mean and SD.</p></dd>
+
+
 <dt>asTable</dt>
 <dd><p>should a table (<code>TRUE</code>) or a matrix be returned</p></dd>
+
+
 <dt>lineBreaks</dt>
 <dd><p>should the N be printed on a seperate line from the
 categories. default is <code>TRUE</code> (see details)</p></dd>
+
+
 <dt>tight</dt>
 <dd><p>if <code>TRUE</code> (default) no spaces between numbers and
 parenthesis</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>should both levels of binary variables be printed.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a table/matrix with N and percentages for categorical variables, mean
+    
+
+<p>a table/matrix with N and percentages for categorical variables, mean
 and sd for continuous ones, and median and 25th and 75th percentile for integers.
 If variables are passed via the MedIQR argument,
 median and 25th and 75th percentile is calculated instead for those variable.</p>
@@ -163,7 +192,7 @@ using the survey package are provided.
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>
