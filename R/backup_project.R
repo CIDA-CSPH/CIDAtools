@@ -4,7 +4,8 @@
 #'can either be existing (in which only changed files/folders are updated), or
 #'nonexisting, in which case a full project backup is created.
 #'
-#'@param subdir_to Subdirectory within shared drive to back up to
+#'@param subdir_to Subdirectory within shared drive to back up to.
+#'  Name of directory should match basename of subdir_to.
 #'@param path_from Path from where the folders should be copied (project
 #'  directory location).
 #'@param path_to Path to where the folders should be copied (P drive, only used
@@ -13,36 +14,31 @@
 #'larger files that don't change often). Currently not used.
 #'@param recreate should backup be created from the ground up?
 #' (can take longer, but useful for projects with many changes)
+#' @param data_only should only DataRaw/ and DataProcessed/ be backed up?
 #'
 #'@return This function has verbose output to ensure the back up is working, and
 #'  ultimately returns a success indicator that's returned by file.copy.
 #'
 #'@export
-BackupProject <- function(subdir_to = "Projects",
+backup_project <- function(subdir_to,
                           path_from = getwd(),
                           path_to = NULL,
                           exclude = c(".DS_Store", ".Rproj.user", ".git"),
-                          recreate = FALSE) {
+                          recreate = FALSE,
+                          data_only = FALSE) {
 
   # Check args, make into absolute paths
   path_from <- normalizePath(path_from)
 
   # Get proper path to Shared drive
-  if(is.null(path_to)) {
-    path_to <- file.path("/Volumes/CIDA/", subdir_to)
-    if(tolower(Sys.info()['sysname']) == "windows")
-      path_to <- file.path("P:/CIDA/Shared", subdir_to)
+  if(missing(path_to)) {
+    path_to <- ProjectLocation()
   }
-
-  # Make sure P drive is mounted
-  if(!dir.exists(path_to))
-    stop("'", path_to, "' not found. Is the shared drive mounted?",
-    "\nIf so, consider specifying with 'path_to' arg.")
 
   path_to <- normalizePath(path_to)
 
   ## Check if specific project folder exists on P drive
-  backup_path <- file.path(path_to, basename(path_from))
+  backup_path <- file.path(path_to)
   if(!dir.exists(backup_path)) {
     message("Note: '", backup_path, "' not found; directory was created.")
     dir.create(backup_path)
@@ -83,6 +79,10 @@ BackupProject <- function(subdir_to = "Projects",
                     full.names = T)))
 
     dirs_to_copy <- dirs_to_copy[!(dirs_to_copy %in% dirs_to_exclude)]
+  }
+
+  if(data_only) {
+    warning("data_only option not yet supported")
   }
 
   ## Check if any files can be ignored using time last modified time

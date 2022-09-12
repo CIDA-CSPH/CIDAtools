@@ -141,7 +141,7 @@ ProjectPI <- function(){
   return('')
 }
 
-#' Get Project location on CIDA Drive
+#' Get Project data location on CIDA Drive
 #'
 #' @param path (optional) a relative path to a particular place in the project
 #'
@@ -156,17 +156,29 @@ ProjectPI <- function(){
 #'
 
 ProjectLocation <- function(path = ''){
+
   if(file.exists(file.path('.ProjData/Data.dcf'))){
     ProjData <- read.dcf(file.path('.ProjData/Data.dcf'), all = T)
-    if('location' %in% names(ProjData)){
-      temp_path <- CIDA_drive_path(ProjData$location)
-      fpath <- file.path(temp_path, path)
-    } else{
-      stop('Project location not found, use SetProjectData("location", x).')
+    if('datalocation' %in% names(ProjData)){
+      return(CIDA_drive_path(ProjData$datalocation))
     }
   }
 
-  return(fpath)
+  if(file.exists(file.path('../.ProjData/Data.dcf'))){
+    ProjData <- read.dcf(file.path('../.ProjData/Data.dcf'), all = T)
+    if('datalocation' %in% names(ProjData)){
+      return(CIDA_drive_path(ProjData$datalocation))
+    }
+  }
+  if(file.exists(file.path('../../.ProjData/Data.dcf'))){
+    ProjData <- read.dcf(file.path('../../.ProjData/Data.dcf'), all = T)
+    if('datalocation' %in% names(ProjData)){
+      return(CIDA_drive_path(ProjData$datalocation))
+    }
+  }
+
+  message('Project location not found, use SetProjectData("datalocation", x).')
+  return("")
 }
 
 #' Set data for project
@@ -188,7 +200,7 @@ SetProjectData <- function(Parameter, Value){
     warning('Only First String is Used')
     Value <- Value[1]
   }
-  if(Parameter=='location'){
+  if(Parameter=='datalocation'){
     Value <- proj.location.handler(Value)
   }
   if(file.exists(file.path('.ProjData/Data.dcf'))){

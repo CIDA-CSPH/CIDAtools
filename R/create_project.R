@@ -3,36 +3,43 @@
 #'This function creates the standard project organization structure for CIDA
 #'within a folder that already exists.
 #'
-#'@param template Which subdirectories to create
 #'@param path Where should they be created? Default is the working directory.
+#'@param template Which subdirectories to create
 #'@param ProjectName Name of project, or "" for blank
 #'@param PI Name of PI and credentials, or "" for blank
 #'@param analyst Name of Analyst(s), or "" for blank
-#'@param location Location of project on CIDA Drive, or "" for blank
+#'@param datalocation Location of project on CIDA Drive, or "" for blank
 #'
 #'@return This function creates the desired project subdirectories and readmes,
 #'  as well as a standard .gitignore file files. It will not overwrite the file
 #'  however if it does not exist. It does not return anything.
 #'@keywords project createproject
 #'
+#'@seealso proj_setup() is the internal wrapper for this that gets called when
+#'  using the RStudio GUI to create a project
+#'
 #'@export
-CreateProject <- function(
+CreateProject <- function(path = getwd(),
   template = c('Admin', 'Background', 'Code', 'DataRaw',
                'DataProcessed', 'Dissemination', 'Reports'),
-  path = getwd(), ProjectName = "", PI = "", analyst = "", location = "") {
+  ProjectName = "", PI = "", analyst = "", datalocation = "") {
+
+  if(!dir.exists(path))
+    dir.create(path, recursive = TRUE, showWarnings = FALSE)
 
   # has meta been provided?
-  meta <- !all(c(ProjectName, PI, analyst) %in% "")
+  meta <- !all(c(ProjectName, PI, analyst, datalocation) %in% "")
 
   # set which ReadMe.md files to create
   template <- match.arg(template, several.ok = T)
 
   # Overall readme
 
-  readme <- c(paste0("**Project Name**:", ProjectName, "  "),
-              paste0("**PI**:", PI, "  "),
-              paste0("**Analyst**:", analyst, "  "),
-              paste0("**Location**:", proj.location.handler(location), "  "),
+  readme <- c(paste0("**Project Name**: ", ProjectName, "  "),
+              paste0("**PI**: ", PI, "  "),
+              paste0("**Analyst**: ", analyst, "  "),
+              paste0("**CIDA drive Location**: ", proj.location.handler(datalocation), "  "),
+              paste0("**GitHub Location**: [fill in after setting up remote repository]"),
               "",
               "Details about the folders:",
               '',
@@ -56,13 +63,13 @@ CreateProject <- function(
                con = file.path(path, "ReadMe.md"))
 
   # Create subdirectory readmes
-  CreateReadMe(template = template, path = path)
+  create_readme(template = template, path = path)
 
   # Add .ProjData directory containing metadata
   if(meta){
     dir.create(paste0(path, '/.ProjData'))
     ProjData <- list(ProjectName = ProjectName, PI = PI,
-                     analyst = analyst, location = location)
+                     analyst = analyst, datalocation = datalocation)
     write.dcf(ProjData, file.path(path, '/.ProjData/Data.dcf'))
   }
 
@@ -165,3 +172,108 @@ CreateProject <- function(
    invisible(template)
 }
 
+proj_setup <- function(path, ...){
+  # ensure path exists
+  dots <- list(...)
+  ProjectName <- paste0(path)
+
+  CreateProject(path, ProjectName = paste0(path), PI = dots$PI,
+                analyst = dots$analyst, datalocation = dots$datalocation)
+
+  # for project info
+  dir.create(paste0(path, '/.ProjData'))
+  ProjData <- list(ProjectName = ProjectName, PI = dots$PI, analyst = dots$analyst, datalocation = dots$datalocation)
+  write.dcf(ProjData, file.path(path, '/.ProjData/Data.dcf'))
+
+}
+
+create_readme <- function(template = c('Admin', 'Background', 'Code', 'DataRaw',
+                                      'DataProcessed', 'Dissemination',
+                                      'Reports'), path = getwd()){
+  # set which ReadMe.md files to create
+  template <- match.arg(template, several.ok = T)
+
+  # create list with lines for each template
+  readme <- list()
+
+  readme$Admin <- c("# Admin  ",
+                    "  ",
+                    "This folder contains the scope of work and other relevant files from CIDA admin.  ",
+                    "  ",
+                    "Details about the files:  ",
+                    "  ",
+                    "File | Description",
+                    "---|---------------------------------------------------------------------",
+                    "  ",
+                    "")
+  readme$Background <- c("# Background  ",
+                         "  ",
+                         "This folder contains documents provided by investigators and the data analysis plan.  ",
+                         "  ",
+                         "Details about the files:  ",
+                         "  ",
+                         "File | Description",
+                         "---|---------------------------------------------------------------------",
+                         "  ")
+  readme$Code <- c("This folder contains all the code.  ",
+                   "  ",
+                   "Details about the files in this folder:",
+                   "  ",
+                   "File | Description",
+                   "---|---------------------------------------------------------------------",
+                   "  ")
+  readme$DataProcessed <- c("# Processed Data  ",
+                            "  ",
+                            "Scripts that created the files in this folder:  ",
+                            "  ",
+                            "File | Script | Description",
+                            "---|------------------|---------------------------------------------------",
+                            "  ")
+  readme$DataRaw <- c("# Raw Data",
+                      "  ",
+                      "Details about the files:  ",
+                      "  ",
+                      "File | Details",
+                      "---|---------------------------------------------------------------------",
+                      "    ",
+                      "  ")
+
+  readme$Dissemination <- c("# Dissemination",
+                            "  ",
+                            "This folder contains abstracts, posters, papers and anything else produced for dissemination.  ",
+                            "  ",
+                            "Details about the files:  ",
+                            "  ",
+                            "File | Description",
+                            "---|---------------------------------------------------------------------",
+                            "  ",
+                            "  ")
+  readme$Reports <- c("# Reports",
+                      "  ",
+                      "This folder contains the rmardown scripts and pdf output of reports.  ",
+                      "  ",
+                      "Details about the files:  ",
+                      "  ",
+                      "File | Description",
+                      "---|---------------------------------------------------------------------",
+                      "  ")
+
+  # Function for creating the directory
+  createDir <- function(x){
+    paste0(path, '/', x)
+  }
+
+  createFiles <- function(x){
+    file.path(path, paste0(x, '/ReadMe.md'))
+  }
+
+  readme <- readme[template]
+
+  pathnames <- sapply(names(readme), createDir)
+  dir_created <- lapply(pathnames, dir.create, showWarnings = F, recursive = T)
+  con <- lapply(names(readme), createFiles)
+  doNotOverwrite <- sapply(con, file.exists)
+  readme <- readme[!doNotOverwrite]
+  con <- con[!doNotOverwrite]
+  files_created <- mapply(writeLines, lapply(readme, paste0, collapse = '\n'), con)
+}

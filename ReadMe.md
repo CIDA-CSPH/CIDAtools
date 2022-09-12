@@ -23,11 +23,11 @@ Or, to create a new project folder structure from the R console,
 navigate to the main project directory, and run: 
 
 ```
-CreateProject()
+create_project()
 ```
 
 Feel free to set the project name, PI, and analyst via the `ProjectName`, `PI`, or `analyst`
-arguments respectively, and see `?CreateProject` for more details. If any of these are
+arguments respectively, and see `?create_project` for more details. If any of these are
 specified, they are stored as text in a hidden subdirectory called .ProjData, and can
 be called in subsequent R code anywhere in the project using `ProjectName()`, `ProjectPI()`, and
 `ProjectAnalyst()`. 
@@ -65,11 +65,11 @@ Therefore, CIDA Word reports must have their own subdirectory to start.
 
 CIDA project data and reports should be either kept on the CIDA shared drive (the P drive), or backed up (i.e. copied) to the shared drive on a regular basis. 
 
-Since the P drive can sometimes be slow to read/write on, CIDA members can work on a project locally if they regularly back up the project to the P drive. To help with this, we've written the function `BackupProject` which will automatically back up a project folder to the P drive (to the "Projects" subdirectory by default, but this can be specified with the `subdir_to` argument). Alternatively, the main project folder can simply be copied and pasted to the P drive manually. 
+Since the P drive can sometimes be slow to read/write on, CIDA members can work on a project locally if they regularly back up the project to the P drive. To help with this, we've written the function `backup_project` which will automatically back up a project folder to the P drive (to the "Projects" subdirectory by default, but this can be specified with the `subdir_to` argument). Alternatively, the main project folder can simply be copied and pasted to the P drive manually. 
 
 Within a project directory, run:
 ```
-BackupProject()
+backup_project()
 ```
 
 This will copy over the entire local project (all files and directories) to a project of the same name in the P drive. A backup_info.md file will also be produced that indicates when the backup was performed. 

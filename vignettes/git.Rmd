@@ -1,0 +1,41 @@
+---
+title: "Tracking code in Git/GitHub"
+output: 
+  rmarkdown::html_vignette:
+    tos: yes
+vignette: >
+  %\VignetteIndexEntry{git}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(CIDAtools)
+```
+
+# What is Git?
+
+TBD...
+
+# GitHub?
+
+TBD...
+
+# Using Git at the command line
+
+TBD...
+
+# Using GitKraken
+
+TBD...
+
+# CIDA Git/GitHub FAQ
+
+TBD...

@@ -307,7 +307,7 @@ CIDA_drive_path <- function(path = ""){
   fpath <- file.path(temp_path, path)
 
   if(!dir.exists(fpath) & !file.exists(fpath))
-    warning("nothing found at path, check spelling and ensure drive is mounted")
+    warning("nothing found at path. Check spelling, then ensure drive is mounted and that the directory exists.")
 
   return(file.path(temp_path, path))
 }

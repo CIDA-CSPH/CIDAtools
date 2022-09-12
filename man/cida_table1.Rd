@@ -149,12 +149,12 @@ cida_table1(data = df,
 
 cida_table1(data = df,
             includeVars = c("Age" = "age", "Sex" = "sex",
-                            "Smoking Status" =
-                            "<link rel='stylesheet'
-                            href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
-                            <span>Smoking Status </span>
-                            <i class='fa fa-medkit'></i>", # Medkit icon
-                            "IL-8"= "Interleukin 8&beta;"),
+            "Smoking Status" =
+            "<link rel='stylesheet'
+href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+            <span>Smoking Status </span>
+            <i class='fa fa-medkit'></i>", # Medkit icon
+            "IL-8"= "Interleukin 8&beta;"),
             stratifyBy = "Group",
             group_labels = c("", "Group", ""),
             group_label_span = c(1, 3, 1),

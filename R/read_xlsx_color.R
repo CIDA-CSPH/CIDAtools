@@ -22,7 +22,7 @@
 #' @export
 #' @keywords Excel colour color xlsx
 #'
-read.xlsx.withcolor <- function(file, colorColumns, sheet = NULL, header = T){
+read_xlsx_color <- function(file, colorColumns, sheet = NULL, header = T){
   if(!requireNamespace("xlsx", quietly = TRUE))
     stop("package 'xlsx' is required.")
   if(!is.list(colorColumns) & is.numeric(colorColumns))

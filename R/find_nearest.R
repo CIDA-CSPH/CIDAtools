@@ -18,10 +18,7 @@
 #' https://stats.stackexchange.com/questions/161379/quickly-finding-nearest-time-observation
 #' @export
 #'
-
-
-
-findnearest <- function(x, y,
+find_nearest <- function(x, y,
                         direction = c('both', 'ascending', 'descending'),
                         returnIndex = FALSE) {
   direction <- match.arg(direction)
@@ -62,12 +59,14 @@ findnearest <- function(x, y,
 
 
 
-#' Internal function for findnearest
+#' Internal function for find_nearest
 #'
 #'
+#' @param x first value
+#' @param y second value
 #' @param upper upper value?
 #' @return  indexes of y for each x
-#' @describeIn findnearest function for finding lower(upper) value
+#' @describeIn find_nearest function for finding lower(upper) value
 
 getlower <- function(x, y, upper = FALSE){
   n <- length(y)

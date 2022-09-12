@@ -6,42 +6,16 @@ Parameter: PI
 Widget: TextInput
 Label: Principal Investigator
 Default:
-Position: Right
+Position: Left
 
 Parameter: analyst
 Widget: TextInput
 Label: Analyst
 Default:
-Position: Right
-
-Parameter: git_init
-Widget: CheckboxInput
-Label: Initialize Git Repo?
-Default: On
 Position: Left
 
-Parameter: remote_origin
+Parameter: datalocation
 Widget: TextInput
-Label: Optional: Set Remote Origin
+Label: Optional: Set location on CIDA drive
 Default:
-Position: Right
-
-Parameter:initcommit
-Widget:CheckboxInput
-Label:Initial Commit with ReadMe?
-Default: On
-Position:Left
-
-Parameter: nodata
-Widget: SelectInput
-Label: Exclude Data from git
-Fields: No, By File Type, By Location
-Default: By Location
 Position: Left
-
-Parameter: meta
-Widget: CheckboxInput
-Label: Store Project Data
-Default: On
-Position: Left
-

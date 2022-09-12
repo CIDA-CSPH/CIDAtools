@@ -1,6 +1,6 @@
 Package: CIDAtools
 Title: This package contains tools for CIDA projects
-Version: 0.0.3.0
+Version: 0.1.0
 Authors@R: 
   c(person("CIDA Research Tools Committee", role = c("aut")), 
   person("Ryan", "Peterson", email = "ryan.a.peterson@cuanschutz.edu", role = c("aut", "cre")),
@@ -26,5 +26,5 @@ Suggests:
 License: CC0
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.0
 VignetteBuilder: knitr

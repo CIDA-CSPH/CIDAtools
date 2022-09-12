@@ -1,64 +1,86 @@
 ---
-title: "Report"
-csl: numeric_citations.csl
-subtitle: "**Project**: `r CIDAtools::ProjectName()`  \n**Analyst**: `r CIDAtools::ProjectAnalyst()`   \n**Investigator**(s): `r CIDAtools::ProjectPI()`  \n **Date**: `r paste(format(Sys.Date(), '%B %d, %Y'))`"
+title: 'CIDA: COMPREHENSIVE REPORT'
 output: 
-  word_document:
+  CIDAtools::cida_word_document:
     toc: false
-    reference_docx: word_style.docx 
-bibliography: bib.bib
----
-
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
-library(tidyverse)
-library(knitr)
-library(kableExtra)
-library(arsenal)
+pacman::p_load(CIDAtools, gtsummary, flextable, tidyverse, gtsummary, officedown, kableExtra)
 ```
-
-# Project Summary
+  
+Project title:    
+Submitted to: Client names, department, school or organization    
+Report prepared by: Biostatistician’s names, CIDA information^1^     
+Date:   
+Updates: summary of changes/updates since last report   
 
 # Introduction
+This should be an condensed version of the introduction from the exploratory report
+  
+- High-level overview of study design (approximately one sentence)
+- Reiterate primary, secondary, exploratory, etc. outcomes
+- Summary of the important results
 
-Introduction text, here is a reference: [@mice].
+# Method 
 
-# Methods
+## Study design
+  
+- Study population
+- Type of design of the experiment/study/survey (e.g. factorial, cohort, case-control, cross-sectional, longitudinal, stratified, clustered)
+- Interventions by treatment level and administration route (if applicable) 
+- Power calculation, sample size justification, etc.
 
-Methods text
+## Data
+- Data sources
+- Methodology used to collect data
+- Date/period of data collection
+- Data quality –elements of data collection and pre-processing that could influence data quality
+  - Data collection quality assurance - actions put in place in order to minimize bias and maximize precision at level of data collection should be described
+  - Data quality checking methods (looking for outliers, illogical results, etc.)
+  - If missing data were imputed, then methods used and actions taken to ensure that bias was not introduced and that variance was not compromised should be described
+  - Description of methods which have been adopted to minimize the amount of missing data
+
+## Statistical methods
+  
+- Exploratory methods/exploratory analysis summary
+  - Approaches used (graphical, hypothesis-based (e.g., Shapiro-Wilk), expert opinions)
+  - Data transformation and manipulation
+- The statistical methods used to analyze the outcomes listed in the review of project
+  - Could write it generally (i.e., not in reference to specific outcomes)
+  - List any variables you are adjusting for in your models
+  - Describe any variable selection methods that might be used
+  - Modeling assumptions 
+- Table 1 sometimes has p-values, but could use various methods (parametric vs. nonparametric, continuous vs. categorical, etc.) and these could be specified here
+- Software used for analyses
 
 # Results 
+(write in paragraph form so that they can cut and paste into their manuscript, poster, etc.)
+  
+- Table 1 and primary results
+- Any other relevant tables or results
+- Graphical summaries
+- Interpretation of the results
 
-## Descriptive Statistics
+# Discussions 
+  
+- Further interpretation of the results, perhaps based on discussions with the collaborators/investigators on a project
+- Limitations (i.e., sample size too small, not meeting model assumptions or other caveats to keep in mind)
+- Possible next steps with future analysis
 
-Tables/Figures/Results section
+# References 
+Only include relevant sources that are to be cited in their paper. 
 
-*Figure 1*
-```{r}
-data("cars")
-plot(cars$speed, cars$dist, pch = 20)
-```
-
-*Table 1*
-```{r, results = "asis"}
-
-# See https://cran.r-project.org/web/packages/table1/vignettes/table1-examples.html
-cars$group <- paste0("Group " , rep(1:2,25))
-
-tab1 <- tableby(group~., data = cars)
-summary(tab1)
-```
+# Appendix 
+Information for the investigator to be able to reference for their own understanding. This might include extra figures, graphics, or tables, especially if there are copious amounts of output/results. If it ends up going in the paper, it should probably be moved to the sections above.
 
 
-## Main Analysis
+<br>
+<br>
+<br>
+<br>
+<br>
 
-# Conclusions
-
-Interpretations, discussion
-
-# References
-
-# Appendix
-
+^1^ Please contact CIDA if you have any questions regarding authorship or how to cite the CCTSI grant in your work.
+    
