@@ -8,11 +8,7 @@
 cida_word_document <- function(...){
 
   # Define filepaths
-  logo <- system.file(package = "template", "logo.png")
-  template <- system.file(package = "template", "template.tex")
-
-
-  sty_file <- system.file("rmarkdown/templates/report_word/skeleton", "CIDAStyles.docx", package="CIDAtools")
+  sty_file <- system.file("rmarkdown/", "CIDAStyles.docx", package="CIDAtools")
 
   # supply files to your custom format
   rmarkdown::word_document(..., reference_docx = sty_file)
