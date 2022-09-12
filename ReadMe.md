@@ -1,4 +1,4 @@
-# CIDAtools <a href='https://cida-csph.github.io/CIDAtools'><img src='inst/figures/CIDAtoolshex.png' align="right" height="139" /></a>
+# CIDAtools <a href='https://cida-csph.github.io/CIDAtools'><img src='man/figures/CIDAtoolshex.png' align="right" height="139" /></a>
 
 [![R-CMD-check](https://github.com/CIDA-CSPH/CIDAtools/workflows/R-CMD-check/badge.svg)](https://github.com/CIDA-CSPH/CIDAtools/actions)
 
