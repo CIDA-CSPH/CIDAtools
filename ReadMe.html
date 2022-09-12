@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">CIDAtools</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0</span>
       </span>
     </div>
 
@@ -32,9 +32,15 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
+      <a href="articles/git.html">Tracking code in Git/GitHub</a>
+    </li>
+    <li>
       <a href="articles/sas-macros.html">CIDA SAS Macros</a>
     </li>
   </ul></li>
+<li>
+  <a href="news/index.html">Changelog</a>
+</li>
       </ul><ul class="nav navbar-nav navbar-right"></ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -60,8 +66,8 @@
 <h2 id="creating-a-new-project">Creating a new project<a class="anchor" aria-label="anchor" href="#creating-a-new-project"></a></h2>
 <p>After <code>CIDAtools</code> is installed, a new CIDA project can be created using the Rstudio GUI (File&gt;New Project&gt;New Directory&gt;New CIDA Project).</p>
 <p>Or, to create a new project folder structure from the R console, navigate to the main project directory, and run:</p>
-<pre><code><span><span class="fu"><a href="reference/CreateProject.html">CreateProject</a></span><span class="op">(</span><span class="op">)</span></span></code></pre>
-<p>Feel free to set the project name, PI, and analyst via the <code>ProjectName</code>, <code>PI</code>, or <code>analyst</code> arguments respectively, and see <code><a href="reference/CreateProject.html">?CreateProject</a></code> for more details. If any of these are specified, they are stored as text in a hidden subdirectory called .ProjData, and can be called in subsequent R code anywhere in the project using <code><a href="reference/ProjectName.html">ProjectName()</a></code>, <code><a href="reference/ProjectPI.html">ProjectPI()</a></code>, and <code><a href="reference/ProjectAnalyst.html">ProjectAnalyst()</a></code>.</p>
+<pre><code><span><span class="fu">create_project</span><span class="op">(</span><span class="op">)</span></span></code></pre>
+<p>Feel free to set the project name, PI, and analyst via the <code>ProjectName</code>, <code>PI</code>, or <code>analyst</code> arguments respectively, and see <code>?create_project</code> for more details. If any of these are specified, they are stored as text in a hidden subdirectory called .ProjData, and can be called in subsequent R code anywhere in the project using <code><a href="reference/ProjectName.html">ProjectName()</a></code>, <code><a href="reference/ProjectPI.html">ProjectPI()</a></code>, and <code><a href="reference/ProjectAnalyst.html">ProjectAnalyst()</a></code>.</p>
 </div>
 <div class="section level2">
 <h2 id="creating-a-new-cida-report">Creating a new CIDA report<a class="anchor" aria-label="anchor" href="#creating-a-new-cida-report"></a></h2>
@@ -91,9 +97,9 @@
 <div class="section level2">
 <h2 id="backing-up-cida-projects">Backing up CIDA projects<a class="anchor" aria-label="anchor" href="#backing-up-cida-projects"></a></h2>
 <p>CIDA project data and reports should be either kept on the CIDA shared drive (the P drive), or backed up (i.e. copied) to the shared drive on a regular basis.</p>
-<p>Since the P drive can sometimes be slow to read/write on, CIDA members can work on a project locally if they regularly back up the project to the P drive. To help with this, we’ve written the function <code>BackupProject</code> which will automatically back up a project folder to the P drive (to the “Projects” subdirectory by default, but this can be specified with the <code>subdir_to</code> argument). Alternatively, the main project folder can simply be copied and pasted to the P drive manually.</p>
+<p>Since the P drive can sometimes be slow to read/write on, CIDA members can work on a project locally if they regularly back up the project to the P drive. To help with this, we’ve written the function <code>backup_project</code> which will automatically back up a project folder to the P drive (to the “Projects” subdirectory by default, but this can be specified with the <code>subdir_to</code> argument). Alternatively, the main project folder can simply be copied and pasted to the P drive manually.</p>
 <p>Within a project directory, run:</p>
-<pre><code><span><span class="fu"><a href="reference/BackupProject.html">BackupProject</a></span><span class="op">(</span><span class="op">)</span></span></code></pre>
+<pre><code><span><span class="fu"><a href="reference/backup_project.html">backup_project</a></span><span class="op">(</span><span class="op">)</span></span></code></pre>
 <p>This will copy over the entire local project (all files and directories) to a project of the same name in the P drive. A backup_info.md file will also be produced that indicates when the backup was performed.</p>
 <p>If the project directory already exists in the P drive, only files/directories that have changed since the last backup will be copied over. This speeds up the process.</p>
 <p>Files located in the backup directory that are not in the project directory are not deleted. This means if you have large files, anytime you rename them and re-run the backup function, the storage needed will double since both files will remain in the backup folder. To avoid this, specify <code>recreate = TRUE</code> to fully recreate the current directory from the ground up.</p>

@@ -18,7 +18,7 @@ within a folder that already exists."><!-- mathjax --><script src="https://cdnjs
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CIDAtools</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0</span>
       </span>
     </div>
 
@@ -33,9 +33,15 @@ within a folder that already exists."><!-- mathjax --><script src="https://cdnjs
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/git.html">Tracking code in Git/GitHub</a>
+    </li>
+    <li>
       <a href="../articles/sas-macros.html">CIDA SAS Macros</a>
     </li>
   </ul></li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul><ul class="nav navbar-nav navbar-right"></ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -57,24 +63,24 @@ within a folder that already exists.</p>
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">CreateProject</span><span class="op">(</span></span>
+<span>  path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  template <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Admin"</span>, <span class="st">"Background"</span>, <span class="st">"Code"</span>, <span class="st">"DataRaw"</span>, <span class="st">"DataProcessed"</span>,</span>
 <span>    <span class="st">"Dissemination"</span>, <span class="st">"Reports"</span><span class="op">)</span>,</span>
-<span>  path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  ProjectName <span class="op">=</span> <span class="st">""</span>,</span>
 <span>  PI <span class="op">=</span> <span class="st">""</span>,</span>
 <span>  analyst <span class="op">=</span> <span class="st">""</span>,</span>
-<span>  location <span class="op">=</span> <span class="st">""</span></span>
+<span>  datalocation <span class="op">=</span> <span class="st">""</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>template</dt>
-<dd><p>Which subdirectories to create</p></dd>
-
-
-<dt>path</dt>
+    <dl><dt>path</dt>
 <dd><p>Where should they be created? Default is the working directory.</p></dd>
+
+
+<dt>template</dt>
+<dd><p>Which subdirectories to create</p></dd>
 
 
 <dt>ProjectName</dt>
@@ -89,7 +95,7 @@ within a folder that already exists.</p>
 <dd><p>Name of Analyst(s), or "" for blank</p></dd>
 
 
-<dt>location</dt>
+<dt>datalocation</dt>
 <dd><p>Location of project on CIDA Drive, or "" for blank</p></dd>
 
 </dl></div>
@@ -100,6 +106,11 @@ within a folder that already exists.</p>
 <p>This function creates the desired project subdirectories and readmes,
  as well as a standard .gitignore file files. It will not overwrite the file
  however if it does not exist. It does not return anything.</p>
+    </div>
+    <div id="see-also">
+    <h2>See also</h2>
+    <div class="dont-index"><p>proj_setup() is the internal wrapper for this that gets called when
+ using the RStudio GUI to create a project</p></div>
     </div>
 
   </div>
