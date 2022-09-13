@@ -16,6 +16,5 @@ Position: Left
 
 Parameter: datalocation
 Widget: TextInput
-Label: Optional: Set location on CIDA drive
-Default:
-Position: Left
+Label: Project data location (CIDA/.)
+Default: e.g. Branches/Existing_Branch/this_project
