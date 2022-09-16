@@ -40,9 +40,9 @@ This function finds the nearest y to every x. Y's may be duplicated.
 }
 \section{Functions}{
 \itemize{
-\item \code{getlower}: function for finding lower(upper) value
-}}
+\item \code{getlower()}: function for finding lower(upper) value
 
+}}
 \references{
 This function borrowed heavily from this stack exchange post:
 https://stats.stackexchange.com/questions/161379/quickly-finding-nearest-time-observation

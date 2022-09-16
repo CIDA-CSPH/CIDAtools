@@ -58,6 +58,27 @@ SetProjectPI <- function(PI){
   return(paste('The Project PI has been changed to', PI))
 }
 
+#' Set Project Location
+#'
+#' This function allows you to set the Project's location on the CIDA drive.
+#' This will overwrite the current value if exists.
+#'
+#' @param path A string containing the file path to the project location on CIDA drive
+#' @return A message stating the name has been changed.
+#' @keywords options location ProjData
+#' @export
+#'
+SetProjectLocation <- function(path){
+  if(!is.character(path)) stop('Path must be a character string')
+  if(length(path) > 1) {
+    warning('Only First String is Used')
+    path <- path[1]
+  }
+  path <- proj.location.handler(path)
+  SetProjectData('datalocation', path)
+  return(paste('The Project Location has been changed to', path))
+}
+
 #' Get Project Analyst
 #'
 #' This function returns the Project Analyst Name. If none exists, it
@@ -160,20 +181,23 @@ ProjectLocation <- function(path = ''){
   if(file.exists(file.path('.ProjData/Data.dcf'))){
     ProjData <- read.dcf(file.path('.ProjData/Data.dcf'), all = T)
     if('datalocation' %in% names(ProjData)){
-      return(CIDA_drive_path(ProjData$datalocation))
+      temp_path <- CIDA_drive_path(ProjData$datalocation)
+      return(file.path(temp_path, path))
     }
   }
 
   if(file.exists(file.path('../.ProjData/Data.dcf'))){
     ProjData <- read.dcf(file.path('../.ProjData/Data.dcf'), all = T)
     if('datalocation' %in% names(ProjData)){
-      return(CIDA_drive_path(ProjData$datalocation))
+      temp_path <- CIDA_drive_path(ProjData$datalocation)
+      return(file.path(temp_path, path))
     }
   }
   if(file.exists(file.path('../../.ProjData/Data.dcf'))){
     ProjData <- read.dcf(file.path('../../.ProjData/Data.dcf'), all = T)
     if('datalocation' %in% names(ProjData)){
-      return(CIDA_drive_path(ProjData$datalocation))
+      temp_path <- CIDA_drive_path(ProjData$datalocation)
+      return(file.path(temp_path, path))
     }
   }
 
