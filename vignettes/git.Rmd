@@ -1,41 +1,120 @@
 ---
 title: "Tracking code in Git/GitHub"
 output: 
-  rmarkdown::html_vignette:
-    tos: yes
+  html_document:
+    highlight: espresso
+    number_sections: yes
+    theme: yeti
+    toc: yes
+    toc_depth: 2
+    toc_float: yes
 vignette: >
   %\VignetteIndexEntry{git}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
+```{r, echo=FALSE, out.width='70%', fig.show='hold'}
+logo <- system.file("figures", "sph_cida_wm_blk.png", package="CIDAtools")
+knitr::include_graphics(logo)
 ```
 
-```{r setup}
+---
+
+```{r setup, include=FALSE}
 library(CIDAtools)
 ```
 
-# What is Git?
+# Introduction
 
-TBD...
+## Intro video
 
-# GitHub?
+## What is Git?
 
-TBD...
+## Notes
 
-# Using Git at the command line
+### Main vs Master
 
-TBD...
+### Windows specific
 
-# Using GitKraken
+# Getting Started
 
-TBD...
+## Terminal / Git Bash
 
-# CIDA Git/GitHub FAQ
+## Installing Git
 
-TBD...
+## Creating GitHub Account
+
+## Requesting CIDA GitHub Access
+
+Following account creation, email your username to 
+`person <at> cuanschutz <dot> edu`
+to request access to CIDA's GitHub organization.
+
+## Setting Up SSH
+
+Copy/distill instructions here: 
+<https://docs.github.com/en/authentication/connecting-to-github-with-ssh>
+
+## Setting up SSO
+
+Copy/distill instructions here: 
+<https://docs.github.com/en/enterprise-cloud@latest/authentication/authenticating-with-saml-single-sign-on/about-authentication-with-saml-single-sign-on>
+
+## Creating New Project
+
+1. Create project folder on your local computer by calling 
+`CIDAtools::CreateProject()` in `R`
+2. Initialize git repository by navigating to folder (`cd Path/To/Folder`) then
+using the command `git init`
+3. Stage file changes `git add . `
+3. Create initial commit with `git commit -m "Initial commit"`
+4. Create empty repository on GitHub
+    1. Instructions
+    2. To do
+    3. This
+5. Add remote to local repository with 
+`git remote -v git@github.com:CIDA-CSPH/<your-repository>.git`
+6. Push work to GitHub with `git push origin main`
+
+## Cloning Existing Project
+
+1. Navigate to GitHub remote repository
+2. Click green "Code &or;" button
+3. Click "SSH" then copy link
+4. Clone repository with `git clone git@github.com:CIDA-CSPH/<your-repository>.git`
+
+# Regular Workflow
+
+1. Add and commit changes
+```{bash, eval=FALSE, echo=TRUE}
+cd Path/To/Directory
+git add .
+git commit -m "My commit message"
+```
+2. Pull and merge any changes (see Handling Merge Conflicts below)
+```{bash, eval=FALSE, echo=TRUE}
+git pull origin main
+## Fix any merge conflicts
+git commit
+```
+3. Push all new commits
+```{bash, eval=FALSE, echo=TRUE}
+git push origin main
+```
+
+## Pushing updates
+
+## Handling Merge conflicts
+
+## Branching
+
+# FAQ
+
+# Git Kraken (Legacy)
+
+---
+
+```{r, echo=FALSE, out.width='70%', fig.show='hold'}
+knitr::include_graphics(logo)
+```
