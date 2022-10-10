@@ -1,0 +1,99 @@
+---
+title: "GitKraken Setup"
+author: "Research Tools Committee"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{GitKraken Setup}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  echo = F
+)
+
+library(here)
+library(knitr)
+
+```
+
+
+## Introduction
+
+This vignette will walk through how to set up GitKraken to interface with the CIDA GitHub, allowing you to easily push/pull projects between your working directory and GitHub. 
+
+## Setting up GitKraken
+
+First, you will have to download GitKraken at https://www.gitkraken.com/download. Once installed, you will sign in with the GitHub account associated with the CIDA GitHub. This will take you to the SSO associated with the CIDA GitHub, which you will then authorize and sign onto.
+
+```{r, out.width="100%", out.height="100%"}
+knitr::include_graphics(here("vignettes/gitkraken_vignette/figure0A.png"))
+knitr::include_graphics(here("vignettes/gitkraken_vignette/figure0C.png"))
+```
+
+Once you have logged into GitKraken with you GitHub account, you will need to connect it to GitHub. The default GitKraken screen has a panel called "Integrations": click on GitHub. From here, there are two possibilities: if you click on "Connect to GitHub" it may take you to the SSO again and you can log in that way (slightly repetitive). Or, if prompted to use the OAuth or Personal Access token, you can do the following: go to your "Settings" tab on GitHub, click on "Developer Settings", and then click on "Personal access tokens" to generate a token for 90 days, making sure to select "repo" (along with other scopes as needed).
+
+```{r, out.width="100%", out.height="100%"}
+knitr::include_graphics(here("vignettes/gitkraken_vignette/figure1A.png"))
+knitr::include_graphics(here("vignettes/gitkraken_vignette/figure1B.png"))
+
+knitr::include_graphics(here("vignettes/gitkraken_vignette/figure1C.png"))
+
+knitr::include_graphics(here("vignettes/gitkraken_vignette/figure2A.png"))
+knitr::include_graphics(here("vignettes/gitkraken_vignette/figure2B.png"))
+knitr::include_graphics(here("vignettes/gitkraken_vignette/figure2C.png"))
+```
+
+Ideally, you should be able to automatically connect to GitHub without generating a personal access token, but GitKraken is moderately cursed.
+
+Once you have successfully connected to GitHub, you will then need to generate an SSH key and add to GitHub. To do this, simply click the "Generate SSH key and add to GitHub" button (optionally adding a title to the SSH key if you wish). If this step is successful, you will receive a notification within GitKraken on the lower left, and your screen will now display the SSH key within GitKraken and under the Settings -> SSH and GPG keys tab on your GitHub:
+
+```{r, out.width="100%", out.height="100%"}
+
+knitr::include_graphics(here("vignettes/gitkraken_vignette/figure3A.png"))
+
+knitr::include_graphics(here("vignettes/gitkraken_vignette/figure3B.png"))
+
+knitr::include_graphics(here("vignettes/gitkraken_vignette/figure3C.png"))
+```
+
+Congratulations, you should be successfully linked to the CIDA GitHub! 
+
+From here, you can open, clone, and initiate repositories from the CIDA Github using the, you guessed it, Open a repo, Clone a repo, and Start a local repo options on the home screen:
+
+```{r, out.width="100%", out.height="100%"}
+knitr::include_graphics(here("vignettes/gitkraken_vignette/figure4A.png"))
+```
+
+If you are going to clone a repo, just make sure you are on the GitHub.com section, and that you select the CIDA repository to clone, as well as where you would like to clone it to (H: or P: drives, or elsewhere). 
+
+```{r, out.width="100%", out.height="100%"}
+knitr::include_graphics(here("vignettes/gitkraken_vignette/figure4B.png"))
+
+
+```
+
+First, however, you will need to generate another SSH key on GitKraken to add to your GitHub (at least this is the only way that I can figure). Go to Preferences -> SSH and then generate a new Private/Public Key, or copy the SSH Public Key if you already have one:
+
+```{r, out.width="100%", out.height="100%"}
+
+knitr::include_graphics(here("vignettes/gitkraken_vignette/figure4C.png"))
+```
+
+Then return to your GitHub account, and click on SSH and GPG keys under the settings, click Add new key, and then copy the SSH key into the Key box. You will then need to Authorize it with the SSO. After that, you should be able to clone, open, and initialize your repos!
+
+```{r, out.width="100%", out.height="100%"}
+
+knitr::include_graphics(here("vignettes/gitkraken_vignette/figure4D.png"))
+```
+
+Once you have cloned a repo, you can open it to push/pull any changes. This is done pretty simply via the push or pull commands on the top after opening the repo. 
+
+```{r, out.width="100%", out.height="100%"}
+
+knitr::include_graphics(here("vignettes/gitkraken_vignette/figure5A.png"))
+```
+
+For more details on how to manage pull, push, branching, and other features, visit https://help.gitkraken.com/gitkraken-client/github-gitkraken-client/
