@@ -87,32 +87,363 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">CIDAtools</span><span class="op">)</span></span></code></pre></div>
+<p><img src="../../../_temp/Library/CIDAtools/figures/sph_cida_wm_blk.png" width="70%"></p>
+<hr>
 <div class="section level2">
-<h2 id="what-is-git">What is Git?<a class="anchor" aria-label="anchor" href="#what-is-git"></a>
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>TBD…</p>
+<div class="section level3">
+<h3 id="what-is-git">What is Git?<a class="anchor" aria-label="anchor" href="#what-is-git"></a>
+</h3>
+<p>According to Git’s website, “Git is a free and open source distributed version control system.” So what does that mean? Let’s break it down. First, Similarly to R, Git is available to anyone with a computer and access to the internet free of charge. Anyone can install and use it, and anyone can contribute to the project (if they have the technical know-how).</p>
+<p>As for the second half, a version control system (VCS) is a tool that enables teams as small as a single person or as large as a multinational corporation to track changes in code over time and to integrate changes made by a decentralized team of developers.</p>
+<p>For our purposes, Git enables us to create reproducible analysis code bases, where the full history of the analysis is available to ourselves and those which we choose to share it with.</p>
+</div>
+<div class="section level3">
+<h3 id="what-is-github">What is GitHub?<a class="anchor" aria-label="anchor" href="#what-is-github"></a>
+</h3>
+</div>
+<div class="section level3">
+<h3 id="command-line-basics">Command Line Basics<a class="anchor" aria-label="anchor" href="#command-line-basics"></a>
+</h3>
+<p>In order to use Git from the command line (Terminal or Git Bash), a certain level of basic commands will be needed to navigate the files on your computer. Below is a list of commands that will help you navigate your directories and accomplish basic tasks using the command line.</p>
+<ul>
+<li>
+<code>ls</code> - List subdirectories and files in current directory</li>
+<li>
+<code>pwd</code> - Print working directory</li>
+<li>
+<code>cd</code> - Change directory (i.e., navigate to a different folder)
+<ul>
+<li>
+<code>cd MyFolder</code> - Move to the folder <code>MyFolder</code> located in current working directory</li>
+<li>
+<code>cd Path/To/MyFolder</code> - Move to the folder <code>MyFolder</code> located at <code>Path/To/</code> inside the current working directory</li>
+<li>
+<code>cd ..</code> - Move to parent directory (i.e. one folder back)</li>
+<li>
+<code>cd /</code> - Move to root directory</li>
+<li>
+<code>cd ~</code> - Move to home directory</li>
+</ul>
+</li>
+<li>
+<code>mkdir</code> - Make directory</li>
+<li>
+<code>rm &lt;filename&gt;</code> - Remove file</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="notes">Notes<a class="anchor" aria-label="anchor" href="#notes"></a>
+</h3>
+<div class="section level4">
+<h4 id="terminal-git-bash">Terminal / Git Bash<a class="anchor" aria-label="anchor" href="#terminal-git-bash"></a>
+</h4>
+<p>The instructions which follow attempt to be applicable to both MacOS and Windows platforms. However, some key differences do exist between the two operating systems. In most of these situations we have created separate instructions for Windows and MacOS. However, for sections where MacOS and Windows are functionally the same, only a single section is provided. In these sections, some language used may reference Terminal, and in those cases you should substitute Git Bash if you are using Windows operating system.</p>
+</div>
+<div class="section level4">
+<h4 id="main-vs-master">Main vs Master<a class="anchor" aria-label="anchor" href="#main-vs-master"></a>
+</h4>
+<p>Historically, the default branch in a new Git repository was named <code>master</code>. However, in 2020 a push to remove unnecessary references to slavery led GitHub and other companies to change the default branch name to <code>main</code>. The instructions which follow will assume the default branch name is <code>main</code> and will show you how to setup your local Git configuration to default to <code>main</code>.</p>
+<p>However, due to the relative recency of this change, you may encounter repositories that have <code>master</code> as the primary branch. In such situations, all the instructions which follow will still be applicable, but you will need to substitute <code>main</code> for <code>master</code>.</p>
+</div>
+</div>
 </div>
 <div class="section level2">
-<h2 id="github">GitHub?<a class="anchor" aria-label="anchor" href="#github"></a>
+<h2 id="getting-started">Getting Started<a class="anchor" aria-label="anchor" href="#getting-started"></a>
 </h2>
-<p>TBD…</p>
+<div class="section level3">
+<h3 id="installing-git">Installing Git<a class="anchor" aria-label="anchor" href="#installing-git"></a>
+</h3>
+<div class="section level4">
+<h4 id="macos">MacOS<a class="anchor" aria-label="anchor" href="#macos"></a>
+</h4>
+<p>Open Terminal and run the command <code>git --version</code>. If you don’t have Git installed already, you will be prompted to install. Follow the instructions provided in the Terminal or pop-up window to install Git.</p>
+</div>
+<div class="section level4">
+<h4 id="windows">Windows<a class="anchor" aria-label="anchor" href="#windows"></a>
+</h4>
+<p>Git and Git Bash come included as part of the <a href="https://gitforwindows.org/" class="external-link">Git For Windows</a> package. Download and install Git For Windows like other Windows applications. Once downloaded find the included <code>.exe</code> file and open to execute Git Bash.</p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="creating-github-account">Creating GitHub Account<a class="anchor" aria-label="anchor" href="#creating-github-account"></a>
+</h3>
+<p>Go to <a href="https://github.com/" class="external-link uri">https://github.com/</a> and click <code>Sign Up</code> in the upper right hand corner. Follow the instructions to create an account, choosing an account name that is easily identifiable as belonging to you (i.e. “firstname-lastname” or something similar).</p>
+<p><strong>NOTE:</strong> If you already have a personal GitHub account, you may continue to use it for your work at CIDA <strong>if</strong> your account name is easily identifiable as belonging to you (i.e. if you have an account name like “firstname-lastname” or something similar).</p>
+</div>
+<div class="section level3">
+<h3 id="configure-git">Configure Git<a class="anchor" aria-label="anchor" href="#configure-git"></a>
+</h3>
+<p>To associate your local Git configuration with your name and Email, run the commands below in Terminal or Git Bash. Here, <code>your_email@cuanschutz.edu</code> should be substituted with the email associated with your GitHub account. If you are using a preexisting personal GitHub account, this may or may not end with <code>cuanschutz.edu</code>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">git</span> config --global user.name <span class="st">"Firstname Lastname"</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">git</span> config --global user.email <span class="st">"your_email@cuanschutz.edu"</span></span></code></pre></div>
+<p>Additionally, your local Git should be configured to make <code>main</code> the default branch name. To do so, run the following command in Terminal/GitBash:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">git</span> config --global -add init.defaultBranch main</span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="requesting-cida-github-access">Requesting CIDA GitHub Access<a class="anchor" aria-label="anchor" href="#requesting-cida-github-access"></a>
+</h3>
+<p>Following account creation, send an email containing your GitHub username to <code>ryan &lt;dot&gt; peterson &lt;at&gt; cuanschutz &lt;dot&gt; edu</code> and <code>max &lt;dot&gt; mcgrath &lt;at&gt; cuanschutz &lt;dot&gt; edu</code> to request access to CIDA’s GitHub organization (please send email from your cuanschutz.edu email address).</p>
+</div>
+<div class="section level3">
+<h3 id="setting-up-ssh">Setting Up SSH<a class="anchor" aria-label="anchor" href="#setting-up-ssh"></a>
+</h3>
+<p>The below instructions are up-to-date as of 10/05/22. Newer instructions along with additional troubleshooting may be available from <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh" class="external-link">GitHub</a></p>
+<div class="section level4">
+<h4 id="macos-1">MacOS<a class="anchor" aria-label="anchor" href="#macos-1"></a>
+</h4>
+<ol style="list-style-type: decimal">
+<li>Check for Existing SSH Keys
+<ol style="list-style-type: lower-alpha">
+<li>Open Terminal</li>
+<li>Enter <code>ls -al ~/.ssh</code> to see if existing SSH keys are present by looking for the following filenames:
+<ul>
+<li>id_rsa.pub</li>
+<li>id_ecdsa.pub</li>
+<li>id_ed25519</li>
+</ul>
+</li>
+<li>If you see any of these files present, proceed to Step 3. Otherwise continue with Step 2.</li>
+</ol>
+</li>
+<li>Generate a new SSH key
+<ol style="list-style-type: lower-alpha">
+<li><p>Open Terminal</p></li>
+<li><p>Enter <code>ssh-keygen -t ed25519 -C "your_email@example.com"</code> substituting in the email address associated with your GitHub account</p></li>
+<li><p>When you’re prompted to “Enter a file in which to save the key,” press Enter. This accepts the default file location.</p></li>
+<li><p>At the prompt, type a secure passphrase</p></li>
+<li><p>Start the ssh-agent in the background by running <code>eval "$(ssh-agent -s)"</code></p></li>
+<li>
+<p>Open the configuration file with <code>open ~/.ssh/config</code></p>
+<ul>
+<li>If the file doesn’t exist create it with <code>touch ~/.ssh/config</code> then use the above command to open it</li>
+</ul>
+</li>
+<li>
+<p>Edit <code>~/.ssh/config</code> to contain the following lines:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1"></a><span class="ex">Host</span> *</span>
+<span id="cb3-2"><a href="#cb3-2"></a>  <span class="ex">AddKeysToAgent</span> yes</span>
+<span id="cb3-3"><a href="#cb3-3"></a>  <span class="ex">UseKeychain</span> yes</span>
+<span id="cb3-4"><a href="#cb3-4"></a>  <span class="ex">IdentityFile</span> ~/.ssh/id_ed25519</span></code></pre></div>
+</li>
+<li><p>Add your SSH private key to the ssh-agent and store your password in the keychain by running <code>ssh-add --apple-use-keychain ~/.ssh/id_ed25519</code></p></li>
+</ol>
+</li>
+<li>Add SSH key to GitHub account
+<ol style="list-style-type: lower-alpha">
+<li>Copy the SSH public key to your clipboard with <code>pbcopy &lt; ~/.ssh/id_ed25519.pub</code>
+</li>
+<li>Open GitHub in a web browser, log in</li>
+<li>Go the the upper right hand corner, click your profile photo, and select <strong>Settings</strong>
+</li>
+<li>Select <strong>SSH and GPG keys</strong> in the menu on the left</li>
+<li>Click green <strong>New SSH key</strong> button</li>
+<li>Enter a title for the SSH key in the <strong>Title</strong> field (use descriptive title like “CIDA MacBook Pro”)</li>
+<li>Select <strong>Key type</strong> as “Authentication Key”</li>
+<li>Paste your key into the <strong>Key</strong> field</li>
+<li>Click <strong>Add SSH key</strong>
+</li>
+</ol>
+</li>
+<li>Verify connection
+<ol style="list-style-type: lower-alpha">
+<li>Test access to GitHub SSH with <code>ssh -T git@github.com</code>
+</li>
+<li>If you see the following message, verify that the fingerprint you see matches GitHub’s public key fingerprint (<a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints" class="external-link">link</a>). If it does, type <code>Yes</code>
+</li>
+</ol>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a><span class="op">&gt;</span> <span class="ex">The</span> authenticity of host <span class="st">'github.com (IP ADDRESS)'</span> cant be established.</span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="op">&gt;</span> <span class="ex">RSA</span> key fingerprint is SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8.</span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="op">&gt;</span> <span class="ex">Are</span> you sure you want to continue connecting (yes/no)<span class="ex">?</span></span></code></pre></div>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>Verify that the resulting message contains your username. If you receive a “permission denied” message, see <a href="https://docs.github.com/en/authentication/troubleshooting-ssh/error-permission-denied-publickey" class="external-link">Error: Permission denied (publickey)</a>
+</li>
+</ol>
+</li>
+</ol>
+</div>
+<div class="section level4">
+<h4 id="windows-1">Windows<a class="anchor" aria-label="anchor" href="#windows-1"></a>
+</h4>
+<ol style="list-style-type: decimal">
+<li>In Git Bash, type <code>ssh-keygen</code>
+</li>
+<li>Press enter to save the SSH key to the default location</li>
+<li>Enter a password to password protect your SSH key or leave blank and hit <code>Enter</code> to proceed without a password</li>
+<li>You will recieve a message saying your public key has been saved in <code>c/Users/username/.ssh/id_rsa.pub</code>, type <code>cat c/Users/username/.ssh/id_rsa.pub</code> to output the key</li>
+<li>Copy and paste the key</li>
+<li>Add SSH key to GitHub account
+<ol style="list-style-type: lower-alpha">
+<li>Open GitHub in a web browser, log in</li>
+<li>Go the the upper right hand corner, click your profile photo, and select <strong>Settings</strong>
+</li>
+<li>Select <strong>SSH and GPG keys</strong> in the menu on the left</li>
+<li>Click green <strong>New SSH key</strong> button</li>
+<li>Enter a title for the SSH key in the <strong>Title</strong> field (use descriptive title like “CIDA MacBook Pro”)</li>
+<li>Select <strong>Key type</strong> as “Authentication Key”</li>
+<li>Paste your key into the <strong>Key</strong> field</li>
+<li>Click <strong>Add SSH key</strong>
+</li>
+</ol>
+</li>
+</ol>
+</div>
+</div>
+<div class="section level3">
+<h3 id="setting-up-sso">Setting up SSO<a class="anchor" aria-label="anchor" href="#setting-up-sso"></a>
+</h3>
+<p>Copy/distill instructions here: <a href="https://docs.github.com/en/enterprise-cloud@latest/authentication/authenticating-with-saml-single-sign-on/about-authentication-with-saml-single-sign-on" class="external-link uri">https://docs.github.com/en/enterprise-cloud@latest/authentication/authenticating-with-saml-single-sign-on/about-authentication-with-saml-single-sign-on</a></p>
+<ol style="list-style-type: decimal">
+<li>After being granted access to the CIDA-CSPH GitHub organization and setting up SSH, go to <a href="https://github.com" class="external-link uri">https://github.com</a>, log in</li>
+<li>In the upper-right corner of any page, click your profile photo, then click <strong>Settings</strong>
+</li>
+<li>Select <strong>SSH and GPG keys</strong> in the menu on the left</li>
+<li>To the right of the SSH key you’d like to authorize, click <strong>Configure SSO</strong>. If you don’t see <strong>Configure SSO</strong>, ensure that you have authenticated at least once with the CIDA-CSPH organization by visiting <a href="https://github.com/orgs/CIDA-CSPH/" class="external-link uri">https://github.com/orgs/CIDA-CSPH/</a>, accessing a non-public repository, and signing in with your CU login</li>
+<li>You will see <strong>CIDA-CSPH</strong> listed. Click <strong>Authorize</strong> to the right.</li>
+</ol>
+</div>
+<div class="section level3">
+<h3 id="creating-new-project">Creating New Project<a class="anchor" aria-label="anchor" href="#creating-new-project"></a>
+</h3>
+<ol style="list-style-type: decimal">
+<li>Create project folder on your local computer by calling <code><a href="../reference/CreateProject.html">CIDAtools::CreateProject()</a></code> in <code>R</code>
+</li>
+<li>Initialize git repository by navigating to folder (<code>cd Path/To/Folder</code>) then using the command <code>git init</code>
+</li>
+<li>Stage file changes <code>git add .</code>
+</li>
+<li>Create initial commit with <code>git commit -m "Initial commit"</code>
+</li>
+<li>Create empty repository in CIDA-CSPH GitHub organization
+<ol style="list-style-type: lower-alpha">
+<li>In a web browser, navigate to <a href="https://github.com/orgs/CIDA-CSPH/repositories" class="external-link uri">https://github.com/orgs/CIDA-CSPH/repositories</a>
+</li>
+<li>Sign in using your CU login</li>
+<li>Click the green <code>New repository</code> button</li>
+<li>Enter the name of your repository</li>
+<li>Do <strong>not</strong> add a template, README, .gitignore, or license file</li>
+<li>Click <code>Create repository</code>
+</li>
+</ol>
+</li>
+<li>Add remote to local repository with <code>git remote -v git@github.com:CIDA-CSPH/&lt;your-repository&gt;.git</code> (this SSH link can be copied from the empty GitHub remote repository you’ve just created).</li>
+<li>Push work to GitHub with <code>git push origin main</code>
+</li>
+</ol>
+</div>
+<div class="section level3">
+<h3 id="cloning-existing-project">Cloning Existing Project<a class="anchor" aria-label="anchor" href="#cloning-existing-project"></a>
+</h3>
+<ol style="list-style-type: decimal">
+<li>Navigate to GitHub remote repository</li>
+<li>Click green “Code ∨” button</li>
+<li>Click “SSH” then copy link</li>
+<li>Clone repository with <code>git clone git@github.com:CIDA-CSPH/&lt;your-repository&gt;.git</code>
+</li>
+</ol>
+</div>
 </div>
 <div class="section level2">
-<h2 id="using-git-at-the-command-line">Using Git at the command line<a class="anchor" aria-label="anchor" href="#using-git-at-the-command-line"></a>
+<h2 id="regular-workflow">Regular Workflow<a class="anchor" aria-label="anchor" href="#regular-workflow"></a>
 </h2>
-<p>TBD…</p>
+<ol style="list-style-type: decimal">
+<li>
+<p>Add and commit changes</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a><span class="bu">cd</span> Path/To/Directory</span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="fu">git</span> add .</span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="fu">git</span> commit -m <span class="st">"My commit message"</span></span></code></pre></div>
+</li>
+<li>
+<p>Fetch and merge any changes (see Handling Merge Conflicts below)</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">git</span> fetch origin main</span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="fu">git</span> merge origin/main</span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="co">## Fix any merge conflicts</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="fu">git</span> commit -m <span class="st">"Brief description of changes (&lt;=50 characters)"</span></span></code></pre></div>
+</li>
+<li>
+<p>Push all new commits</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">git</span> push origin main</span></code></pre></div>
+</li>
+</ol>
+<div class="section level3">
+<h3 id="handling-merge-conflicts">Handling Merge conflicts<a class="anchor" aria-label="anchor" href="#handling-merge-conflicts"></a>
+</h3>
+<p>In the case that another user has modified and committed changes to a file that you have modified in one of your recent commits, when you run <code>git pull</code> you may be notified that you have a merge conflict and need to resolve those conflicts before you can push your changes to GitHub. To do so:</p>
+<ol style="list-style-type: decimal">
+<li>
+<p>After running <code>git merge origin/main</code> and being notified that you have merge conflicts, run <code>git status</code> to see which files have conflicts (they will be listed with <code>both modified:</code> in front of them)</p>
+<ol style="list-style-type: lower-alpha">
+<li>Note: On newer version of Git you may receive an error saying “You have divergent branches and need to specify how to reconcile them”</li>
+<li>In this case, you can add an indicator to pull without rebasing with <code>git merge --no-rebase origin/main</code>
+</li>
+</ol>
+</li>
+<li><p>Open those files in a text editor (RStudio, Vim, textEdit, Notepad++, etc.)</p></li>
+<li>
+<p>Here, you will see some sections of code with:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="op">&lt;</span><span class="er">&lt;&lt;&lt;&lt;&lt;&lt;</span><span class="st"> </span>HEAD</span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="co"># Version 1 of Code</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="op">==</span><span class="er">=====</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="co"># Version 2 of Code</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="er">&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span><span class="st"> </span>commit_hash</span></code></pre></div>
+</li>
+<li><p>Here, the section of code between <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code> and <code>=======</code> is the local version of the code, while the code between <code>=======</code> and <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt; commit_hash</code> is the version of the code pulled from the remote (i.e., GitHub)</p></li>
+<li><p>To fix the merge conflict, simply select which version of the code you want to keep and delete the other version along with <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code> and <code>=======</code> and <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt; commit_hash</code>. Note that you may also need to mix and match between the two sections of code, but always delete the conflict markers.</p></li>
+<li><p>Save your changes</p></li>
+<li>
+<p>Return to Terminal/Git Bash and add commit changes</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">git</span> add .</span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="fu">git</span> commit</span></code></pre></div>
+</li>
+</ol>
+</div>
 </div>
 <div class="section level2">
-<h2 id="using-gitkraken">Using GitKraken<a class="anchor" aria-label="anchor" href="#using-gitkraken"></a>
+<h2 id="additional-git-topics">Additional Git Topics<a class="anchor" aria-label="anchor" href="#additional-git-topics"></a>
 </h2>
-<p>TBD…</p>
+<div class="section level3">
+<h3 id="branching">Branching<a class="anchor" aria-label="anchor" href="#branching"></a>
+</h3>
+</div>
+<div class="section level3">
+<h3 id="stashing-changes">Stashing changes<a class="anchor" aria-label="anchor" href="#stashing-changes"></a>
+</h3>
+</div>
+<div class="section level3">
+<h3 id="helpful-git-commands">Helpful Git Commands<a class="anchor" aria-label="anchor" href="#helpful-git-commands"></a>
+</h3>
+</div>
 </div>
 <div class="section level2">
-<h2 id="cida-gitgithub-faq">CIDA Git/GitHub FAQ<a class="anchor" aria-label="anchor" href="#cida-gitgithub-faq"></a>
+<h2 id="faq">FAQ<a class="anchor" aria-label="anchor" href="#faq"></a>
 </h2>
-<p>TBD…</p>
+</div>
+<div class="section level2">
+<h2 id="git-kraken-legacy">Git Kraken (Legacy)<a class="anchor" aria-label="anchor" href="#git-kraken-legacy"></a>
+</h2>
+<p>This section will walk through how to set up GitKraken to interface with the CIDA GitHub, allowing you to easily push/pull projects between your working directory and GitHub.</p>
+<p>First, you will have to download GitKraken at <a href="https://www.gitkraken.com/download" class="external-link uri">https://www.gitkraken.com/download</a>. Once installed, you will sign in with the GitHub account associated with the CIDA GitHub. This will take you to the SSO associated with the CIDA GitHub, which you will then authorize and sign onto.</p>
+<p><img src="../../../_temp/Library/CIDAtools/figures/gitkraken/figure0A.PNG" width="100%" height="100%"><img src="../../../_temp/Library/CIDAtools/figures/gitkraken/figure0C.PNG" width="100%" height="100%"></p>
+<p>Once you have logged into GitKraken with you GitHub account, you will need to connect it to GitHub. The default GitKraken screen has a panel called “Integrations”: click on GitHub. From here, there are two possibilities: if you click on “Connect to GitHub” it may take you to the SSO again and you can log in that way (slightly repetitive). Or, if prompted to use the OAuth or Personal Access token, you can do the following: go to your “Settings” tab on GitHub, click on “Developer Settings”, and then click on “Personal access tokens” to generate a token for 90 days, making sure to select “repo” (along with other scopes as needed).</p>
+<p><img src="../../../_temp/Library/CIDAtools/figures/gitkraken/figure1A.png" width="100%" height="100%"><img src="../../../_temp/Library/CIDAtools/figures/gitkraken/figure1B.PNG" width="100%" height="100%"><img src="../../../_temp/Library/CIDAtools/figures/gitkraken/figure1C.png" width="100%" height="100%"><img src="../../../_temp/Library/CIDAtools/figures/gitkraken/figure2A.PNG" width="100%" height="100%"><img src="../../../_temp/Library/CIDAtools/figures/gitkraken/figure2B.PNG" width="100%" height="100%"><img src="../../../_temp/Library/CIDAtools/figures/gitkraken/figure2C.PNG" width="100%" height="100%"></p>
+<p>Ideally, you should be able to automatically connect to GitHub without generating a personal access token, but GitKraken is moderately cursed.</p>
+<p>Once you have successfully connected to GitHub, you will then need to generate an SSH key and add to GitHub. To do this, simply click the “Generate SSH key and add to GitHub” button (optionally adding a title to the SSH key if you wish). If this step is successful, you will receive a notification within GitKraken on the lower left, and your screen will now display the SSH key within GitKraken and under the Settings -&gt; SSH and GPG keys tab on your GitHub:</p>
+<p><img src="../../../_temp/Library/CIDAtools/figures/gitkraken/figure3A.PNG" width="100%" height="100%"><img src="../../../_temp/Library/CIDAtools/figures/gitkraken/figure3B.PNG" width="100%" height="100%"><img src="../../../_temp/Library/CIDAtools/figures/gitkraken/figure3C.PNG" width="100%" height="100%"></p>
+<p>Congratulations, you should be successfully linked to the CIDA GitHub!</p>
+<p>From here, you can open, clone, and initiate repositories from the CIDA Github using the, you guessed it, Open a repo, Clone a repo, and Start a local repo options on the home screen:</p>
+<p><img src="../../../_temp/Library/CIDAtools/figures/gitkraken/figure4A.PNG" width="100%" height="100%"></p>
+<p>If you are going to clone a repo, just make sure you are on the GitHub.com section, and that you select the CIDA repository to clone, as well as where you would like to clone it to (H: or P: drives, or elsewhere).</p>
+<p><img src="../../../_temp/Library/CIDAtools/figures/gitkraken/figure4B.PNG" width="100%" height="100%"></p>
+<p>First, however, you will need to generate another SSH key on GitKraken to add to your GitHub (at least this is the only way that I can figure). Go to Preferences -&gt; SSH and then generate a new Private/Public Key, or copy the SSH Public Key if you already have one:</p>
+<p><img src="../../../_temp/Library/CIDAtools/figures/gitkraken/figure4C.PNG" width="100%" height="100%"></p>
+<p>Then return to your GitHub account, and click on SSH and GPG keys under the settings, click Add new key, and then copy the SSH key into the Key box. You will then need to Authorize it with the SSO. After that, you should be able to clone, open, and initialize your repos!</p>
+<p><img src="../../../_temp/Library/CIDAtools/figures/gitkraken/figure4D.PNG" width="100%" height="100%"></p>
+<p>Once you have cloned a repo, you can open it to push/pull any changes. This is done pretty simply via the push or pull commands on the top after opening the repo.</p>
+<p><img src="../../../_temp/Library/CIDAtools/figures/gitkraken/figure5A.PNG" width="100%" height="100%"></p>
+<p>For more details on how to manage pull, push, branching, and other features, visit <a href="https://help.gitkraken.com/gitkraken-client/github-gitkraken-client/" class="external-link uri">https://help.gitkraken.com/gitkraken-client/github-gitkraken-client/</a></p>
+<hr>
+<p><img src="../../../_temp/Library/CIDAtools/figures/sph_cida_wm_blk.png" width="70%"></p>
 </div>
   </div>
 
