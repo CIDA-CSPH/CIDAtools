@@ -248,17 +248,16 @@
 </li>
 <li>Verify connection
 <ol style="list-style-type: lower-alpha">
-<li>Test access to GitHub SSH with <code>ssh -T git@github.com</code>
+<li><p>Test access to GitHub SSH with <code>ssh -T git@github.com</code></p></li>
+<li>
+<p>If you see the following message, verify that the fingerprint you see matches GitHub’s public key fingerprint (<a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints" class="external-link">link</a>). If it does, type <code>Yes</code></p>
+<pre><code>```bash
+&gt; The authenticity of host 'github.com (IP ADDRESS)' cant be established.
+&gt; RSA key fingerprint is SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8.
+&gt; Are you sure you want to continue connecting (yes/no)?
+```</code></pre>
 </li>
-<li>If you see the following message, verify that the fingerprint you see matches GitHub’s public key fingerprint (<a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints" class="external-link">link</a>). If it does, type <code>Yes</code>
-</li>
-</ol>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a><span class="op">&gt;</span> <span class="ex">The</span> authenticity of host <span class="st">'github.com (IP ADDRESS)'</span> cant be established.</span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="op">&gt;</span> <span class="ex">RSA</span> key fingerprint is SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8.</span>
-<span id="cb4-3"><a href="#cb4-3"></a><span class="op">&gt;</span> <span class="ex">Are</span> you sure you want to continue connecting (yes/no)<span class="ex">?</span></span></code></pre></div>
-<ol start="3" style="list-style-type: lower-alpha">
-<li>Verify that the resulting message contains your username. If you receive a “permission denied” message, see <a href="https://docs.github.com/en/authentication/troubleshooting-ssh/error-permission-denied-publickey" class="external-link">Error: Permission denied (publickey)</a>
-</li>
+<li><p>Verify that the resulting message contains your username. If you receive a “permission denied” message, see <a href="https://docs.github.com/en/authentication/troubleshooting-ssh/error-permission-denied-publickey" class="external-link">Error: Permission denied (publickey)</a></p></li>
 </ol>
 </li>
 </ol>
@@ -307,7 +306,7 @@
 <h3 id="creating-new-project">Creating New Project<a class="anchor" aria-label="anchor" href="#creating-new-project"></a>
 </h3>
 <ol style="list-style-type: decimal">
-<li>Create project folder on your local computer by calling <code><a href="../reference/CreateProject.html">CIDAtools::CreateProject()</a></code> in <code>R</code>
+<li>Create project folder on your local computer by calling <code><a href="../reference/create_project.html">CIDAtools::create_project()</a></code> in <code>R</code>
 </li>
 <li>Initialize git repository by navigating to folder (<code>cd Path/To/Folder</code>) then using the command <code>git init</code>
 </li>

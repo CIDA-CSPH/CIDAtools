@@ -31,9 +31,6 @@
     <loc>/reference/CIDA_drive_path.html</loc>
   </url>
   <url>
-    <loc>/reference/CreateProject.html</loc>
-  </url>
-  <url>
     <loc>/reference/ProjectAnalyst.html</loc>
   </url>
   <url>
@@ -74,6 +71,9 @@
   </url>
   <url>
     <loc>/reference/convertIntervalNotation.html</loc>
+  </url>
+  <url>
+    <loc>/reference/create_project.html</loc>
   </url>
   <url>
     <loc>/reference/find_nearest.html</loc>
