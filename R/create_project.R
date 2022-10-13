@@ -19,7 +19,7 @@
 #'  using the RStudio GUI to create a project
 #'
 #'@export
-CreateProject <- function(path = getwd(),
+create_project <- function(path = getwd(),
   template = c('Admin', 'Background', 'Code', 'DataRaw',
                'DataProcessed', 'Dissemination', 'Reports'),
   ProjectName = "", PI = "", analyst = "", datalocation = "") {
@@ -177,8 +177,8 @@ proj_setup <- function(path, ...){
   dots <- list(...)
   ProjectName <- paste0(path)
 
-  CreateProject(path, ProjectName = paste0(path), PI = dots$PI,
-                analyst = dots$analyst, datalocation = dots$datalocation)
+  create_project(path, ProjectName = paste0(path), PI = dots$PI,
+                 analyst = dots$analyst, datalocation = dots$datalocation)
 
   # for project info
   dir.create(paste0(path, '/.ProjData'))

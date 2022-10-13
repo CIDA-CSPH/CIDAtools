@@ -204,7 +204,7 @@ Host *
     matches GitHub's public key fingerprint
     ([link](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints)). 
     If it does, type `Yes`
-    ```{bash, eval=FALSE, echo=TRUE, indent = "           "}
+```{bash, eval=FALSE, echo=TRUE, indent = "           "}
 > The authenticity of host 'github.com (IP ADDRESS)' cant be established.
 > RSA key fingerprint is SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8.
 > Are you sure you want to continue connecting (yes/no)?
@@ -256,7 +256,7 @@ signing in with your CU login
 ## Creating New Project
 
 1. Create project folder on your local computer by calling 
-`CIDAtools::CreateProject()` in `R`
+`CIDAtools::create_project()` in `R`
 2. Initialize git repository by navigating to folder (`cd Path/To/Folder`) then
 using the command `git init`
 3. Stage file changes `git add . `
