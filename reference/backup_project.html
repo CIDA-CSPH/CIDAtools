@@ -68,7 +68,6 @@ nonexisting, in which case a full project backup is created.</p>
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">backup_project</span><span class="op">(</span></span>
-<span>  <span class="va">subdir_to</span>,</span>
 <span>  path_from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  path_to <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  exclude <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">".DS_Store"</span>, <span class="st">".Rproj.user"</span>, <span class="st">".git"</span><span class="op">)</span>,</span>
@@ -79,12 +78,7 @@ nonexisting, in which case a full project backup is created.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>subdir_to</dt>
-<dd><p>Subdirectory within shared drive to back up to.
-Name of directory should match basename of subdir_to.</p></dd>
-
-
-<dt>path_from</dt>
+    <dl><dt>path_from</dt>
 <dd><p>Path from where the folders should be copied (project
 directory location).</p></dd>
 
