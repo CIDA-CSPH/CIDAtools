@@ -4,8 +4,6 @@
 #'can either be existing (in which only changed files/folders are updated), or
 #'nonexisting, in which case a full project backup is created.
 #'
-#'@param subdir_to Subdirectory within shared drive to back up to.
-#'  Name of directory should match basename of subdir_to.
 #'@param path_from Path from where the folders should be copied (project
 #'  directory location).
 #'@param path_to Path to where the folders should be copied (P drive, only used
@@ -20,8 +18,7 @@
 #'  ultimately returns a success indicator that's returned by file.copy.
 #'
 #'@export
-backup_project <- function(subdir_to,
-                          path_from = getwd(),
+backup_project <- function(path_from = getwd(),
                           path_to = NULL,
                           exclude = c(".DS_Store", ".Rproj.user", ".git"),
                           recreate = FALSE,
@@ -32,7 +29,10 @@ backup_project <- function(subdir_to,
 
   # Get proper path to Shared drive
   if(missing(path_to)) {
+
     path_to <- ProjectLocation()
+    if(path_to == "")
+      stop("Please first set project location, e.g., CIDAtools::SetProjectLocation('Branches/EmergencyMedicine/ThisProject')")
   }
 
   path_to <- normalizePath(path_to)
