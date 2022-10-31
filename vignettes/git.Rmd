@@ -393,8 +393,8 @@ GitHub account associated with the CIDA GitHub. This will take you to the SSO
 associated with the CIDA GitHub, which you will then authorize and sign onto.
 
 ```{r, echo=FALSE, out.width="100%", out.height="100%"}
-knitr::include_graphics("figure0A.PNG")
-knitr::include_graphics("figure0C.PNG")
+knitr::include_graphics("figure0A.png")
+knitr::include_graphics("figure0C.png")
 ```
 
 Once you have logged into GitKraken with you GitHub account, you will need to 
@@ -408,12 +408,12 @@ generate a token for 90 days, making sure to select "repo" (along with other
 scopes as needed).
 
 ```{r, echo=FALSE, out.width="100%", out.height="100%"}
-knitr::include_graphics("figure1A.PNG")
-knitr::include_graphics("figure1B.PNG")
-knitr::include_graphics("figure1C.PNG")
-knitr::include_graphics("figure2A.PNG")
-knitr::include_graphics("figure2B.PNG")
-knitr::include_graphics("figure2C.PNG")
+knitr::include_graphics("figure1A.png")
+knitr::include_graphics("figure1B.png")
+knitr::include_graphics("figure1C.png")
+knitr::include_graphics("figure2A.png")
+knitr::include_graphics("figure2B.png")
+knitr::include_graphics("figure2C.png")
 ```
 
 Ideally, you should be able to automatically connect to GitHub without 
@@ -427,9 +427,9 @@ GitKraken on the lower left, and your screen will now display the SSH key
 within GitKraken and under the Settings -> SSH and GPG keys tab on your GitHub:
 
 ```{r, echo=FALSE, out.width="100%", out.height="100%"}
-knitr::include_graphics("figure3A.PNG")
-knitr::include_graphics("figure3B.PNG")
-knitr::include_graphics("figure3C.PNG")
+knitr::include_graphics("figure3A.png")
+knitr::include_graphics("figure3B.png")
+knitr::include_graphics("figure3C.png")
 ```
 
 Congratulations, you should be successfully linked to the CIDA GitHub! 
@@ -439,7 +439,7 @@ using the, you guessed it, Open a repo, Clone a repo, and Start a local repo
 options on the home screen:
 
 ```{r, echo=FALSE, out.width="100%", out.height="100%"}
-knitr::include_graphics( "figure4A.PNG")
+knitr::include_graphics( "figure4A.png")
 ```
 
 If you are going to clone a repo, just make sure you are on the GitHub.com 
@@ -447,7 +447,7 @@ section, and that you select the CIDA repository to clone, as well as where you
 would like to clone it to (H: or P: drives, or elsewhere). 
 
 ```{r, echo=FALSE, out.width="100%", out.height="100%"}
-knitr::include_graphics("figure4B.PNG")
+knitr::include_graphics("figure4B.png")
 ```
 
 First, however, you will need to generate another SSH key on GitKraken to add 
@@ -456,7 +456,7 @@ Preferences -> SSH and then generate a new Private/Public Key, or copy the SSH
 Public Key if you already have one:
 
 ```{r, echo=FALSE, out.width="100%", out.height="100%"}
-knitr::include_graphics("figure4C.PNG")
+knitr::include_graphics("figure4C.png")
 ```
 
 Then return to your GitHub account, and click on SSH and GPG keys under the 
@@ -465,7 +465,7 @@ will then need to Authorize it with the SSO. After that, you should be able to
 clone, open, and initialize your repos!
 
 ```{r, echo=FALSE, out.width="100%", out.height="100%"}
-knitr::include_graphics("figure4D.PNG")
+knitr::include_graphics("figure4D.png")
 ```
 
 Once you have cloned a repo, you can open it to push/pull any changes. This is 
@@ -473,7 +473,7 @@ done pretty simply via the push or pull commands on the top after opening the
 repo. 
 
 ```{r, echo=FALSE, out.width="100%", out.height="100%"}
-knitr::include_graphics("figure5A.PNG")
+knitr::include_graphics("figure5A.png")
 ```
 
 For more details on how to manage pull, push, branching, and other features, 
