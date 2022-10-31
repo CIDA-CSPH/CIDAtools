@@ -1,6 +1,6 @@
 # CIDAtools <a href='https://cida-csph.github.io/CIDAtools'><img src='man/figures/CIDAtoolshex.png' align="right" height="139" width = "139"/></a>
 
-[![R-CMD-check](https://github.com/CIDA-CSPH/CIDAtools/workflows/R-CMD-check/badge.svg)](https://github.com/CIDA-CSPH/CIDAtools/actions)
+[![R-CMD-check](https://github.com/CIDA-CSPH/CIDAtools/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CIDA-CSPH/CIDAtools/actions/workflows/R-CMD-check.yaml)
 
 ## Overview
 
