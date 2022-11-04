@@ -269,7 +269,7 @@ using the command `git init`
     e. Do __not__ add a template, README, .gitignore, or license file
     f. Click `Create repository`
 6. Add remote to local repository with 
-`git remote -v git@github.com:CIDA-CSPH/<your-repository>.git` (this SSH link
+`git remote add origin git@github.com:CIDA-CSPH/<your-repository>.git` (this SSH link
 can be copied from the empty GitHub remote repository you've just created).
 7. Push work to GitHub with `git push origin main`
 
