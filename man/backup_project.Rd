@@ -5,7 +5,6 @@
 \title{Backup Project Directory}
 \usage{
 backup_project(
-  subdir_to,
   path_from = getwd(),
   path_to = NULL,
   exclude = c(".DS_Store", ".Rproj.user", ".git"),
@@ -14,9 +13,6 @@ backup_project(
 )
 }
 \arguments{
-\item{subdir_to}{Subdirectory within shared drive to back up to.
-Name of directory should match basename of subdir_to.}
-
 \item{path_from}{Path from where the folders should be copied (project
 directory location).}
 

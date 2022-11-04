@@ -15,14 +15,17 @@ vignette: >
 ---
 
 ```{r, echo=FALSE, out.width='70%', fig.show='hold'}
-logo <- system.file("figures", "sph_cida_wm_blk.png", package="CIDAtools")
-knitr::include_graphics(logo)
+knitr::include_graphics("sph_cida_wm_blk.png")
 ```
 
 ---
 
 ```{r setup, include=FALSE}
 library(CIDAtools)
+find_png <- function(x) {
+  files <- list.files()
+  files[grepl(x, files)]
+}
 ```
 
 # Introduction
@@ -204,7 +207,7 @@ Host *
     matches GitHub's public key fingerprint
     ([link](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints)). 
     If it does, type `Yes`
-    ```{bash, eval=FALSE, echo=TRUE, indent = "           "}
+```{bash, eval=FALSE, echo=TRUE, indent = "           "}
 > The authenticity of host 'github.com (IP ADDRESS)' cant be established.
 > RSA key fingerprint is SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8.
 > Are you sure you want to continue connecting (yes/no)?
@@ -256,7 +259,7 @@ signing in with your CU login
 ## Creating New Project
 
 1. Create project folder on your local computer by calling 
-`CIDAtools::CreateProject()` in `R`
+`CIDAtools::create_project()` in `R`
 2. Initialize git repository by navigating to folder (`cd Path/To/Folder`) then
 using the command `git init`
 3. Stage file changes `git add . `
@@ -350,6 +353,38 @@ git commit
 
 # FAQ
 
+Do we use GitHub? Or GitLab? Didn’t we just switch to GitHub? 
+
+ - Either are currently viable options. We are currently transitioning from GitLab to GitHub, so if you are picking this up for the first time, I suggest using GitHub (and will call both “GH” from here on for simplicity). 
+
+Where does my main analysis code "live"? When I'm committing and pushing to GitHub/Lab am I just making backups of my work that has its "home" on the P: drive? Or should the code "live" on the cloud in GitHub/GitLab, and every time I want to work with it, I should pull it down? 
+
+- Your code will live on GH. Repos from GH can be cloned to wherever you want; locally, the P drive, etc. So when you need to run your code, your machine can read it from a local or network location. It’s best practice to pull from GH before you need to run anything for a project in case someone’s changed (if nothing has changed it will say “You repo is up to date”). 
+
+Should I even then have a version of my code on the P: drive at all?  
+
+- It’s up to you 
+
+If I do, and I pull from GitHub/Lab, am I replacing the code on the P: drive?  
+
+- Yes, but only if something’s changed on the GitHub server. You can also easily “checkout” earlier versions of the repository from previous points in time, so the older code is never lost. 
+
+One advantage that people talk about a lot for using Git is that it can "merge" files from multiple people. How does this actually work?. What’s to prevent person A from pulling the syntax and making edits, person B pulling the syntax and making edits, and then both people pushing up to a Git server? Wouldn't there then be 2 versions of the file, neither of them fully correct? How is this an upgrade from not having Git?
+
+- Git will force the person who pushes second to fix any merge issues in the code before pushing back to GitHub in this case. There are also more tools available such as branching if this issue comes up often for a particular project. 
+
+I don't really use that much version control now anyways, ad-hoc or otherwise. Is this bad?  Have I just not been exposed to projects that change enough to merit it?
+
+- CIDA requires code be tracked in Git and GitHub. Your future self will thank you.  
+
+Often in my code I include additional “justification” code that’s commented out. For example, if I merge two datasets on ID, I also check the dimensions of the new merged dataset to make sure it is what I expected. Or, if I write a function, I also hard-code a version of the function to make sure the function actually does what it’s supposed to. These examples are a bit trivial, but I think they illustrate well the sort of “double-checking” that I sometimes include code for. Is this the sort of thing you think is valuable to include in code as a comment? Or does that bother some people, and should it be taken out of the syntax after the double-check has been completed?
+
+- I think what you are referring to is “unit testing”, which is in fact good practice. I would put all new functions you create in a separate “helper-functions.R” file which can be scripted from your Rmd, and you can also have your (self-contained) unit tests there as well. 
+
+Isn't there a CIDA element to the GH platform that we need to use, that is more "secure" or something? Or are we only supposed to use our personal GH accounts for all our work? 
+
+- CIDA has a GitHub "organization" that is part of the CU GitHub Enterprise account. Membership to this organization can be merged with your personal GitHub account or a new GitHub account. All university- (CIDA-) related repos should live under this umbrella. The main page is https://github.com/CIDA-CSPH; you will need an account invitation; please contact a member of the Research Tools committee for an invitation.
+
 # Git Kraken (Legacy)
 
 This section will walk through how to set up GitKraken to interface with the 
@@ -362,8 +397,8 @@ GitHub account associated with the CIDA GitHub. This will take you to the SSO
 associated with the CIDA GitHub, which you will then authorize and sign onto.
 
 ```{r, echo=FALSE, out.width="100%", out.height="100%"}
-knitr::include_graphics("gitkraken/figure0A.png")
-knitr::include_graphics("gitkraken/figure0C.png")
+knitr::include_graphics(find_png("figure0A"))
+knitr::include_graphics(find_png("figure0C"))
 ```
 
 Once you have logged into GitKraken with you GitHub account, you will need to 
@@ -377,14 +412,12 @@ generate a token for 90 days, making sure to select "repo" (along with other
 scopes as needed).
 
 ```{r, echo=FALSE, out.width="100%", out.height="100%"}
-knitr::include_graphics("gitkraken/figure1A.png")
-knitr::include_graphics("gitkraken/figure1B.png")
-
-knitr::include_graphics("gitkraken/figure1C.png")
-
-knitr::include_graphics("gitkraken/figure2A.png")
-knitr::include_graphics("gitkraken/figure2B.png")
-knitr::include_graphics("gitkraken/figure2C.png")
+knitr::include_graphics(find_png("figure1A"))
+knitr::include_graphics(find_png("figure1B"))
+knitr::include_graphics(find_png("figure1C"))
+knitr::include_graphics(find_png("figure2A"))
+knitr::include_graphics(find_png("figure2B"))
+knitr::include_graphics(find_png("figure2C"))
 ```
 
 Ideally, you should be able to automatically connect to GitHub without 
@@ -398,12 +431,9 @@ GitKraken on the lower left, and your screen will now display the SSH key
 within GitKraken and under the Settings -> SSH and GPG keys tab on your GitHub:
 
 ```{r, echo=FALSE, out.width="100%", out.height="100%"}
-
-knitr::include_graphics("gitkraken/figure3A.png")
-
-knitr::include_graphics("gitkraken/figure3B.png")
-
-knitr::include_graphics("gitkraken/figure3C.png")
+knitr::include_graphics(find_png("figure3A"))
+knitr::include_graphics(find_png("figure3B"))
+knitr::include_graphics(find_png("figure3C"))
 ```
 
 Congratulations, you should be successfully linked to the CIDA GitHub! 
@@ -413,7 +443,7 @@ using the, you guessed it, Open a repo, Clone a repo, and Start a local repo
 options on the home screen:
 
 ```{r, echo=FALSE, out.width="100%", out.height="100%"}
-knitr::include_graphics("gitkraken/figure4A.png")
+knitr::include_graphics(find_png("figure4A"))
 ```
 
 If you are going to clone a repo, just make sure you are on the GitHub.com 
@@ -421,9 +451,7 @@ section, and that you select the CIDA repository to clone, as well as where you
 would like to clone it to (H: or P: drives, or elsewhere). 
 
 ```{r, echo=FALSE, out.width="100%", out.height="100%"}
-knitr::include_graphics("gitkraken/figure4B.png")
-
-
+knitr::include_graphics(find_png("figure4B"))
 ```
 
 First, however, you will need to generate another SSH key on GitKraken to add 
@@ -432,8 +460,7 @@ Preferences -> SSH and then generate a new Private/Public Key, or copy the SSH
 Public Key if you already have one:
 
 ```{r, echo=FALSE, out.width="100%", out.height="100%"}
-
-knitr::include_graphics("gitkraken/figure4C.png")
+knitr::include_graphics(find_png("figure4C"))
 ```
 
 Then return to your GitHub account, and click on SSH and GPG keys under the 
@@ -442,8 +469,7 @@ will then need to Authorize it with the SSO. After that, you should be able to
 clone, open, and initialize your repos!
 
 ```{r, echo=FALSE, out.width="100%", out.height="100%"}
-
-knitr::include_graphics("gitkraken/figure4D.png")
+knitr::include_graphics(find_png("figure4D"))
 ```
 
 Once you have cloned a repo, you can open it to push/pull any changes. This is 
@@ -451,14 +477,14 @@ done pretty simply via the push or pull commands on the top after opening the
 repo. 
 
 ```{r, echo=FALSE, out.width="100%", out.height="100%"}
-
-knitr::include_graphics("gitkraken/figure5A.png")
+knitr::include_graphics(find_png("figure5A"))
 ```
 
 For more details on how to manage pull, push, branching, and other features, 
 visit https://help.gitkraken.com/gitkraken-client/github-gitkraken-client/
+
 ---
 
 ```{r, echo=FALSE, out.width='70%', fig.show='hold'}
-knitr::include_graphics(logo)
+knitr::include_graphics(find_png("sph_cida_wm_blk"))
 ```
