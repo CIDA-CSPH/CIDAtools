@@ -86,8 +86,8 @@ backup_project <- function(path_from = getwd(),
   }
 
   if(data_only) {
-    files_to_copy <- files_to_copy[grepl("dataraw", files_to_copy, ignore.case = TRUE)]
-    dirs_to_copy <- dirs_to_copy[grepl("dataprocessed", dirs_to_copy, ignore.case = TRUE)]
+    files_to_copy <- files_to_copy[grepl("dataraw|dataprocessed", files_to_copy, ignore.case = TRUE)]
+    dirs_to_copy <- dirs_to_copy[grepl("dataraw|dataprocessed", dirs_to_copy, ignore.case = TRUE)]
   }
 
   ## Check if any files can be ignored using time last modified time
