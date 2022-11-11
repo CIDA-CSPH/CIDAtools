@@ -12,9 +12,9 @@
 #'larger files that don't change often). Currently not used.
 #'@param recreate should backup be created from the ground up?
 #' (can take longer, but useful for projects with many changes)
-#' @param data_only should only DataRaw/ and DataProcessed/ be backed up?
+#' @param data_only should only subdirs including "data" (DataRaw/ and DataProcessed/) be backed up?
 #'
-#'@return This function has verbose output to ensure the back up is working, and
+#' @return This function has verbose output to ensure the back up is working, and
 #'  ultimately returns a success indicator that's returned by file.copy.
 #'
 #'@export
@@ -22,7 +22,7 @@ backup_project <- function(path_from = getwd(),
                           path_to = NULL,
                           exclude = c(".DS_Store", ".Rproj.user", ".git"),
                           recreate = FALSE,
-                          data_only = FALSE) {
+                          data_only = TRUE) {
 
   # Check args, make into absolute paths
   path_from <- normalizePath(path_from)
@@ -33,6 +33,10 @@ backup_project <- function(path_from = getwd(),
     path_to <- ProjectLocation()
     if(path_to == "")
       stop("Please first set project location, e.g., CIDAtools::SetProjectLocation('Branches/EmergencyMedicine/ThisProject')")
+
+    if(!dir.exists(CIDAtools::CIDA_drive_path()))
+      stop("Please ensure the CIDA drive is mounted, or set `path_to`")
+
   }
 
   path_to <- normalizePath(path_to)
@@ -82,7 +86,8 @@ backup_project <- function(path_from = getwd(),
   }
 
   if(data_only) {
-    warning("data_only option not yet supported")
+    files_to_copy <- files_to_copy[grepl("dataraw", files_to_copy, ignore.case = TRUE)]
+    dirs_to_copy <- dirs_to_copy[grepl("dataprocessed", dirs_to_copy, ignore.case = TRUE)]
   }
 
   ## Check if any files can be ignored using time last modified time
