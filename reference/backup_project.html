@@ -72,7 +72,7 @@ nonexisting, in which case a full project backup is created.</p>
 <span>  path_to <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  exclude <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">".DS_Store"</span>, <span class="st">".Rproj.user"</span>, <span class="st">".git"</span><span class="op">)</span>,</span>
 <span>  recreate <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  data_only <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  data_only <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -99,7 +99,7 @@ larger files that don't change often). Currently not used.</p></dd>
 
 
 <dt>data_only</dt>
-<dd><p>should only DataRaw/ and DataProcessed/ be backed up?</p></dd>
+<dd><p>should only subdirs including "data" (DataRaw/ and DataProcessed/) be backed up?</p></dd>
 
 </dl></div>
     <div id="value">
