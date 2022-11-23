@@ -9,7 +9,7 @@ backup_project(
   path_to = NULL,
   exclude = c(".DS_Store", ".Rproj.user", ".git"),
   recreate = FALSE,
-  data_only = FALSE
+  data_only = TRUE
 )
 }
 \arguments{
@@ -25,7 +25,7 @@ larger files that don't change often). Currently not used.}
 \item{recreate}{should backup be created from the ground up?
 (can take longer, but useful for projects with many changes)}
 
-\item{data_only}{should only DataRaw/ and DataProcessed/ be backed up?}
+\item{data_only}{should only subdirs including "data" (DataRaw/ and DataProcessed/) be backed up?}
 }
 \value{
 This function has verbose output to ensure the back up is working, and
