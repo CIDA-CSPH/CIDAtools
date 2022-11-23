@@ -276,42 +276,6 @@ tidy.power.htest <- function(x, ...) {
   as.data.frame(x)
 }
 
-#' Get CIDA drive path
-#'
-#' This function attempts to get the proper path for the CIDA drive either on Windows or Mac.
-#'
-#' @param path (optional) a path to a particular place in the CIDA drive
-#'
-#' @return full (absolute) file path of CIDA drive
-#' @export
-#'
-#' @examples
-#' # Read data from P1234PIname project
-#' \dontrun{
-#' df <- read.csv(CIDA_drive_path("Projects/P1234PIname/DataRaw/data.csv"))
-#' }
-#'
-
-CIDA_drive_path <- function(path = ""){
-
-  OS <- .Platform$OS.type
-
-  if (OS == "unix"){
-    temp_path <- "/Volumes/CIDA" # MAC file path
-  } else if (OS == "windows"){
-    temp_path <- "P:/" # windows file path
-  } else {
-    stop("OS could not be identified")
-  }
-
-  fpath <- file.path(temp_path, path)
-
-  if(!dir.exists(fpath) & !file.exists(fpath))
-    warning("nothing found at path. Check spelling, then ensure drive is mounted and that the directory exists.")
-
-  return(file.path(temp_path, path))
-}
-
 # helper function to cleanup project location
 proj.location.handler <- function(loc="") {
   loc <- gsub("/Volumes/CIDA", "", loc)
