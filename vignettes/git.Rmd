@@ -1,5 +1,7 @@
 ---
 title: "Tracking code in Git/GitHub"
+date: "Last updated: `r Sys.Date()`"
+author: "CIDA Research Tools Committee"
 output: 
   html_document:
     highlight: default
