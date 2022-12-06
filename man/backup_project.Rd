@@ -9,7 +9,8 @@ backup_project(
   path_to = NULL,
   exclude = c(".DS_Store", ".Rproj.user", ".git"),
   recreate = FALSE,
-  data_only = TRUE
+  data_only = TRUE,
+  readme = TRUE
 )
 }
 \arguments{
@@ -26,6 +27,8 @@ larger files that don't change often). Currently not used.}
 (can take longer, but useful for projects with many changes)}
 
 \item{data_only}{should only subdirs including "data" (DataRaw/ and DataProcessed/) be backed up?}
+
+\item{readme}{forces backup of project readme}
 }
 \value{
 This function has verbose output to ensure the back up is working, and

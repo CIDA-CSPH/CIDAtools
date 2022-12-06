@@ -11,7 +11,8 @@ create_project(
   ProjectName = "",
   PI = "",
   analyst = "",
-  datalocation = ""
+  datalocation = "",
+  gitlocation = ""
 )
 }
 \arguments{
@@ -26,6 +27,8 @@ create_project(
 \item{analyst}{Name of Analyst(s), or "" for blank}
 
 \item{datalocation}{Location of project on CIDA Drive, or "" for blank}
+
+\item{gitlocation}{Location project on GitHub}
 }
 \value{
 This function creates the desired project subdirectories and readmes,

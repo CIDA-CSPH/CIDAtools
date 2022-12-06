@@ -13,7 +13,7 @@
 #'@param recreate should backup be created from the ground up?
 #' (can take longer, but useful for projects with many changes)
 #' @param data_only should only subdirs including "data" (DataRaw/ and DataProcessed/) be backed up?
-#'
+#' @param readme forces backup of project readme
 #' @return This function has verbose output to ensure the back up is working, and
 #'  ultimately returns a success indicator that's returned by file.copy.
 #'
@@ -22,7 +22,8 @@ backup_project <- function(path_from = getwd(),
                           path_to = NULL,
                           exclude = c(".DS_Store", ".Rproj.user", ".git"),
                           recreate = FALSE,
-                          data_only = TRUE) {
+                          data_only = TRUE,
+                          readme = TRUE) {
 
   # Check args, make into absolute paths
   path_from <- normalizePath(path_from)
@@ -86,8 +87,19 @@ backup_project <- function(path_from = getwd(),
   }
 
   if(data_only) {
-    files_to_copy <- files_to_copy[grepl("dataraw|dataprocessed", files_to_copy, ignore.case = TRUE)]
-    dirs_to_copy <- dirs_to_copy[grepl("dataraw|dataprocessed", dirs_to_copy, ignore.case = TRUE)]
+    string_matches <- "dataraw|dataprocessed"
+    if(readme)
+      string_matches <- "readme|dataraw|dataprocessed"
+
+    # find large files (>= 250 MB)
+    large_idx <- file.size(files_to_copy)/1e6 >= 250
+
+    # find file matches
+    file_matches <- grepl(string_matches, files_to_copy, ignore.case = TRUE)
+    dir_matches <- grepl(string_matches, dirs_to_copy, ignore.case = TRUE)
+
+    files_to_copy <- files_to_copy[large_idx | file_matches]
+    dirs_to_copy <- dirs_to_copy[large_idx | dir_matches]
   }
 
   ## Check if any files can be ignored using time last modified time

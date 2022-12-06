@@ -2,6 +2,8 @@
 
 - Data only argument implemented
 - Git vignette is mostly complete
+- Data storage vignette added
+- backup readmes by default
 
 # 0.1.0
 
