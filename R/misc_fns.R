@@ -276,7 +276,6 @@ tidy.power.htest <- function(x, ...) {
   as.data.frame(x)
 }
 
-<<<<<<< HEAD
 #' Get CIDA drive path
 #'
 #' This function attempts to get the proper path for the CIDA drive either on Windows or Mac.
