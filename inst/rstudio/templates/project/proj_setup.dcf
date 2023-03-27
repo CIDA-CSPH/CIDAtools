@@ -17,4 +17,9 @@ Position: Left
 Parameter: datalocation
 Widget: TextInput
 Label: Project data location (CIDA/.)
-Default: e.g. Branches/Existing_Branch/this_project
+Default: Branches/Existing_Branch/this_project
+
+Parameter: gitlocation
+Widget: TextInput
+Label: Project GitHub Location
+Default: CIDA-CSPH/Branch_this_project

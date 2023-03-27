@@ -9,7 +9,7 @@
 #'@param PI Name of PI and credentials, or "" for blank
 #'@param analyst Name of Analyst(s), or "" for blank
 #'@param datalocation Location of project on CIDA Drive, or "" for blank
-#'
+#'@param gitlocation Location project on GitHub
 #'@return This function creates the desired project subdirectories and readmes,
 #'  as well as a standard .gitignore file files. It will not overwrite the file
 #'  however if it does not exist. It does not return anything.
@@ -19,10 +19,11 @@
 #'  using the RStudio GUI to create a project
 #'
 #'@export
-CreateProject <- function(path = getwd(),
+create_project <- function(path = getwd(),
   template = c('Admin', 'Background', 'Code', 'DataRaw',
                'DataProcessed', 'Dissemination', 'Reports'),
-  ProjectName = "", PI = "", analyst = "", datalocation = "") {
+  ProjectName = "", PI = "", analyst = "", datalocation = "",
+  gitlocation = "") {
 
   if(!dir.exists(path))
     dir.create(path, recursive = TRUE, showWarnings = FALSE)
@@ -39,7 +40,7 @@ CreateProject <- function(path = getwd(),
               paste0("**PI**: ", PI, "  "),
               paste0("**Analyst**: ", analyst, "  "),
               paste0("**CIDA drive Location**: ", proj.location.handler(datalocation), "  "),
-              paste0("**GitHub Location**: [fill in after setting up remote repository]"),
+              paste0("**GitHub Location**: ", gitlocation, "  "),
               "",
               "Details about the folders:",
               '',
@@ -69,7 +70,8 @@ CreateProject <- function(path = getwd(),
   if(meta){
     dir.create(paste0(path, '/.ProjData'))
     ProjData <- list(ProjectName = ProjectName, PI = PI,
-                     analyst = analyst, datalocation = datalocation)
+                     analyst = analyst, datalocation = datalocation,
+                     gitlocation = gitlocation)
     write.dcf(ProjData, file.path(path, '/.ProjData/Data.dcf'))
   }
 
@@ -177,12 +179,15 @@ proj_setup <- function(path, ...){
   dots <- list(...)
   ProjectName <- paste0(path)
 
-  CreateProject(path, ProjectName = paste0(path), PI = dots$PI,
-                analyst = dots$analyst, datalocation = dots$datalocation)
+  create_project(path, ProjectName = paste0(path), PI = dots$PI,
+                 analyst = dots$analyst, datalocation = dots$datalocation,
+                 gitlocation = dots$gitlocation)
 
   # for project info
   dir.create(paste0(path, '/.ProjData'))
-  ProjData <- list(ProjectName = ProjectName, PI = dots$PI, analyst = dots$analyst, datalocation = dots$datalocation)
+  ProjData <- list(ProjectName = ProjectName, PI = dots$PI,
+                   analyst = dots$analyst, datalocation = dots$datalocation,
+                   gitlocation = dots$gitlocation)
   write.dcf(ProjData, file.path(path, '/.ProjData/Data.dcf'))
 
 }

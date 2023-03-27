@@ -58,6 +58,27 @@ SetProjectPI <- function(PI){
   return(paste('The Project PI has been changed to', PI))
 }
 
+#' Set Project Location
+#'
+#' This function allows you to set the Project's location on the CIDA drive.
+#' This will overwrite the current value if exists.
+#'
+#' @param path A string containing the file path to the project location on CIDA drive
+#' @return A message stating the name has been changed.
+#' @keywords options location ProjData
+#' @export
+#'
+SetProjectLocation <- function(path){
+  if(!is.character(path)) stop('Path must be a character string')
+  if(length(path) > 1) {
+    warning('Only First String is Used')
+    path <- path[1]
+  }
+  path <- proj.location.handler(path)
+  SetProjectData('datalocation', path)
+  return(paste('The Project Location has been changed to', path))
+}
+
 #' Get Project Analyst
 #'
 #' This function returns the Project Analyst Name. If none exists, it

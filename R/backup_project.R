@@ -4,8 +4,6 @@
 #'can either be existing (in which only changed files/folders are updated), or
 #'nonexisting, in which case a full project backup is created.
 #'
-#'@param subdir_to Subdirectory within shared drive to back up to.
-#'  Name of directory should match basename of subdir_to.
 #'@param path_from Path from where the folders should be copied (project
 #'  directory location).
 #'@param path_to Path to where the folders should be copied (P drive, only used
@@ -14,25 +12,32 @@
 #'larger files that don't change often). Currently not used.
 #'@param recreate should backup be created from the ground up?
 #' (can take longer, but useful for projects with many changes)
-#' @param data_only should only DataRaw/ and DataProcessed/ be backed up?
-#'
-#'@return This function has verbose output to ensure the back up is working, and
+#' @param data_only should only subdirs including "data" (DataRaw/ and DataProcessed/) be backed up?
+#' @param readme forces backup of project readme
+#' @return This function has verbose output to ensure the back up is working, and
 #'  ultimately returns a success indicator that's returned by file.copy.
 #'
 #'@export
-backup_project <- function(subdir_to,
-                          path_from = getwd(),
+backup_project <- function(path_from = getwd(),
                           path_to = NULL,
                           exclude = c(".DS_Store", ".Rproj.user", ".git"),
                           recreate = FALSE,
-                          data_only = FALSE) {
+                          data_only = TRUE,
+                          readme = TRUE) {
 
   # Check args, make into absolute paths
   path_from <- normalizePath(path_from)
 
   # Get proper path to Shared drive
   if(missing(path_to)) {
+
     path_to <- ProjectLocation()
+    if(path_to == "")
+      stop("Please first set project location, e.g., CIDAtools::SetProjectLocation('Branches/EmergencyMedicine/ThisProject')")
+
+    if(!dir.exists(CIDAtools::CIDA_drive_path()))
+      stop("Please ensure the CIDA drive is mounted, or set `path_to`")
+
   }
 
   path_to <- normalizePath(path_to)
@@ -82,7 +87,19 @@ backup_project <- function(subdir_to,
   }
 
   if(data_only) {
-    warning("data_only option not yet supported")
+    string_matches <- "dataraw|dataprocessed"
+    if(readme)
+      string_matches <- "readme|dataraw|dataprocessed"
+
+    # find large files (>= 250 MB)
+    large_idx <- file.size(files_to_copy)/1e6 >= 250
+
+    # find file matches
+    file_matches <- grepl(string_matches, files_to_copy, ignore.case = TRUE)
+    dir_matches <- grepl(string_matches, dirs_to_copy, ignore.case = TRUE)
+
+    files_to_copy <- files_to_copy[large_idx | file_matches]
+    dirs_to_copy <- dirs_to_copy[large_idx | dir_matches]
   }
 
   ## Check if any files can be ignored using time last modified time
