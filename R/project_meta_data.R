@@ -160,20 +160,23 @@ ProjectLocation <- function(path = ''){
   if(file.exists(file.path('.ProjData/Data.dcf'))){
     ProjData <- read.dcf(file.path('.ProjData/Data.dcf'), all = T)
     if('datalocation' %in% names(ProjData)){
-      return(CIDA_drive_path(ProjData$datalocation))
+      temp_path <- CIDA_drive_path(ProjData$datalocation)
+      return(file.path(temp_path, path))
     }
   }
 
   if(file.exists(file.path('../.ProjData/Data.dcf'))){
     ProjData <- read.dcf(file.path('../.ProjData/Data.dcf'), all = T)
     if('datalocation' %in% names(ProjData)){
-      return(CIDA_drive_path(ProjData$datalocation))
+      temp_path <- CIDA_drive_path(ProjData$datalocation)
+      return(file.path(temp_path, path))
     }
   }
   if(file.exists(file.path('../../.ProjData/Data.dcf'))){
     ProjData <- read.dcf(file.path('../../.ProjData/Data.dcf'), all = T)
     if('datalocation' %in% names(ProjData)){
-      return(CIDA_drive_path(ProjData$datalocation))
+      temp_path <- CIDA_drive_path(ProjData$datalocation)
+      return(file.path(temp_path, path))
     }
   }
 

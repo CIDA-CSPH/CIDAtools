@@ -297,7 +297,7 @@ CIDA_drive_path <- function(path = ""){
   OS <- .Platform$OS.type
 
   if (OS == "unix"){
-    temp_path <- "/Volumes/CIDA" # MAC file path
+    temp_path <- "/Volumes/sph-cida" # MAC file path
   } else if (OS == "windows"){
     temp_path <- "P:/" # windows file path
   } else {
@@ -314,7 +314,7 @@ CIDA_drive_path <- function(path = ""){
 
 # helper function to cleanup project location
 proj.location.handler <- function(loc="") {
-  loc <- gsub("/Volumes/CIDA", "", loc)
+  loc <- gsub("/Volumes/sph-cida", "", loc)
   loc <- gsub("P:/", "", loc)
   loc <- gsub(".*BRANCHES", "BRANCHES", loc)
   loc <- gsub("/$", "", loc)
