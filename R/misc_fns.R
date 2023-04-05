@@ -278,7 +278,7 @@ tidy.power.htest <- function(x, ...) {
 
 # helper function to cleanup project location
 proj.location.handler <- function(loc="") {
-  loc <- gsub("/Volumes/CIDA", "", loc)
+  loc <- gsub("/Volumes/sph-cida", "", loc)
   loc <- gsub("P:/", "", loc)
   loc <- gsub(".*BRANCHES", "BRANCHES", loc)
   loc <- gsub("/$", "", loc)

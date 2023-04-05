@@ -19,7 +19,7 @@ Windows or Mac.
 \examples{
 # Read data from P1234PIname project
 \dontrun{
-df <- read.csv(CIDA_drive_path("Projects/P1234PIname/DataRaw/data.csv"))
+df <- read.csv(CIDA_drive_path("BRANCHES/Pulmonary/P1234PIname/DataRaw/data.csv"))
 }
 
 }

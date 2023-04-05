@@ -11,7 +11,7 @@
 #' @examples
 #' # Read data from P1234PIname project
 #' \dontrun{
-#' df <- read.csv(CIDA_drive_path("Projects/P1234PIname/DataRaw/data.csv"))
+#' df <- read.csv(CIDA_drive_path("BRANCHES/Pulmonary/P1234PIname/DataRaw/data.csv"))
 #' }
 #'
 
@@ -23,12 +23,10 @@ CIDA_drive_path <- function(file = "") {
   if (os == "unix") { # MacOS/Linux
 
     # Two potential places drive could exist
-    if (dir.exists("/Volumes/CIDA")) {
-      path <- "/Volumes/CIDA"
-    } else if (dir.exists("/Volumes/dept/SPH/SPH-CIDA/CIDA")) {
-      path <- "/Volumes/dept/SPH/SPH-CIDA/CIDA"
+    if (dir.exists("/Volumes/sph-cida")) {
+      path <- "/Volumes/sph-cida"
     } else {
-      stop("Nothing found at /Volumes/CIDA or /Volumes/dept/SPH/SPH-CIDA/CIDA.",
+      stop("Nothing found at /Volumes/sph-cida.",
            " Please ensure drive is mounted and you have entered your",
            " password to access the drive (and are logged into the VPN if",
            " needed.)")
