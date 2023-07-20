@@ -1,0 +1,49 @@
+---
+title: "Alpine HPC"
+author: "Research Tools Committee"
+date: "2023-07-01"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Alpine 
+
+### Introduction
+
+This document provides a brief overview of Alpine, the University of Colorado's High Performance Computing Cluster (HPC). Alpine allows researchers across campus access to >18k computer cores, high memory computing cores, and specialized hardware like GPUs. It is available to all University of Colorado Anschutz employees and students. General documentation on Alpine can be found at https://curc.readthedocs.io/en/latest/clusters/alpine/index.html#
+
+Who does this apply to: All members of CIDA (Professor, RA, RI, Senior RI, PRA, Senior PRA)
+
+### Definitions
+
+* `HPC` high performance computing
+* `RMACC` Rocky Mountain Advanced Computing Consortium
+* `ACCESS-CI` Advanced Cyberinfrastructure Coordination Ecosystem: Services & Support - Cyberinfrastructure
+* `XSEDE` Extreme Science and Engineering Discovery Environment
+
+### Accessing Alpine
+
+Getting an Alpine account is a 4-step process that is detailed at https://curc.readthedocs.io/en/latest/access/rmacc.html
+
+1. As CU Anschutz members we will request access as members of the Rocky Mountain Advanced Computing Consortium (RMACC). This is done by first requesting an ACCESS-CI account at https://identity.access-ci.org/new-user
+2. After you recieve an ACCESS or XSEDE username, email CU Research Computing (rc-help@colorado.edu) to request an Alpine account. In this email include
+    * your ACCESS or XSEDE username
+    * your institutional affiliation (e.g., “University of Awesome”)
+    * your role (undergraduate graduate student, postdoc, staff, instructor, faculty or affiliated faculty)
+    * your department
+    * your first and last name
+    * your preferred email address for communication
+3. You will receive an email confirmation with detailed instructions on how to use Alpine. It may take a few weeks to receive this confirmation after sending the email in Step 2.
+4. Now you can log onto Alpine! Note, currently for CU Anscutz members, the only way to access Alpine is via the OnDemand web browser as ssh access is not allowed at this time.
+
+### Alpine Hardware
+
+A comprehensive list of all the hardware available on Alpine can be found at https://curc.readthedocs.io/en/latest/clusters/alpine/alpine-hardware.html. Specific hardware available to CU Anschutz memebers will be provided when your account is created.
+
+### Quick Start
+
+A quick start guide can be found at https://curc.readthedocs.io/en/latest/clusters/alpine/quick-start.html. Much more detailed information is provided in the account creation confirmation email sent by rc-help@colorado.edu.
+
