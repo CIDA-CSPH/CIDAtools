@@ -1,0 +1,77 @@
+---
+title: "Cron Jobs"
+author: "Research Tools Committee"
+date: "2023-07-01"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Cron Jobs
+
+### Introduction
+
+This document provides some description on how to run cron jobs on the biostats server (a computation server that part of the Dept. of Biostatistics and Informatics). The idea of a cron job is that allows a user to schedule when a piece of code is executed. The biostats server is an ideal place to run these as this "computer" is always on and thus it removes the need of an analyst to worry about having their personal computer running when it is time to execute the code.
+
+Who does this apply to: All members of CIDA (Professor, RA, RI, Senior RI, PRA, Senior PRA)
+
+### Definitions
+
+None at this time
+
+### Accessing the biostats server
+
+To gain access to the biostats server contact the Research Tools Committee. This is available to all members of CIDA.
+
+### Steps to a Run Cron Job
+
+The following is specific to the CIDA biostats server which is based in Linux. Although these steps may seem complicated, most of this only needs to be set up once and the Research Tools Committee is happy to help with this. 
+
+The following example will use a cron job to execute a simple python script, `cron.py`, that generates a small array of data and then saves it. 
+
+```
+import time
+import numpy as np
+
+a = [1,2,3,4]
+np.save(f"{time.time()}.npy",a)
+```
+
+This script will be called by a separate bash script, `cron.sh`. Note that cron jobs could be run directly on the `cron.py` file, however bash script allows the user to provide some extra information to the system to make sure the script is run in the proper environment.
+
+```
+#!/bin/bash
+
+# set to use the desired python Anaconda distibution 
+export PATH=/home/biostats_share/mancchri/anaconda3/bin:$PATH
+# make sure the system know to be in the directory below
+cd /home/biostats_share/mancchri/test_cron
+# run the script below
+python cron.py
+```
+
+To setup the cronjob we need to access the crontab, which is the file that stores active cron jobs for a specific user. Enter this file by running
+
+`crontab -e`
+
+Each line in this file will specify a different cron job. To run `cron.sh` every minute add the following to the crontab file. Note, writing to files on Linux can be daunting, but the Research Tools Committee can help with this!
+
+`*/1 * * * * /home/biostats_share/mancchri/test_cron/cron.sh`
+
+To view the list of current cron jobs in crontab use
+
+`crontab -l`
+
+To delete the cron job so it no longer execute use
+
+`crontab -r`
+
+
+### Resources
+
+Information on how to use cron job, especially how to set jobs to run on a given interval see the following
+
+https://tecadmin.net/crontab-in-linux-with-20-examples-of-cron-schedule/  
+https://crontab.guru/examples.html
