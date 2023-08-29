@@ -1,0 +1,84 @@
+---
+title: "CIDA Computing Resources"
+author: "Research Tools Committee"
+date: '2023-02-7'
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+### Introduction
+
+This document introduces the available computing resources with guidelines and linkes to access/request them. 
+
+Who does this apply to: All members of CIDA (Professor, RA, RI, Senior RI, PRA, Senior PRA)
+
+
+
+### Computing Resources Available to CIDA Members
+This table lists the computing resources available to CIDA members. Please note that  none of these computing resources are HIPPA compliant and therefore no PHI can be stored on these machines. (please see the data storage guideline for more information).
+SLCE machines are not HIPAA compliant 
+
+*	Backups are available via Wasabi: https://wasabi.com/hot-cloud-storage/. 
+
+
+
+| Computing Resource | Description |
+| --- | --- |
+| Personal Computer/Laptop | Free for CIDA members|
+| SLCE | Free for CIDA members|
+| Alpine | Almost Free for CIDA members (if requested resources <= default allocation)|
+| Commercial computing platforms such as AWS, IBM, ... | Cost depends on the type of requested resouces |
+
+#### Personal Computer\
+
+CIDA provides all its members with a PC or Macintosh based on their preference.  
+    
+
+#### CIDA SLCE \
+SLCE is the local computing resource funded by CIDA (BERDxxxx) and consists of 5 workstations to address the computing resources required for vriety of tasks. 
+
+
+
+
+| |SLCE # 1|SLCE # 2| SLCE # 3| SLCE # 4| SLCE # 5| 
+| --- | --- |---| --- |---| --- |
+|CPU | Intel Xeon Gold 6152 2.1G X (2) CPU, 44 cores|Intel(R) Xeon(R) CPU E5-2680 v3 @ 2.50GHz (2 cores)|TBD|TBD|TBD
+|Disk storage|50TB|4TB|4TB|2TB|2TB|
+|Memory Size | 1TB | 128 GB| 128 GB| 128 GB| 128 GB|
+|OS |CentOS 7.x |Linux|Windows|Windows|Windows|
+|Software|R, R Studio, MatLab, Python, and Java|Fiji,Python, R, RStudio|R, RStudio, SAS, PASS, Git, Anaconda, Stata|R, RStudio, SAS, PASS, Git, Anaconda, Stata|R, RStudio, SAS, PASS, Git, Anaconda, Stata|
+
+
+
+#### Alpine\
+Alpine is the University of Colorado Boulder Research Computing’s third-generation high performance computing (HPC) cluster. Alpine is a heterogeneous compute cluster currently composed of hardware provided from University of Colorado Boulder, Colorado State University, and Anschutz Medical Campus. Alpine currently offers 317 compute nodes and a total of 18,080 cores.
+
+Alpine can be securely accessed anywhere, anytime using OpenOnDemand or ssh connectivity to the CURC system. Step-by-step instruction to access Alpine is available at:  https://curc.readthedocs.io/en/latest/clusters/alpine/quick-start.html  
+ 
+
+|| Alphine   || 
+|---| :---: |---:|
+|Processor |General compute nodes|GPU | 
+| Nodes |  64 |11 | 
+|Core  |64 × AMD Milan Compute nodes (64 cores/node) |2 × 8 GPU-enabled (3x AMD MI100) atop AMD Milan CPU |
+|Memory Size | 239 GB | 2 TiB  |
+|Cost | Free for defined setting |Free | 
+|HIPAA compliant |NO |NO | NO  |
+|OS |RHEL 8.4 |RHEL 8.4 |
+
+
+
+    
+### Useful Links
+Health Insurance Portability and Accountability Act (HIPAA):  
+http://www.hhs.gov/hipaa/for-professionals/index.html
+
+
+Guidance Regarding Methods for De-identification of Protected Health Information in Accordance with the Health Insurance Portability and Accountability Act (HIPAA) Privacy Rule:  
+http://www.hhs.gov/hipaa/for-professionals/privacy/special-topics/de-identification/index.html
