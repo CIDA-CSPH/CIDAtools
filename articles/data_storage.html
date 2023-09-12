@@ -4,90 +4,80 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="CIDAtools">
 <title>CIDA-data-storage-guidelines • CIDAtools</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
-<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="CIDA-data-storage-guidelines">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="CIDA-data-storage-guidelines">
 <meta property="og:description" content="CIDAtools">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body data-spy="scroll" data-target="#toc">
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <div class="container template-article">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">CIDAtools</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1</span>
-      </span>
-    </div>
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    
+    <a class="navbar-brand me-2" href="../index.html">CIDAtools</a>
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="../reference/index.html">Reference</a>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-3">
+      <ul class="navbar-nav me-auto">
+<li class="nav-item">
+  <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="../articles/data_storage.html">CIDA-data-storage-guidelines</a>
-    </li>
-    <li>
-      <a href="../articles/git.html">Tracking code in Git/GitHub</a>
-    </li>
-    <li>
-      <a href="../articles/sas-macros.html">CIDA SAS Macros</a>
-    </li>
-    <li>
-      <a href="../articles/table1.html">Table 1</a>
-    </li>
-  </ul>
+<li class="active nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/CIDA_computing_resources.html">CIDA Computing Resources</a>
+    <a class="dropdown-item" href="../articles/alpine.html">Alpine HPC</a>
+    <a class="dropdown-item" href="../articles/cron-jobs.html">Cron Jobs</a>
+    <a class="dropdown-item" href="../articles/data_storage.html">CIDA-data-storage-guidelines</a>
+    <a class="dropdown-item" href="../articles/git.html">Tracking code in Git/GitHub</a>
+    <a class="dropdown-item" href="../articles/sas-macros.html">CIDA SAS Macros</a>
+    <a class="dropdown-item" href="../articles/table1.html">Table 1</a>
+  </div>
 </li>
-<li>
-  <a href="../news/index.html">Changelog</a>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<form class="form-inline my-2 my-lg-0" role="search">
+        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
+</form>
+
+      <ul class="navbar-nav"></ul>
 </div>
-<!--/.nav-collapse -->
+
+    
   </div>
-<!--/.container -->
-</div>
-<!--/.navbar -->
+</nav><div class="container template-article">
 
-      
 
-      </header><script src="data_storage_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header toc-ignore">
-      <h1 data-toc-skip>CIDA-data-storage-guidelines</h1>
-                        <h4 data-toc-skip class="author">Research Tools Committee</h4>
+
+
+<div class="row">
+  <main id="main" class="col-md-9"><div class="page-header">
+      <img src="" class="logo" alt=""><h1>CIDA-data-storage-guidelines</h1>
+                        <h4 data-toc-skip class="author">Research Tools
+Committee</h4>
             
             <h4 data-toc-skip class="date">2022-11-30</h4>
       
       
-      <div class="hidden name"><code>data_storage.Rmd</code></div>
-
+      <div class="d-none name"><code>data_storage.Rmd</code></div>
     </div>
 
     
@@ -98,21 +88,36 @@
 <div class="section level3">
 <h3 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h3>
-<p>This document provides guidelines, recommendations, and current best practices for where code, data, and other documents should be stored and backed up for members of CIDA. These guidelines are intended to explain the pros, cons, and best practices for the data storage tools available to CIDA members. However, a CIDA member may come across exceptions to these guidelines, and the responsibility for proper data handling within a particular project rests on the CIDA member involved.</p>
-<p>Who does this apply to: All members of CIDA (Professor, RA, RI, Senior RI, PRA, Senior PRA)</p>
+<p>This document provides guidelines, recommendations, and current best
+practices for where code, data, and other documents should be stored and
+backed up for members of CIDA. These guidelines are intended to explain
+the pros, cons, and best practices for the data storage tools available
+to CIDA members. However, a CIDA member may come across exceptions to
+these guidelines, and the responsibility for proper data handling within
+a particular project rests on the CIDA member involved.</p>
+<p>Who does this apply to: All members of CIDA (Professor, RA, RI,
+Senior RI, PRA, Senior PRA)</p>
 </div>
 <div class="section level3">
 <h3 id="definitions">Definitions<a class="anchor" aria-label="anchor" href="#definitions"></a>
 </h3>
 <ul>
-<li>‘Code’ refers to any R, SAS, Stata, etc. (scripts stored as plain text formatted files)</li>
-<li>‘Data’ refers to spreadsheets, tables, or other information used to run analysis on</li>
-<li>‘Report’ refers to any document which outlines results of analysis for sending to an investigator</li>
-<li>GitLab is the Lhotse CIDA GitLab repository, available here (requires VPN connection)</li>
-<li>‘Local storage’ refers to any university provided computer with a physical hard drive</li>
-<li>‘External server’ refers to a server which houses data or runs analysis (except Lhotse)</li>
-<li>‘Eureka’ is the Virtual Machine run by Health Data Compass (HDC)</li>
-<li>‘OneDrive for Business’ refers to Microsoft’s file-syncing software licensed by the University</li>
+<li>‘Code’ refers to any R, SAS, Stata, etc. (scripts stored as plain
+text formatted files)</li>
+<li>‘Data’ refers to spreadsheets, tables, or other information used to
+run analysis on</li>
+<li>‘Report’ refers to any document which outlines results of analysis
+for sending to an investigator</li>
+<li>GitLab is the Lhotse CIDA GitLab repository, available here
+(requires VPN connection)</li>
+<li>‘Local storage’ refers to any university provided computer with a
+physical hard drive</li>
+<li>‘External server’ refers to a server which houses data or runs
+analysis (except Lhotse)</li>
+<li>‘Eureka’ is the Virtual Machine run by Health Data Compass
+(HDC)</li>
+<li>‘OneDrive for Business’ refers to Microsoft’s file-syncing software
+licensed by the University</li>
 <li>‘HPC’ refers to “High Performance Computing”</li>
 </ul>
 </div>
@@ -120,7 +125,9 @@
 <h3 id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
 </h3>
 <ul>
-<li>The CIDA (P) Drive is the required ongoing storage location for project data. Other data storage locations may be used temporarily during the course of active work on a project.</li>
+<li>The CIDA (P) Drive is the required ongoing storage location for
+project data. Other data storage locations may be used temporarily
+during the course of active work on a project.</li>
 </ul>
 </div>
 <div class="section level3">
@@ -130,14 +137,22 @@
 <h4 id="local-computer">Local Computer<a class="anchor" aria-label="anchor" href="#local-computer"></a>
 </h4>
 <ul>
-<li>All files for any current projects can be stored on a University provided PC or Macintosh, if and only if the computer’s hard drive is encrypted.</li>
-<li>Data with PID should only be locally stored during active work on a project.</li>
+<li>All files for any current projects can be stored on a University
+provided PC or Macintosh, if and only if the computer’s hard drive is
+encrypted.</li>
+<li>Data with PID should only be locally stored during active work on a
+project.</li>
 <li>Pros: data and projects load more quickly when stored locally.</li>
-<li>Cons: no natural/default backup process, can be a hassle to do best security practices manually.</li>
+<li>Cons: no natural/default backup process, can be a hassle to do best
+security practices manually.</li>
 <li>Best Practices:
 <ul>
-<li>Only keep project data on your computer while working on it, and if you do this often, ensure you frequently save your data to the CIDA drive.</li>
-<li>Prior to travel with a laptop, any old or unneeded projects should be removed from the computer drive and can be restored upon return to campus.</li>
+<li>Only keep project data on your computer while working on it, and if
+you do this often, ensure you frequently save your data to the CIDA
+drive.</li>
+<li>Prior to travel with a laptop, any old or unneeded projects should
+be removed from the computer drive and can be restored upon return to
+campus.</li>
 </ul>
 </li>
 </ul>
@@ -146,47 +161,92 @@
 <h4 id="cida-p-drive">CIDA (P) Drive<a class="anchor" aria-label="anchor" href="#cida-p-drive"></a>
 </h4>
 <ul>
-<li>Mapping depends on operating system. See instructions here for mapping drives.
+<li>Mapping depends on operating system. See instructions here for
+mapping drives.
 <ul>
-<li>MAC: <code>smb://data.ucdenver.pvt/dept/SPH/SPH-CIDA/CIDA</code>
+<li>MAC:
+<code>smb://data.ucdenver.pvt/dept/SPH/SPH-CIDA/CIDA</code>
 </li>
-<li>Windows: <code>\\data.ucdenver.pvt\dept\SPH\SPH-CIDA\CIDA</code>
+<li>Windows:
+<code>\\data.ucdenver.pvt\dept\SPH\SPH-CIDA\CIDA</code>
 </li>
-<li>If you have recently started and are having trouble mapping this drive, contact <a href="https://medschool.cuanschutz.edu/informationservices" class="external-link">SOM-IT</a>.</li>
+<li>If you have recently started and are having trouble mapping this
+drive, contact <a href="https://medschool.cuanschutz.edu/informationservices" class="external-link">SOM-IT</a>.</li>
 </ul>
 </li>
-<li>CIDA project data must be stored here on a permanent basis (with certain exceptions, e.g., projects larger &gt; 16 GB or if the collaboration dictates otherwise).</li>
+<li>CIDA project data must be stored here on a permanent basis (with
+certain exceptions, e.g., projects larger &gt; 16 GB or if the
+collaboration dictates otherwise).</li>
 <li>The storage under the CIDA Drive is set up as follows:
 <ul>
-<li>CIDA/Branches: Long-standing collaborations, including those operating under MOUs, are treated as Branches, and their data should be stored in a subdirectory of CIDA/Branches.</li>
-<li>CIDA/Projects: Data for projects for the consulting arm (i.e., those with a P-number) should be stored in a subdirectory of CIDA/Projects. Use this <a href="https://app.smartsheet.com/b/form/d1d93ae08f4349d48654950eea9b5bbd" class="external-link">form</a> to create folders in the P-drive with specific permissions, or this <a href="https://app.smartsheet.com/b/form/c22bbec56f8d4607bedc441be60bf8c8" class="external-link">form</a> to update the permissions of an existing folder. These forms are directly sent to SOM IT.</li>
+<li>CIDA/Branches: Long-standing collaborations, including those
+operating under MOUs, are treated as Branches, and their data should be
+stored in a subdirectory of CIDA/Branches.</li>
+<li>CIDA/Projects: Data for projects for the consulting arm (i.e., those
+with a P-number) should be stored in a subdirectory of CIDA/Projects.
+Use this <a href="https://app.smartsheet.com/b/form/d1d93ae08f4349d48654950eea9b5bbd" class="external-link">form</a>
+to create folders in the P-drive with specific permissions, or this <a href="https://app.smartsheet.com/b/form/c22bbec56f8d4607bedc441be60bf8c8" class="external-link">form</a>
+to update the permissions of an existing folder. These forms are
+directly sent to SOM IT.</li>
 <li>CIDA/Shared
 <ul>
-<li>The CIDA/Shared directory is accessible to all CIDA members who have gained approval from a data manager. Folders are also accessible to external users who have been approved for access.</li>
-<li>Files and directories that you create on the shared drive inherit their permissions from their parent folder. You cannot restrict access to specific directories in accordance with data use agreements without the help of IT.</li>
+<li>The CIDA/Shared directory is accessible to all CIDA members who have
+gained approval from a data manager. Folders are also accessible to
+external users who have been approved for access.</li>
+<li>Files and directories that you create on the shared drive inherit
+their permissions from their parent folder. You cannot restrict access
+to specific directories in accordance with data use agreements without
+the help of IT.</li>
 </ul>
 </li>
 </ul>
 </li>
 <li>Pros:
 <ul>
-<li>All files and directories are backed up nightly; backups are stored for 30 days.</li>
-<li>Collaboration and transfers of data among CIDA members can be quick and easy.</li>
-<li>Data and code are easily findable by CIDA administration and other team members in the case of a CIDA member’s continued absence.</li>
+<li>All files and directories are backed up nightly; backups are stored
+for 30 days.</li>
+<li>Collaboration and transfers of data among CIDA members can be quick
+and easy.</li>
+<li>Data and code are easily findable by CIDA administration and other
+team members in the case of a CIDA member’s continued absence.</li>
 </ul>
 </li>
-<li>Con: working directly on this drive can be slow, especially through a VPN.</li>
+<li>Con: working directly on this drive can be slow, especially through
+a VPN.</li>
 <li>Best Practices:
 <ul>
-<li>Up-to-date raw data for all projects should be available in their expected location on this drive at least weekly, and especially at project conclusion, or prior to a project not being actively worked on.</li>
-<li>Eliminate redundancies and intermediate data sets in projects with “big” data; only store the data you need to make code and reports run.</li>
-<li>It is OK not to work directly on the CIDA drive in cases where speed is a concern. If you do, know that all active projects should copy data over to the CIDA drive regularly (weekly), and especially prior to taking leave. The CIDAtools R package, located <a href="https://github.com/CIDA-CSPH/CIDAtools" class="external-link">here</a>, has the function <code>BackupProject()</code> that can streamline this process. By default, this function only updates folders/files in DataRaw/* and DataProcessed/* which have changed, so it should not take too long.</li>
+<li>Up-to-date raw data for all projects should be available in their
+expected location on this drive at least weekly, and especially at
+project conclusion, or prior to a project not being actively worked
+on.</li>
+<li>Eliminate redundancies and intermediate data sets in projects with
+“big” data; only store the data you need to make code and reports
+run.</li>
+<li>It is OK not to work directly on the CIDA drive in cases where speed
+is a concern. If you do, know that all active projects should copy data
+over to the CIDA drive regularly (weekly), and especially prior to
+taking leave. The CIDAtools R package, located <a href="https://github.com/CIDA-CSPH/CIDAtools" class="external-link">here</a>, has the function
+<code>BackupProject()</code> that can streamline this process. By
+default, this function only updates folders/files in DataRaw/* and
+DataProcessed/* which have changed, so it should not take too long.</li>
 </ul>
 </li>
-<li>CIDA pays for this server storage on a per-GB-month basis, so be cognizant of the size of the data utilized by your projects. If possible, the project’s scope of work should charge more for data sets and project materials which are anticipated to fall above a threshold of 32 GB. <a href="https://www1.ucdenver.edu/offices/office-of-information-technology/services/billing-and-rates" class="external-link">The OIT’s central file storage rate</a> should be applied and multiplied to account for anticipated duration of storage. See below.</li>
+<li>CIDA pays for this server storage on a per-GB-month basis, so be
+cognizant of the size of the data utilized by your projects. If
+possible, the project’s scope of work should charge more for data sets
+and project materials which are anticipated to fall above a threshold of
+32 GB. <a href="https://www1.ucdenver.edu/offices/office-of-information-technology/services/billing-and-rates" class="external-link">The
+OIT’s central file storage rate</a> should be applied and multiplied to
+account for anticipated duration of storage. See below.</li>
 </ul>
 <p><strong>Data storage costs on CIDA drive</strong></p>
 <table class="table">
+<colgroup>
+<col width="34%">
+<col width="34%">
+<col width="16%">
+<col width="13%">
+</colgroup>
 <thead><tr class="header">
 <th></th>
 <th align="center">Expected 10-year cost ($)</th>
@@ -234,18 +294,33 @@
 <h4 id="onedrive-for-business">OneDrive for Business<a class="anchor" aria-label="anchor" href="#onedrive-for-business"></a>
 </h4>
 <ul>
-<li>OneDrive for Business is a hybrid local and cloud storage system that allows for up to 5TB of cloud storage. Individual file size is limited to 15 GB.</li>
-<li>Unlike the CIDA drive, files and directories saved to the OneDrive directory are private by default and are backed up to the cloud.</li>
-<li>OneDrive for Business is HIPAA compliant. OIT and SOM IT can access folders created on the directory, but only after a manager enters a data access request that gets approved by HR.</li>
-<li>Files can be downloaded to your local computer from the cloud on an as-needed basis off-site, which ensures a limited amount of data is stored locally.</li>
-<li>Files can also be shared with other individuals with <span class="citation">@cuanschutz.edu</span> email addresses via OneDrive for Business.</li>
+<li>OneDrive for Business is a hybrid local and cloud storage system
+that allows for up to 5TB of cloud storage. Individual file size is
+limited to 15 GB.</li>
+<li>Unlike the CIDA drive, files and directories saved to the OneDrive
+directory are private by default and are backed up to the cloud.</li>
+<li>OneDrive for Business is HIPAA compliant. OIT and SOM IT can access
+folders created on the directory, but only after a manager enters a data
+access request that gets approved by HR.</li>
+<li>Files can be downloaded to your local computer from the cloud on an
+as-needed basis off-site, which ensures a limited amount of data is
+stored locally.</li>
+<li>Files can also be shared with other individuals with <span class="citation">@cuanschutz.edu</span> email addresses via OneDrive for
+Business.</li>
 <li>Things to be aware of:
 <ul>
 <li>Do not confuse this with a personal OneDrive account!</li>
-<li>Do not install OneDrive for Business on an unencrypted or personal computer. Files may sync (and be downloaded) to the local computer, which would leave potentially sensitive data vulnerable.</li>
-<li>Concurrent use of OneDrive for Business in directories tracked by Git can lead to some syncing issues with OneDrive. This can typically be solved by restarting OneDrive.</li>
-<li>Relevant project data stored in OneDrive should be copied over to the CIDA drive regularly, especially when projects become inactive.</li>
-<li>Certain institutions and groups may have policies against using OneDrive for Business, so please verify with your research group that it is acceptable for your data to live there.</li>
+<li>Do not install OneDrive for Business on an unencrypted or personal
+computer. Files may sync (and be downloaded) to the local computer,
+which would leave potentially sensitive data vulnerable.</li>
+<li>Concurrent use of OneDrive for Business in directories tracked by
+Git can lead to some syncing issues with OneDrive. This can typically be
+solved by restarting OneDrive.</li>
+<li>Relevant project data stored in OneDrive should be copied over to
+the CIDA drive regularly, especially when projects become inactive.</li>
+<li>Certain institutions and groups may have policies against using
+OneDrive for Business, so please verify with your research group that it
+is acceptable for your data to live there.</li>
 </ul>
 </li>
 </ul>
@@ -254,37 +329,66 @@
 <h4 id="external-servers">External Servers<a class="anchor" aria-label="anchor" href="#external-servers"></a>
 </h4>
 <ul>
-<li>Depending on the project and the data of interest, the data may be housed in an external server. External servers exist in various forms and require varying workflows.</li>
-<li>Care should be taken that data living on an external server remain on the external server. However, code, reports, and any other files necessary to the project should still be copied to the CIDA drive at regular intervals (exceptions may exist, e.g., if other processes are specified in CIDA’s memorandum of understanding with your research group).</li>
+<li>Depending on the project and the data of interest, the data may be
+housed in an external server. External servers exist in various forms
+and require varying workflows.</li>
+<li>Care should be taken that data living on an external server remain
+on the external server. However, code, reports, and any other files
+necessary to the project should still be copied to the CIDA drive at
+regular intervals (exceptions may exist, e.g., if other processes are
+specified in CIDA’s memorandum of understanding with your research
+group).</li>
 </ul>
 </div>
 <div class="section level4">
 <h4 id="eureka-by-health-data-compass-hdc">Eureka by Health Data Compass (HDC)<a class="anchor" aria-label="anchor" href="#eureka-by-health-data-compass-hdc"></a>
 </h4>
 <ul>
-<li>Any patient level data on Eureka should only be moved off of the Google Cloud with explicit permission from HDC for that specific project and data.</li>
-<li>Raw data or data with PID should not be copied over to any other location except those approved by HDC.</li>
-<li>Backups of code, reports, and other files should still be copied over to the CIDA drive so that it is accessible to others in CIDA in case of an emergency.</li>
-<li>For projects requiring Eureka, the <a href="https://www.healthdatacompass.org/cloud-analytics-infrastructure/eureka-cost-estimator" class="external-link">Eureka Cost Estimator</a> can be used to determine the expected costs of a particular project a priori. These costs should be charged to the project’s PI if possible.</li>
+<li>Any patient level data on Eureka should only be moved off of the
+Google Cloud with explicit permission from HDC for that specific project
+and data.</li>
+<li>Raw data or data with PID should not be copied over to any other
+location except those approved by HDC.</li>
+<li>Backups of code, reports, and other files should still be copied
+over to the CIDA drive so that it is accessible to others in CIDA in
+case of an emergency.</li>
+<li>For projects requiring Eureka, the <a href="https://www.healthdatacompass.org/cloud-analytics-infrastructure/eureka-cost-estimator" class="external-link">Eureka
+Cost Estimator</a> can be used to determine the expected costs of a
+particular project a priori. These costs should be charged to the
+project’s PI if possible.</li>
 </ul>
 </div>
 <div class="section level4">
 <h4 id="github">GitHub<a class="anchor" aria-label="anchor" href="#github"></a>
 </h4>
 <ul>
-<li>In general, GitHub should be used for everything, except for data. While tracking small data sets in Git and pushing to GitHub is usually harmless, tracking data sets in Git can snowball the storage needed in GitHub and also slow down your git commands.</li>
-<li>Avoid tracking especially large binary data files (e.g. files with db, xls, xlsx, extensions). Instead, convert these files into a text file (e.g. tab-delimited txt file, csv file). This will speed up your git processes and help conserve storage space [see <a href="https://stackoverflow.com/questions/17888604/git-with-large-files/19494211#19494211" class="external-link">link</a> for more information].<br>
+<li>In general, GitHub should be used for everything, except for data.
+While tracking small data sets in Git and pushing to GitHub is usually
+harmless, tracking data sets in Git can snowball the storage needed in
+GitHub and also slow down your git commands.</li>
+<li>Avoid tracking especially large binary data files (e.g. files with
+db, xls, xlsx, extensions). Instead, convert these files into a text
+file (e.g. tab-delimited txt file, csv file). This will speed up your
+git processes and help conserve storage space [see <a href="https://stackoverflow.com/questions/17888604/git-with-large-files/19494211#19494211" class="external-link">link</a>
+for more information].<br>
 </li>
-<li>Instead of tracking data, one can build in a “<a href="http://tombuntu.com/index.php/2007/12/21/how-to-use-md5sum-to-verify-data-integrity/" class="external-link">data-check</a>” in the code for the project to ensure the MD5 sums are as expected.</li>
-<li>Please consult the “coding guidelines” document for more information on the best practices for tracking your work in Git and GitHub.</li>
-<li>All repositories on GitHub should be updated frequently, but especially prior to leaving on vacation or any other extended time out of office.</li>
+<li>Instead of tracking data, one can build in a “<a href="http://tombuntu.com/index.php/2007/12/21/how-to-use-md5sum-to-verify-data-integrity/" class="external-link">data-check</a>”
+in the code for the project to ensure the MD5 sums are as expected.</li>
+<li>Please consult the “coding guidelines” document for more information
+on the best practices for tracking your work in Git and GitHub.</li>
+<li>All repositories on GitHub should be updated frequently, but
+especially prior to leaving on vacation or any other extended time out
+of office.</li>
 </ul>
 </div>
 <div class="section level4">
 <h4 id="really-really-big-data">Really, really big data<a class="anchor" aria-label="anchor" href="#really-really-big-data"></a>
 </h4>
 <ul>
-<li>If your data for a particular project is particularly large, you may require or wish to have a data storage solution tailored to that particular project (and funded entirely by the project). For non-Eureka solutions, please contact the SOM IT.</li>
+<li>If your data for a particular project is particularly large, you may
+require or wish to have a data storage solution tailored to that
+particular project (and funded entirely by the project). For non-Eureka
+solutions, please contact the SOM IT.</li>
 <li>Consider using CIDA’s HPC option (see below).</li>
 </ul>
 </div>
@@ -292,9 +396,19 @@
 <h4 id="cida-bios-high-performance-computing-server">CIDA-BIOS High Performance Computing Server<a class="anchor" aria-label="anchor" href="#cida-bios-high-performance-computing-server"></a>
 </h4>
 <ul>
-<li>The HPC was purchased by CIDA and funds from a U01 grant (Katerina Kechris and Debashis Ghosh are PIs). Therefore, primary priority is given to CIDA &amp; research related to the U01 grant. Secondary priority is given to Ghosh &amp; Kechris group members. [Tertiary access can be attained by requesting access from Dr. Kechris via smartsheet.]</li>
-<li>The server is a Dell PowerEdge R740XD, with Intel Xeon Gold 6152 2.1G X (2) CPU, 44 cores, 1TB memory, 240 SSD X (2) mirrored disk operating system, and ~50TB of usable disk storage. The operating system is CentOS 7.x, and common research software are available such as R, R Studio, MatLab, Python, and Java.</li>
-<li>Server is not HIPAA compliant and therefore no PHI can be stored on the server.</li>
+<li>The HPC was purchased by CIDA and funds from a U01 grant (Katerina
+Kechris and Debashis Ghosh are PIs). Therefore, primary priority is
+given to CIDA &amp; research related to the U01 grant. Secondary
+priority is given to Ghosh &amp; Kechris group members. [Tertiary access
+can be attained by requesting access from Dr. Kechris via
+smartsheet.]</li>
+<li>The server is a Dell PowerEdge R740XD, with Intel Xeon Gold 6152
+2.1G X (2) CPU, 44 cores, 1TB memory, 240 SSD X (2) mirrored disk
+operating system, and ~50TB of usable disk storage. The operating system
+is CentOS 7.x, and common research software are available such as R, R
+Studio, MatLab, Python, and Java.</li>
+<li>Server is not HIPAA compliant and therefore no PHI can be stored on
+the server.</li>
 <li>Backups are available via Wasabi: <a href="https://wasabi.com/hot-cloud-storage/" class="external-link uri">https://wasabi.com/hot-cloud-storage/</a>.</li>
 </ul>
 </div>
@@ -303,9 +417,13 @@
 </h4>
 <ul>
 <li>
-<strong>Only the options listed above are approved by CIDA for temporary data storage, and only the CIDA drive is approved for ongoing data storage</strong>. Please follow the best practices and ask questions if you have them.</li>
+<strong>Only the options listed above are approved by CIDA for
+temporary data storage, and only the CIDA drive is approved for ongoing
+data storage</strong>. Please follow the best practices and ask
+questions if you have them.</li>
 <li>
-<strong>The following non-exhaustive list of data storage options are not approved by CIDA</strong>:
+<strong>The following non-exhaustive list of data storage options
+are not approved by CIDA</strong>:
 <ul>
 <li>Dropbox</li>
 <li>Google Drive</li>
@@ -335,7 +453,8 @@
 <tbody>
 <tr class="odd">
 <td>CIDA drive</td>
-<td align="center">For transfers among CIDA members, the CIDA drive can be used for data transfer</td>
+<td align="center">For transfers among CIDA members, the CIDA drive can
+be used for data transfer</td>
 <td align="right"></td>
 <td align="right"></td>
 </tr>
@@ -347,13 +466,17 @@
 </tr>
 <tr class="odd">
 <td>Redcap</td>
-<td align="center">Web-based, useful for ongoing projects where data updates are more frequent, ensures data format stays more consistent</td>
+<td align="center">Web-based, useful for ongoing projects where data
+updates are more frequent, ensures data format stays more
+consistent</td>
 <td align="right"></td>
 <td align="right"></td>
 </tr>
 <tr class="even">
 <td>External hard/flash drive</td>
-<td align="center">Acceptable: CIDA’s 48 TB NAS station, or an encrypted flash drive. Unacceptable: Unencrypted drive, even if the file is password protected</td>
+<td align="center">Acceptable: CIDA’s 48 TB NAS station, or an encrypted
+flash drive. Unacceptable: Unencrypted drive, even if the file is
+password protected</td>
 <td align="right"></td>
 <td align="right"></td>
 </tr>
@@ -365,7 +488,13 @@
 </tr>
 <tr class="even">
 <td>Last resort: Email</td>
-<td align="center">Email is not encouraged means of transferring data. In circumstances when no other approach is available, note that although email between CU-affiliated email addresses are automatically encrypted, this is not the case for external emails. You can manually encrypt by putting one of these keywords in brackets in the subject of an email: secure, safemail, or encrypt. Email from any other email system, such as gmail, is not acceptable.</td>
+<td align="center">Email is not encouraged means of transferring data.
+In circumstances when no other approach is available, note that although
+email between CU-affiliated email addresses are automatically encrypted,
+this is not the case for external emails. You can manually encrypt by
+putting one of these keywords in brackets in the subject of an email:
+secure, safemail, or encrypt. Email from any other email system, such as
+gmail, is not acceptable.</td>
 <td align="right"></td>
 <td align="right"></td>
 </tr>
@@ -377,7 +506,10 @@
 </tr>
 <tr class="even">
 <td>Not acceptable</td>
-<td align="center">Non-approved web-based systems including: Dropbox, Google Drive, … Unencrypted flash/hard drives, even if the file is password protected. Email from any other email system, such as gmail</td>
+<td align="center">Non-approved web-based systems including: Dropbox,
+Google Drive, … Unencrypted flash/hard drives, even if the file is
+password protected. Email from any other email system, such as
+gmail</td>
 <td align="right"></td>
 <td align="right"></td>
 </tr>
@@ -388,41 +520,39 @@
 <h3 id="useful-links">Useful Links<a class="anchor" aria-label="anchor" href="#useful-links"></a>
 </h3>
 <p>Health Insurance Portability and Accountability Act (HIPAA):<br><a href="http://www.hhs.gov/hipaa/for-professionals/index.html" class="external-link uri">http://www.hhs.gov/hipaa/for-professionals/index.html</a></p>
-<p>Health Information Technology for Economic and Clinical Health (HITECH):<br><a href="http://www.hhs.gov/hipaa/for-professionals/special-topics/HITECH-act-enforcement-interim-final-rule/index.html" class="external-link uri">http://www.hhs.gov/hipaa/for-professionals/special-topics/HITECH-act-enforcement-interim-final-rule/index.html</a></p>
-<p>Guidance Regarding Methods for De-identification of Protected Health Information in Accordance with the Health Insurance Portability and Accountability Act (HIPAA) Privacy Rule:<br><a href="http://www.hhs.gov/hipaa/for-professionals/privacy/special-topics/de-identification/index.html" class="external-link uri">http://www.hhs.gov/hipaa/for-professionals/privacy/special-topics/de-identification/index.html</a></p>
+<p>Health Information Technology for Economic and Clinical Health
+(HITECH):<br><a href="http://www.hhs.gov/hipaa/for-professionals/special-topics/HITECH-act-enforcement-interim-final-rule/index.html" class="external-link uri">http://www.hhs.gov/hipaa/for-professionals/special-topics/HITECH-act-enforcement-interim-final-rule/index.html</a></p>
+<p>Guidance Regarding Methods for De-identification of Protected Health
+Information in Accordance with the Health Insurance Portability and
+Accountability Act (HIPAA) Privacy Rule:<br><a href="http://www.hhs.gov/hipaa/for-professionals/privacy/special-topics/de-identification/index.html" class="external-link uri">http://www.hhs.gov/hipaa/for-professionals/privacy/special-topics/de-identification/index.html</a></p>
 <p>VPN and Remote Desktop:<br><a href="https://www1.ucdenver.edu/offices/office-of-information-technology/software/how-do-i-use/vpn-and-remote-access" class="external-link uri">https://www1.ucdenver.edu/offices/office-of-information-technology/software/how-do-i-use/vpn-and-remote-access</a></p>
 <p>GitLab:<br><a href="http://cidagitlab.ucdenver.pvt/" class="external-link uri">http://cidagitlab.ucdenver.pvt/</a></p>
-<p>OneDrive for Business:<br><a href="https://www1.ucdenver.edu/offices/office-of-information-technology/software/how-do-i-use/onedrive" class="external-link uri">https://www1.ucdenver.edu/offices/office-of-information-technology/software/how-do-i-use/onedrive</a> <a href="https://www1.ucdenver.edu/docs/default-source/offices-oit-documents/how-to-documents/onedrive-staying-secure.pdf?sfvrsn=668bb7b8_4" class="external-link uri">https://www1.ucdenver.edu/docs/default-source/offices-oit-documents/how-to-documents/onedrive-staying-secure.pdf?sfvrsn=668bb7b8_4</a></p>
-<p>Eureka:<br><a href="https://www.healthdatacompass.org/cloud-analytics-infrastructure/using-eureka" class="external-link uri">https://www.healthdatacompass.org/cloud-analytics-infrastructure/using-eureka</a> <a href="https://www.healthdatacompass.org/cloud-analytics-infrastructure/eureka-cost-estimator" class="external-link uri">https://www.healthdatacompass.org/cloud-analytics-infrastructure/eureka-cost-estimator</a></p>
+<p>OneDrive for Business:<br><a href="https://www1.ucdenver.edu/offices/office-of-information-technology/software/how-do-i-use/onedrive" class="external-link uri">https://www1.ucdenver.edu/offices/office-of-information-technology/software/how-do-i-use/onedrive</a>
+<a href="https://www1.ucdenver.edu/docs/default-source/offices-oit-documents/how-to-documents/onedrive-staying-secure.pdf?sfvrsn=668bb7b8_4" class="external-link uri">https://www1.ucdenver.edu/docs/default-source/offices-oit-documents/how-to-documents/onedrive-staying-secure.pdf?sfvrsn=668bb7b8_4</a></p>
+<p>Eureka:<br><a href="https://www.healthdatacompass.org/cloud-analytics-infrastructure/using-eureka" class="external-link uri">https://www.healthdatacompass.org/cloud-analytics-infrastructure/using-eureka</a>
+<a href="https://www.healthdatacompass.org/cloud-analytics-infrastructure/eureka-cost-estimator" class="external-link uri">https://www.healthdatacompass.org/cloud-analytics-infrastructure/eureka-cost-estimator</a></p>
 </div>
 </div>
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-
-        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
-</div>
-
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
 
-      <footer><div class="copyright">
+    <footer><div class="pkgdown-footer-left">
   <p></p>
 <p>Developed by CIDA Research Tools Committee.</p>
 </div>
 
-<div class="pkgdown">
+<div class="pkgdown-footer-right">
   <p></p>
 <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
-      </footer>
+    </footer>
 </div>
 
   
-
 
   
 
