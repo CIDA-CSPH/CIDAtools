@@ -1,129 +1,46 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/404.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/ReadMe.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/articles/CIDA_computing_resources.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/articles/alpine.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/articles/cron-jobs.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/articles/data_storage.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/articles/git.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/articles/sas-macros.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/articles/table1.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/index.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/reference/CIDA_drive_path.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/reference/ProjectAnalyst.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/reference/ProjectLocation.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/reference/ProjectName.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/reference/ProjectPI.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/reference/Round.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/reference/SetProjectAnalyst.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/reference/SetProjectData.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/reference/SetProjectLocation.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/reference/SetProjectName.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/reference/SetProjectPI.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/reference/backup_project.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/reference/cida_table1.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/reference/cida_word_document.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/reference/convertIntervalNotation.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/reference/create_project.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/reference/find_nearest.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/reference/list_kables.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/reference/nLevelsP.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/reference/nrowP.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/reference/pvalr.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/reference/pvalue.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/reference/read_xlsx_color.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/reference/removeAnalyst.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/reference/setAnalyst.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/reference/setPermanentAnalyst.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/reference/sum_ignore_NA.html</loc>
-  </url>
-  <url>
-    <loc>https://cida-csph.github.io/CIDAtools/reference/vec_power.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://cida-csph.github.io/CIDAtools/404.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/ReadMe.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/articles/CIDA_computing_resources.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/articles/alpine.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/articles/cron-jobs.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/articles/data_storage.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/articles/git.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/articles/index.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/articles/sas-macros.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/articles/table1.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/authors.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/index.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/news/index.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/reference/CIDA_drive_path.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/reference/ProjectAnalyst.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/reference/ProjectLocation.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/reference/ProjectName.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/reference/ProjectPI.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/reference/Round.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/reference/SetProjectAnalyst.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/reference/SetProjectData.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/reference/SetProjectLocation.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/reference/SetProjectName.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/reference/SetProjectPI.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/reference/backup_project.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/reference/cida_table1.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/reference/cida_word_document.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/reference/convertIntervalNotation.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/reference/create_project.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/reference/find_nearest.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/reference/getProjectData.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/reference/index.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/reference/list_kables.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/reference/nLevelsP.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/reference/nrowP.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/reference/pvalr.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/reference/pvalue.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/reference/read_xlsx_color.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/reference/removeAnalyst.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/reference/setAnalyst.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/reference/setPermanentAnalyst.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/reference/sum_ignore_NA.html</loc></url>
+<url><loc>https://cida-csph.github.io/CIDAtools/reference/vec_power.html</loc></url>
 </urlset>
+

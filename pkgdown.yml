@@ -1,16 +1,15 @@
-pandoc: 2.19.2
-pkgdown: 2.0.7
+pandoc: 3.1.11
+pkgdown: 2.1.0
 pkgdown_sha: ~
 articles:
-  CIDA_computing_resources: CIDA_computing_resources.html
   alpine: alpine.html
+  CIDA_computing_resources: CIDA_computing_resources.html
   cron-jobs: cron-jobs.html
   data_storage: data_storage.html
   git: git.html
   sas-macros: sas-macros.html
   table1: table1.html
-last_built: 2023-09-12T18:04Z
+last_built: 2024-08-16T17:11Z
 urls:
   reference: https://cida-csph.github.io/CIDAtools/reference
   article: https://cida-csph.github.io/CIDAtools/articles
-
