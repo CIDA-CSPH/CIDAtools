@@ -236,3 +236,27 @@ SetProjectData <- function(Parameter, Value){
   ProjData[Parameter] <- Value
   write.dcf(ProjData, file.path('.ProjData/Data.dcf'))
 }
+
+#' Get data for project
+#'
+#' Allows you to get misc project data parameters
+#'
+#' @param param Project parameter to be gotten
+#' @export
+#'
+getProjectData <- function(param){
+  if(file.exists(file.path('.ProjData/Data.dcf'))){
+    ProjData <- read.dcf(file.path('.ProjData/Data.dcf'), all = T)
+    if(param %in% names(ProjData)) return(ProjData[[param]])
+  }
+  if(file.exists(file.path('../.ProjData/Data.dcf'))){
+    ProjData <- read.dcf(file.path('../.ProjData/Data.dcf'), all = T)
+    if(param %in% names(ProjData)) return(ProjData[[param]])
+  }
+  if(file.exists(file.path('../../.ProjData/Data.dcf'))){
+    ProjData <- read.dcf(file.path('../../.ProjData/Data.dcf'), all = T)
+    if(param %in% names(ProjData)) return(ProjData[[param]])
+  }
+
+  return('')
+}
