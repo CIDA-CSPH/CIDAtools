@@ -1,8 +1,9 @@
 ---
 title: "Computing on the CSPH Biostats Cluster"
 author: "Research Tools Committee"
-date: "2024-11-05"
-output: html_document
+date: "Last Updated: `r Sys.Date()`"
+output: 
+  html_document
 ---
 
 ```{r setup, include=FALSE}
@@ -27,7 +28,7 @@ Because HPC clusters are intended to serve a group of people (i.e. A biostatisti
 When a user is ready to run something (an analysis, processing pipeline, etc) on the cluster, they will submit a new *job* to the cluster. The cluster will then schedule and run the job as soon as compute resources are available.
 
 ```{r, echo=FALSE, out.width="50%", fig.align="center"}
-knitr::include_graphics("HPC_images/cluster_basic_diagram.png")
+knitr::include_graphics("cluster_basic_diagram.png")
 ```
 
 The example figure above shows an example cluster with three users. Each user connects to the Head Node to submit their jobs.
@@ -42,8 +43,8 @@ HPC clusters are useful for:
 
 The CSPH Biostats cluster consists of four nodes. The `csphbiostats.ucdenver.pvt` node serves as both a head node and one of the compute nodes (i.e. Submitted jobs may also run on this node), and the `cidalappc[1-3].ucdenver.pvt` nodes serve as compute nodes. 
 
-```{r, echo=FALSE, out.width="80%", fig.align="center"}
-knitr::include_graphics("HPC_images/Biostats_HPC_diagram.png")
+```{r, echo=FALSE, out.width="100%", fig.align="center"}
+knitr::include_graphics("Biostats_HPC_diagram.png")
 ```
 
 The CIDA/Biostats server uses [SLURM](https://slurm.schedmd.com) system to manage job scheduling and resource management on the cluster. 
@@ -60,7 +61,7 @@ Once approved, an account will be created for you on the server.
 To log in to the CSPH Biostats Cluster, you can use SSH from the command line or an SSH client of your choice. 
 
 ```{r, echo=FALSE, out.width="80%", fig.align="center"}
-knitr::include_graphics("HPC_images/biostats_hpc_ssh.png")
+knitr::include_graphics("biostats_hpc_ssh.png")
 ```
 
 If you are connecting from the command line (like the above example), run:
@@ -88,13 +89,13 @@ The below screenshots show an example of connecting to `csphbiostats.ucdenver.pv
 First, open Cyberduck and click the 'Open Connection' button on the top bar.
 
 ```{r, echo=FALSE, out.width="80%", fig.align="center"}
-knitr::include_graphics("HPC_images/cyberduck_1.png")
+knitr::include_graphics("cyberduck_1.png")
 ```
 
 Next, ensure that the 'SFTP' option is selected in the dropdown, then input your SSH credentials.
 
 ```{r, echo=FALSE, out.width="80%", fig.align="center"}
-knitr::include_graphics("HPC_images/cyberduck_2.png")
+knitr::include_graphics("cyberduck_2.png")
 ```
 
 If successful, you should see a file broswer interface showing your home directory on `csphbiostats.ucdenver.pvt`.
@@ -102,7 +103,7 @@ If successful, you should see a file broswer interface showing your home directo
 You can use the interface to navigate and download and existing files. You can also drag-and-drop files from your local machine to upload them to the cluster.
 
 ```{r, echo=FALSE, out.width="80%", fig.align="center"}
-knitr::include_graphics("HPC_images/cyberduck_3.png")
+knitr::include_graphics("cyberduck_3.png")
 ```
 
 ## Submitting Cluster Jobs
