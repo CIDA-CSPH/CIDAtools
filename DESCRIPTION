@@ -9,7 +9,8 @@ Imports:
     dplyr,
     generics,
     flextable,
-    table1
+    table1, 
+    shiny
 Suggests: 
     git2r, 
     survey, 
@@ -20,7 +21,8 @@ Suggests:
     arsenal,
     rmarkdown,
     DT,
-    covr
+    covr, 
+    shinythemes
 License: CC0
 Encoding: UTF-8
 RoxygenNote: 7.3.1

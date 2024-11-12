@@ -2,7 +2,11 @@
 title: "Cron Jobs"
 author: "Research Tools Committee"
 date: "2023-07-01"
-output: html_document
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Cron Jobs}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}

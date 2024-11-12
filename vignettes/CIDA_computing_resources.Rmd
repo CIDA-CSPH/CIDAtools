@@ -2,9 +2,11 @@
 title: "CIDA Computing Resources"
 author: "Research Tools Committee"
 date: '2023-02-7'
-output:
-  pdf_document: default
-  html_document: default
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{CIDA Computing Resources}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}
