@@ -82,7 +82,7 @@ On login, you will be prompted for a password which will be your CU system passw
 
 Once you've successfully logged in, you should see a prompt like the final line in the screenshot, showing that you are logged in to `csphbiostats.ucdenver.pvt`.
 
-To make future logins more covenient, you can configure an SSH config profile and RSA keypair, which will enable password-less login. (See [SSH Key Authentication](#ssh-key-authentication))
+To make future logins more convenient, you could configure an SSH config profile and RSA key pair, which will enable password-less login. 
 
 ## Submitting a Job on the CSPH Biostats Cluster
 
@@ -97,9 +97,9 @@ The below example shows a simple batch script `my_batch.sh` which executes a sin
 
 ```
 #!/bin/bash
-#SBATCH --job_name=my_batch
-#SBATCH --out=my_batch.log
-#SBATCH --err=my_batch.err
+#SBATCH --job-name=my_batch
+#SBATCH --output=my_batch.log
+#SBATCH --error=my_batch.err
 
 Rscript my_analysis.R
 ```
@@ -113,7 +113,7 @@ The first line:
 The next few lines will be parsed by SLURM to set parameters/options for your batch job. 
 
 ```
-#SBATCH --job_name=my_batch
+#SBATCH --job-name=my_batch
 #SBATCH --output=my_batch.log
 #SBATCH --error=my_batch.err
 ```
@@ -183,7 +183,7 @@ knitr::include_graphics("cluster_srun.png")
 #### Interactive Jobs
 `srun` is also useful for running *interactive* jobs. An interactive job opens a terminal session on a compute node, allowing you to run commands and script interactively.
 
-Interactive jobs are useful for running quick commands or scripts on a compute node.
+Interactive jobs are useful for running quick commands or scripts, or anytime you'd like to directly monitor the output of your script/command. 
 
 The command:
 
@@ -220,7 +220,7 @@ knitr::include_graphics("interactive_job.png")
 
 `srun` is useful for running interactive jobs with fast-running commands/scripts, or for debugging issues with a larger script you will eventually submit using `sbatch`.
 
-I don't reommend using `srun` for long-running jobs, as if you disconnect from the cluster while the `srun` command is still executing, the job may be cancelled.
+I don't recommend using `srun` for long-running jobs, as if you disconnect from the cluster while the `srun` command is still executing, the job may be cancelled.
 
 ## Uploading Data to the CSPH Biostats Cluster
 
@@ -242,7 +242,7 @@ Next, ensure that the 'SFTP' option is selected in the dropdown, then input your
 knitr::include_graphics("cyberduck_2.png")
 ```
 
-If successful, you should see a file broswer interface showing your home directory on `csphbiostats.ucdenver.pvt`.
+If successful, you should see a file browser interface showing your home directory on `csphbiostats.ucdenver.pvt`.
 
 You can use the interface to navigate and download and existing files. You can also drag-and-drop files from your local machine to upload them to the cluster.
 
@@ -258,13 +258,5 @@ Similarly, any output files generated from a job running on a compute node will 
 
 ### Other SLURM Resources
 
-The SLURM system has an excellent [website](https://slurm.schedmd.com/documentation.html), with documentation for each command. I recommend reading the documentation for at least the [sbatch](https://slurm.schedmd.com/sbatch.html) command, as it contains infomration about many configuration options not listed in this document.
-
-## Running RStudio Server and JupyterLab
-
-TODO
-
-## SSH Key Authentication
-
-TODO
+The SLURM system has an excellent [website](https://slurm.schedmd.com/documentation.html), with documentation for each command. I recommend reading the documentation for at least the [sbatch](https://slurm.schedmd.com/sbatch.html) command, as it contains information about many configuration options not listed in this document.
 
