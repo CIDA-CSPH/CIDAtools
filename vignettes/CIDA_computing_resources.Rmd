@@ -60,7 +60,7 @@ Alpine is the University of Colorado Boulder Research Computing’s third-genera
 Alpine can be securely accessed anywhere, anytime using OpenOnDemand or ssh connectivity to the CURC system. Step-by-step instruction to access Alpine is available at:  https://curc.readthedocs.io/en/latest/clusters/alpine/quick-start.html  
  
 
-|| Alphine   || 
+|| Alpine   || 
 |---| :---: |---:|
 |Processor |General compute nodes|GPU | 
 | Nodes |  64 |11 | 
