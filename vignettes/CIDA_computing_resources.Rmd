@@ -1,7 +1,7 @@
 ---
 title: "CIDA Computing Resources"
 author: "Research Tools Committee"
-date: '2023-02-7'
+date: '2024-12-06'
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{CIDA Computing Resources}
@@ -23,7 +23,7 @@ Who does this apply to: All members of CIDA (Professor, RA, RI, Senior RI, PRA, 
 
 
 ### Computing Resources Available to CIDA Members
-This table lists the computing resources available to CIDA members. Please note that  none of these computing resources are HIPPA compliant and therefore no PHI can be stored on these machines. (please see the data storage guideline for more information).
+This table lists the computing resources available to CIDA members. Please note that compute resource have differing policies about storing PHI/HIPAA data. Please see the data storage guideline for more information.
 
 | Computing Resource | Description | HIPAA/PHI Data | 
 | --- | --- | --- |
@@ -43,7 +43,7 @@ The CIDA/Biostats HPC Cluster is an HPC cluster running the SLURM cluster manage
 
 This cluster is useful for computations which require large amounts of computing resource or involve long-running tasks.
 
-Instructions for accessing and using the CIDA/Biostats HPC are available [here](CIDA_BIOS_Cluster.Rmd).
+Instructions for accessing and using the CIDA/Biostats HPC are available [here](CIDA_BIOS_Cluster.html).
 
 | |csphbiostats|cidalappc01|cidalappc02|cidalappc03|
 | --- | --- |---| --- |---|
