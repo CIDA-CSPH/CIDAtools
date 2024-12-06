@@ -23,12 +23,12 @@ Who does this apply to: All members of CIDA (Professor, RA, RI, Senior RI, PRA, 
 
 
 ### Computing Resources Available to CIDA Members
-This table lists the computing resources available to CIDA members. Please note that compute resource have differing policies about storing PHI/HIPAA data. Please see the data storage guideline for more information.
+This table lists the computing resources available to CIDA members. Please note that each compute resource has differing policies about storage of PHI/HIPAA data. Please see the data storage guideline for more information.
 
 | Computing Resource | Description | HIPAA/PHI Data | 
 | --- | --- | --- |
 | Personal Computer/Laptop | Free for CIDA members| Limited | 
-| CIDA/Biostats HPC | Free for CIDA members | Yes |
+| CIDA/Biostats HPC | Free for CIDA members | Limited |
 | Alpine | Almost Free for CIDA members (if requested resources <= default allocation)| No |
 | Commercial computing platforms such as AWS, IBM, ... | Cost depends on the type of requested resouces | No |
 
