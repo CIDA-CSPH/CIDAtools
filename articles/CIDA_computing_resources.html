@@ -34,6 +34,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/alpine.html">Alpine HPC</a></li>
+    <li><a class="dropdown-item" href="../articles/CIDA_BIOS_Cluster.html">Computing on the CSPH Biostats Cluster</a></li>
     <li><a class="dropdown-item" href="../articles/CIDA_computing_resources.html">CIDA Computing Resources</a></li>
     <li><a class="dropdown-item" href="../articles/coding_guidelines.html">CIDA-coding-guidelines</a></li>
     <li><a class="dropdown-item" href="../articles/cron-jobs.html">Cron Jobs</a></li>
@@ -66,7 +67,7 @@
                         <h4 data-toc-skip class="author">Research Tools
 Committee</h4>
             
-            <h4 data-toc-skip class="date">2023-02-7</h4>
+            <h4 data-toc-skip class="date">2024-12-06</h4>
       
 
       <div class="d-none name"><code>CIDA_computing_resources.Rmd</code></div>
@@ -86,39 +87,41 @@ Senior RI, PRA, Senior PRA)</p>
 <h3 id="computing-resources-available-to-cida-members">Computing Resources Available to CIDA Members<a class="anchor" aria-label="anchor" href="#computing-resources-available-to-cida-members"></a>
 </h3>
 <p>This table lists the computing resources available to CIDA members.
-Please note that none of these computing resources are HIPPA compliant
-and therefore no PHI can be stored on these machines. (please see the
-data storage guideline for more information). SLCE machines are not
-HIPAA compliant</p>
-<ul>
-<li>Backups are available via Wasabi: <a href="https://wasabi.com/hot-cloud-storage/" class="external-link uri">https://wasabi.com/hot-cloud-storage/</a>.</li>
-</ul>
+Please note that each compute resource has differing policies about
+storage of PHI/HIPAA data. Please see the data storage guideline for
+more information.</p>
 <table class="table">
 <colgroup>
-<col width="50%">
-<col width="50%">
+<col width="33%">
+<col width="33%">
+<col width="33%">
 </colgroup>
 <thead><tr class="header">
 <th>Computing Resource</th>
 <th>Description</th>
+<th>HIPAA/PHI Data</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td>Personal Computer/Laptop</td>
 <td>Free for CIDA members</td>
+<td>Limited</td>
 </tr>
 <tr class="even">
-<td>SLCE</td>
+<td>CIDA/Biostats HPC</td>
 <td>Free for CIDA members</td>
+<td>Limited</td>
 </tr>
 <tr class="odd">
 <td>Alpine</td>
 <td>Almost Free for CIDA members (if requested resources &lt;= default
 allocation)</td>
+<td>No</td>
 </tr>
 <tr class="even">
 <td>Commercial computing platforms such as AWS, IBM, …</td>
 <td>Cost depends on the type of requested resouces</td>
+<td>No</td>
 </tr>
 </tbody>
 </table>
@@ -129,68 +132,64 @@ allocation)</td>
 preference.</p>
 </div>
 <div class="section level4">
-<h4 id="cida-slce">CIDA SLCE<br><a class="anchor" aria-label="anchor" href="#cida-slce"></a>
+<h4 id="cidabiostats-hpc-cluster">CIDA/Biostats HPC Cluster<br><a class="anchor" aria-label="anchor" href="#cidabiostats-hpc-cluster"></a>
 </h4>
-<p>SLCE is the local computing resource funded by CIDA (BERDxxxx) and
-consists of 5 workstations to address the computing resources required
-for vriety of tasks.</p>
-<table style="width:100%;" class="table">
+<p>The CIDA/Biostats HPC Cluster is an HPC cluster running the SLURM
+cluster management software.</p>
+<p>This cluster is useful for computations which require large amounts
+of computing resource or involve long-running tasks.</p>
+<p>Instructions for accessing and using the CIDA/Biostats HPC are
+available <a href="CIDA_BIOS_Cluster.html">here</a>.</p>
+<table class="table">
 <colgroup>
-<col width="16%">
-<col width="16%">
-<col width="16%">
-<col width="16%">
-<col width="16%">
-<col width="16%">
+<col width="20%">
+<col width="20%">
+<col width="20%">
+<col width="20%">
+<col width="20%">
 </colgroup>
 <thead><tr class="header">
 <th></th>
-<th>SLCE # 1</th>
-<th>SLCE # 2</th>
-<th>SLCE # 3</th>
-<th>SLCE # 4</th>
-<th>SLCE # 5</th>
+<th>csphbiostats</th>
+<th>cidalappc01</th>
+<th>cidalappc02</th>
+<th>cidalappc03</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td>CPU</td>
-<td>Intel Xeon Gold 6152 2.1G X (2) CPU, 44 cores</td>
-<td>Intel(R) Xeon(R) CPU E5-2680 v3 @ 2.50GHz (2 cores)</td>
-<td>TBD</td>
-<td>TBD</td>
-<td>TBD</td>
+<td>2x Intel Xeon Gold 61522 22-core CPU</td>
+<td>2x AMD EPYC 7H12 64-Core CPU</td>
+<td>2x AMD EPYC 7H12 64-Core CPU</td>
+<td>2x AMD EPYC 7H12 64-Core CPU</td>
 </tr>
 <tr class="even">
 <td>Disk storage</td>
-<td>50TB</td>
-<td>4TB</td>
-<td>4TB</td>
-<td>2TB</td>
-<td>2TB</td>
+<td>50TB (Shared across all nodes)</td>
+<td>”</td>
+<td>”</td>
+<td>”</td>
 </tr>
 <tr class="odd">
 <td>Memory Size</td>
 <td>1TB</td>
-<td>128 GB</td>
-<td>128 GB</td>
-<td>128 GB</td>
-<td>128 GB</td>
+<td>1TB</td>
+<td>512GB</td>
+<td>1TB</td>
 </tr>
 <tr class="even">
 <td>OS</td>
-<td>CentOS 7.x</td>
-<td>Linux</td>
-<td>Windows</td>
-<td>Windows</td>
-<td>Windows</td>
+<td>Rocky Linux 9.5 (RHEL)</td>
+<td>”</td>
+<td>”</td>
+<td>”</td>
 </tr>
 <tr class="odd">
 <td>Software</td>
-<td>R, R Studio, MatLab, Python, and Java</td>
-<td>Fiji,Python, R, RStudio</td>
-<td>R, RStudio, SAS, PASS, Git, Anaconda, Stata</td>
-<td>R, RStudio, SAS, PASS, Git, Anaconda, Stata</td>
-<td>R, RStudio, SAS, PASS, Git, Anaconda, Stata</td>
+<td>R, Python, RStudio Server, Jupyter Lab</td>
+<td>”</td>
+<td>”</td>
+<td>”</td>
 </tr>
 </tbody>
 </table>
@@ -215,7 +214,7 @@ access Alpine is available at: <a href="https://curc.readthedocs.io/en/latest/cl
 </colgroup>
 <thead><tr class="header">
 <th></th>
-<th align="center">Alphine</th>
+<th align="center">Alpine</th>
 <th align="right"></th>
 </tr></thead>
 <tbody>
