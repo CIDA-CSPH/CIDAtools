@@ -1,0 +1,257 @@
+---
+title: "Tabling Packages"
+author: "Research Tools Committee"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Tabling Packages}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(tidyverse)
+data("mtcars")
+data("trial")
+```
+
+## Introduction
+
+These vignettes will walk through examples for some of the most common tabling packages including gtsummary, kable/kableExtra, table1. All examples here work with the toy datasets such as `mtcars`.
+
+## gtsummary
+
+gtsummary is commonly used for its flexibility and compatability with different types of output. The syntax is pretty straightforward and can make a table of all variables with one line of code and minimal adjusting.
+
+```{r}
+library(gtsummary)
+tbl_summary(mtcars) 
+```
+
+
+
+You can stratify by multiple variables using `tbl_strata`
+```{r}
+trial %>%
+  tbl_strata(
+    strata = trt,
+    .tbl_fun =
+      ~ .x %>%
+        tbl_summary(by = stage) 
+  ) 
+```
+
+
+You can split tables by a variable, add missingness, change variable labels, adjust which statistics are presented and more... It is a very flexible package.
+```{r}
+tbl_summary(trial, 
+            by = trt,
+            missing = "ifany",
+            missing_text = "Missing",
+            label = grade ~ "Tumor Grade",
+            statistic = list(age~"{median} ({p25},{p75})",
+                             marker ~ "{mean} ({sd})",
+                             all_categorical() ~ "{n}/{N}")) %>%
+    add_p(pvalue_fun = ~ style_pvalue(.x, digits = 2)) %>%
+    add_overall() %>%
+    add_q(method = "fdr") %>%
+    modify_header(label = "**Variables**") %>%
+    bold_labels() %>%
+    italicize_levels() %>%
+    modify_caption("**Table 1**") 
+```
+
+gtsummary has themes that can be adjusted as shown below. This code sets the default gtsummary package theme to be "jama" theme" and will be used for all gtsummary objects unless otherwise specified.
+
+```{r}
+# changing aesthetics using themes
+theme_gtsummary_journal("jama", set_theme = T)
+tbl_summary(mtcars) 
+```
+
+Themes can apply to more than visual aspects and can set how certain variables are displayed
+```{r}
+# changing how continuous variables are presented using themes
+theme_gtsummary_mean_sd(set_theme = TRUE)
+tbl_summary(mtcars) 
+```
+
+Note this theme shows median, mean and IQR
+
+```{r}
+theme_gtsummary_eda(set_theme = TRUE) #note this theme shows median, mean and IQR
+tbl_summary(mtcars) 
+```
+
+Explore `?theme_gtsummary` for more ways to set themes for GT Summary Tables.
+
+Other functions that may be of interest:
+
+tbl_uvregression() - For running a series of univariate analyses
+```{r}
+tbl_uvregression(
+  trial,
+  method = glm,
+  y = response,
+  method.args = list(family = binomial),
+  exponentiate = TRUE,
+  include = c("age", "grade", "stage")
+)
+```
+
+tbl_regression() - For summarizing a single regression model. Also supports survival models, and some Bayesian models from the rstanarm and brms packages
+```{r}
+glm(response ~ trt, data= trial) %>% 
+  tbl_regression(exponentiate = TRUE)
+```
+
+
+tbl_stack() or tbl_merge - to combine table results
+```{r}
+# stacking two tbl_regression objects
+t1 <-
+  glm(response ~ trt, trial, family = binomial) %>%
+  tbl_regression(
+    exponentiate = TRUE,
+    label = list(trt ~ "Treatment (unadjusted)")
+  )
+
+t2 <-
+  glm(response ~ trt + grade + stage + marker, trial, family = binomial) %>%
+  tbl_regression(
+    include = "trt",
+    exponentiate = TRUE,
+    label = list(trt ~ "Treatment (adjusted)")
+  )
+
+tbl_stack(list(t1, t2))
+```
+
+```{r}
+library(survival)
+
+t3 <-
+  glm(response ~ trt + grade + age, trial, family = binomial) %>%
+  tbl_regression(exponentiate = TRUE)
+t4 <-
+  coxph(Surv(ttdeath, death) ~ trt + grade + age, trial) %>%
+  tbl_regression(exponentiate = TRUE)
+
+tbl_merge(
+  tbls = list(t3, t4),
+  tab_spanner = c("**Tumor Response**", "**Time to Death**")
+)
+```
+
+
+## Flextable
+
+Flextable plays well with gtsummary with the function `as_flex_table`. This may be of interest as flextable advertises itself as one of the few tabling packages that plays well with HTML, PDF and Word outputs. Most packages handle html well but sometimes struggle with losing capability with word or pdf outputting. Note the `autofit` function should fix any width problems that may occur with tables running off the page.
+
+```{r}
+library(flextable)
+ft <- flextable(airquality[ sample.int(10),])
+ft <- add_header_row(ft,
+  colwidths = c(4, 2),
+  values = c("Air quality", "Time")
+)
+ft <- theme_vanilla(ft)
+ft <- add_footer_lines(ft, "Daily air quality measurements in New York, May to September 1973.")
+ft <- color(ft, part = "footer", color = "#666666")
+ft <- set_caption(ft, caption = "New York Air Quality Measurements")
+ft
+```
+
+Flextable also offers a variety of themes / settings that can be adjusted.
+
+```{r}
+flextable(airquality[ sample.int(10),]) %>% theme_box()
+```
+
+Or changing default settings like below
+
+```{r}
+set_flextable_defaults(
+  font.size = 10, theme_fun = theme_vanilla,
+  padding = 6,
+  background.color = "#EFEFEF")
+flextable(airquality[ sample.int(10),]) %>% autofit()
+```
+
+## Kable/KableExtra
+
+Kable can be viewed as the base package that can be built on or styled with KableExtra. Note if you load KableExtra, kable will be loaded in the background if it is not already. KableExtra also allows working with piping (%\>%) for added simplicity when editing a table.
+
+The first step, the kable call is pretty simple but is fairly limited in themes etc.
+
+```{r}
+library(kableExtra)
+kable(mtcars, align = "lccrr")
+```
+
+Adding a simple kable_styling() call makes it much better visually
+
+```{r}
+library(kableExtra)
+kable(mtcars, align = "lccrr") %>% kable_styling()
+```
+
+Below are a handful of other options found within the "Kable universe".
+
+```{r}
+mtcars %>%
+  kbl(caption = "Recreating booktabs style table") %>%
+  kable_classic(full_width = F, html_font = "Cambria")
+```
+
+```{r}
+mtcars %>%
+  kbl() %>%
+  kable_material(c("striped", "hover"))
+```
+
+```{r}
+kbl(mtcars) %>%
+  kable_paper(bootstrap_options = "striped", full_width = F)
+```
+
+Please visit the following website for more examples on the kable package: <https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html>
+
+## Table1
+Table1 uses quick and easy syntax but is not very friendly with testing/pvals. Note the label function is helpful here (changed the names / levels of wt to weight and am to automatic)
+
+```{r}
+library(table1)
+
+label(mtcars$wt) <- "weight"
+
+mtcars$am <- 
+  factor(mtcars$am, 
+         levels=c(0,1),
+         labels=c("Automatic", # Reference
+                  "Manual"))
+
+table1(~ mpg + cyl + wt | am * vs, data=mtcars)
+```
+
+## tableone
+Here is the simplest approach to creating a summary table with the tableone package.
+```{r}
+library(tableone)
+CreateTableOne(data = mtcars)
+```
+
+You can specify which variables in included and which are factor variables easily in the table call.
+```{r}
+CreateTableOne(data = mtcars,
+               vars = c("mpg", "cyl", "disp", "hp"),
+               factorVars = c("cyl"))
+```
+
+
+
+
