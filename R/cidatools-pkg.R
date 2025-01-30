@@ -26,4 +26,5 @@
 #' @importFrom kableExtra kable_paper
 #' @importFrom Hmisc label
 #' @importFrom tableone CreateTableOne
+#' @import cardx
 NULL 

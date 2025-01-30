@@ -15,7 +15,8 @@ Imports:
     gtsummary,
     kableExtra,
     survival,
-    tableone
+    tableone, 
+    cardx
 Suggests: 
     git2r, 
     survey, 
