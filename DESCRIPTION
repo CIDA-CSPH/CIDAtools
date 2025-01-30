@@ -10,21 +10,26 @@ Imports:
     generics,
     flextable,
     table1, 
-    shiny
+    shiny, 
+    Hmisc,
+    gtsummary,
+    kableExtra,
+    survival,
+    tableone
 Suggests: 
     git2r, 
     survey, 
     xlsx, 
     knitr,
-    kableExtra,
     pander, 
     arsenal,
     rmarkdown,
     DT,
     covr, 
-    shinythemes
+    shinythemes,
+    stats
 License: CC0
 Encoding: UTF-8
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 VignetteBuilder: knitr
 URL: https://cida-csph.github.io/CIDAtools/
