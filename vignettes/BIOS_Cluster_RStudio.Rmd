@@ -1,0 +1,307 @@
+---
+title: "RStudio/JupyterLab on the CSPH Biostats Cluster"
+author: "Research Tools Committee"
+date: "Last Updated: `r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{RStudio on the CSPH Biostats Cluster}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+This document will guide you through running interactive RStudio (and/or JupyterLab) sessions on the Biostats cluster.
+
+Once configured, you'll be able to easily submit RStudio/JupyterLab SLURM jobs, and access them through your browser. 
+
+In this document, we'll cover:
+1. First-time Setup - Some configuration steps on your local machine.
+2. Job Submission - Submitting an RStudio SLURM job.
+3. Testing - Test that you can access the interactive session.
+
+## First-time Setup
+
+Although the RStudio/JupyterLab instance will run on an HPC compute node, you'll access the interface through your local browser.
+
+This means we need to configure a few SSH options to support this connection. 
+
+### Locate SSH Config File
+
+The simplest way to configure SSH options is to use the SSH config file. 
+
+On Mac/Unix-like systems, this is located at `~/.ssh/config`, and on Windows this is located at `C:/Users/<username>/.ssh/config`.
+
+If you don't see a file named `config` that's OK, you can create one!
+
+### Add SSH Configuration options
+
+Open up the `config` file in your text editor of choice. If you had a pre-existing `config` file, check if you have an entry with `HostName csphbiostats.ucdenver.pvt`. If you already have an entry, modify it instead of creating a new entry. 
+
+Configure your entry to look something like the below entry, remembering to replace the three `<your_username>` placeholders
+with your username on the cluster (whatever username you use to log in through SSH).
+
+```
+Host biostats
+	HostName csphbiostats.ucdenver.pvt
+	User <your_username>
+	Port 22
+	LocalForward 8895 /tmp/jupyter-<your_username>.sock
+	LocalForward 8896 /tmp/rstudio-<your_username>.sock
+```
+
+As a quick breakdown of the options:
+
+The `Host <friendly_name>` gives a friendly name to this configuration, which you can use when connecting through SSH, like:
+
+```
+ssh <friendly_name>
+```
+
+The `User` field should be your cluster username, and `Port` can be set to `22`.
+
+The two key elements are the `LocalForward` fields.
+
+```
+	LocalForward 8895 /tmp/jupyter-<your_username>.sock
+	LocalForward 8896 /tmp/rstudio-<your_username>.sock
+```
+
+These options tell the SSH client to forward local traffic on these ports to specific Unix socket paths on the cluster, allowing you to access the running RStudio/JupyterLab jobs.
+
+In this case, port `8895` will be used for JupyterLab and port `8896` will be used for RStudio, but feel free to customize these to any non-reserved ports you like (most ports in the 8100-8999 range should be available).
+
+A fully configured SSH entry looks like:
+
+```
+Host biostats
+	HostName csphbiostats.ucdenver.pvt
+	User hillandr
+	Port 22
+	LocalForward 8895 /tmp/jupyter-hillandr.sock
+	LocalForward 8896 /tmp/rstudio-hillandr.sock
+```
+
+Once configured, save and close the file.
+
+### Test the SSH Connection
+
+Now, we'll run a quick check to verify that the SSH configuration is working as expected. 
+
+First, open an SSH connection to the cluster by opening a command prompt and typing:
+
+```
+ssh <friendly_name>
+```
+
+where `<friendly_name>` is the name you entered in the `Host` field of your SSH config file.
+
+```{r, echo=FALSE, out.width="80%", fig.align="center"}
+knitr::include_graphics("biostats_hpc_ssh_2.png")
+```
+
+
+Once you've logged in via SSH, open a web browser on your local machine (but keep the SSH window open!) and enter
+
+```
+localhost:8895
+```
+
+in the address bar. If you assigned different ports in your config file, modify the address accordingly. 
+
+In the browser, you should see an error screen. This is expected. 
+
+```{r, echo=FALSE, out.width="80%", fig.align="center"}
+knitr::include_graphics("localhost_test.png")
+```
+
+Moving back to your SSH window, you should see some error messages populate the screen:
+
+```{r, echo=FALSE, out.width="80%", fig.align="center"}
+knitr::include_graphics("biostats_hpc_ssh_local_forward_test.png")
+```
+
+If you see these error messages in your SSH window, Congratulations! 
+
+These error messages mean you've configured your SSH connection correctly. The messages appear the browser is attempting to connect, but there is nothing on the other end (yet) to receive the connection.
+
+If you don't see the error messages:
+
+1. Check your SSH configuration file to make sure that you're using the correct ports. 
+2. Check that you're logging in with the `ssh <friendly_name>` from your SSH config file.
+3. Verify that these ports aren't being used by something else on your machine (i.e. a local Jupyter Notebook).
+
+These error messages will continue to appear in your SSH window as long as you keep the `localhost:8895` browser tab open. Feel free to close the tab now and type `clear` in your SSH window to clear the messages from your screen.
+
+### Get Launch scripts
+
+To launch an RStudio/JupyterLab session, you'll need a copy of the `rstudio_helper.sh` and `jupyterlab_helper.sh` scripts.
+
+In your SSH window, navigate to your home directory (`cd ~`) and run:
+
+```
+cp /biostats_share/hillandr/containers/scripts/rstudio_helper.sh .
+cp /biostats_share/hillandr/containers/scripts/jupyterlab_helper.sh .
+```
+
+To make copies of both scripts in your home directory (`~`).
+
+## Launching an RStudio Session
+
+Once you have copies of the launch scripts, try running:
+
+```
+./rstudio_helper.sh
+```
+
+You should see a message `Submitted batch job <job_id>`. This is the Job ID for your RStudio job, which you'll need again when you want to shut down the RStudio session. This ID will change each time you launch a new job.
+
+Now, run `squeue`. 
+
+You should see an entry for your Job ID, similar to my example below.
+
+```{r, echo=FALSE, out.width="80%", fig.align="center"}
+knitr::include_graphics("biostats_hpc_rstudio_launch.png")
+```
+
+This job will also produce two output files `rstudio_helper.out` and `rstudio_helper.err` which will log outputs or errors that the system encounters. 
+
+If you *don't* see your Job ID in the `squeue` list, try inspecting the two above files for any error messages.
+
+## Connect to RStudio
+
+If you can see your RStudio job running in `squeue`, go back to your web browser and visit
+
+```
+localhost:8896
+```
+
+in the address bar. 
+
+You should see a loading screen, and eventually the RStudio interface!
+
+```{r, echo=FALSE, out.width="80%", fig.align="center"}
+knitr::include_graphics("biostats_hpc_rstudio_interface.png")
+```
+
+If you *don't* see the interface:
+
+1. Verify that you used the correct port in the browser. (If you used the default config, RStudio is `8896`).
+2. Run `squeue` again and verify that your job is still running. 
+
+Congratulations! You can now use RStudio on the cluster!.
+
+Feel free to try out the interface and verify that everything works as expected. 
+
+When you're finished, shut down the RStudio job by following the instructions in [Quit the RStudio/JupyterLab Job](#quit-the-rstudiojupyterlab-session)
+
+### Customizing the RStudio Job
+
+The `rstudio_helper.sh` script essentially just automates some cleanup tasks and submits a new `sbatch` batch script which launches RStudio.
+
+If you open `rstudio_helper.sh` and scroll down to the `sbatch <<==SBATCH=SCRIPT==` section, you can customize the parameters of the underlying SLURM job to suit your needs:
+
+```
+# This command redirects the rest of this script to a sbatch call.
+sbatch <<==SBATCH=SCRIPT==
+#!/bin/bash
+#SBATCH --job-name=rstudio_helper
+#SBATCH --output=rstudio_helper.out
+#SBATCH --error=rstudio_helper.err
+#SBATCH --exclude=csphbiostats.ucdenver.pvt
+#SBATCH --mem=256G
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=12
+
+# Launch the container.
+apptainer run \
+    --no-mount /etc/localtime \
+    --bind /biostats_share:/biostats_share \
+/biostats_share/hillandr/containers/rstudio.sif
+
+==SBATCH=SCRIPT==
+
+```
+
+The default `rstudio_helper.sh` script submits a job which:
+
+- Runs on any node *except* the head node `--exclude=csphbiostats.ucdenver.pvt`
+- Requests 12 CPU Cores `--cpus-per-task=12`
+- Requests 256GB of RAM `--mem=256G`
+
+You can change any of these values to meet your needs. 
+
+The available resources of each compute node are listed in the article [Computing on the CSPH Biostats Cluster](https://cida-csph.github.io/CIDAtools/articles/CIDA_BIOS_Cluster.html#csph-biostats-hpc-cluster).
+
+## Launching a JupyterLab Session
+Once you have copies of the launch scripts, try running:
+
+```
+./jupyter_helper.sh
+```
+
+You should see a message `Submitted batch job <job_id>`. This is the Job ID for your JupyterLab job, which you'll need again when you want to shut down the JupyterLab session. This ID will change each time you launch a new job.
+
+Now, run `squeue`. 
+
+You should see an entry for your Job ID, similar to my example below.
+
+```{r, echo=FALSE, out.width="80%", fig.align="center"}
+knitr::include_graphics("biostats_hpc_jupyter_launch.png")
+```
+
+This job will also produce two output files `jupyter_helper.out` and `jupyter_helper.err` which will log outputs or errors that the system encounters. 
+
+If you *don't* see your Job ID in the `squeue` list, try inspecting the two above files for any error messages.
+
+**IMPORTANT:** The first time you launch JupyterLab, it will create a Python `virtualenv` under `~/jupyterlab_env`. This process takes time (in my experience a few minutes). If you are unable to connect to your JupyterLab instance immediately after launching the job, don't worry! The setup process will log output to the output and error logs listed above.
+
+## Connect to JupyterLab
+
+If you can see your JupyterLab job running in `squeue`, go back to your web browser and visit 
+
+```
+localhost:8895
+```
+
+in the address bar. 
+
+You should see a loading screen, and eventually the JupyterLab interface!
+
+```{r, echo=FALSE, out.width="80%", fig.align="center"}
+knitr::include_graphics("biostats_hpc_jupyter_interface.png")
+```
+
+If you *don't* see the interface:
+
+1. Verify that you used the correct port in the browser. (If you used the default config, JupyterLab is `8895`).
+2. Run `squeue` again and verify that your job is still running. 
+
+Congratulations! You can now use JupyterLab on the cluster!
+
+Feel free to try out the interface and verify that everything works as expected. 
+
+## Quit the RStudio/JupyterLab Session
+When you're finished using JupyterLab or RStudio, run:
+
+```
+scancel <job_id>
+```
+
+from your SSH window to kill the job (make sure everything is saved!).
+
+A few things to note:
+
+1. Like other `sbatch` jobs, the RStudio/JupyterLab jobs will continue to run after you log out of your SSH connection (you can try this yourself!). 
+    - This means you can log out (via SSH), then log back in later and keep using the same session. 
+    - Although you *can* leave RStudio/JupyterLab running, its best to quit the session (using `scancel`) when you're finished to free up resources for other users.
+2. **IMPORTANT: Check for a running RStudio/JupyterLab jobs (using `squeue`) before submitting a new one with `./rstudio_helper.sh` or `./jupyter_helper.sh`!!!** 
+    - Submitting a second job will not work, and will likely break your original session as well.
+    - By running `squeue` you can quickly locate the Job ID of your running `rstudio_helper` or `jupyter_helper` Job (if one is running). You can then either cancel this job with `scancel` or just connect through your browser and keep working.
+
+## Advanced Usage and Job Customization
+To be addded.
