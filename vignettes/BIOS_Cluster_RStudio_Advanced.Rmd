@@ -192,6 +192,7 @@ In order for this to work seamlessly, the compute node needs to be able to SSH i
 Together, these two SSH tunnels form a connection between your browser visiting `localhost:8895` and the RStudio/JupyterLab instance on the compute node. 
 
 In summary, the launch script will:
+
 1. Check if the SSH keypair `~/.ssh/cluster_rsa` exists. 
     - If not, the launch script will automatically create this keypair and use it for future job launches.
 2. Check if your job is running on the head node `csphbiostats` or a compute node (any node which is not `csphbiostats`)

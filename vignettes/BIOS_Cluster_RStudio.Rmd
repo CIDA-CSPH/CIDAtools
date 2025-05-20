@@ -26,9 +26,7 @@ In this document, we'll cover:
 
 ## Questions, Comments, Issues
 
-This project is [hosted on GitHub](https://github.com/CIDA-CSPH/Biostats-Cluster-Tools)
-
-If you have questions, encounter difficulties, or have suggestions for improvements, feel free to either [open an issue on GitHub](https://github.com/CIDA-CSPH/Biostats-Cluster-Tools/issues) or <a href="mailto:andrew.2.hill@cuanschutz.edu">email me directly</a>.
+This project is [hosted on GitHub](https://github.com/CIDA-CSPH/Biostats-Cluster-Tools). If you have questions, encounter difficulties, or have suggestions for improvements, feel free to either [open an issue on GitHub](https://github.com/CIDA-CSPH/Biostats-Cluster-Tools/issues) or <a href="mailto:andrew.2.hill@cuanschutz.edu">email me directly</a>.
 
 ## First-time Setup
 
