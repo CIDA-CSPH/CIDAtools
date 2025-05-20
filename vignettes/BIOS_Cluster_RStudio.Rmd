@@ -4,7 +4,7 @@ author: "Research Tools Committee"
 date: "Last Updated: `r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{RStudio on the CSPH Biostats Cluster}
+  %\VignetteIndexEntry{RStudio/JupyterLab on the CSPH Biostats Cluster}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -24,6 +24,12 @@ In this document, we'll cover:
 2. Job Submission - Submitting an RStudio SLURM job.
 3. Testing - Test that you can access the interactive session.
 
+## Questions, Comments, Issues
+
+This project is [hosted on GitHub](https://github.com/CIDA-CSPH/Biostats-Cluster-Tools)
+
+If you have questions, encounter difficulties, or have suggestions for improvements, feel free to either [open an issue on GitHub](https://github.com/CIDA-CSPH/Biostats-Cluster-Tools/issues) or <a href="mailto:andrew.2.hill@cuanschutz.edu">email me directly</a>.
+
 ## First-time Setup
 
 Although the RStudio/JupyterLab instance will run on an HPC compute node, you'll access the interface through your local browser.
@@ -37,6 +43,8 @@ The simplest way to configure SSH options is to use the SSH config file.
 On Mac/Unix-like systems, this is located at `~/.ssh/config`, and on Windows this is located at `C:/Users/<username>/.ssh/config`.
 
 If you don't see a file named `config` that's OK, you can create one!
+
+**Note:** Some GUI clients (like PuTTY on Windows) do not support port forwarding to Unix sockets (requried functionality to use RStudio/JupyterLab on the cluster). However, command-line versions of SSH on both Mac and Windows do support this.
 
 ### Add SSH Configuration options
 
@@ -304,4 +312,5 @@ A few things to note:
     - By running `squeue` you can quickly locate the Job ID of your running `rstudio_helper` or `jupyter_helper` Job (if one is running). You can then either cancel this job with `scancel` or just connect through your browser and keep working.
 
 ## Advanced Usage and Job Customization
-To be addded.
+
+This article covers the basic use of the RStudio and JupyterLab on the cluster. For advanced topics, see [Additional Options for RStudio/JupyterLab on the CSPH Biostats Cluster](https://cida-csph.github.io/CIDAtools/articles/BIOS_Cluster_RStudio_Advanced.html)
