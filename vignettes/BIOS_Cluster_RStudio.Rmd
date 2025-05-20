@@ -32,19 +32,21 @@ If you have questions, encounter difficulties, or have suggestions for improveme
 
 ## First-time Setup
 
-Although the RStudio/JupyterLab instance will run on an HPC compute node, you'll access the interface through your local browser.
+Although the RStudio/JupyterLab instance will run on an HPC compute node, you'll log in to the cluster normally (via SSH), and access the RStudio interface through your local browser.
 
-This means we need to configure a few SSH options to support this connection. 
+In order for this to work correctly, we need to configure a few SSH options when logging in to the cluster.
 
 ### Locate SSH Config File
 
-The simplest way to configure SSH options is to use the SSH config file. 
+Although you can pass parameters to SSH when calling `ssh` on the command line, the simplest way to configure SSH options is to use the SSH config file.
 
 On Mac/Unix-like systems, this is located at `~/.ssh/config`, and on Windows this is located at `C:/Users/<username>/.ssh/config`.
 
 If you don't see a file named `config` that's OK, you can create one!
 
 **Note:** Some GUI clients (like PuTTY on Windows) do not support port forwarding to Unix sockets (requried functionality to use RStudio/JupyterLab on the cluster). However, command-line versions of SSH on both Mac and Windows do support this.
+
+The SSH config file is useful because it allows us to define persistent options which will be used each time we log in to the cluster (rather than having to remember which parameters to pass on the command line).
 
 ### Add SSH Configuration options
 
@@ -133,9 +135,7 @@ Moving back to your SSH window, you should see some error messages populate the 
 knitr::include_graphics("biostats_hpc_ssh_local_forward_test.png")
 ```
 
-If you see these error messages in your SSH window, Congratulations! 
-
-These error messages mean you've configured your SSH connection correctly. The messages appear the browser is attempting to connect, but there is nothing on the other end (yet) to receive the connection.
+If you see these error messages in your SSH window, Congratulations! This means you've configured your SSH connection correctly. The error messages appear because the browser is attempting to connect, but there is nothing on the other end (yet) to accept the connection.
 
 If you don't see the error messages:
 
@@ -143,7 +143,7 @@ If you don't see the error messages:
 2. Check that you're logging in with the `ssh <friendly_name>` from your SSH config file.
 3. Verify that these ports aren't being used by something else on your machine (i.e. a local Jupyter Notebook).
 
-These error messages will continue to appear in your SSH window as long as you keep the `localhost:8895` browser tab open. Feel free to close the tab now and type `clear` in your SSH window to clear the messages from your screen.
+These error messages will continue to appear in your SSH window as long as you keep the `localhost:8895` browser tab open. Feel free to close the tab now and type `clear` in your SSH window to clear the messages from your terminal screen.
 
 ### Get Launch scripts
 

@@ -29,7 +29,7 @@ Apptainer (formerly Singularity) containers are stored as self-contained files w
 
 The benefit of hosting JupyterLab and RStudio within containers is that they offer a consistent environment where all dependencies are installed by default. 
 
-The RStudio and JupyterLab containers are derived from a base container which holds installation of R, Python, and Julia languages, along with packages/libraries to support installing most other common R/Python libraries.
+The RStudio and JupyterLab containers are derived from a [base container image](https://github.com/CIDA-CSPH/Biostats-Cluster-Tools/blob/main/containers/RBase/docker/Dockerfile) which holds installation of R, Python, and Julia languages, along with packages/libraries to support installing most other common R/Python libraries.
 
 ### Bind Mounts
 One important concept when working with containers is a 'bind mount'. Containers are like small Linux installations which run in a separate, read-only filesystem. 
@@ -136,13 +136,13 @@ Additionally, the container has many development libraries installed, which shou
 ### Renv Usage
 Although the container has many libraries pre-installed, I highly recommend using `renv` in each of your RStudio projects. 
 
-You can run `renv::init()` from an RStudio project to initialize `renv` 
+You can run `renv::init()` from an RStudio project to initialize `renv`.
 
 ### Changing the R Version
 
 By default, the container uses R-4.5.0, but R-4.4.3 is also installed for compatibility. 
 
-To change the version of R used when launching RStudio, you can modify the `rstudio_helper.sh` script:
+To change the version of R used when launching RStudio, you can change the `R_PATH` variable defined in the `rstudio_helper.sh` script:
 
 ```
 # Default version of R is 4.5.0.
@@ -153,6 +153,13 @@ R_PATH="/opt/R/4.4.3/bin/R"
 Changing this variable changes the path passed to the `--r-path` argument later in the script.
 
 Note that these paths are relative to the container, not to the cluster's filesystem. 
+
+Currently the only two supported paths (and versions of R) are:
+
+|Version|Path|
+|-------|----|
+| **R-4.5.0 (default)** | /opt/R/4.5.0/bin/R |
+| R-4.4.3 | /opt/R/4.4.3/bin/R |
 
 If you need an alternative version of R installed, open an issue in the [GitHub repository for this project](https://github.com/CIDA-CSPH/Biostats-Cluster-Tools/issues) and I can add it to the container. 
 
