@@ -34,13 +34,15 @@ Although the RStudio/JupyterLab instance will run on an HPC compute node, you'll
 
 In order for this to work correctly, we need to configure a few SSH options when logging in to the cluster.
 
+These SSH options should only need to be configured once on your local computer (but if you switch to a different computer, you'll need to re-do these SSH configuration steps on that computer as well).
+
 ### Locate SSH Config File
 
 Although you can pass parameters to SSH when calling `ssh` on the command line, the simplest way to configure SSH options is to use the SSH config file.
 
 On Mac/Unix-like systems, this is located at `~/.ssh/config`, and on Windows this is located at `C:/Users/<username>/.ssh/config`.
 
-If you don't see a file named `config` that's OK, you can create one!
+If you don't see a file named `config` in that location, that's OK, just create it with your text editor of choice.
 
 **Note:** Some GUI clients (like PuTTY on Windows) do not support port forwarding to Unix sockets (requried functionality to use RStudio/JupyterLab on the cluster). However, command-line versions of SSH on both Mac and Windows do support this.
 
