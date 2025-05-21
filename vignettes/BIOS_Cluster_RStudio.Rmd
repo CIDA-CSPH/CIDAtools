@@ -400,7 +400,7 @@ sbatch <<==SBATCH=SCRIPT==
 # Launch the container.
 apptainer run \
     --bind /biostats_share:/biostats_share \
-    --bind /another_special_directory:/another_special_directory
+    --bind /another_special_directory:/another_special_directory \
 /biostats_share/hillandr/containers/jupyterlab.sif \
     --notebook-dir "$HOME" \
     --venv "$HOME/my_custom_venv"
