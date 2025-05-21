@@ -27,7 +27,6 @@ We'll cover:
 4. [Quitting RStudio/JupyterLab Sessions](#quit-the-rstudiojupyterlab-session) - How to quit an RStudio/JupterLab session.
 5. [Quickstart](#quickstart) - Quick review of all topics.
 6. [(Optional) Additional Options](#optional-additional-options-and-job-customization) - Some additional options and information which may be useful.
-3. Testing - Test that you can access the interactive session.
 
 
 ### A1. Motivation
@@ -92,7 +91,7 @@ As a quick breakdown of the options:
 
 The `Host <friendly_name>` gives a friendly name to this configuration, which you can use when connecting through SSH, like:
 
-```
+```{bash, eval=FALSE, echo=TRUE}
 ssh <friendly_name>
 ```
 
@@ -128,7 +127,7 @@ Now, we'll run a quick check to verify that the SSH configuration is working as 
 
 First, open an SSH connection to the cluster by opening a command prompt and typing:
 
-```
+```{bash, eval=FALSE, echo=TRUE}
 ssh <friendly_name>
 ```
 
@@ -175,7 +174,7 @@ To launch an RStudio/JupyterLab session, you'll need a copy of the `rstudio_help
 
 In your SSH window, navigate to your home directory (`cd ~`) and run:
 
-```
+```{bash, eval=FALSE, echo=TRUE}
 cp /biostats_share/hillandr/containers/scripts/rstudio_helper.sh .
 cp /biostats_share/hillandr/containers/scripts/jupyterlab_helper.sh .
 ```
@@ -186,7 +185,7 @@ To make copies of both scripts in your home directory (`~`).
 
 Once you have copies of the launch scripts, in your SSH window try running:
 
-```
+```{bash, eval=FALSE, echo=TRUE}
 ./rstudio_helper.sh
 ```
 
@@ -237,7 +236,7 @@ The `rstudio_helper.sh` script essentially just automates some cleanup tasks and
 
 If you open `rstudio_helper.sh` and scroll down to the `sbatch <<==SBATCH=SCRIPT==` section, you can customize the parameters of the underlying SLURM job to suit your needs:
 
-```
+```{bash, eval=FALSE, echo=TRUE}
 # This command redirects the rest of this script to a sbatch call.
 sbatch <<==SBATCH=SCRIPT==
 #!/bin/bash
@@ -272,7 +271,7 @@ The available resources of each compute node are listed in the article [Computin
 ## 3. Launching a JupyterLab Session
 Once you have copies of the launch scripts, try running:
 
-```
+```{bash, eval=FALSE, echo=TRUE}
 ./jupyter_helper.sh
 ```
 
@@ -386,7 +385,7 @@ which allows us to access the `/biostats_share` directory from inside the contai
 
 If you find yourself unable to access files from within the container, you can add the specific directory as a bind mount by modifying the `*_helper.sh` script to include additional bind mounts:
 
-```
+```{bash, eval=FALSE, echo=TRUE}
 # This command redirects the rest of this script to a sbatch call.
 sbatch <<==SBATCH=SCRIPT==
 #!/bin/bash
@@ -431,7 +430,7 @@ You can do this by modifying the `jupyter_helper.sh` script and passing a value 
 
 The would look like:
 
-```
+```{bash, eval=FALSE, echo=TRUE}
 # This command redirects the rest of this script to a sbatch call.
 sbatch <<==SBATCH=SCRIPT==
 #!/bin/bash
@@ -484,7 +483,7 @@ By default, the container uses R-4.5.0, but R-4.4.3 is also installed for compat
 
 To change the version of R used when launching RStudio, you can change the `R_PATH` variable defined in the `rstudio_helper.sh` script:
 
-```
+```{bash, eval=FALSE, echo=TRUE}
 # Default version of R is 4.5.0.
 #R_PATH="/opt/R/4.5.0/bin/R"
 R_PATH="/opt/R/4.4.3/bin/R"
