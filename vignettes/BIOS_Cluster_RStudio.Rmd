@@ -24,7 +24,7 @@ We'll cover:
 1. [First-time Setup](#first-time-setup) - Some configuration steps on your local machine.
 2. [Launching RStudio Sessions](#launching-an-rstudio-session) - How to launch an RStudio session on the cluster and connect from your browser.
 3. [Launching JupyterLab Sessions](#launching-a-jupyterlab-session) - How to launch a JupyterLab session on the cluster and connect from your browser.
-4. [Quitting RStudio/JupyterLab Sessions](#quit-rstudiojupyterlab-session) - How to quit an RStudio/JupterLab session.
+4. [Quitting RStudio/JupyterLab Sessions](#quit-the-rstudiojupyterlab-session) - How to quit an RStudio/JupterLab session.
 5. [Quickstart](#quickstart) - Quick review of all topics.
 6. [(Optional) Additional Options](#optional-additional-options-and-job-customization) - Some additional options and information which may be useful.
 3. Testing - Test that you can access the interactive session.
@@ -48,7 +48,7 @@ The JupyterLab interface supports running Jupyter Notebooks (`.ipynb`), and supp
 - Julia 1.11.5
 
 
-## Questions, Comments, Issues
+## B. Questions, Comments, Issues
 
 This project is [hosted on GitHub here](https://github.com/CIDA-CSPH/Biostats-Cluster-Tools). If you have questions, encounter difficulties, or have suggestions for improvements, feel free to either [open an issue on GitHub](https://github.com/CIDA-CSPH/Biostats-Cluster-Tools/issues) or <a href="mailto:andrew.2.hill@cuanschutz.edu">email me directly</a>.
 
