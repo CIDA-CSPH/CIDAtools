@@ -180,13 +180,13 @@ If you don't see the error messages in your SSH window:
 
 ### 1D. Get Launch scripts
 
-To launch an RStudio/JupyterLab session, you'll need a copy of the `rstudio_helper.sh` and `jupyterlab_helper.sh` scripts. These scripts help automate some of the setup for RStudio/JupyterLab sessions.
+To launch an RStudio/JupyterLab session, you'll need a copy of the `rstudio_helper.sh` and `jupyter_helper.sh` scripts. These scripts help automate some of the setup for RStudio/JupyterLab sessions.
 
 In your SSH window, navigate to your home directory (`cd ~`) and run:
 
 ```{bash, eval=FALSE, echo=TRUE}
 cp /biostats_share/hillandr/containers/scripts/rstudio_helper.sh .
-cp /biostats_share/hillandr/containers/scripts/jupyterlab_helper.sh .
+cp /biostats_share/hillandr/containers/scripts/jupyter_helper.sh .
 ```
 
 To make copies of both scripts in your home directory (`~`).
@@ -257,9 +257,9 @@ sbatch <<==SBATCH=SCRIPT==
 #SBATCH --output=rstudio_helper.out
 #SBATCH --error=rstudio_helper.err
 #SBATCH --exclude=csphbiostats.ucdenver.pvt
-#SBATCH --mem=256G
+#SBATCH --mem=64G
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=12
+#SBATCH --cpus-per-task=8
 
 # Launch the container.
 apptainer run \
@@ -274,8 +274,8 @@ apptainer run \
 The default `rstudio_helper.sh` script submits a job which:
 
 - Runs on any node *except* the head node `--exclude=csphbiostats.ucdenver.pvt`
-- Requests 12 CPU Cores `--cpus-per-task=12`
-- Requests 256GB of RAM `--mem=256G`
+- Requests 8 CPU Cores `--cpus-per-task=8`
+- Requests 64GB of RAM `--mem=64G`
 
 You can change any of these values to meet your needs. 
 
@@ -334,6 +334,40 @@ If you *don't* see the JupyterLab interface in your browser:
 2. Run `squeue` again and verify that your job is still running. 
 3. If you're launching JupyterLab for the first time, it can take a few minutes for the script to initialize the `/jupyterlab_venv` virtual environment. If the job is running (via `squeue`) but you can't connect through your browser, try waiting ~5-10 minutes for environment to initialize. Subsequent launches of JupyterLab should launch almost instantly.
 
+### 3B. Customizing the JupyterLab Job
+
+The `jupyter_helper.sh` script essentially just automates some cleanup tasks and submits a new `sbatch` batch script which launches JupyterLab.
+
+If you open `jupyter_helper.sh` and scroll down to the `sbatch <<==SBATCH=SCRIPT==` section, you can customize the parameters of the underlying SLURM job to suit your needs:
+
+```{bash, eval=FALSE, echo=TRUE}
+sbatch <<==SBATCH=SCRIPT==
+#!/bin/bash
+#SBATCH --job-name=jupyter_helper
+#SBATCH --output=jupyter_helper.out
+#SBATCH --error=jupyter_helper.err
+#SBATCH --exclude=csphbiostats.ucdenver.pvt
+#SBATCH --mem=64G
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=8
+
+# Launch the container.
+apptainer run \
+    --bind /biostats_share:/biostats_share \
+/biostats_share/hillandr/containers/jupyterlab.sif \
+    --notebook-dir "$HOME"
+==SBATCH=SCRIPT==
+```
+
+The default `jupyter_helper.sh` script submits a job which:
+
+- Runs on any node *except* the head node `--exclude=csphbiostats.ucdenver.pvt`
+- Requests 8 CPU Cores `--cpus-per-task=8`
+- Requests 64GB of RAM `--mem=64G`
+
+You can change any of these values to meet your needs. 
+
+The available resources of each compute node are listed in the article [Computing on the CSPH Biostats Cluster](https://cida-csph.github.io/CIDAtools/articles/CIDA_BIOS_Cluster.html#csph-biostats-hpc-cluster).
 
 ## 4. Quit the RStudio/JupyterLab Session
 When you're finished using JupyterLab or RStudio, run:
