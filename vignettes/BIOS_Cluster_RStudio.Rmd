@@ -27,11 +27,11 @@ We'll cover:
 4. [Quitting RStudio/JupyterLab Sessions](#quit-the-rstudiojupyterlab-session) - How to quit an RStudio/JupterLab session.
 6. [(Optional) Additional Options](#optional-additional-options-and-job-customization) - Some additional options and information which may be useful.
 
-If you previously followed this guide to set up RStudio/JupyterLab and just need a refresher on how to launch an RStudio/JupyterLab job, check out the [Quickstart](#quickstart) section.
+If you previously followed this guide to set up RStudio/JupyterLab and just need a refresher on how to launch an RStudio/JupyterLab job, check out the [Quickstart](#quickstart-for-returning-users) section.
 
 
 ### A1. Motivation
-Using RStudio/JupyterLab on the cluster allows you to:
+Using RStudio/JupyterLab on the `csphbiostats` cluster allows you to:
 
 - Use the cluster's significant [computational resources](https://cida-csph.github.io/CIDAtools/articles/CIDA_BIOS_Cluster.html#csph-biostats-hpc-cluster) to work with larger datasets than would be possible on a local machine, while coding interactively in a familiar environment.
 - Offload time consuming analysis tasks from your local computer to the cluster (your RStudio/JupyterLab job will keep running on the cluster, even if you log out!)
@@ -353,7 +353,7 @@ A few things to note:
     - Submitting a second job will not work, and will likely break your original session as well.
     - By running `squeue` you can quickly locate the Job ID of your running `rstudio_helper` or `jupyter_helper` Job (if one is running). You can then either cancel this job with `scancel` or just connect through your browser and keep working.
 
-## 5. Quickstart
+## 5. Quickstart (for returning users)
 
 The complete process for launching a RStudio/JupyterLab instance (once the [first-time setup](#first-time-setup) is complete) looks like:
 
@@ -372,7 +372,7 @@ The complete process for launching a RStudio/JupyterLab instance (once the [firs
 
 At this point, you should be able to launch, connect to, and cancel RStudio and JupyterLab jobs on the cluster!
 
-The sections below provide some additional configuration options and information, but these sections are 
+The sections below provide some additional configuration options and information, but these sections are completely optional.
 
 ## 7. (Optional) Additional Options and Job Customization
 
