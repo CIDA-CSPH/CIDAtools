@@ -13,22 +13,46 @@ vignette: >
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Introduction
+## A. Introduction
 
 This document will guide you through running interactive RStudio (and/or JupyterLab) sessions on the Biostats cluster.
 
 Once configured, you'll be able to easily submit RStudio/JupyterLab SLURM jobs, and access them through your browser. 
 
-In this document, we'll cover:
-1. First-time Setup - Some configuration steps on your local machine.
-2. Job Submission - Submitting an RStudio SLURM job.
+We'll cover:
+
+1. [First-time Setup](#first-time-setup) - Some configuration steps on your local machine.
+2. [Launching RStudio Sessions](#launching-an-rstudio-session) - How to launch an RStudio session on the cluster and connect from your browser.
+3. [Launching JupyterLab Sessions](#launching-a-jupyterlab-session) - How to launch a JupyterLab session on the cluster and connect from your browser.
+4. [Quitting RStudio/JupyterLab Sessions](#quit-rstudiojupyterlab-session) - How to quit an RStudio/JupterLab session.
+5. [Quickstart](#quickstart) - Quick review of all topics.
+6. [(Optional) Additional Options](#optional-additional-options-and-job-customization) - Some additional options and information which may be useful.
 3. Testing - Test that you can access the interactive session.
+
+
+### A1. Motivation
+Using RStudio/JupyterLab on the cluster allows you to:
+
+- Utilize the cluster's [computational resources](https://cida-csph.github.io/CIDAtools/articles/CIDA_BIOS_Cluster.html#csph-biostats-hpc-cluster) while coding interactively in a familiar environment.
+- Running RMarkdown/Quarto/Jupyter Notebooks directly on the cluster.
+- Generate and view visualizations in real-time.
+
+### A2. Capabilities
+
+The RStudio inteface runs R 4.5.0, and supports the usual RStudio functions including RMarkdown/Quartio notebooks, interactive plotting, etc. For convenience, the RStudio container also has a variety of commonly used packages pre-installed, including the `tidyverse` family.
+
+The JupyterLab interface supports running Jupyter Notebooks (`.ipynb`), and supports all JupyterLab functions. By default, the JupyterLab container has the following kernels installed:
+
+- Python 3.13
+- R 4.5.0
+- Julia 1.11.5
+
 
 ## Questions, Comments, Issues
 
-This project is [hosted on GitHub](https://github.com/CIDA-CSPH/Biostats-Cluster-Tools). If you have questions, encounter difficulties, or have suggestions for improvements, feel free to either [open an issue on GitHub](https://github.com/CIDA-CSPH/Biostats-Cluster-Tools/issues) or <a href="mailto:andrew.2.hill@cuanschutz.edu">email me directly</a>.
+This project is [hosted on GitHub here](https://github.com/CIDA-CSPH/Biostats-Cluster-Tools). If you have questions, encounter difficulties, or have suggestions for improvements, feel free to either [open an issue on GitHub](https://github.com/CIDA-CSPH/Biostats-Cluster-Tools/issues) or <a href="mailto:andrew.2.hill@cuanschutz.edu">email me directly</a>.
 
-## First-time Setup
+## 1. First-time Setup
 
 Although the RStudio/JupyterLab instance will run on an HPC compute node, you'll log in to the cluster normally (via SSH), and access the RStudio interface through your local browser.
 
@@ -36,9 +60,9 @@ In order for this to work correctly, we need to configure a few SSH options when
 
 These SSH options should only need to be configured once on your local computer (but if you switch to a different computer, you'll need to re-do these SSH configuration steps on that computer as well).
 
-### Locate SSH Config File
+### 1A. Locate SSH Config File
 
-Although you can pass parameters to SSH when calling `ssh` on the command line, the simplest way to configure SSH options is to use the SSH config file.
+Although you can pass parameters when calling `ssh` on the command line, the simplest way to configure SSH options is to use the SSH config file.
 
 On Mac/Unix-like systems, this is located at `~/.ssh/config`, and on Windows this is located at `C:/Users/<username>/.ssh/config`.
 
@@ -48,7 +72,7 @@ If you don't see a file named `config` in that location, that's OK, just create 
 
 The SSH config file is useful because it allows us to define persistent options which will be used each time we log in to the cluster (rather than having to remember which parameters to pass on the command line).
 
-### Add SSH Configuration options
+### 1B. Add SSH Configuration options
 
 Open up the `config` file in your text editor of choice. If you had a pre-existing `config` file, check if you have an entry with `HostName csphbiostats.ucdenver.pvt`. If you already have an entry, modify it instead of creating a new entry. 
 
@@ -98,7 +122,7 @@ Host biostats
 
 Once configured, save and close the file.
 
-### Test the SSH Connection
+### 1C. Test the SSH Connection
 
 Now, we'll run a quick check to verify that the SSH configuration is working as expected. 
 
@@ -145,9 +169,9 @@ If you don't see the error messages:
 
 These error messages will continue to appear in your SSH window as long as you keep the `localhost:8895` browser tab open. Feel free to close the tab now and type `clear` in your SSH window to clear the messages from your terminal screen.
 
-### Get Launch scripts
+### 1D. Get Launch scripts
 
-To launch an RStudio/JupyterLab session, you'll need a copy of the `rstudio_helper.sh` and `jupyterlab_helper.sh` scripts.
+To launch an RStudio/JupyterLab session, you'll need a copy of the `rstudio_helper.sh` and `jupyterlab_helper.sh` scripts. These scripts help automate some of the setup for RStudio/JupyterLab sessions.
 
 In your SSH window, navigate to your home directory (`cd ~`) and run:
 
@@ -158,9 +182,9 @@ cp /biostats_share/hillandr/containers/scripts/jupyterlab_helper.sh .
 
 To make copies of both scripts in your home directory (`~`).
 
-## Launching an RStudio Session
+## 2. Launching an RStudio Session
 
-Once you have copies of the launch scripts, try running:
+Once you have copies of the launch scripts, in your SSH window try running:
 
 ```
 ./rstudio_helper.sh
@@ -180,7 +204,7 @@ This job will also produce two output files `rstudio_helper.out` and `rstudio_he
 
 If you *don't* see your Job ID in the `squeue` list, try inspecting the two above files for any error messages.
 
-## Connect to RStudio
+### 2A. Connect to RStudio
 
 If you can see your RStudio job running in `squeue`, go back to your web browser and visit
 
@@ -207,7 +231,7 @@ Feel free to try out the interface and verify that everything works as expected.
 
 When you're finished, shut down the RStudio job by following the instructions in [Quit the RStudio/JupyterLab Job](#quit-the-rstudiojupyterlab-session)
 
-### Customizing the RStudio Job
+### 2B. Customizing the RStudio Job
 
 The `rstudio_helper.sh` script essentially just automates some cleanup tasks and submits a new `sbatch` batch script which launches RStudio.
 
@@ -245,7 +269,7 @@ You can change any of these values to meet your needs.
 
 The available resources of each compute node are listed in the article [Computing on the CSPH Biostats Cluster](https://cida-csph.github.io/CIDAtools/articles/CIDA_BIOS_Cluster.html#csph-biostats-hpc-cluster).
 
-## Launching a JupyterLab Session
+## 3. Launching a JupyterLab Session
 Once you have copies of the launch scripts, try running:
 
 ```
@@ -268,7 +292,7 @@ If you *don't* see your Job ID in the `squeue` list, try inspecting the two abov
 
 **IMPORTANT:** The first time you launch JupyterLab, it will create a Python `virtualenv` under `~/jupyterlab_env`. This process takes time (in my experience a few minutes). If you are unable to connect to your JupyterLab instance immediately after launching the job, don't worry! The setup process will log output to the output and error logs listed above.
 
-## Connect to JupyterLab
+### 3A. Connect to JupyterLab
 
 If you can see your JupyterLab job running in `squeue`, go back to your web browser and visit 
 
@@ -293,7 +317,7 @@ Congratulations! You can now use JupyterLab on the cluster!
 
 Feel free to try out the interface and verify that everything works as expected. 
 
-## Quit the RStudio/JupyterLab Session
+## 4. Quit the RStudio/JupyterLab Session
 When you're finished using JupyterLab or RStudio, run:
 
 ```
@@ -311,6 +335,207 @@ A few things to note:
     - Submitting a second job will not work, and will likely break your original session as well.
     - By running `squeue` you can quickly locate the Job ID of your running `rstudio_helper` or `jupyter_helper` Job (if one is running). You can then either cancel this job with `scancel` or just connect through your browser and keep working.
 
-## Advanced Usage and Job Customization
+## 5. Quickstart
 
-This article covers the basic use of the RStudio and JupyterLab on the cluster. For advanced topics, see [Additional Options for RStudio/JupyterLab on the CSPH Biostats Cluster](https://cida-csph.github.io/CIDAtools/articles/BIOS_Cluster_RStudio_Advanced.html)
+The complete process for launching a RStudio/JupyterLab instance (once the [first-time setup](#first-time-setup) is complete) looks like:
+
+1. SSH into `csphbiostats.ucdenver.pvt` 
+	- Remember to use your SSH 'friendly name' alias if you configured one.
+2. Check for a currently running RStudio/JupyterLab session using `squeue`.
+	- To re-use an existing session, skip to step 5.
+	- To cancel the existing session, use `scancel <job_id>`.
+3. If no existing session is running, from your SSH terminal run either `./jupyterlab_helper.sh` or `./rstudio_helper.sh`.
+	- The script should exit after printing a Job ID for your new session.
+4. Verify that your new session is running using `squeue` and look for the Job ID.
+5. Open your browser to `localhost:8895` (JupyterLab) or `localhost:8896` (RStudio).
+6. Done!
+
+## 6. Conclusion
+
+At this point, you should be able to launch, connect to, and cancel RStudio and JupyterLab jobs on the cluster!
+
+The sections below provide some additional configuration options and information, but these sections are 
+
+## 7. (Optional) Additional Options and Job Customization
+
+This section provides some additional information and configuration options.
+
+
+### 7A. Apptainer Containers
+
+The JupyterLab and RStudio instances both run inside of Apptainer containers. 
+
+Apptainer (formerly Singularity) containers are stored as self-contained files with the `.sif` extension.
+
+The benefit of hosting JupyterLab and RStudio within containers is that they offer a consistent environment where all dependencies are installed by default. 
+
+The RStudio and JupyterLab containers are derived from a [base container image](https://github.com/CIDA-CSPH/Biostats-Cluster-Tools/blob/main/containers/RBase/docker/Dockerfile) which holds installation of R, Python, and Julia languages, along with packages/libraries to support installing most other common R/Python libraries.
+
+#### 7A.1 Bind Mounts
+One important concept when working with containers is a 'bind mount'. Containers are like small Linux installations which run in a separate, read-only filesystem. 
+
+Bind mounts allow us to overlay specific parts of the cluster's filesystem onto the container, so we can read and write our own data files from inside the container. 
+
+By default, Apptainer mounts a few directories including your home directory (`~`), your working directory (`.`) and `/tmp`.
+
+The `jupyter_helper.sh` and `rstudio_helper.sh` scripts also include an additional bind mount:
+
+`--bind /biostats_share:/biostats_share`
+
+which allows us to access the `/biostats_share` directory from inside the container.
+
+If you find yourself unable to access files from within the container, you can add the specific directory as a bind mount by modifying the `*_helper.sh` script to include additional bind mounts:
+
+```
+# This command redirects the rest of this script to a sbatch call.
+sbatch <<==SBATCH=SCRIPT==
+#!/bin/bash
+#SBATCH --job-name=jupyter_helper
+#SBATCH --output=jupyter_helper.out
+#SBATCH --error=jupyter_helper.err
+#SBATCH --exclude=csphbiostats.ucdenver.pvt
+#SBATCH --mem=64G
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=8
+
+# Launch the container.
+apptainer run \
+    --bind /biostats_share:/biostats_share \
+    --bind /another_special_directory:/another_special_directory
+/biostats_share/hillandr/containers/jupyterlab.sif \
+    --notebook-dir "$HOME" \
+    --venv "$HOME/my_custom_venv"
+==SBATCH=SCRIPT==
+```
+
+The line `--bind /another_special_directory:/another_special_directory` make the `/another_special_directory` path available in the container (make sure to use an absolute path).
+
+In general, bind mount arguments look like:
+
+`--bind <local_directory>:<container_path>`
+
+To mount `<local_directory>` path on the cluster to `<container_path` inside the container. 
+
+To reduce confusion, I usually mount each local path to the same path within the container (as I did with `/biostats_share`).
+
+### 7B. JupyterLab Options
+
+The JupyterLab container holds an installation of Python 3.13. 
+
+When launched for the first time, the container will create a new `virtualenv` environment in your home directory at `~/jupyterlab_venv`, which will hold all Python dependencies (including JupyterLab itself).
+
+#### 7B.1 Using an alternative `venv` for JupyterLab
+Although the `~/jupyterlab_venv` is used by default, you can specify a different virtualenv if you wish.
+
+You can do this by modifying the `jupyter_helper.sh` script and passing a value for the `--venv` parameter to the `jupyter.sif` container.
+
+The would look like:
+
+```
+# This command redirects the rest of this script to a sbatch call.
+sbatch <<==SBATCH=SCRIPT==
+#!/bin/bash
+#SBATCH --job-name=jupyter_helper
+#SBATCH --output=jupyter_helper.out
+#SBATCH --error=jupyter_helper.err
+#SBATCH --exclude=csphbiostats.ucdenver.pvt
+#SBATCH --mem=64G
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=8
+
+# Launch the container.
+apptainer run \
+    --bind /biostats_share:/biostats_share \
+/biostats_share/hillandr/containers/jupyterlab.sif \
+    --notebook-dir "$HOME" \
+    --venv "$HOME/my_custom_venv"
+==SBATCH=SCRIPT==
+```
+
+The second-to-last line `--venv "$HOME/my_custom_venv"` sets the path to the alternative venv.
+
+If this path exists already, the launch script will attempt to activate and use this virtual environment. 
+
+If the path does *not* exist, it will be created and initialized with a default set of packages, which includes JupyterLab.
+
+**NOTE:** If you do attempt to use an pre-existing virtual environment, ensure that JupyterLab is installed *before* running `jupyter_helper.sh`, as this script will fail if no JupyterLab installation is found.
+
+#### 7B.2 Setting an Alternative home
+By default, the JupyterLab interface will use your `$HOME` (`~`) directory as the launch directory. 
+
+If you wish to use a different directory, you can change the `--notebook-dir` argument in `jupyter_helper.sh` 
+
+### 7C. RStudio Options
+
+The RStudio container uses an installation of R 4.5.0, which is the latest version at the time of writing. 
+
+By default, the container comes with many libraries pre-installed, including the `tidyverse` family of packages.
+
+Additionally, the container has many development libraries installed, which should allow you to compile most R packages from source if required.
+
+#### 7C.1 Renv Usage
+Although the container has many libraries pre-installed, I highly recommend using `renv` in each of your RStudio projects. 
+
+You can run `renv::init()` from an RStudio project to initialize `renv`.
+
+#### 7C.2 Changing the R Version
+
+By default, the container uses R-4.5.0, but R-4.4.3 is also installed for compatibility. 
+
+To change the version of R used when launching RStudio, you can change the `R_PATH` variable defined in the `rstudio_helper.sh` script:
+
+```
+# Default version of R is 4.5.0.
+#R_PATH="/opt/R/4.5.0/bin/R"
+R_PATH="/opt/R/4.4.3/bin/R"
+```
+
+Changing this variable changes the path passed to the `--r-path` argument later in the script.
+
+Note that these paths are relative to the container, not to the cluster's filesystem. 
+
+Currently the only two supported paths (and versions of R) are:
+
+|Version|Path|
+|-------|----|
+| **R-4.5.0 (default)** | /opt/R/4.5.0/bin/R |
+| R-4.4.3 | /opt/R/4.4.3/bin/R |
+
+If you need an alternative version of R installed, open an issue in the [GitHub repository for this project](https://github.com/CIDA-CSPH/Biostats-Cluster-Tools/issues) and I can add it to the container. 
+
+### 7D. Implementation Details
+
+If you are curious as to how the RStudio/JupyterLab interfaces are configured, this section provides a brief explanation.
+
+The challenge with running RStudio/JupyterLab on the cluster is that the RStudio/JupyterLab server needs to run on a compute node, which is not directly acessible (via the network) to your local machine. Additionally, hosting a public web server on these nodes could present a security risk.
+
+```{r, echo=FALSE, out.width="80%", fig.align="center"}
+knitr::include_graphics("biostats_hpc_rstudio_diagram.png")
+```
+
+To facilitate a secure connection, each RStudio/JupyterLab job creates a link between your (local) computer and the compute node running the job via a pair of SSH tunnels.
+
+The first SSH tunnel is configured locally on your machine (see the [First-time Setup](#first-time-setup) section above).
+
+This SSH tunnel any local traffic on `localhost:8895` or `localhost:8896` to specific Unix sockets (not ports) on the `csphbiostats` head node. We use Unix sockets for this since they:
+
+1. Allow for file-like permissions (i.e. the socket is created and owned by your user, and cannot be accessed by others). 
+2. Since Unix sockets are exposed as file-like objects, we can enforce unique naming (each Unix socket uses the user's name as part of the socket path) to prevent port conflicts.
+
+The second SSH tunnel is opened by the compute node. Once your job begins running on the compute node, the RStudio/JupyterLab launch script will:
+
+1. Launch an RStudio/JupyterLab instance advertised on a Unix socket (again, we use Unix sockets instead of ports for the reasons listed above).
+2. Open a background SSH tunnel to the `csphbiostats` node, which forwards all traffic on the `csphbiostats`'s Unix socket to the compute node's Unix socket (which is hosting the JupyterLab/RStudio instance).
+
+In order for this to work seamlessly, the compute node needs to be able to SSH into the head node without prompting for a password. The launch script takes care of this by generating a SSH keypair (located at `~/.ssh/cluster_rsa`) which the compute node may use to log in to the head node. 
+
+Together, these two SSH tunnels form a connection between your browser visiting `localhost:8895` and the RStudio/JupyterLab instance on the compute node. 
+
+In summary, the container's launch script will:
+
+1. Check if the SSH keypair `~/.ssh/cluster_rsa` exists. 
+    - If not, the launch script will automatically create this keypair and use it for future job launches.
+2. Check if your job is running on the head node `csphbiostats` or a compute node (any node which is not `csphbiostats`)
+    - In the event that the job is running on `csphbiostats`, we don't need the second SSH tunnel, as your local machine will already forward traffic directly to the configured Unix socket.
+3. Launch the RStudio/JupyterLab instance. 
+
