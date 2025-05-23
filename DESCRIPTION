@@ -10,13 +10,7 @@ Imports:
     generics,
     flextable,
     table1, 
-    shiny, 
-    Hmisc,
-    gtsummary,
-    kableExtra,
-    survival,
-    tableone, 
-    cardx
+    shiny
 Suggests: 
     git2r, 
     survey, 
@@ -29,6 +23,15 @@ Suggests:
     covr, 
     shinythemes,
     stats
+Config/Needs/website:
+    Hmisc,
+    gtsummary,
+    kableExtra,
+    survival,
+    tableone,
+    cardx,
+    stats,
+    broom.helpers
 License: CC0
 Encoding: UTF-8
 RoxygenNote: 7.3.2
