@@ -22,8 +22,7 @@ Suggests:
     DT,
     covr, 
     shinythemes,
-    stats
-Config/Needs/website:
+    stats,
     Hmisc,
     gtsummary,
     kableExtra,
