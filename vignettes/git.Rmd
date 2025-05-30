@@ -17,17 +17,13 @@ vignette: >
 ---
 
 ```{r, echo=FALSE, out.width='70%', fig.show='hold'}
-knitr::include_graphics("sph_cida_wm_blk.png")
+knitr::include_graphics("figures/git/sph_cida_wm_blk.png")
 ```
 
 ---
 
 ```{r setup, include=FALSE}
 library(CIDAtools)
-find_png <- function(x) {
-  files <- list.files()
-  files[grepl(x, files)]
-}
 ```
 
 # Introduction
@@ -459,8 +455,8 @@ GitHub account associated with the CIDA GitHub. This will take you to the SSO
 associated with the CIDA GitHub, which you will then authorize and sign onto.
 
 ```{r, echo=FALSE, out.width="100%", out.height="100%"}
-knitr::include_graphics(find_png("figure0A"))
-knitr::include_graphics(find_png("figure0C"))
+knitr::include_graphics("figures/git/figure0A.png")
+knitr::include_graphics("figures/git/figure0C.png")
 ```
 
 Once you have logged into GitKraken with you GitHub account, you will need to 
@@ -474,12 +470,12 @@ generate a token for 90 days, making sure to select "repo" (along with other
 scopes as needed).
 
 ```{r, echo=FALSE, out.width="100%", out.height="100%"}
-knitr::include_graphics(find_png("figure1A"))
-knitr::include_graphics(find_png("figure1B"))
-knitr::include_graphics(find_png("figure1C"))
-knitr::include_graphics(find_png("figure2A"))
-knitr::include_graphics(find_png("figure2B"))
-knitr::include_graphics(find_png("figure2C"))
+knitr::include_graphics("figures/git/figure1A.png")
+knitr::include_graphics("figures/git/figure1B.png")
+knitr::include_graphics("figures/git/figure1C.png")
+knitr::include_graphics("figures/git/figure2A.png")
+knitr::include_graphics("figures/git/figure2B.png")
+knitr::include_graphics("figures/git/figure2C.png")
 ```
 
 Ideally, you should be able to automatically connect to GitHub without 
@@ -493,9 +489,9 @@ GitKraken on the lower left, and your screen will now display the SSH key
 within GitKraken and under the Settings -> SSH and GPG keys tab on your GitHub:
 
 ```{r, echo=FALSE, out.width="100%", out.height="100%"}
-knitr::include_graphics(find_png("figure3A"))
-knitr::include_graphics(find_png("figure3B"))
-knitr::include_graphics(find_png("figure3C"))
+knitr::include_graphics("figures/git/figure3A.png")
+knitr::include_graphics("figures/git/figure3B.png")
+knitr::include_graphics("figures/git/figure3C.png")
 ```
 
 Congratulations, you should be successfully linked to the CIDA GitHub! 
@@ -505,7 +501,7 @@ using the, you guessed it, Open a repo, Clone a repo, and Start a local repo
 options on the home screen:
 
 ```{r, echo=FALSE, out.width="100%", out.height="100%"}
-knitr::include_graphics(find_png("figure4A"))
+knitr::include_graphics("figures/git/figure4A.png")
 ```
 
 If you are going to clone a repo, just make sure you are on the GitHub.com 
@@ -513,7 +509,7 @@ section, and that you select the CIDA repository to clone, as well as where you
 would like to clone it to (H: or P: drives, or elsewhere). 
 
 ```{r, echo=FALSE, out.width="100%", out.height="100%"}
-knitr::include_graphics(find_png("figure4B"))
+knitr::include_graphics("figures/git/figure4B.png")
 ```
 
 First, however, you will need to generate another SSH key on GitKraken to add 
@@ -522,7 +518,7 @@ Preferences -> SSH and then generate a new Private/Public Key, or copy the SSH
 Public Key if you already have one:
 
 ```{r, echo=FALSE, out.width="100%", out.height="100%"}
-knitr::include_graphics(find_png("figure4C"))
+knitr::include_graphics("figures/git/figure4C.png")
 ```
 
 Then return to your GitHub account, and click on SSH and GPG keys under the 
@@ -531,7 +527,7 @@ will then need to Authorize it with the SSO. After that, you should be able to
 clone, open, and initialize your repos!
 
 ```{r, echo=FALSE, out.width="100%", out.height="100%"}
-knitr::include_graphics(find_png("figure4D"))
+knitr::include_graphics("figures/git/figure4D.png")
 ```
 
 Once you have cloned a repo, you can open it to push/pull any changes. This is 
@@ -539,7 +535,7 @@ done pretty simply via the push or pull commands on the top after opening the
 repo. 
 
 ```{r, echo=FALSE, out.width="100%", out.height="100%"}
-knitr::include_graphics(find_png("figure5A"))
+knitr::include_graphics("figures/git/figure5A.png")
 ```
 
 For more details on how to manage pull, push, branching, and other features, 
@@ -548,5 +544,5 @@ visit https://help.gitkraken.com/gitkraken-client/github-gitkraken-client/
 ---
 
 ```{r, echo=FALSE, out.width='70%', fig.show='hold'}
-knitr::include_graphics(find_png("sph_cida_wm_blk"))
+knitr::include_graphics("figures/git/sph_cida_wm_blk.png")
 ```
