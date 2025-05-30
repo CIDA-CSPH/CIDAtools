@@ -67,7 +67,7 @@
                         <h4 data-toc-skip class="author">Research Tools
 Committee</h4>
             
-            <h4 data-toc-skip class="date">Last Updated: 2025-05-27</h4>
+            <h4 data-toc-skip class="date">Last Updated: 2025-05-30</h4>
       
 
       <div class="d-none name"><code>CIDA_BIOS_Cluster.Rmd</code></div>
@@ -128,7 +128,7 @@ to effectively share the cluster’s resources.</p>
 pipeline, etc) on the cluster, they will submit a new <em>job</em> to
 the cluster. The cluster will then schedule and run the job as soon as
 compute resources are available.</p>
-<p><img src="cluster_basic_diagram.png" width="80%" style="display: block; margin: auto;"></p>
+<p><img src="figures/CIDA_BIOS_Cluster/cluster_basic_diagram.png" width="80%" style="display: block; margin: auto;"></p>
 <p>The example figure above shows an example cluster with three users.
 Each user connects to the Head Node to submit their jobs.</p>
 <p>User 1 has submitted two jobs, which are both running on Compute Node
@@ -152,7 +152,7 @@ much RAM, Disk Space, etc) to run on a typical computer.</li>
 and one of the compute nodes (i.e. Submitted jobs may also run on this
 node), and the <code>cidalappc[1-3].ucdenver.pvt</code> nodes serve as
 compute nodes.</p>
-<p><img src="Biostats_HPC_diagram.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="figures/CIDA_BIOS_Cluster/Biostats_HPC_diagram.png" width="100%" style="display: block; margin: auto;"></p>
 <p>The CIDA/Biostats server uses the <a href="https://slurm.schedmd.com" class="external-link">SLURM</a> system to manage job
 scheduling and resource management on the cluster.</p>
 </div>
@@ -170,7 +170,7 @@ IS web page</a> requesting:</p>
 <p>Once approved, an account will be created for you on the server.</p>
 <p>To log in to the CSPH Biostats Cluster, you can use SSH from the
 command line or an SSH client of your choice.</p>
-<p><img src="biostats_hpc_ssh.png" width="80%" style="display: block; margin: auto;"></p>
+<p><img src="figures/CIDA_BIOS_Cluster/biostats_hpc_ssh.png" width="80%" style="display: block; margin: auto;"></p>
 <p>If you are connecting from the command line (like the above example),
 run:</p>
 <pre><code>ssh &lt;your_username&gt;@csphbiostats.ucdenver.pvt</code></pre>
@@ -238,7 +238,7 @@ options, since otherwise your output and error streams will both be
 directed to the default file <code>slurm-&lt;job_id&gt;.out</code></p>
 <p>We can submit this job by running:</p>
 <pre><code>sbatch my_batch.sh</code></pre>
-<p><img src="cluster_sbatch.png" width="80%" style="display: block; margin: auto;"></p>
+<p><img src="figures/CIDA_BIOS_Cluster/cluster_sbatch.png" width="80%" style="display: block; margin: auto;"></p>
 <p>When we execute the <code>sbatch</code> command, SLURM will assign
 the job an ID and schedule the job to execute. In this case, our job is
 assigned ID <code>6179</code> (first arrow in the figure).</p>
@@ -297,7 +297,7 @@ any node except the node(s) listed. In this case, we exclude the
 one of the <code>cidalappc[1-3].ucdenver.pvt</code> nodes (and the first
 line of the script output shows our job ran on
 <code>cidalappc01</code>).</p>
-<p><img src="cluster_srun.png" width="80%" style="display: block; margin: auto;"></p>
+<p><img src="figures/CIDA_BIOS_Cluster/cluster_srun.png" width="80%" style="display: block; margin: auto;"></p>
 <div class="section level4">
 <h4 id="interactive-jobs">Interactive Jobs<a class="anchor" aria-label="anchor" href="#interactive-jobs"></a>
 </h4>
@@ -327,7 +327,7 @@ from:</p>
 compute node <code>cidalappc01</code>.</p>
 <p>At this point, we can execute any commands or scripts normally.</p>
 <p>To end the interactive job, type <code>exit</code>.</p>
-<p><img src="interactive_job.png" width="80%" style="display: block; margin: auto;"></p>
+<p><img src="figures/CIDA_BIOS_Cluster/interactive_job.png" width="80%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level4">
 <h4 id="when-to-use-srun">When to use <code>srun</code><a class="anchor" aria-label="anchor" href="#when-to-use-srun"></a>
@@ -355,16 +355,16 @@ choice.</p>
 <code>csphbiostats.ucdenver.pvt</code> using Cyberduck on Mac.</p>
 <p>First, open Cyberduck and click the ‘Open Connection’ button on the
 top bar.</p>
-<p><img src="cyberduck_1.png" width="80%" style="display: block; margin: auto;"></p>
+<p><img src="figures/CIDA_BIOS_Cluster/cyberduck_1.png" width="80%" style="display: block; margin: auto;"></p>
 <p>Next, ensure that the ‘SFTP’ option is selected in the dropdown, then
 input your SSH credentials.</p>
-<p><img src="cyberduck_2.png" width="80%" style="display: block; margin: auto;"></p>
+<p><img src="figures/CIDA_BIOS_Cluster/cyberduck_2.png" width="80%" style="display: block; margin: auto;"></p>
 <p>If successful, you should see a file browser interface showing your
 home directory on <code>csphbiostats.ucdenver.pvt</code>.</p>
 <p>You can use the interface to navigate and download and existing
 files. You can also drag-and-drop files from your local machine to
 upload them to the cluster.</p>
-<p><img src="cyberduck_3.png" width="80%" style="display: block; margin: auto;"></p>
+<p><img src="figures/CIDA_BIOS_Cluster/cyberduck_3.png" width="80%" style="display: block; margin: auto;"></p>
 <div class="section level3">
 <h3 id="networked-storage">Networked Storage<a class="anchor" aria-label="anchor" href="#networked-storage"></a>
 </h3>
