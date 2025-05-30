@@ -149,7 +149,7 @@ ssh biostats
 ```
 
 ```{r, echo=FALSE, out.width="80%", fig.align="center"}
-knitr::include_graphics("CIDA_BIOS_Cluster_Interactive_IDEs_figures/biostats_hpc_ssh_2.png")
+knitr::include_graphics("figures/CIDA_BIOS_Cluster_Interactive_IDEs/biostats_hpc_ssh_2.png")
 ```
 
 
@@ -164,13 +164,13 @@ in the address bar. If you assigned different ports in your config file, modify 
 In the browser, you should see an error screen. This is expected. 
 
 ```{r, echo=FALSE, out.width="80%", fig.align="center"}
-knitr::include_graphics("CIDA_BIOS_Cluster_Interactive_IDEs_figures/localhost_test.png")
+knitr::include_graphics("figures/CIDA_BIOS_Cluster_Interactive_IDEs/localhost_test.png")
 ```
 
 Moving back to your SSH window, you should see some error messages populate the screen:
 
 ```{r, echo=FALSE, out.width="80%", fig.align="center"}
-knitr::include_graphics("CIDA_BIOS_Cluster_Interactive_IDEs_figures/biostats_hpc_ssh_local_forward_test.png")
+knitr::include_graphics("figures/CIDA_BIOS_Cluster_Interactive_IDEs/biostats_hpc_ssh_local_forward_test.png")
 ```
 
 If you see these error messages in your SSH window, Congratulations! 
@@ -217,7 +217,7 @@ Now, run `squeue`.
 You should see an entry for your Job ID, similar to my example below.
 
 ```{r, echo=FALSE, out.width="80%", fig.align="center"}
-knitr::include_graphics("CIDA_BIOS_Cluster_Interactive_IDEs_figures/biostats_hpc_rstudio_launch.png")
+knitr::include_graphics("figures/CIDA_BIOS_Cluster_Interactive_IDEs/biostats_hpc_rstudio_launch.png")
 ```
 
 This job will also produce two output files `rstudio_helper.out` and `rstudio_helper.err` which will log outputs or errors that the system encounters. 
@@ -237,7 +237,7 @@ in the address bar.
 You should see a loading screen, and eventually the RStudio interface!
 
 ```{r, echo=FALSE, out.width="80%", fig.align="center"}
-knitr::include_graphics("CIDA_BIOS_Cluster_Interactive_IDEs_figures/biostats_hpc_rstudio_interface.png")
+knitr::include_graphics("figures/CIDA_BIOS_Cluster_Interactive_IDEs/biostats_hpc_rstudio_interface.png")
 ```
 
 Congratulations! You can now use RStudio on the cluster!
@@ -307,7 +307,7 @@ Now, run `squeue`.
 You should see an entry for your Job ID, similar to my example below.
 
 ```{r, echo=FALSE, out.width="80%", fig.align="center"}
-knitr::include_graphics("CIDA_BIOS_Cluster_Interactive_IDEs_figures/biostats_hpc_jupyter_launch.png")
+knitr::include_graphics("figures/CIDA_BIOS_Cluster_Interactive_IDEs/biostats_hpc_jupyter_launch.png")
 ```
 
 This job will also produce two output files `jupyter_helper.out` and `jupyter_helper.err` which will log outputs or errors that the system encounters. 
@@ -329,7 +329,7 @@ in the address bar.
 You should see a loading screen, and eventually the JupyterLab interface!
 
 ```{r, echo=FALSE, out.width="80%", fig.align="center"}
-knitr::include_graphics("CIDA_BIOS_Cluster_Interactive_IDEs_figures/biostats_hpc_jupyter_interface.png")
+knitr::include_graphics("figures/CIDA_BIOS_Cluster_Interactive_IDEs/biostats_hpc_jupyter_interface.png")
 ```
 
 Congratulations! You can now use JupyterLab on the cluster!
@@ -576,7 +576,7 @@ If you are curious as to how the RStudio/JupyterLab interfaces are configured, t
 The challenge with running RStudio/JupyterLab on the cluster is that the RStudio/JupyterLab server needs to run on a compute node, which is not directly acessible (via the network) to your local machine. Additionally, hosting a public web server on these nodes could present a security risk.
 
 ```{r, echo=FALSE, out.width="80%", fig.align="center"}
-knitr::include_graphics("CIDA_BIOS_Cluster_Interactive_IDEs_figures/biostats_hpc_rstudio_diagram.png")
+knitr::include_graphics("figures/CIDA_BIOS_Cluster_Interactive_IDEs/biostats_hpc_rstudio_diagram.png")
 ```
 
 To facilitate a secure connection, each RStudio/JupyterLab job creates a link between your (local) computer and the compute node running the job via a pair of SSH tunnels.
