@@ -3,6 +3,7 @@ pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   alpine: alpine.html
+  CIDA_BIOS_Cluster_Interactive_IDEs: CIDA_BIOS_Cluster_Interactive_IDEs.html
   CIDA_BIOS_Cluster: CIDA_BIOS_Cluster.html
   CIDA_computing_resources: CIDA_computing_resources.html
   coding_guidelines: coding_guidelines.html
@@ -11,7 +12,7 @@ articles:
   git: git.html
   sas-macros: sas-macros.html
   tabling_packages: tabling_packages.html
-last_built: 2025-05-30T15:23Z
+last_built: 2025-06-03T21:15Z
 urls:
   reference: https://cida-csph.github.io/CIDAtools/reference
   article: https://cida-csph.github.io/CIDAtools/articles
