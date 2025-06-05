@@ -1,4 +1,4 @@
-#' Find the nearest observation to another observation
+#' Find the nearest observation to another observation  - To be deprecated
 #'
 #'
 #' This function finds the nearest y to every x. Y's may be duplicated.
@@ -21,6 +21,9 @@
 find_nearest <- function(x, y,
                         direction = c('both', 'ascending', 'descending'),
                         returnIndex = FALSE) {
+
+  deprecation_warn("find_nearest.find_nearest")
+
   direction <- match.arg(direction)
   a <- switch(direction, both = T, ascending = T, descending = F)
   d <- switch(direction, both = T, ascending = F, descending = T)
@@ -59,7 +62,7 @@ find_nearest <- function(x, y,
 
 
 
-#' Internal function for find_nearest
+#' Internal function for find_nearest - To be deprecated
 #'
 #'
 #' @param x first value
@@ -69,6 +72,9 @@ find_nearest <- function(x, y,
 #' @describeIn find_nearest function for finding lower(upper) value
 
 getlower <- function(x, y, upper = FALSE){
+
+  deprecation_warn("find_nearest.getlower")
+
   n <- length(y)
   z <- c(y, x)
   j <- i <- order(z, decreasing = upper)

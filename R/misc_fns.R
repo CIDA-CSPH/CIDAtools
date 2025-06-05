@@ -39,7 +39,7 @@ setAnalyst <- function(AnalystName){
                getOption('CIDAtools.analyst')))
 }
 
-#' Get pretty numbers of rows
+#' Get pretty numbers of rows - To be deprecated
 #'
 #'
 #' Retrieve the number of rows in dataframe of matrix with commas inserted for
@@ -54,10 +54,11 @@ setAnalyst <- function(AnalystName){
 
 
 nrowP <- function(x){
+  deprecation_warn("misc_fns.nrowP")
   format(nrow(x), big.mark = ',', trim = T)
 }
 
-#' Get pretty number of levels
+#' Get pretty number of levels - To be deprecated
 #'
 #'
 #' Just a wrapper for format(nlevels) with big.mark = , and trim = T
@@ -65,10 +66,12 @@ nrowP <- function(x){
 #' @param x factor
 #' @return Number of rows with big.mark = , and trim = T
 #' @keywords prettynlevels
+#' @d
 #' @export
 #'
 
 nLevelsP <- function(x){
+  deprecation_warn("misc_fns.nLevelsP")
   format(nlevels(x), big.mark = ',', trim = T)
 }
 
@@ -137,7 +140,7 @@ removeAnalyst <- function(quiet = F){
   return(TRUE)
 }
 
-#' Convert Interval Notation
+#' Convert Interval Notation - To be deprecated
 #'
 #' Converts a vector from Interval Notation to less than equal to, less than,
 #' etc.
@@ -149,6 +152,7 @@ removeAnalyst <- function(quiet = F){
 #' @export
 #'
 convertIntervalNotation <- function(x){
+  deprecation_warn("misc_fns.convertIntervalNotation")
   if(!is.character(x)) stop('x must be a character vector')
   x <- gsub('\\(-Inf, ', '', x)
   x <- gsub(',Inf\\)', '', x)
@@ -160,7 +164,7 @@ convertIntervalNotation <- function(x){
   return(x)
 }
 
-#' Round and don't drop trailing zeros
+#' Round and don't drop trailing zeros - To be deprecated
 #'
 #' Shorter wrapper for format(x, digits = n, nsmall = n)
 #'
@@ -178,10 +182,11 @@ convertIntervalNotation <- function(x){
 #'
 #'
 Round <- function(x, n){
+  deprecation_warn("misc_fns.Round")
   format(x, digits = n, nsmall = n)
 }
 
-#' Sum ignoring NAs
+#' Sum ignoring NAs - To be deprecated
 #'
 #' Will sum values returning NA only if all values are NA, otherise will ignore
 #'
@@ -213,6 +218,7 @@ Round <- function(x, n){
 
 
 sum_ignore_NA <- function(...){
+  deprecation_warn("misc_fns.sum_ignore_NA")
   arguments <- list(...)
   arguments <- lapply(arguments, unlist)
   x <- sapply(arguments, length)
@@ -226,7 +232,7 @@ sum_ignore_NA <- function(...){
   })
 }
 
-#' Vectorized power estimates
+#' Vectorized power estimates - To be deprecated
 #'
 #'
 #' This function allows you to use power.t.test, power.prop.test, etc in
@@ -253,7 +259,7 @@ sum_ignore_NA <- function(...){
 #'
 
 vec_power <- function(fun = stats::power.t.test, ...){
-
+  deprecation_warn("misc_fns.vec_power")
   args <- list(...)
   params <- expand.grid(args, stringsAsFactors = FALSE)[,length(args):1]
 
@@ -270,8 +276,9 @@ vec_power <- function(fun = stats::power.t.test, ...){
   return(na.omit(results))
 }
 
-# Helper for pwr package version of power fns.
+# Helper for pwr package version of power fns. - To be deprecated
 tidy.power.htest <- function(x, ...) {
+  deprecation_warn("misc_fns.tidy.power.htest")
   class(x) <- "list"
   as.data.frame(x)
 }

@@ -1,4 +1,4 @@
-#' Read in xlsx with fill colour
+#' Read in xlsx with fill colour - To be deprecated
 #'
 #' Reads in the fill colour of excel workbooks. Creates a data frame for each
 #' sheet in a list if mutliple sheets are requested. Creates a colour column for
@@ -23,6 +23,9 @@
 #' @keywords Excel colour color xlsx
 #'
 read_xlsx_color <- function(file, colorColumns, sheet = NULL, header = T){
+
+  deprecation_warn("read_xlsx_color.read_xlsx_color")
+
   if(!requireNamespace("xlsx", quietly = TRUE))
     stop("package 'xlsx' is required.")
   if(!is.list(colorColumns) & is.numeric(colorColumns))
