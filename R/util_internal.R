@@ -7,6 +7,7 @@
 #' @param function_name Function name the warning was called from.
 #'
 #' @noRd
+#' @noMd
 #'
 deprecation_warn <- function(function_name=""){
   warning(paste(c(function_name,"() has been deprecated and will be removed in ",
@@ -26,6 +27,7 @@ deprecation_warn <- function(function_name=""){
 #' @param version Version of package function was removed.
 #'
 #' @noRd
+#' @noMd
 #'
 deprecated_warn <- function(function_name="", version=""){
   warning(paste(c(function_name,"() was deprecated in version ",version)),call.=FALSE,immediate. = TRUE)

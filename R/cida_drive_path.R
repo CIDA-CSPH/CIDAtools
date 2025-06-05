@@ -15,21 +15,32 @@
 #' }
 #'
 
-CIDA_drive_path <- function(file = "") {
+get_cida_drive_path <- function(file = "") {
 
   # Get operating system (note that MacOS and Linux return unix)
   os <- .Platform$OS.type
 
   if (os == "unix") { # MacOS/Linux
 
-    # Two potential places drive could exist
+    # Four potential places drive could exist based on path used for mapping
+    # and case sensitivity of the file system
+    # Then check manually set project data in .ProjData/Data.dcf
     if (dir.exists("/Volumes/sph-cida")) {
-      path <- "/Volumes/sph-cida"
-    } else {
-      stop("Nothing found at /Volumes/sph-cida.",
+      path <- "/Volumes/sph-cida/cida"
+    } else if(dir.exists("/Volumes/cida")){
+      path <- "/Volumes/cida"
+    } else if (dir.exists("/Volumes/SPH-CIDA")) {
+      path <- "/Volumes/SPH-CIDA/CIDA"
+    } else if(dir.exists("/Volumes/CIDA")){
+      path <- "/Volumes/CIDA"
+    }else {
+      stop("Nothing found at /Volumes/sph-cida or /Volumes/cida or (SPH-CIDA or CIDA)",
            " Please ensure drive is mounted and you have entered your",
            " password to access the drive (and are logged into the VPN if",
-           " needed.)")
+           " needed.)",
+           " If still experiencing issues try set_project_data_path() or ",
+           " set_global_data_path()"
+           )
     }
 
   } else if (os == "windows") { # Windows
