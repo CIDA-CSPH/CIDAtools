@@ -3,19 +3,19 @@
 #' This function allows you to set the  project analyst.
 #' This will overwrite the current value if exists.
 #'
-#' @param AnalystName A string containing the analyst name
+#' @param analyst_name A string containing the analyst name
 #' @return A message stating the name has been changed.
 #' @keywords options Analyst ProjData
 #' @export
 #'
-SetProjectAnalyst <- function(AnalystName){
-  if(!is.character(AnalystName)) stop('Analyst Name must be a character string')
-  if(length(AnalystName) > 1) {
+set_project_analyst <- function(analyst_name){
+  if(!is.character(analyst_name)) stop('Analyst Name must be a character string')
+  if(length(analyst_name) > 1) {
     warning('Only First String is Used')
-    AnalystName <- AnalystName[1]
+    analyst_name <- analyst_name[1]
   }
-  SetProjectData('analyst', AnalystName)
-  return(paste('The Project Analyst name has been changed to', AnalystName))
+  set_project_data('analyst', analyst_name)
+  return(paste('The Project Analyst name has been changed to', analyst_name))
 }
 
 #' Set Project Name
@@ -23,19 +23,19 @@ SetProjectAnalyst <- function(AnalystName){
 #' This function allows you to set the  project name. This will overwrite the
 #' current value if exists.
 #'
-#' @param ProjectName A string containing the analyst name
+#' @param project_name A string containing the analyst name
 #' @return A message stating the name has been changed.
 #' @keywords options ProjectName ProjData
 #' @export
 #'
-SetProjectName <- function(ProjectName){
-  if(!is.character(ProjectName)) stop('Project Name must be a character string')
-  if(length(ProjectName) > 1) {
+set_project_name <- function(project_name){
+  if(!is.character(project_name)) stop('Project Name must be a character string')
+  if(length(project_name) > 1) {
     warning('Only First String is Used')
-    ProjectName <- ProjectName[1]
+    project_name <- project_name[1]
   }
-  SetProjectData('ProjectName', ProjectName)
-  return(paste('The Project name has been changed to', ProjectName))
+  set_project_data('ProjectName', project_name)
+  return(paste('The project name has been changed to', project_name))
 }
 
 #' Set PI Name
@@ -43,19 +43,19 @@ SetProjectName <- function(ProjectName){
 #' This function allows you to set the Project's PI. This will overwrite the
 #' current value if exists.
 #'
-#' @param PI A string containing the analyst name
+#' @param pi A string containing the analyst name
 #' @return A message stating the name has been changed.
 #' @keywords options PI ProjData
 #' @export
 #'
-SetProjectPI <- function(PI){
-  if(!is.character(PI)) stop('PI Name must be a character string')
-  if(length(PI) > 1) {
+set_project_pi <- function(pi){
+  if(!is.character(pi)) stop('PI Name must be a character string')
+  if(length(pi) > 1) {
     warning('Only First String is Used')
-    PI <- PI[1]
+    pi <- pi[1]
   }
-  SetProjectData('PI', PI)
-  return(paste('The Project PI has been changed to', PI))
+  set_project_data('PI', pi)
+  return(paste('The Project PI has been changed to', pi))
 }
 
 #' Set Project Location
@@ -68,14 +68,14 @@ SetProjectPI <- function(PI){
 #' @keywords options location ProjData
 #' @export
 #'
-SetProjectLocation <- function(path){
+set_project_location <- function(path){
   if(!is.character(path)) stop('Path must be a character string')
   if(length(path) > 1) {
     warning('Only First String is Used')
     path <- path[1]
   }
   path <- proj.location.handler(path)
-  SetProjectData('datalocation', path)
+  set_project_data('datalocation', path)
   return(paste('The Project Location has been changed to', path))
 }
 
@@ -90,23 +90,14 @@ SetProjectLocation <- function(path){
 #' @export
 #'
 
-ProjectAnalyst <- function(){
-  if(file.exists(file.path('.ProjData/Data.dcf'))){
-    ProjData <- read.dcf(file.path('.ProjData/Data.dcf'), all = T)
-    if('analyst' %in% names(ProjData)) return(ProjData$analyst)
+get_project_analyst <- function(){
+  analyst <- get_project_data('analyst')
+  if(analyst==""){
+    if(!is.null(getOption('CIDAtools.analyst'))){
+      analyst <- getOption('CIDAtools.analyst')
+    }
   }
-  if(file.exists(file.path('../.ProjData/Data.dcf'))){
-    ProjData <- read.dcf(file.path('../.ProjData/Data.dcf'), all = T)
-    if('analyst' %in% names(ProjData)) return(ProjData$analyst)
-  }
-  if(file.exists(file.path('../../.ProjData/Data.dcf'))){
-    ProjData <- read.dcf(file.path('../../.ProjData/Data.dcf'), all = T)
-    if('analyst' %in% names(ProjData)) return(ProjData$analyst)
-  }
-  if(!is.null(getOption('CIDAtools.analyst'))){
-    return(getOption('CIDAtools.analyst'))
-  }
-  return('')
+  return(analyst)
 }
 
 #' Get Project Name
@@ -118,21 +109,9 @@ ProjectAnalyst <- function(){
 #' @export
 #'
 
-ProjectName <- function(){
-  if(file.exists(file.path('.ProjData/Data.dcf'))){
-    ProjData <- read.dcf(file.path('.ProjData/Data.dcf'), all = T)
-    if('ProjectName' %in% names(ProjData)) return(ProjData$ProjectName)
-  }
-
-  if(file.exists(file.path('../.ProjData/Data.dcf'))){
-    ProjData <- read.dcf(file.path('../.ProjData/Data.dcf'), all = T)
-    if('ProjectName' %in% names(ProjData)) return(ProjData$ProjectName)
-  }
-  if(file.exists(file.path('../../.ProjData/Data.dcf'))){
-    ProjData <- read.dcf(file.path('../../.ProjData/Data.dcf'), all = T)
-    if('ProjectName' %in% names(ProjData)) return(ProjData$ProjectName)
-  }
-  return('')
+get_project_name <- function(){
+  project_name <- get_project_data('ProjectName')
+  return(project_name)
 }
 
 #' Get PI Name
@@ -144,22 +123,9 @@ ProjectName <- function(){
 #' @export
 #'
 
-ProjectPI <- function(){
-  if(file.exists(file.path('.ProjData/Data.dcf'))){
-    ProjData <- read.dcf(file.path('.ProjData/Data.dcf'), all = T)
-    if('PI' %in% names(ProjData)) return(ProjData$PI)
-  }
-  if(file.exists(file.path('../.ProjData/Data.dcf'))){
-    ProjData <- read.dcf(file.path('../.ProjData/Data.dcf'), all = T)
-    if('PI' %in% names(ProjData)) return(ProjData$PI)
-  }
-  if(file.exists(file.path('../../.ProjData/Data.dcf'))){
-    ProjData <- read.dcf(file.path('../../.ProjData/Data.dcf'), all = T)
-    if('PI' %in% names(ProjData)) return(ProjData$PI)
-  }
-
-
-  return('')
+get_project_pi <- function(){
+  project_pi <- get_project_data('PI')
+  return(project_pi)
 }
 
 #' Get Project data location on CIDA Drive
@@ -176,33 +142,15 @@ ProjectPI <- function(){
 #' }
 #'
 
-ProjectLocation <- function(path = ''){
-
-  if(file.exists(file.path('.ProjData/Data.dcf'))){
-    ProjData <- read.dcf(file.path('.ProjData/Data.dcf'), all = T)
-    if('datalocation' %in% names(ProjData)){
-      temp_path <- CIDA_drive_path(ProjData$datalocation)
-      return(file.path(temp_path, path))
-    }
+get_project_location <- function(path = ''){
+  temp_path <- get_project_data('datalocation')
+  full_path <- ""
+  if( temp_path!="" ){
+    full_path <- file.path(temp_path, path)
+  }else{
+    message('Project location not found, use set_project_data("datalocation", x).')
   }
-
-  if(file.exists(file.path('../.ProjData/Data.dcf'))){
-    ProjData <- read.dcf(file.path('../.ProjData/Data.dcf'), all = T)
-    if('datalocation' %in% names(ProjData)){
-      temp_path <- CIDA_drive_path(ProjData$datalocation)
-      return(file.path(temp_path, path))
-    }
-  }
-  if(file.exists(file.path('../../.ProjData/Data.dcf'))){
-    ProjData <- read.dcf(file.path('../../.ProjData/Data.dcf'), all = T)
-    if('datalocation' %in% names(ProjData)){
-      temp_path <- CIDA_drive_path(ProjData$datalocation)
-      return(file.path(temp_path, path))
-    }
-  }
-
-  message('Project location not found, use SetProjectData("datalocation", x).')
-  return("")
+  return(full_path)
 }
 
 #' Set data for project
@@ -210,31 +158,36 @@ ProjectLocation <- function(path = ''){
 #' Allows you to set misc project data parameters
 #' for Project Name, Analyst, or PI recommend you use specific function
 #'
-#' @param Parameter Project Parameter to be set
-#' @param Value Value to set to project parameter
+#' @param parameter Project Parameter to be set
+#' @param value Value to set to project parameter
 #' @export
 #'
 #'
 
-SetProjectData <- function(Parameter, Value){
-  if (!is.character(Parameter) | !is.character(Parameter))
+set_project_data <- function(parameter, value){
+  if (!is.character(parameter) | !is.character(parameter))
     stop('Parameter must be a character string of length one')
-  if(!is.character(Value)) stop('Value must be a character string')
-  if(length(Value) > 1) {
+  if(!is.character(value)) stop('Value must be a character string')
+  if(length(value) > 1) {
     warning('Only First String is Used')
-    Value <- Value[1]
+    value <- value[1]
   }
-  if(Parameter=='datalocation'){
-    Value <- proj.location.handler(Value)
+  if(parameter=='datalocation'){
+    value <- proj.location.handler(value)
   }
-  if(file.exists(file.path('.ProjData/Data.dcf'))){
-    ProjData <- read.dcf(file.path('.ProjData/Data.dcf'), all = T)
-  } else{
+
+  proj_data <- get_full_project_data()
+  ##Create .ProjData/Data.dcf
+  ## TODO This assumes location is the top level directory of the project.
+  #       Update so this works from anywhere but only saves to the top level
+  #       project directory.
+  if(is.null(proj_data)){
     dir.create(paste0('.ProjData/'), recursive = T, showWarnings = F)
-    ProjData <- list()
+    proj_data <- list()
+    write.dcf(proj_data, file.path('.ProjData/Data.dcf'))
   }
-  ProjData[Parameter] <- Value
-  write.dcf(ProjData, file.path('.ProjData/Data.dcf'))
+  proj_data[parameter] <- value
+  write.dcf(proj_data, file.path(get_project_data_path()))
 }
 
 #' Get data for project
@@ -244,19 +197,62 @@ SetProjectData <- function(Parameter, Value){
 #' @param param Project parameter to be gotten
 #' @export
 #'
-getProjectData <- function(param){
-  if(file.exists(file.path('.ProjData/Data.dcf'))){
-    ProjData <- read.dcf(file.path('.ProjData/Data.dcf'), all = T)
-    if(param %in% names(ProjData)) return(ProjData[[param]])
+get_project_data <- function(param){
+  value <- ''
+  project_data <- get_full_project_data()
+  if( !is.null(project_data)){
+    if(param %in% names(project_data)){
+      value <- project_data[[param]]
+    }else{
+      warning(paste(c(param," not found in project data.")),call.=FALSE,immediate. = TRUE)
+    }
+  }else{
+    warning(paste(c("get_project_data(",param,") returned NULL project data.")),call.=FALSE,immediate. = TRUE)
   }
-  if(file.exists(file.path('../.ProjData/Data.dcf'))){
-    ProjData <- read.dcf(file.path('../.ProjData/Data.dcf'), all = T)
-    if(param %in% names(ProjData)) return(ProjData[[param]])
-  }
-  if(file.exists(file.path('../../.ProjData/Data.dcf'))){
-    ProjData <- read.dcf(file.path('../../.ProjData/Data.dcf'), all = T)
-    if(param %in% names(ProjData)) return(ProjData[[param]])
-  }
-
-  return('')
+  return(value)
 }
+
+
+#' Internal Function to return Project Data object for use in the other methods
+#' that read .ProjData/Data.dcf
+#'
+#' @noMd
+#' @noRd
+#'
+
+get_full_project_data <- function(){
+  proj_data <- NULL
+  path <- get_project_data_path()
+  if(is.null(path) || path == "" ){
+    warning(".ProjData/Data.dcf file not found in project.",call.=FALSE,immediate. = TRUE)
+  }else if(path !=""){
+    proj_data <- read.dcf(file.path(path), all = T)
+  }
+  return(proj_data)
+}
+
+#' Internal Function to return Project Data path for use in the other methods
+#' that read .ProjData/Data.dcf
+#'
+#' @noMd
+#' @noRd
+#'
+get_project_data_path <- function(){
+  path <- ""
+
+  ## TODO There should be a way to find the top project directory and not use
+  #       the ../ relative navigation below that will fail after 3 subfolders.
+  if(file.exists(file.path('.ProjData/Data.dcf'))){
+    path <- '.ProjData/Data.dcf'
+  }else if(file.exists(file.path('../.ProjData/Data.dcf'))){
+    path <- '../.ProjData/Data.dcf'
+  }else if(file.exists(file.path('../../.ProjData/Data.dcf'))){
+    path <- '../../.ProjData/Data.dcf'
+  }else if(file.exists(file.path('../../../.ProjData/Data.dcf'))){
+    path <- '../../../.ProjData/Data.dcf'
+  }else{
+    warning(".ProjData/Data.dcf file not found in project.",call.=FALSE,immediate. = TRUE)
+  }
+  return(path)
+}
+
