@@ -11,3 +11,4 @@ hex_sticker.R
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+^vignettes/sas-macros.Rmd
