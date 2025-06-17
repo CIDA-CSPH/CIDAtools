@@ -2,7 +2,7 @@
 % Please edit documentation in R/randomizer_and_blinder_app.R
 \name{randblinder_shiny_tool}
 \alias{randblinder_shiny_tool}
-\title{Randomizer and blinder tool}
+\title{Randomizer and blinder tool - To be deprecated}
 \usage{
 randblinder_shiny_tool()
 }

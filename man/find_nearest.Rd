@@ -3,7 +3,7 @@
 \name{find_nearest}
 \alias{find_nearest}
 \alias{getlower}
-\title{Find the nearest observation to another observation}
+\title{Find the nearest observation to another observation  - To be deprecated}
 \usage{
 find_nearest(
   x,

@@ -2,7 +2,7 @@
 % Please edit documentation in R/misc_fns.R
 \name{nLevelsP}
 \alias{nLevelsP}
-\title{Get pretty number of levels}
+\title{Get pretty number of levels - To be deprecated}
 \usage{
 nLevelsP(x)
 }

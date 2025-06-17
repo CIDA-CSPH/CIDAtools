@@ -2,7 +2,7 @@
 % Please edit documentation in R/cida_table1.R
 \name{pvalue}
 \alias{pvalue}
-\title{Internal function for p-value calculation in cida_table1}
+\title{Internal function for p-value calculation in cida_table1 - To be deprecated}
 \usage{
 pvalue(
   x,
@@ -27,5 +27,5 @@ across grouped variables.}
 use non-parametric hypothesis testing}
 }
 \description{
-Internal function for p-value calculation in cida_table1
+Internal function for p-value calculation in cida_table1 - To be deprecated
 }

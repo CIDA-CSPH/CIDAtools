@@ -2,7 +2,7 @@
 % Please edit documentation in R/misc_fns.R
 \name{Round}
 \alias{Round}
-\title{Round and don't drop trailing zeros}
+\title{Round and don't drop trailing zeros - To be deprecated}
 \usage{
 Round(x, n)
 }
