@@ -9,7 +9,7 @@
 #' @noRd
 
 CIDA_drive_path <- function(file = "") {
-  warning( paste(c("CIDA_drive_path() renamed to cida_drive_path()")),immediate. = TRUE)
+  warning( paste(c("CIDA_drive_path() renamed to get_project_drive_path()")),immediate. = TRUE)
 }
 
 
@@ -93,3 +93,24 @@ getProjectData <- function(param){
   warning( paste(c("getProjectData() renamed to get_project_data()")),immediate. = TRUE)
 }
 
+#'
+#' @noMd
+#' @noRd
+setAnalyst <- function(){
+  warning( paste(c("setAnalyst() renamed to set_project_analyst() or set_default_analyst()")),immediate. = TRUE)
+}
+
+#'
+#' @noMd
+#' @noRd
+setPermanentAnalyst <- function(){
+  warning( paste(c("setPermanentAnalyst() renamed to set_project_analyst() or set_global_default_analyst()")),immediate. = TRUE)
+}
+
+
+#'
+#' @noMd
+#' @noRd
+removeAnalyst <- function(){
+  warning( paste(c("removeAnalyst() renamed to set_project_analyst() or remove_global_default_analyst()")),immediate. = TRUE)
+}
