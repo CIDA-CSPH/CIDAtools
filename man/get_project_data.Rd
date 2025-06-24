@@ -4,11 +4,25 @@
 \alias{get_project_data}
 \title{Get data for project}
 \usage{
-get_project_data(param)
+get_project_data(param = "")
 }
 \arguments{
-\item{param}{Project parameter to be gotten}
+\item{param}{Project parameter to return or if not specified to return all parameter/value pairs.}
 }
 \description{
-Allows you to get misc project data parameters
+Allows you to get any project data parameters or all parameters.  Either specify
+the desired parameter or with no parameter it will return all available parameters.
+}
+\details{
+Possible parameters values include:
+
+ - analyst - Analyst's Name
+
+ - ProjectName - Project Name
+
+ - PI - PI Name
+
+ - datalocation - Poject folder location under the CIDA PATH.
+
+ - default_full_path_to_project - Project default path which is the default full path to the project files.  Includes the local filesystem path to network mount point and network path to project folder.
 }
