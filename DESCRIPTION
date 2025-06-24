@@ -1,6 +1,6 @@
 Package: CIDAtools
 Title: This package contains tools for CIDA projects
-Version: 0.2.0.9000
+Version: 0.2.0.9001
 Authors@R: 
   c(person("CIDA Research Tools Committee", role = c("aut", "cre"), email = "ryan.a.peterson@cuanschutz.edu"))
 Description: This package contains the numerous templates and tools to make life at CIDA (part of the Colorado School of Public Health) happier and more efficient!

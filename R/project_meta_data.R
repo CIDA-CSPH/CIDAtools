@@ -9,13 +9,9 @@
 #' @export
 #'
 set_project_analyst <- function(analyst_name){
-  if(!is.character(analyst_name)) stop('Analyst Name must be a character string')
-  if(length(analyst_name) > 1) {
-    warning('Only First String is Used')
-    analyst_name <- analyst_name[1]
-  }
+  analyst_name <- check_string_param_value(analyst_name,'analyst_name')
   set_project_data('analyst', analyst_name)
-  return(paste('The Project Analyst name has been changed to', analyst_name))
+  return(paste('The Project Analyst Name has been changed to', analyst_name))
 }
 
 #' Set Project Name
@@ -29,11 +25,7 @@ set_project_analyst <- function(analyst_name){
 #' @export
 #'
 set_project_name <- function(project_name){
-  if(!is.character(project_name)) stop('Project Name must be a character string')
-  if(length(project_name) > 1) {
-    warning('Only First String is Used')
-    project_name <- project_name[1]
-  }
+  project_name <- check_string_param_value(project_name,'project_name')
   set_project_data('ProjectName', project_name)
   return(paste('The project name has been changed to', project_name))
 }
@@ -49,11 +41,7 @@ set_project_name <- function(project_name){
 #' @export
 #'
 set_project_pi <- function(pi){
-  if(!is.character(pi)) stop('PI Name must be a character string')
-  if(length(pi) > 1) {
-    warning('Only First String is Used')
-    pi <- pi[1]
-  }
+  pi <- check_string_param_value(pi,'PI')
   set_project_data('PI', pi)
   return(paste('The Project PI has been changed to', pi))
 }
@@ -69,14 +57,40 @@ set_project_pi <- function(pi){
 #' @export
 #'
 set_project_location <- function(path){
-  if(!is.character(path)) stop('Path must be a character string')
-  if(length(path) > 1) {
-    warning('Only First String is Used')
-    path <- path[1]
-  }
+  path <- check_string_param_value(path,'path')
   path <- proj_location_handler(path)
   set_project_data('datalocation', path)
   return(paste('The Project Location has been changed to', path))
+}
+
+#' Set Project GitHub Location
+#'
+#' This function allows you to set the Project's GitHub location.
+#' This will overwrite the current value if exists.
+#'
+#' @param git_url A string containing the URL to the GitHub repository for this project.
+#' @return A message stating the name has been changed.
+#' @keywords options location ProjData
+#' @export
+#'
+set_project_github <- function(git_url=''){
+  git_url <- check_string_param_value(git_url,'git_url')
+  set_project_data('git_url', git_url)
+  return(paste('The Project Location has been changed to', path))
+}
+
+#' Get Project GitHub Location
+#'
+#' This function returns the Project GitHub location or blank if it's not set.
+#'
+#' @return A character string with the project GitHub
+#' @keywords options ProjData ProjectGitHub
+#' @export
+#'
+
+get_project_github <- function(){
+  git_url <- get_project_data('git_url')
+  return(git_url)
 }
 
 #' Get Project Analyst
@@ -163,7 +177,7 @@ get_project_location <- function(path = ''){
 #'
 #'
 set_full_project_path <- function(path=''){
-  check_string_param_value(path,'default_full_path_to_project')
+  path <- check_string_param_value(path,'default_full_path_to_project')
   set_project_data('default_full_path_to_project', path)
   return(paste('The project default full path has been changed to', path))
 }
@@ -192,13 +206,8 @@ get_full_project_path <- function(){
 #'
 
 set_project_data <- function(parameter, value){
-  if (!is.character(parameter) | !is.character(parameter))
-    stop('Parameter must be a character string of length one')
-  if(!is.character(value)) stop('Value must be a character string')
-  if(length(value) > 1) {
-    warning('Only First String is Used')
-    value <- value[1]
-  }
+  parameter <- check_string_param_value(parameter,'parameter')
+  value <- check_string_param_value(value,'value')
   if(parameter=='datalocation'){
     value <- proj_location_handler(value)
   }
@@ -233,6 +242,8 @@ set_project_data <- function(parameter, value){
 #'  - datalocation - Poject folder location under the CIDA PATH.
 #'
 #'  - default_full_path_to_project - Project default path which is the default full path to the project files.  Includes the local filesystem path to network mount point and network path to project folder.
+#'
+#'  - git_url - GitHub URL for the project code
 #'
 #'
 #' @param param Project parameter to return or if not specified to return all parameter/value pairs.

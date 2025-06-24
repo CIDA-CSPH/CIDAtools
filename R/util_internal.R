@@ -4,18 +4,19 @@
 #'
 #'
 #' @param value parameter value to check
-#' @return bool if it passes the check otherwise stops on error.
+#' @return the value to be used after checking it is a character value and not an array or returning the first value of the array.
 #'
 #' @noRd
 #' @noMd
 #'
 check_string_param_value <- function(value="",parameter=""){
+
   if(!is.character(value)) stop(parameter,' must be a character string')
   if(length(value) > 1) {
     warning('Only First String is Used')
     value <- value[1]
   }
-  return(TRUE)
+  return(value)
 }
 
 
