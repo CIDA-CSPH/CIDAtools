@@ -13,7 +13,7 @@ set_global_default_analyst <- function(analyst_name){
   if( check_string_param_value(analyst_name,'analyst_name')){
 
     # Save to user cida_defaults.dcf
-    set_defaults('analyst_name',analyst_name)
+    set_default_value('analyst_name',analyst_name)
 
     # Save to project templates
     set_template_analyst(analyst_name)
@@ -53,15 +53,15 @@ get_global_default_analyst <- function(){
 #'
 remove_global_default_analyst <- function(){
   to_save <- NULL
-  home_dir <- fs.path_home()
-  path <-fs.path_join(c(home_dir,"/cida_defaults.dcf"))
+  home_dir <- fs::path_home()
+  path <-fs::path_join(c(home_dir,"/cida_defaults.dcf"))
 
   if(file.exists(file.path(path))){
     default <- read.dcf(file.path(path), all = T)
-    to_save <- default
-    for (element in my_list) {
+    to_save <- list()
+    for (element in default) {
       if(names(element)!="analyst_name"){
-        to_save[names(element)]=element
+        to_save[names(element)]=default[names(element)]
       }
     }
     write.dcf(to_save, file.path(path))
@@ -86,7 +86,7 @@ remove_global_default_analyst <- function(){
 #'
 set_global_default_path <- function(path=""){
   if(check_string_param_value(path,'global_default_path')){
-    set_defaults('path',path)
+    set_default_value('path',path)
   }
   return(paste('The default project path has been changed to',
                path))
@@ -100,7 +100,7 @@ set_global_default_path <- function(path=""){
 #' @export
 #'
 remove_global_default_path <- function(){
-  set_defaults('path',"")
+  set_default_value('path',"")
 }
 
 
@@ -197,9 +197,9 @@ get_defaults <- function(){
 read_global_defaults<- function(){
   default <- NULL
 
-  home_dir <- fs.path_home()
+  home_dir <- fs::path_home()
 
-  path <-fs.path_join(c(home_dir,"/cida_defaults.dcf"))
+  path <-fs::path_join(c(home_dir,"/cida_defaults.dcf"))
 
   if(file.exists(file.path(path))){
     default <- read.dcf(file.path(path), all = T)
@@ -226,14 +226,14 @@ read_global_defaults<- function(){
 save_global_defaults<- function(new_default){
   to_save <- NULL
 
-  home_dir <- fs.path_home()
-  path <-fs.path_join(c(home_dir,"/cida_defaults.dcf"))
+  home_dir <- fs::path_home()
+  path <-fs::path_join(c(home_dir,"/cida_defaults.dcf"))
 
   if(file.exists(file.path(path))){
     default <- read.dcf(file.path(path), all = T)
     to_save <- default
-    for (element in my_list) {
-        to_save[names(element)]=element
+    for (element in new_default) {
+        to_save[names(element)]=new_default[names(element)]
     }
   }else{
     to_save <- new_default
@@ -260,10 +260,9 @@ set_template_analyst <- function(analyst_name=""){
   '/library/CIDAtools/rstudio/',
   'templates/project/proj_setup.dcf')
   if(file.access(project_setup, 2) == -1)
-    stop(paste0(msg1,
-                'You do not have permission to change\n',
+    stop(paste0('You do not have permission to change\n',
                 'New CIDA Project Template'))
-  DCF <- read.dcf(file.path(Project_setup), all = T)
-  DCF$Default[DCF$Parameter == 'analyst' & !is.na(DCF$Parameter)] <- AnalystName
+  DCF <- read.dcf(file.path(project_setup), all = T)
+  DCF$Default[DCF$Parameter == 'analyst' & !is.na(DCF$Parameter)] <- analyst_name
   write.dcf(DCF, file.path(project_setup))
 }

@@ -8,7 +8,7 @@
 #' @noMd
 #' @noRd
 
-CIDA_drive_path <- function(file = "") {
+CIDA_drive_path <- function() {
   warning( paste(c("CIDA_drive_path() renamed to get_project_drive_path()")),immediate. = TRUE)
 }
 
@@ -17,21 +17,21 @@ CIDA_drive_path <- function(file = "") {
 #' @noMd
 #' @noRd
 
-SetProjectName <- function(ProjectName){
+SetProjectName <- function(){
   warning( paste(c("SetProjectName() renamed to set_project_name()")),immediate. = TRUE)
 }
 
 #'
 #' @noMd
 #' @noRd
-SetProjectAnalyst <- function(AnalystName){
+SetProjectAnalyst <- function(){
   warning( paste(c("SetProjectAnalyst() renamed to set_project_analyst()")),immediate. = TRUE)
 }
 
 #'
 #' @noMd
 #' @noRd
-SetProjectName <- function(ProjectName){
+SetProjectName <- function(){
   warning( paste(c("SetProjectName() renamed to set_project_name()")),immediate. = TRUE)
 }
 
@@ -46,7 +46,7 @@ SetProjectPI <- function(PI){
 #'
 #' @noMd
 #' @noRd
-SetProjectLocation <- function(path){
+SetProjectLocation <- function(){
   warning( paste(c("SetProjectLocation() renamed to set_project_location()")),immediate. = TRUE)
 }
 

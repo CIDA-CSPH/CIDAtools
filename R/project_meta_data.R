@@ -74,7 +74,7 @@ set_project_location <- function(path){
     warning('Only First String is Used')
     path <- path[1]
   }
-  path <- proj.location.handler(path)
+  path <- proj_location_handler(path)
   set_project_data('datalocation', path)
   return(paste('The Project Location has been changed to', path))
 }
@@ -153,10 +153,37 @@ get_project_location <- function(path = ''){
   return(full_path)
 }
 
+
+#' Sets the default full path to the project.
+#'
+#' @param path full path to the project folder
+#'
+#' @return message indicating the path has been saved.
+#' @export
+#'
+#'
+set_full_project_path <- function(path=''){
+  check_string_param_value(path,'default_full_path_to_project')
+  set_project_data('default_full_path_to_project', path)
+  return(paste('The project default full path has been changed to', path))
+}
+
+#' Gets the currently set full path to the project
+#'
+#' @return full path to project
+#' @export
+#'
+get_full_project_path <- function(){
+  project_path <- get_project_data('default_full_path_to_project')
+  return(project_path)
+}
+
+
 #' Set data for project
 #'
 #' Allows you to set misc project data parameters
 #' for Project Name, Analyst, or PI recommend you use specific function
+#'
 #'
 #' @param parameter Project Parameter to be set
 #' @param value Value to set to project parameter
@@ -173,7 +200,7 @@ set_project_data <- function(parameter, value){
     value <- value[1]
   }
   if(parameter=='datalocation'){
-    value <- proj.location.handler(value)
+    value <- proj_location_handler(value)
   }
 
   proj_data <- get_full_project_data()
@@ -192,24 +219,48 @@ set_project_data <- function(parameter, value){
 
 #' Get data for project
 #'
-#' Allows you to get misc project data parameters
+#' Allows you to get any project data parameters or all parameters.  Either specify
+#' the desired parameter or with no parameter it will return all available parameters.
 #'
-#' @param param Project parameter to be gotten
+#' Possible parameters values include:
+#'
+#'  - analyst - Analyst's Name
+#'
+#'  - ProjectName - Project Name
+#'
+#'  - PI - PI Name
+#'
+#'  - datalocation - Poject folder location under the CIDA PATH.
+#'
+#'  - default_full_path_to_project - Project default path which is the default full path to the project files.  Includes the local filesystem path to network mount point and network path to project folder.
+#'
+#'
+#' @param param Project parameter to return or if not specified to return all parameter/value pairs.
 #' @export
 #'
-get_project_data <- function(param){
+get_project_data <- function(param=''){
   value <- ''
   project_data <- get_full_project_data()
-  if( !is.null(project_data)){
-    if(param %in% names(project_data)){
-      value <- project_data[[param]]
-    }else{
-      warning(paste(c(param," not found in project data.")),call.=FALSE,immediate. = TRUE)
-    }
+  if(is.null(param) || param==''){
+
+    value <- project_data
+
   }else{
-    warning(paste(c("get_project_data(",param,") returned NULL project data.")),call.=FALSE,immediate. = TRUE)
+
+    if( !is.null(project_data)){
+      value <- project_data
+      if(param %in% names(project_data)){
+        value <- project_data[[param]]
+      }else{
+        warning(paste(c(param," not found in project data.")),call.=FALSE,immediate. = TRUE)
+      }
+    }else{
+      warning(paste(c("get_project_data(",param,") returned NULL project data.")),call.=FALSE,immediate. = TRUE)
+    }
+
   }
   return(value)
+
 }
 
 
