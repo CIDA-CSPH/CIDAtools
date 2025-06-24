@@ -11,7 +11,8 @@ Imports:
     flextable,
     table1, 
     shiny,
-    fs
+    fs,
+    digest
 Suggests: 
     git2r, 
     survey, 
