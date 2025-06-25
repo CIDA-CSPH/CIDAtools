@@ -26,5 +26,5 @@ Possible parameters values include:
 
  - default_full_path_to_project - Project default path which is the default full path to the project files.  Includes the local filesystem path to network mount point and network path to project folder.
 
- - git_url - GitHub URL for the project code
+ - gitlocation - GitHub URL for the project code
 }

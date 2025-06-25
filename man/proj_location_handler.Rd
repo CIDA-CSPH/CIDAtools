@@ -6,6 +6,9 @@
 \usage{
 proj_location_handler(loc = "")
 }
+\arguments{
+\item{loc}{project location path to clean up}
+}
 \description{
 helper function to cleanup project location
 }

@@ -2,8 +2,7 @@
 % Please edit documentation in R/project.R
 \name{backup_project}
 \alias{backup_project}
-\title{copy local files to network path
-prompt for updated remote files}
+\title{pull project files from remote directory}
 \usage{
 backup_project(
   path_from = getwd(),
@@ -14,7 +13,32 @@ backup_project(
   readme = TRUE
 )
 }
+\arguments{
+\item{path_from}{Path from where the folders should be copied (project
+directory location).}
+
+\item{path_to}{Path to where the folders should be copied (P drive, only used
+if specified).}
+
+\item{exclude}{files/folders NOT to be backed up to the P-drive (useful for
+larger files that don't change often). Currently not used.}
+
+\item{recreate}{should backup be created from the ground up?
+(can take longer, but useful for projects with many changes)}
+
+\item{data_only}{should only subdirs including "data" (DataRaw/ and DataProcessed/) be backed up?}
+
+\item{readme}{forces backup of project readme}
+}
+\value{
+This function has verbose output to ensure the back up is working, and
+ ultimately returns a success indicator that's returned by file.copy.
+}
 \description{
-copy local files to network path
-prompt for updated remote files
+Backup Project Directory
+}
+\details{
+This function backs up a CIDA project to the shared (P) CIDA drive. The backup directory
+can either be existing (in which only changed files/folders are updated), or
+nonexisting, in which case a full project backup is created.
 }
