@@ -75,7 +75,7 @@ set_project_location <- function(path){
 #'
 set_project_github <- function(git_url=''){
   git_url <- check_string_param_value(git_url,'git_url')
-  set_project_data('git_url', git_url)
+  set_project_data('gitlocation', git_url)
   return(paste('The Project Location has been changed to', path))
 }
 
@@ -89,7 +89,7 @@ set_project_github <- function(git_url=''){
 #'
 
 get_project_github <- function(){
-  git_url <- get_project_data('git_url')
+  git_url <- get_project_data('gitlocation')
   return(git_url)
 }
 
@@ -243,7 +243,7 @@ set_project_data <- function(parameter, value){
 #'
 #'  - default_full_path_to_project - Project default path which is the default full path to the project files.  Includes the local filesystem path to network mount point and network path to project folder.
 #'
-#'  - git_url - GitHub URL for the project code
+#'  - gitlocation - GitHub URL for the project code
 #'
 #'
 #' @param param Project parameter to return or if not specified to return all parameter/value pairs.
