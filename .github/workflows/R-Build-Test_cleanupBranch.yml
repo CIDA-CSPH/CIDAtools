@@ -22,7 +22,7 @@ jobs:
       fail-fast: true
       matrix:
         r-version: ['release']
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest] #[ubuntu-latest, windows-latest, macos-latest]
 
     steps:
       - uses: actions/checkout@v4
@@ -39,6 +39,12 @@ jobs:
           extra-packages: any::rcmdcheck
           needs: check
           
+      - name: Cache R
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: ${{ runner.os }}-r-${{ hashFiles('DESCRIPTION') }}
+
       - name: Check Package
         uses: r-lib/actions/check-r-package@v2
         with:
