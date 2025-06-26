@@ -6,12 +6,8 @@
 \usage{
 remove_global_default_analyst()
 }
-\arguments{
-\item{quiet}{should a message indicating result be returned, if TRUE will only
-return TRUE or FALSE}
-}
 \value{
-Message indicating sucess or failue
+Message indicating success or failure
 }
 \description{
 This function removes the default analyst set with set_global_default_analyst()
