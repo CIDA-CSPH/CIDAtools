@@ -10,14 +10,12 @@
 #' @export
 #'
 set_global_default_analyst <- function(analyst_name){
-  if( check_string_param_value(analyst_name,'analyst_name')){
+  analyst_name <- check_string_param_value(analyst_name,'analyst_name')
+  # Save to user cida_defaults.dcf
+  set_default_value('analyst_name',analyst_name)
+  # Save to project templates
+  set_template_analyst(analyst_name)
 
-    # Save to user cida_defaults.dcf
-    set_default_value('analyst_name',analyst_name)
-
-    # Save to project templates
-    set_template_analyst(analyst_name)
-  }
   return(paste('The default analyst name has been changed to',
                analyst_name))
 }
@@ -51,20 +49,16 @@ get_global_default_analyst <- function(){
 #'
 remove_global_default_analyst <- function(){
   to_save <- NULL
-  home_dir <- fs::path_home()
-  path <-fs::path_join(c(home_dir,"/cida_defaults.dcf"))
-
+  defaults <- read_global_defaults()
   msg <- ""
-
-  if(file.exists(file.path(path))){
-    default <- read.dcf(file.path(path), all = T)
+  if(!is.null(defaults)){
     to_save <- list()
-    for (element in default) {
-      if(names(element)!="analyst_name"){
-        to_save[names(element)]=default[names(element)]
+    for (element in names(defaults)) {
+      if(element!="analyst_name"){
+        to_save[element]=defaults[element]
       }
     }
-    write.dcf(to_save, file.path(path))
+    write_global_defaults(to_save)
     msg <- paste('The default analyst has been removed.')
   }else{
     warning("Analyst not removed: global default file not found: ",path)
@@ -87,11 +81,9 @@ remove_global_default_analyst <- function(){
 #' @export
 #'
 set_global_default_path <- function(path=""){
-  if(check_string_param_value(path,'global_default_path')){
-    set_default_value('path',path)
-  }
-  return(paste('The default project path has been changed to',
-               path))
+  path <- check_string_param_value(path,'global_default_path')
+  set_default_value('path',path)
+  return(paste('The default project path has been changed to',path))
 }
 
 #' removes the default drive path in ~/cida_defaults.dcf
@@ -207,6 +199,23 @@ read_global_defaults <- function(){
   return(default)
 }
 
+#' Write global defaults to ~/cida_defaults.dcf
+#' Use fs to get a cross platform path to the user directory to store
+#' cida_defaults.dcf then write cida_defaults.dcf.
+#'
+#' @returns bool for success or failure
+#'
+#' @noRd
+#' @noMd
+#'
+
+write_global_defaults <- function( defaults_to_write){
+  home_dir <- fs::path_home()
+  path <-fs::path_join(c(home_dir,"/cida_defaults.dcf"))
+  write.dcf(defaults_to_write, file.path(path))
+
+  return(TRUE)
+}
 
 #' Save CIDA Defaults to ~/cida_defaults.dcf
 #'
@@ -223,19 +232,16 @@ read_global_defaults <- function(){
 save_global_defaults<- function(new_default){
   to_save <- NULL
 
-  home_dir <- fs::path_home()
-  path <-fs::path_join(c(home_dir,"/cida_defaults.dcf"))
-
-  if(file.exists(file.path(path))){
-    default <- read.dcf(file.path(path), all = T)
-    to_save <- default
-    for (element in new_default) {
-        to_save[names(element)]=new_default[names(element)]
+  defaults <- read_global_defaults()
+  if(!is.null(defaults) ){
+    to_save <- defaults
+    for (element in names(new_default)) {
+        to_save[element]=new_default[element]
     }
   }else{
     to_save <- new_default
   }
-  write.dcf(to_save, file.path(path))
+  write_global_defaults(to_save)
 }
 
 
