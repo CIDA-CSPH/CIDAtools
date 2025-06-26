@@ -43,10 +43,8 @@ get_global_default_analyst <- function(){
 #' This function removes the default analyst set with set_global_default_analyst()
 #'  from the users ~/cida_defaults.dcf.
 #'
-#' @param quiet should a message indicating result be returned, if TRUE will only
-#' return TRUE or FALSE
 #'
-#' @return Message indicating sucess or failue
+#' @return Message indicating success or failure
 #' @keywords Analyst remove
 #' @export
 #'
@@ -55,6 +53,8 @@ remove_global_default_analyst <- function(){
   to_save <- NULL
   home_dir <- fs::path_home()
   path <-fs::path_join(c(home_dir,"/cida_defaults.dcf"))
+
+  msg <- ""
 
   if(file.exists(file.path(path))){
     default <- read.dcf(file.path(path), all = T)
@@ -65,10 +65,12 @@ remove_global_default_analyst <- function(){
       }
     }
     write.dcf(to_save, file.path(path))
+    msg <- paste('The default analyst has been removed.')
   }else{
     warning("Analyst not removed: global default file not found: ",path)
+    msg <- paste("Analyst not removed: global default file not found: ",path)
   }
-
+  return(msg)
 }
 
 
@@ -115,12 +117,7 @@ remove_global_default_path <- function(){
 #'
 get_global_default_path <- function(){
   path <- ''
-  defaults <- get_defaults()
-  if(!is.null(defaults)){
-    if('path' %in% names(defaults)){
-      path <- defaults['path']
-    }
-  }
+  path <- get_default_value('path')
   return(path)
 }
 
@@ -158,7 +155,7 @@ get_default_value <- function(parameter){
   default_value <- ""
   defaults <- get_defaults()
   if( parameter %in% names(defaults)){
-    default_value <- defaults[parameter]
+    default_value <- defaults[parameter][1,1]
   }else{
     warning("Parameter:",parameter," does not exist in default values.\n")
   }
@@ -194,7 +191,7 @@ get_defaults <- function(){
 #' @noRd
 #' @noMd
 #'
-read_global_defaults<- function(){
+read_global_defaults <- function(){
   default <- NULL
 
   home_dir <- fs::path_home()
