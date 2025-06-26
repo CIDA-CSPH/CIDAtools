@@ -5,17 +5,20 @@
 #' if possible changes the default analyst in the template for new projects.
 #'
 #' @param analyst_name A string containing the analyst name
+#' @param update_template Bool whether or not to update analyst in the project template.
 #' @return A message stating the name has been changed.
 #' @keywords options Analyst
 #' @export
 #'
-set_global_default_analyst <- function(analyst_name){
+set_global_default_analyst <- function(analyst_name,update_template=FALSE){
   analyst_name <- check_string_param_value(analyst_name,'analyst_name')
   # Save to user cida_defaults.dcf
   set_default_value('analyst_name',analyst_name)
-  # Save to project templates
-  set_template_analyst(analyst_name)
 
+  # Save to project templates
+  if(update_template){
+    set_template_analyst(analyst_name)
+  }
   return(paste('The default analyst name has been changed to',
                analyst_name))
 }
@@ -61,8 +64,8 @@ remove_global_default_analyst <- function(){
     write_global_defaults(to_save)
     msg <- paste('The default analyst has been removed.')
   }else{
-    warning("Analyst not removed: global default file not found: ",path)
-    msg <- paste("Analyst not removed: global default file not found: ",path)
+    warning("Analyst not removed: global default file not found.")
+    msg <- paste("Analyst not removed: global default file not found.")
   }
   return(msg)
 }
@@ -256,9 +259,7 @@ save_global_defaults<- function(new_default){
 #'
 
 set_template_analyst <- function(analyst_name=""){
-
   site_path = R.home(component = "home")
-
   project_setup <- paste0(site_path,
   '/library/CIDAtools/rstudio/',
   'templates/project/proj_setup.dcf')

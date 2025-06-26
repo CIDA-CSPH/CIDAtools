@@ -76,7 +76,7 @@ set_project_location <- function(path){
 set_project_github <- function(git_url=''){
   git_url <- check_string_param_value(git_url,'git_url')
   set_project_data('gitlocation', git_url)
-  return(paste('The Project Location has been changed to', path))
+  return(paste('The Project GitHub Location has been changed to', git_url))
 }
 
 #' Get Project GitHub Location

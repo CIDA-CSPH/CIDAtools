@@ -4,10 +4,12 @@
 \alias{set_global_default_analyst}
 \title{Set Global Default Analyst Value}
 \usage{
-set_global_default_analyst(analyst_name)
+set_global_default_analyst(analyst_name, update_template = FALSE)
 }
 \arguments{
 \item{analyst_name}{A string containing the analyst name}
+
+\item{update_template}{Bool whether or not to update analyst in the project template.}
 }
 \value{
 A message stating the name has been changed.
