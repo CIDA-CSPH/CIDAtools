@@ -196,7 +196,7 @@ read_global_defaults <- function(){
   if(file.exists(file.path(path))){
     default <- read.dcf(file.path(path), all = T)
   }else{
-    warning("~/cida_defaults.dcf at full path:",path,"\n does not exist.\nNothing was loaded.")
+    warning("~/cida_defaults.dcf at full path:",path," does not exist.\nNothing was loaded.")
   }
 
   return(default)

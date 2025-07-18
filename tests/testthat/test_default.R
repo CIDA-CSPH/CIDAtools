@@ -67,4 +67,17 @@ test_that("test remove functions",{
   expect_equal(analyst_name, "")
 })
 
-#unlink(temp_path)
+
+test_that("test updating the template with set_global_default_analyst",{
+  msg1 <- set_global_default_analyst("Analyst Name3",update_template=TRUE)
+  expect_equal(msg1,"The default analyst name has been changed to Analyst Name3")
+})
+
+unlink(temp_path)
+
+test_that("test getting values after deletion",{
+  w <- capture_warnings(path <- get_global_default_path())
+  expect_match(w, "~/cida_defaults\\.dcf at full path:.*cida_defaults\\.dcf does not exist\\.\\nNothing was loaded\\.",fixed=FALSE, all = FALSE)
+  expect_match(w, "Parameter:path does not exist in default values\\.",fixed=FALSE, all=FALSE)
+  expect_equal(path,'')
+})

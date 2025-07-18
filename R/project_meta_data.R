@@ -10,7 +10,7 @@
 #'
 set_project_analyst <- function(analyst_name){
   analyst_name <- check_string_param_value(analyst_name,'analyst_name')
-  set_project_data('analyst', analyst_name)
+  set_project_meta_data('analyst', analyst_name)
   return(paste('The Project Analyst Name has been changed to', analyst_name))
 }
 
@@ -26,7 +26,7 @@ set_project_analyst <- function(analyst_name){
 #'
 set_project_name <- function(project_name){
   project_name <- check_string_param_value(project_name,'project_name')
-  set_project_data('ProjectName', project_name)
+  set_project_meta_data('ProjectName', project_name)
   return(paste('The project name has been changed to', project_name))
 }
 
@@ -42,7 +42,7 @@ set_project_name <- function(project_name){
 #'
 set_project_pi <- function(pi){
   pi <- check_string_param_value(pi,'PI')
-  set_project_data('PI', pi)
+  set_project_meta_data('PI', pi)
   return(paste('The Project PI has been changed to', pi))
 }
 
@@ -59,7 +59,7 @@ set_project_pi <- function(pi){
 set_project_location <- function(path){
   path <- check_string_param_value(path,'path')
   path <- proj_location_handler(path)
-  set_project_data('datalocation', path)
+  set_project_meta_data('datalocation', path)
   return(paste('The Project Location has been changed to', path))
 }
 
@@ -75,7 +75,7 @@ set_project_location <- function(path){
 #'
 set_project_github <- function(git_url=''){
   git_url <- check_string_param_value(git_url,'git_url')
-  set_project_data('gitlocation', git_url)
+  set_project_meta_data('gitlocation', git_url)
   return(paste('The Project GitHub Location has been changed to', git_url))
 }
 
@@ -89,7 +89,7 @@ set_project_github <- function(git_url=''){
 #'
 
 get_project_github <- function(){
-  git_url <- get_project_data('gitlocation')
+  git_url <- get_project_meta_data('gitlocation')
   return(git_url)
 }
 
@@ -105,7 +105,7 @@ get_project_github <- function(){
 #'
 
 get_project_analyst <- function(){
-  analyst <- get_project_data('analyst')
+  analyst <- get_project_meta_data('analyst')
   if(analyst==""){
     if(!is.null(getOption('CIDAtools.analyst'))){
       analyst <- getOption('CIDAtools.analyst')
@@ -124,7 +124,7 @@ get_project_analyst <- function(){
 #'
 
 get_project_name <- function(){
-  project_name <- get_project_data('ProjectName')
+  project_name <- get_project_meta_data('ProjectName')
   return(project_name)
 }
 
@@ -138,7 +138,7 @@ get_project_name <- function(){
 #'
 
 get_project_pi <- function(){
-  project_pi <- get_project_data('PI')
+  project_pi <- get_project_meta_data('PI')
   return(project_pi)
 }
 
@@ -157,12 +157,12 @@ get_project_pi <- function(){
 #'
 
 get_project_location <- function(path = ''){
-  temp_path <- get_project_data('datalocation')
+  temp_path <- get_project_meta_data('datalocation')
   full_path <- ""
   if( temp_path!="" ){
     full_path <- file.path(temp_path, path)
   }else{
-    message('Project location not found, use set_project_data("datalocation", x).')
+    message('Project location not found, use set_project_meta_data("datalocation", x).')
   }
   return(full_path)
 }
@@ -178,7 +178,7 @@ get_project_location <- function(path = ''){
 #'
 set_full_project_path <- function(path=''){
   path <- check_string_param_value(path,'default_full_path_to_project')
-  set_project_data('default_full_path_to_project', path)
+  set_project_meta_data('default_full_path_to_project', path)
   return(paste('The project default full path has been changed to', path))
 }
 
@@ -188,7 +188,7 @@ set_full_project_path <- function(path=''){
 #' @export
 #'
 get_full_project_path <- function(){
-  project_path <- get_project_data('default_full_path_to_project')
+  project_path <- get_project_meta_data('default_full_path_to_project')
   return(project_path)
 }
 
@@ -205,7 +205,7 @@ get_full_project_path <- function(){
 #'
 #'
 
-set_project_data <- function(parameter, value){
+set_project_meta_data <- function(parameter, value){
   parameter <- check_string_param_value(parameter,'parameter')
   value <- check_string_param_value(value,'value')
   if(parameter=='datalocation'){
@@ -213,17 +213,14 @@ set_project_data <- function(parameter, value){
   }
 
   proj_data <- get_full_project_data()
-  ##Create .ProjData/Data.dcf
-  ## TODO This assumes location is the top level directory of the project.
-  #       Update so this works from anywhere but only saves to the top level
-  #       project directory.
-  if(is.null(proj_data)){
-    dir.create(paste0('.ProjData/'), recursive = T, showWarnings = F)
-    proj_data <- list()
-    write.dcf(proj_data, file.path('.ProjData/Data.dcf'))
+
+  if(parameter %in% names(proj_data)){
+    proj_data[parameter] <- value
+  }else{
+    proj_data[parameter] <- value
   }
-  proj_data[parameter] <- value
-  write.dcf(proj_data, file.path(get_project_data_path()))
+
+  save_project_data(proj_data)
 }
 
 #' Get data for project
@@ -249,27 +246,25 @@ set_project_data <- function(parameter, value){
 #' @param param Project parameter to return or if not specified to return all parameter/value pairs.
 #' @export
 #'
-get_project_data <- function(param=''){
+get_project_meta_data <- function(param=''){
   value <- ''
   project_data <- get_full_project_data()
   if(is.null(param) || param==''){
 
     value <- project_data
 
-  }else{
-
-    if( !is.null(project_data)){
-      value <- project_data
+  }else if( !is.null(project_data)){
+      #value <- project_data
       if(param %in% names(project_data)){
         value <- project_data[[param]]
       }else{
         warning(paste(c(param," not found in project data.")),call.=FALSE,immediate. = TRUE)
       }
-    }else{
-      warning(paste(c("get_project_data(",param,") returned NULL project data.")),call.=FALSE,immediate. = TRUE)
-    }
-
+  }else{
+      warning(paste(c("get_project_meta_data(",param,") returned NULL project data.")),call.=FALSE,immediate. = TRUE)
   }
+
+
   return(value)
 
 }
@@ -288,35 +283,17 @@ get_full_project_data <- function(){
   if(is.null(path) || path == "" ){
     warning(".ProjData/Data.dcf file not found in project.",call.=FALSE,immediate. = TRUE)
   }else if(path !=""){
-    proj_data <- read.dcf(file.path(path), all = T)
+    if(fs::file_exists(path) && fs::file_size(path)>0 ){
+      proj_data <- read.dcf(file.path(path), all = T)
+    }else if(fs::file_size(path)==0){
+      warning(paste(path," File is empty.",sep=""))
+    }else if(! fs:file.exists(path) ){
+      warning(paste(path," File does not exist.",sep=""))
+    }
   }
   return(proj_data)
 }
 
-#' Internal Function to return Project Data path for use in the other methods
-#' that read .ProjData/Data.dcf
-#'
-#' @noMd
-#' @noRd
-#'
-get_project_data_path <- function(){
-  path <- ""
-
-  ## TODO There should be a way to find the top project directory and not use
-  #       the ../ relative navigation below that will fail after 3 subfolders.
-  if(file.exists(file.path('.ProjData/Data.dcf'))){
-    path <- '.ProjData/Data.dcf'
-  }else if(file.exists(file.path('../.ProjData/Data.dcf'))){
-    path <- '../.ProjData/Data.dcf'
-  }else if(file.exists(file.path('../../.ProjData/Data.dcf'))){
-    path <- '../../.ProjData/Data.dcf'
-  }else if(file.exists(file.path('../../../.ProjData/Data.dcf'))){
-    path <- '../../../.ProjData/Data.dcf'
-  }else{
-    warning(".ProjData/Data.dcf file not found in project.",call.=FALSE,immediate. = TRUE)
-  }
-  return(path)
-}
 
 
 

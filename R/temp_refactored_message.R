@@ -82,7 +82,7 @@ ProjectLocation <- function(){
 #' @noMd
 #' @noRd
 SetProjectData <- function(){
-  warning( paste(c("SetProjectData() renamed to set_project_data()")),immediate. = TRUE)
+  warning( paste(c("SetProjectData() renamed to set_project_meta_data()")),immediate. = TRUE)
 }
 
 #'
@@ -90,7 +90,7 @@ SetProjectData <- function(){
 #' @noRd
 
 getProjectData <- function(param){
-  warning( paste(c("getProjectData() renamed to get_project_data()")),immediate. = TRUE)
+  warning( paste(c("getProjectData() renamed to get_project_meta_data()")),immediate. = TRUE)
 }
 
 #'
