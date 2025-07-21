@@ -5,6 +5,8 @@ test_project_path <- "Branches/dr_test/test_project"
 full_project_dir <- paste(test_drive_dir,test_project_path,"/.ProjData/",sep="")
 fs::dir_create(path= full_project_dir)
 
+unlink(paste(full_project_dir,"Data.dcf",sep=""))
+
 test_that("create a test project dcf file and test getter functions", {
   setwd(paste(test_drive_dir,test_project_path,sep=""))
   dcf_content <- list( ProjectName="Test Project 5", PI="Dr. Test",analyst="Analyst Name",datalocation="Branches/dr_test/test_project",gitlocation="CIDATools/Test_test_project")

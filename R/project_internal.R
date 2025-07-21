@@ -13,15 +13,25 @@ get_default_path <- function(){
   ## TODO. Check project and then check User/Global Default
 
   # Attempt to load project meta data and pull the path from it.
-  project_data=get_full_project_data()
-  if(! is.null(project_data) && 'datalocation' %in% names(project_data)){
-    path <- project_data['datalocation']
+  project_location=get_full_project_path()
+  project_dir=get_project_location()
+
+  if(! is.null(project_location) && ! is.null(project_dir) ){
+    common_path <- find_common_path(project_location,project_dir)
+    path <- find_drive_location(project_location,common_path)
+  }else if(! is.null(project_location)){
+
+  }else if(! is.null(project_dir)){
+
   }
   if(is.null(path) || path==""){
     #Attempt to load the global default path
     path <- get_global_default_path()
   }
 
+  if(is.null(path) || path==""){
+    warning("Failed to load project or global defaul location.")
+  }
   return(path)
 }
 
