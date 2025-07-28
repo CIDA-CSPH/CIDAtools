@@ -12,7 +12,7 @@ test_that("create a test project dcf file and test getter functions", {
   dcf_content <- list( ProjectName="Test Project 5", PI="Dr. Test",analyst="Analyst Name",datalocation="Branches/dr_test/test_project",gitlocation="CIDATools/Test_test_project")
 
    w <- capture_warnings(save_project_data(dcf_content))
-   expect_match(w,".ProjData/Data.dcf file not found in project.",all=FALSE)
+   expect_match(w,".ProjData/Data.dcf File does not exist.", perl=TRUE ,all=FALSE)
    #expect_warning(save_project_data(dcf_content),".ProjData/Data.dcf file not found in project.")
 
    # Process the DCF file using your function

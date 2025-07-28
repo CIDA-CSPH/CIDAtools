@@ -283,11 +283,12 @@ get_full_project_data <- function(){
   if(is.null(path) || path == "" ){
     warning(".ProjData/Data.dcf file not found in project.",call.=FALSE,immediate. = TRUE)
   }else if(path !=""){
+    #print(paste0("ERROR:",path,"::"))
     if(fs::file_exists(path) && fs::file_size(path)>0 ){
       proj_data <- read.dcf(file.path(path), all = T)
-    }else if(fs::file_size(path)==0){
+    }else if(fs::file_exists(path) && fs::file_size(path)==0){
       warning(paste(path," File is empty.",sep=""))
-    }else if(! fs:file.exists(path) ){
+    }else if(! fs::file_exists(path) ){
       warning(paste(path," File does not exist.",sep=""))
     }
   }

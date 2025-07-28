@@ -20,20 +20,6 @@ check_string_param_value <- function(value="",parameter=""){
 }
 
 
-#' Find Common portion of paths when one path is a full path and the other is partial
-#'
-#'
-#' @param full_path The full path to search for the partial path in.
-#' @param partial_path The partial path which may start any were in the full path
-#' @return The common portion of the path.
-#'
-#' @noRd
-#' @noMd
-#'
-find_common_path <- function(full_path="",partial_path=""){
-  common <- fs::path_common(c(full_path,partial_path))
-  return(common)
-}
 
 #' Find and return the beginning of the full path up to the start of the common path.
 #'
@@ -45,33 +31,34 @@ find_common_path <- function(full_path="",partial_path=""){
 #' @noRd
 #' @noMd
 #'
-find_drive_location <- function(full_path="",common_path=""){
+find_drive_location <- function(full_path="",partial_path=""){
   parts_full<- fs::path_split(full_path)[[1]]
-  parts_common <- fs::path_split(common_path)[[1]]
-
+  parts_partial <- fs::path_split(partial_path)[[1]]
+  common_index_start=1
+  if(parts_partial[common_index_start]=="/"){
+    common_index_start=2
+  }
   match_index <- -1
   for (i in seq_along(parts_full)){
-    if(parts_full[i]==parts_common[0]){
+    if(parts_full[i]==parts_partial[common_index_start]){
       oldI=i
       is_match=TRUE
-      for (j in seq_along(parts_common)){
-        if(parts_common[j] != parts_common[i]){
+      for (j in common_index_start:length(parts_partial)){
+        if(parts_partial[j] != parts_full[i]){
           is_match=FALSE
           break
         }
         i <- i+1
       }
       if(is_match){
-        match_index<-oldI
-        break
+        match_index<-oldI-1
       }
       i=oldI
     }
   }
 
-  drive_parts <- head(parts_common,match_index)
-  drive_path <- fs::path_join(drive_parts)
-
+  drive_parts <- head(parts_full,match_index)
+  drive_path <- fs::path_join(drive_parts)[[1]]
   return(drive_path)
 }
 

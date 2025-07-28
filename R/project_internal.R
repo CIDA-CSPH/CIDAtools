@@ -16,9 +16,9 @@ get_default_path <- function(){
   project_location=get_full_project_path()
   project_dir=get_project_location()
 
-  if(! is.null(project_location) && ! is.null(project_dir) ){
-    common_path <- find_common_path(project_location,project_dir)
-    path <- find_drive_location(project_location,common_path)
+
+  if( (! is.null(project_location)&& project_location!="") && (! is.null(project_dir) && project_dir!="")){
+    path <- find_drive_location(project_location,project_dir)
   }else if(! is.null(project_location)){
 
   }else if(! is.null(project_dir)){
@@ -57,6 +57,7 @@ get_project_data_dir <- function(){
     path <- '../../../.ProjData/'
   }else{
     warning(".ProjData directory not found in project.",call.=FALSE,immediate. = TRUE)
+    path <- '.ProjData/'
   }
   return(path)
 }
@@ -70,21 +71,8 @@ get_project_data_dir <- function(){
 #' @noRd
 #'
 get_project_data_path <- function(){
-  path <- ""
-
-  ## TODO There should be a way to find the top project directory and not use
-  #       the ../ relative navigation below that will fail after 3 subfolders.
-  if(file.exists(file.path('.ProjData/Data.dcf'))){
-    path <- '.ProjData/Data.dcf'
-  }else if(file.exists(file.path('../.ProjData/Data.dcf'))){
-    path <- '../.ProjData/Data.dcf'
-  }else if(file.exists(file.path('../../.ProjData/Data.dcf'))){
-    path <- '../../.ProjData/Data.dcf'
-  }else if(file.exists(file.path('../../../.ProjData/Data.dcf'))){
-    path <- '../../../.ProjData/Data.dcf'
-  }else{
-    warning(".ProjData/Data.dcf file not found in project.",call.=FALSE,immediate. = TRUE)
-  }
+  path <- get_project_data_dir()
+  path <- paste0(path,"Data.dcf")
   return(path)
 }
 
@@ -101,16 +89,10 @@ save_project_data <- function(project_metadata){
   print(paste("Path",path))
 
   current_meta_data <- get_project_meta_data()
-
-  if(is.null(path)|| path==""){
-    path <- '.ProjData/'
-    if(!fs::dir_exists(path)){
-      dir.create(paste0('.ProjData/'), recursive = T, showWarnings = F)
-    }
-  }else{
+  if(!is.null(path)){
     directory=fs::path_dir(path )
     if(!fs::dir_exists(directory)){
-      dir.create(paste0('.ProjData/'), recursive = T, showWarnings = F)
+      fs::dir_create(path, recursive = TRUE, showWarnings = F)
     }
   }
 
