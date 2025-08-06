@@ -20,7 +20,7 @@ get_default_path <- function(){
   if( (! is.null(project_location)&& project_location!="") && (! is.null(project_dir) && project_dir!="")){
     path <- find_drive_location(project_location,project_dir)
   }else if(! is.null(project_location)){
-
+    path <- project_location
   }else if(! is.null(project_dir)){
 
   }
