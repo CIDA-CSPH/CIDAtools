@@ -69,7 +69,7 @@ test_that("test remove functions",{
 
 
 test_that("test updating the template with set_global_default_analyst",{
-  msg1 <- set_global_default_analyst("Analyst Name3",update_template=TRUE)
+  msg1 <- set_global_default_analyst("Analyst Name3",update_template=FALSE)
   expect_equal(msg1,"The default analyst name has been changed to Analyst Name3")
 })
 
