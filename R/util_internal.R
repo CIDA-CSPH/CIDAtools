@@ -23,6 +23,7 @@ check_string_param_value <- function(value="",parameter=""){
 
 #' Find and return the beginning of the full path up to the start of the common path.
 #'
+#' @importFrom utils head
 #'
 #' @param full_path The full path to search for the partial path in.
 #' @param partial_path The partial path which may start any were in the full path.
