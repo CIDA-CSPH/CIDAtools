@@ -1,17 +1,12 @@
 ---
-title: "Cron Jobs"
+title: "cron-jobs"
 author: "Research Tools Committee"
 date: "2023-07-01"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Cron Jobs}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+format: html
+editor: visual
+execute: 
+  echo: true
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
 
 ## Cron Jobs
 
@@ -31,11 +26,11 @@ To gain access to the biostats server contact the Research Tools Committee. This
 
 ### Steps to a Run Cron Job
 
-The following is specific to the CIDA biostats server which is based in Linux. Although these steps may seem complicated, most of this only needs to be set up once and the Research Tools Committee is happy to help with this. 
+The following is specific to the CIDA biostats server which is based in Linux. Although these steps may seem complicated, most of this only needs to be set up once and the Research Tools Committee is happy to help with this.
 
-The following example will use a cron job to execute a simple python script, `cron.py`, that generates a small array of data and then saves it. 
+The following example will use a cron job to execute a simple python script, `cron.py`, that generates a small array of data and then saves it.
 
-```
+```         
 import time
 import numpy as np
 
@@ -45,7 +40,7 @@ np.save(f"{time.time()}.npy",a)
 
 This script will be called by a separate bash script, `cron.sh`. Note that cron jobs could be run directly on the `cron.py` file, however bash script allows the user to provide some extra information to the system to make sure the script is run in the proper environment.
 
-```
+```         
 #!/bin/bash
 
 # set to use the desired python Anaconda distibution 
@@ -72,10 +67,9 @@ To delete the cron job so it no longer execute use
 
 `crontab -r`
 
-
 ### Resources
 
 Information on how to use cron job, especially how to set jobs to run on a given interval see the following
 
-https://tecadmin.net/crontab-in-linux-with-20-examples-of-cron-schedule/  
+https://tecadmin.net/crontab-in-linux-with-20-examples-of-cron-schedule/\
 https://crontab.guru/examples.html

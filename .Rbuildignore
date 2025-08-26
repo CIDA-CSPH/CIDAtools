@@ -12,3 +12,5 @@ hex_sticker.R
 ^docs$
 ^pkgdown$
 ^vignettes/sas-macros.Rmd
+^altdoc$
+^_quarto$

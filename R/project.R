@@ -97,9 +97,7 @@ get_project_drive_path <- function(file = "") {
       }
     }
   } else {
-
     stop("Operating system could not be identified")
-
   }
 
   # Combine CIDA drive path with user provided subdirectory/file

@@ -1,3 +1,8 @@
+---
+title: "CIDATools - News"
+format: html
+---
+
 # 0.1.1
 
 - Data only argument implemented

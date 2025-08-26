@@ -8,3 +8,9 @@ inst/doc
 *.DS_Store
 docs
 /tests/testthat/*.rds
+
+
+/.quarto/
+altdoc/freeze.rds
+_quarto/*
+!_quarto/_freeze/
