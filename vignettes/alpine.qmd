@@ -1,12 +1,13 @@
 ---
 title: "Alpine HPC"
 author: "Research Tools Committee"
-date: "2023-07-01"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Alpine HPC}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+date: last-modified
+format: 
+  html: default
+  pdf: default
+editor: visual
+execute: 
+  echo: true
 ---
 
 ```{r setup, include=FALSE}

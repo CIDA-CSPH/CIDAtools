@@ -1,12 +1,13 @@
 ---
 title: "Tabling Packages"
 author: "Research Tools Committee"
-date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Tabling Packages}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+date: last-modified
+format: 
+  html: default
+  pdf: default
+editor: visual
+execute: 
+  echo: true
 ---
 
 ```{r setup, include = FALSE}

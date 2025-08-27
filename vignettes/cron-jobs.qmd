@@ -1,8 +1,10 @@
 ---
 title: "cron-jobs"
 author: "Research Tools Committee"
-date: "2023-07-01"
-format: html
+date: last-modified
+format: 
+  html: default
+  pdf: default
 editor: visual
 execute: 
   echo: true

@@ -1,12 +1,13 @@
 ---
 title: "CIDA-data-storage-guidelines"
 author: "Research Tools Committee"
-date: "2022-11-30"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{CIDA-data-storage-guidelines}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+date: last-modified
+format: 
+  html: default
+  pdf: default
+editor: visual
+execute: 
+  echo: true
 ---
 
 ```{r setup, include=FALSE}

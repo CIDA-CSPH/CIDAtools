@@ -1,19 +1,13 @@
 ---
 title: "Tracking code in Git/GitHub"
-date: "Last updated: `r Sys.Date()`"
-author: "CIDA Research Tools Committee"
-output: 
-  html_document:
-    highlight: default
-    number_sections: yes
-    theme: yeti
-    toc: yes
-    toc_depth: 3
-    toc_float: yes
-vignette: >
-  %\VignetteIndexEntry{git}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+author: "Research Tools Committee"
+date: last-modified
+format: 
+  html: default
+  pdf: default
+editor: visual
+execute: 
+  echo: true
 ---
 
 ```{r, echo=FALSE, out.width='70%', fig.show='hold'}

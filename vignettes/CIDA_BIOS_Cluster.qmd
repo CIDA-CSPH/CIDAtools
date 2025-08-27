@@ -1,12 +1,13 @@
 ---
 title: "Computing on the CSPH Biostats Cluster"
 author: "Research Tools Committee"
-date: "Last Updated: `r Sys.Date()`"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Computing on the CSPH Biostats Cluster}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+date: last-modified
+format: 
+  html: default
+  pdf: default
+editor: visual
+execute: 
+  echo: true
 ---
 
 ```{r setup, include=FALSE}
