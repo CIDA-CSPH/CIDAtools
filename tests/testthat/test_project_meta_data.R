@@ -1,7 +1,7 @@
 home_dir <- fs::path_home()
 test_drive_dir <- "~/test_drive/"
 fs::dir_create(path=test_drive_dir)
-test_project_path <- "Branches/dr_test/test_project"
+test_project_path <- "BRANCHES/dr_test/test_project"
 full_project_dir <- paste(test_drive_dir,test_project_path,"/.ProjData/",sep="")
 fs::dir_create(path= full_project_dir)
 
@@ -9,7 +9,7 @@ unlink(paste(full_project_dir,"Data.dcf",sep=""))
 
 test_that("create a test project dcf file and test getter functions", {
   setwd(paste(test_drive_dir,test_project_path,sep=""))
-  dcf_content <- list( ProjectName="Test Project 5", PI="Dr. Test",analyst="Analyst Name",datalocation="Branches/dr_test/test_project",gitlocation="CIDATools/Test_test_project")
+  dcf_content <- list( ProjectName="Test Project 5", PI="Dr. Test",analyst="Analyst Name",datalocation="BRANCHES/dr_test/test_project",gitlocation="CIDATools/Test_test_project")
 
    w <- capture_warnings(save_project_data(dcf_content))
    expect_match(w,".ProjData/Data.dcf File does not exist.", perl=TRUE ,all=FALSE)
@@ -26,7 +26,7 @@ test_that("create a test project dcf file and test getter functions", {
    expect_equal(proj_name, "Test Project 5")
    expect_equal(pi, "Dr. Test")
    expect_equal(analyst,"Analyst Name")
-   expect_equal(location,"Branches/dr_test/test_project/")
+   expect_equal(location,"BRANCHES/dr_test/test_project/")
 
   })
 
@@ -34,13 +34,13 @@ test_that("create a test project dcf file and test getter functions", {
     set_project_analyst("Analyst 2")
     set_project_name("Project 1")
     set_project_pi("Dr. Test2")
-    set_project_location("Branches/dr_test/test_project2/")
+    set_project_location("BRANCHES/dr_test/test_project2/")
     set_project_github("CIDATools/Test2_test_project2")
 
     expect_equal(get_project_analyst(),"Analyst 2")
     expect_equal(get_project_name(),"Project 1")
     expect_equal(get_project_pi(),"Dr. Test2")
-    expect_equal(get_project_location(),"Branches/dr_test/test_project2/")
+    expect_equal(get_project_location(),"BRANCHES/dr_test/test_project2/")
     expect_equal(get_project_github(),"CIDATools/Test2_test_project2")
 
   })

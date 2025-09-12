@@ -121,3 +121,19 @@ write_project_data <- function(project_metadata,path){
   write.dcf(project_metadata, fs::path(path))
   return(TRUE)
 }
+
+
+#' helper function to cleanup project location
+#' @param loc project location path to clean up
+#' @noMd
+#' @noRd
+#'
+proj_location_handler <- function(loc="") {
+  loc <- gsub("/Volumes/sph-cida", "", loc)
+  loc <- gsub("P:/", "", loc)
+  loc <- gsub(".*BRANCHES", "BRANCHES", loc)
+  loc <- gsub("/$", "", loc)
+  return(loc)
+}
+
+

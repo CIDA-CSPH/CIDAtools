@@ -31,9 +31,8 @@ gtsummary is commonly used for its flexibility and compatability with different 
 gtsummary::tbl_summary(mtcars) 
 ```
 
-
-
 You can stratify by multiple variables using `tbl_strata`
+
 ```{r}
 trial |>
   gtsummary::tbl_strata(
@@ -44,8 +43,8 @@ trial |>
   ) 
 ```
 
-
 You can split tables by a variable, add missingness, change variable labels, adjust which statistics are presented and more... It is a very flexible package.
+
 ```{r}
 gtsummary::tbl_summary(trial, 
             by = trt,
@@ -73,6 +72,7 @@ gtsummary::tbl_summary(mtcars)
 ```
 
 Themes can apply to more than visual aspects and can set how certain variables are displayed
+
 ```{r}
 # changing how continuous variables are presented using themes
 gtsummary::theme_gtsummary_mean_sd(set_theme = TRUE)
@@ -91,6 +91,7 @@ Explore `?theme_gtsummary` for more ways to set themes for GT Summary Tables.
 Other functions that may be of interest:
 
 tbl_uvregression() - For running a series of univariate analyses
+
 ```{r}
 gtsummary::tbl_uvregression(
   trial,
@@ -103,13 +104,14 @@ gtsummary::tbl_uvregression(
 ```
 
 tbl_regression() - For summarizing a single regression model. Also supports survival models, and some Bayesian models from the rstanarm and brms packages
+
 ```{r}
 stats::glm(response ~ trt, data= trial) |> 
   gtsummary::tbl_regression(exponentiate = TRUE)
 ```
 
-
 tbl_stack() or tbl_merge - to combine table results
+
 ```{r}
 # stacking two tbl_regression objects
 t1 <-
@@ -143,7 +145,6 @@ gtsummary::tbl_merge(
   tab_spanner = c("**Tumor Response**", "**Time to Death**")
 )
 ```
-
 
 ## Flextable
 
@@ -180,7 +181,7 @@ flextable::flextable(airquality[ sample.int(10),]) |> flextable::autofit()
 
 ## Kable/KableExtra
 
-Kable can be viewed as the base package that can be built on or styled with KableExtra. Note if you load KableExtra, kable will be loaded in the background if it is not already. KableExtra also allows working with piping (%\>%  or |\> ) for added simplicity when editing a table.
+Kable can be viewed as the base package that can be built on or styled with KableExtra. Note if you load KableExtra, kable will be loaded in the background if it is not already. KableExtra also allows working with piping (%\>% or \|\> ) for added simplicity when editing a table.
 
 The first step, the kable call is pretty simple but is fairly limited in themes etc.
 
@@ -217,6 +218,7 @@ mtcars |>
 Please visit the following website for more examples on the kable package: <https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html>
 
 ## Table1
+
 Table1 uses quick and easy syntax but is not very friendly with testing/pvals. Note the label function is helpful here (changed the names / levels of wt to weight and am to automatic)
 
 ```{r}
@@ -232,18 +234,17 @@ table1::table1(~ mpg + cyl + wt | am * vs, data=mtcars)
 ```
 
 ## tableone
+
 Here is the simplest approach to creating a summary table with the tableone package.
+
 ```{r}
 tableone::CreateTableOne(data = mtcars)
 ```
 
 You can specify which variables in included and which are factor variables easily in the table call.
+
 ```{r}
 tableone::CreateTableOne(data = mtcars,
                vars = c("mpg", "cyl", "disp", "hp"),
                factorVars = c("cyl"))
 ```
-
-
-
-

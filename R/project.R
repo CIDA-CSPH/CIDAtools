@@ -32,26 +32,24 @@ get_project_drive_path <- function(file = "") {
     # Four potential places drive could exist based on path used for mapping
     # and case sensitivity of the file system
     # Then check manually set project data in .ProjData/Data.dcf
-    if (dir.exists("/Volumes/sph-cida")) {
-      path <- "/Volumes/sph-cida/CIDA"
-    } else if(dir.exists("/Volumes/cida")){
-      path <- "/Volumes/cida"
-    }else if(dir.exists("/Volumes/sph")){
-      path <- "/Volumes/sph/SPH-CIDA/CIDA"
+    if (dir.exists("/Volumes/sph-cida/BRANCHES")) {
+      path <- "/Volumes/sph-cida/BRANCHES"
+    } else if(dir.exists("/Volumes/branches")){
+      path <- "/Volumes/branches"
+    }else if(dir.exists("/Volumes/sph/SPH-CIDA/BRANCHES")){
+      path <- "/Volumes/sph/SPH-CIDA/BRANCHES"
     }else if(dir.exists("/Volumes/dept")){
-      path <- "/Volumes/dept/SPH/SPH-CIDA/CIDA"
+      path <- "/Volumes/dept/SPH/SPH-CIDA/BRANCHES"
     }else if (dir.exists("/Volumes/SPH-CIDA")) {
-      path <- "/Volumes/SPH-CIDA/CIDA"
-    } else if(dir.exists("/Volumes/CIDA")){
-      path <- "/Volumes/CIDA"
+      path <- "/Volumes/SPH-CIDA/BRANCHES"
     }else if(dir.exists("/Volumes/SPH")){
-      path <- "/Volumes/SPH/SPH-CIDA/CIDA"
+      path <- "/Volumes/SPH/SPH-CIDA/BRANCHES"
     }else if(dir.exists("/Volumes/DEPT")){
-      path <- "/Volumes/DEPT/SPH/SPH-CIDA/CIDA"
+      path <- "/Volumes/DEPT/SPH/SPH-CIDA/BRANCHES"
     }else {
       path <- get_default_path()
       if(path==""){
-        stop("Nothing found at /Volumes/dept || SPH || SPH-CIDA || CIDA",
+        stop("Nothing found at /Volumes/dept || SPH || SPH-CIDA || BRANCHES",
              " Please ensure drive is mounted and you have entered your",
              " password to access the drive (and are logged into the VPN if",
              " needed.)",
@@ -72,14 +70,14 @@ get_project_drive_path <- function(file = "") {
     # Only one spot drive can be mounted for Windows
     if (dir.exists("P:/")) {
       path <- "P:/"
-      if(dir.exists("P:/dept/SPH/SPH-CIDA/CIDA")){
-        path <- "P:/dept/SPH/SPH-CIDA/CIDA"
-      }else if(dir.exists("P:/SPH/SPH-CIDA/CIDA")){
-        path <- "P:/SPH/SPH-CIDA/CIDA"
-      }else if(dir.exists("P:/SPH-CIDA/CIDA")){
-        path <- "P:/SPH-CIDA/CIDA"
-      }else if(dir.exists("P:/CIDA")){
-        path <- "P:/CIDA"
+      if(dir.exists("P:/dept/SPH/SPH-CIDA/BRANCHES")){
+        path <- "P:/dept/SPH/SPH-CIDA/BRANCHES"
+      }else if(dir.exists("P:/SPH/SPH-CIDA/BRANCHES")){
+        path <- "P:/SPH/SPH-CIDA/BRANCHES"
+      }else if(dir.exists("P:/SPH-CIDA/BRANCHES")){
+        path <- "P:/SPH-CIDA/BRANCHES"
+      }else if(dir.exists("P:/BRANCHES")){
+        path <- "P:/BRANCHES"
       }
     }else {
       path <- get_default_path()
@@ -119,36 +117,7 @@ get_project_drive_path <- function(file = "") {
   return(file_path)
 }
 
-#' Rsync type backup of project updated files?
-#' files copied in both directions flag/skip conflicting files?
-rsync_project <- function(){
 
-}
-#' copy local files to network path
-#' prompt for updated remote files
-new_backup_project <- function(path_from = getwd(),
-                           path_to = NULL,
-                           exclude = c(".DS_Store", ".Rproj.user", ".git"),
-                           recreate = FALSE,
-                           data_only = TRUE,
-                           readme = TRUE) {
-
-  # check for full absolute paths at source and destination
-  path <- fs::path_real("~/CIDA_test/ProjectSM1/data/All_tissue_perc_trx.svg") # Note path_real requires existence
-  # check for changed files
-  checksum <- digest::digest(path,algo="sha256",file=TRUE)
-  # print/list changes to be made
-    #Bidirectional
-  #rename local files before overwrite to allow undo
-  #copy remote files
-  #if successful allow removing undo files
-}
-
-#' copy local files to network path
-#' prompt for updated remote files
-clear_project_undo_cache <- function(){
-
-}
 
 #'Create Project Directory + readme files
 #'
@@ -473,7 +442,7 @@ backup_project <- function(path_from = getwd(),
   if(missing(path_to)) {
     path_to <- get_project_location()
     if(path_to == "")
-      stop("Please first set project location, e.g., CIDAtools::set_project_location('Branches/EmergencyMedicine/ThisProject')")
+      stop("Please first set project location, e.g., CIDAtools::set_project_location('BRANCHES/EmergencyMedicine/ThisProject')")
 
     if(!dir.exists(CIDAtools::get_project_drive_path()))
       stop("Please ensure the CIDA drive is mounted, or set `path_to`")

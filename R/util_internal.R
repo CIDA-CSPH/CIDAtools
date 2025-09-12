@@ -1,5 +1,19 @@
 #' Internal Utility Functions
 
+#' Sets the contact email address.
+#'
+#'
+#'
+#' @return The email address to contact.
+#'
+#' @noRd
+#' @noMd
+#'
+warning_email <- function(){
+  email <- "andrew.2.hill@cuanschutz.edu"
+  return(email)
+}
+
 #' Check String Parameter Values for errors
 #'
 #'
@@ -64,6 +78,8 @@ find_drive_location <- function(full_path="",partial_path=""){
 }
 
 
+
+
 #' Deprecation Warning for functions flagged to be deprecated
 #' deprecation_warn() - print a warning that the function will be deprecated.
 #'
@@ -75,7 +91,8 @@ find_drive_location <- function(full_path="",partial_path=""){
 deprecation_warn <- function(function_name=""){
   warning(paste(c(function_name,"() has been deprecated and will be removed in ",
                     "future package versions.\nPlease contact ",
-                    "max.mcgrath@cuanschutz.edu if you regularly use this ",
+                    warning_email(),
+                    " if you regularly use this ",
                     "function\nand would like to see it stay.")),
           call.=FALSE,immediate. = TRUE)
 }

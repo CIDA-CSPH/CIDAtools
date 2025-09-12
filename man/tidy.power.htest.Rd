@@ -6,6 +6,11 @@
 \usage{
 \method{tidy}{power.htest}(x, ...)
 }
+\arguments{
+\item{x}{description}
+
+\item{...}{description}
+}
 \description{
 Helper for pwr package version of power fns. - To be deprecated
 }
