@@ -37,14 +37,17 @@ jobs:
       - name: Install dependencies
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::rcmdcheck
+          extra-packages: any::rcmdcheck,altdoc::render_docs,quarto,roxygen2
           needs: check
 
       - name: Cache R
         uses: actions/cache@v4
         with:
           path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-r-${{ hashFiles('DESCRIPTION') }}
+          key: ${{ runner.os }}-r-${{ matrix.r-version }}-${{ hashFiles('DESCRIPTION') }}
+          restore-keys: |
+            ${{ runner.os }}-r-${{ matrix.r-version }}-
+            ${{ runner.os }}-r-
 
       - name: Check Package
         uses: r-lib/actions/check-r-package@v2
