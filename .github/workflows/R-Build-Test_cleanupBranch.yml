@@ -73,6 +73,6 @@ jobs:
         run: Rscript -e 'roxygen2::roxygenise()'
 
       - name: Build Quarto Website
-        run: Rscript -e 'render_docs(path = ".", verbose = FALSE, parallel = FALSE, freeze = FALSE)'
+        run: Rscript -e 'altdoc::render_docs(path = ".", verbose = TRUE, parallel = FALSE, freeze = FALSE)'
 
 
