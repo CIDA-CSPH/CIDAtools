@@ -78,7 +78,8 @@ jobs:
       - name: Setup Quarto
         uses: quarto-dev/quarto-actions/setup@v2
         with:
-          version: 'latest' # Or a specific Quarto version like '1.4.0'
+          tinytex: true
+        #  version: 'latest' # Or a specific Quarto version like '1.4.0'
 
       - name: Install TinyTeX
         run: quarto install tinytex
