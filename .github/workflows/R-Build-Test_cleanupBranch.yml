@@ -49,7 +49,7 @@ jobs:
         if: steps.cache-r.outputs.cache-hit != 'true'
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::rcmdcheck,altdoc,quarto,roxygen2
+          extra-packages: any::rcmdcheck,altdoc,quarto,roxygen2,remotes
           needs: check
 
       - name: Check Package
@@ -81,10 +81,9 @@ jobs:
           tinytex: true
         #  version: 'latest' # Or a specific Quarto version like '1.4.0'
 
-      - name: Install TinyTeX
-        run: quarto install tinytex
+      - name: Build and install package
+        run: |
+          Rscript -e "remotes::install_local(build = TRUE, force = TRUE)"
 
       - name: Build Quarto Website
         run: Rscript -e 'altdoc::render_docs(path = ".", verbose = TRUE, parallel = FALSE, freeze = FALSE)'
-
-
