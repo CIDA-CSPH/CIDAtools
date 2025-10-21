@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Research Tools Committee">
+<meta name="dcterms.date" content="2025-10-21">
+<title>CIDA-data-storage-guidelines – CIDAtools</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-8fd1faf6fd93e4e6d207ae0f9db51d78.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+</head>
+<body class="nav-sidebar floating nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../index.html" class="navbar-brand navbar-brand-logo">
+    </a>
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">CIDAtools</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/cida-csph/CIDAtools/"> <i class="bi bi-github" role="img" aria-label="CIDAtools GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+</div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../vignettes/alpine.html">Articles</a></li><li class="breadcrumb-item"><a href="../vignettes/data_storage.html">CIDA-data-storage-guidelines</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+      <a href="../index.html" class="sidebar-logo-link">
+      </a>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Articles</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../vignettes/alpine.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Alpine HPC</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../vignettes/CIDA_BIOS_Cluster_Interactive_IDEs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RStudio/JupyterLab on the CSPH Biostats Cluster</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../vignettes/CIDA_BIOS_Cluster.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Computing on the CSPH Biostats Cluster</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../vignettes/CIDA_computing_resources.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">CIDA Computing Resources</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../vignettes/coding_guidelines.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">CIDA-coding-guidelines</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../vignettes/cron-jobs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">cron-jobs</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../vignettes/data_storage.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">CIDA-data-storage-guidelines</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../vignettes/git.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tracking code in Git/GitHub</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../vignettes/sas-macros.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">CIDA SAS Macros</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../vignettes/tabling_packages.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tabling Packages</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+ <span class="menu-text">Reference</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/backup_project.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">backup_project</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/cida_table1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">cida_table1</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/cida_word_document.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">cida_word_document</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/convertIntervalNotation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">convertIntervalNotation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/create_project.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">create_project</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/find_nearest.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">find_nearest</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/get_default_value.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">get_default_value</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/get_defaults.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">get_defaults</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/get_full_project_path.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">get_full_project_path</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/get_global_default_analyst.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">get_global_default_analyst</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/get_global_default_path.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">get_global_default_path</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/get_project_analyst.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">get_project_analyst</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/get_project_drive_path.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">get_project_drive_path</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/get_project_github.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">get_project_github</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/get_project_location.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">get_project_location</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/get_project_meta_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">get_project_meta_data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/get_project_name.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">get_project_name</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/get_project_pi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">get_project_pi</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/list_kables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">list_kables</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/nLevelsP.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">nLevelsP</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/nrowP.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">nrowP</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/pvalr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">pvalr</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/pvalue.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">pvalue</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/randblinder_shiny_tool.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">randblinder_shiny_tool</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/read_xlsx_color.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">read_xlsx_color</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/remove_global_default_analyst.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">remove_global_default_analyst</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/remove_global_default_path.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">remove_global_default_path</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/Round.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Round</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/set_default_value.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">set_default_value</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/set_full_project_path.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">set_full_project_path</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/set_global_default_analyst.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">set_global_default_analyst</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/set_global_default_path.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">set_global_default_path</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/set_project_analyst.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">set_project_analyst</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/set_project_github.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">set_project_github</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/set_project_location.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">set_project_location</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/set_project_meta_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">set_project_meta_data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/set_project_name.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">set_project_name</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/set_project_pi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">set_project_pi</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/sum_ignore_NA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">sum_ignore_NA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/tidy.power.htest.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">tidy.power.htest</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/vec_power.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">vec_power</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../CITATION.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Citation</span></a>
+  </div>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="data_storage.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div><div class="quarto-code-links"><h2>Code Links</h2><ul><li><a href="undefined"><i class="bi bi-link-45deg"></i></a></li></ul></div></div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../vignettes/alpine.html">Articles</a></li><li class="breadcrumb-item"><a href="../vignettes/data_storage.html">CIDA-data-storage-guidelines</a></li></ol></nav><div class="quarto-title">
+<h1 class="title">CIDA-data-storage-guidelines</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Research Tools Committee </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 21, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header><section id="cida-data-storage-tools" class="level2"><h2 class="anchored" data-anchor-id="cida-data-storage-tools">CIDA Data Storage Tools</h2>
+<section id="introduction" class="level3"><h3 class="anchored" data-anchor-id="introduction">Introduction</h3>
+<p>This document provides guidelines, recommendations, and current best practices for where code, data, and other documents should be stored and backed up for members of CIDA. These guidelines are intended to explain the pros, cons, and best practices for the data storage tools available to CIDA members. However, a CIDA member may come across exceptions to these guidelines, and the responsibility for proper data handling within a particular project rests on the CIDA member involved.</p>
+<p>Who does this apply to: All members of CIDA (Professor, RA, RI, Senior RI, PRA, Senior PRA)</p>
+</section><section id="definitions" class="level3"><h3 class="anchored" data-anchor-id="definitions">Definitions</h3>
+<ul>
+<li>‘Code’ refers to any R, SAS, Stata, etc. (scripts stored as plain text formatted files)</li>
+<li>‘Data’ refers to spreadsheets, tables, or other information used to run analysis on</li>
+<li>‘Report’ refers to any document which outlines results of analysis for sending to an investigator</li>
+<li>GitLab is the Lhotse CIDA GitLab repository, available here (requires VPN connection)</li>
+<li>‘Local storage’ refers to any university provided computer with a physical hard drive</li>
+<li>‘External server’ refers to a server which houses data or runs analysis (except Lhotse)</li>
+<li>‘Eureka’ is the Virtual Machine run by Health Data Compass (HDC)</li>
+<li>‘OneDrive for Business’ refers to Microsoft’s file-syncing software licensed by the University</li>
+<li>‘HPC’ refers to “High Performance Computing”</li>
+</ul></section><section id="summary" class="level3"><h3 class="anchored" data-anchor-id="summary">Summary</h3>
+<ul>
+<li>The CIDA (P) Drive is the required ongoing storage location for project data. Other data storage locations may be used temporarily during the course of active work on a project.</li>
+</ul></section><section id="data-storage-locations-available-to-cida-members" class="level3"><h3 class="anchored" data-anchor-id="data-storage-locations-available-to-cida-members">Data Storage Locations Available to CIDA Members</h3>
+<section id="local-computer" class="level4"><h4 class="anchored" data-anchor-id="local-computer">Local Computer</h4>
+<ul>
+<li>All files for any current projects can be stored on a University provided PC or Macintosh, if and only if the computer’s hard drive is encrypted.</li>
+<li>Data with PID should only be locally stored during active work on a project.</li>
+<li>Pros: data and projects load more quickly when stored locally.</li>
+<li>Cons: no natural/default backup process, can be a hassle to do best security practices manually.</li>
+<li>Best Practices:
+<ul>
+<li>Only keep project data on your computer while working on it, and if you do this often, ensure you frequently save your data to the CIDA drive.</li>
+<li>Prior to travel with a laptop, any old or unneeded projects should be removed from the computer drive and can be restored upon return to campus.</li>
+</ul>
+</li>
+</ul></section><section id="cida-p-drive" class="level4"><h4 class="anchored" data-anchor-id="cida-p-drive">CIDA (P) Drive</h4>
+<ul>
+<li>Mapping depends on operating system. See instructions here for mapping drives.
+<ul>
+<li>MAC: <code>smb://data.ucdenver.pvt/dept/SPH/SPH-CIDA/CIDA</code>
+</li>
+<li>Windows: <code>\\data.ucdenver.pvt\dept\SPH\SPH-CIDA\CIDA</code>
+</li>
+<li>If you have recently started and are having trouble mapping this drive, contact <a href="https://medschool.cuanschutz.edu/informationservices">SOM-IT</a>.</li>
+</ul>
+</li>
+<li>CIDA project data must be stored here on a permanent basis (with certain exceptions, e.g., projects larger &gt; 16 GB or if the collaboration dictates otherwise).</li>
+<li>The storage under the CIDA Drive is set up as follows:
+<ul>
+<li>CIDA/Branches: Long-standing collaborations, including those operating under MOUs, are treated as Branches, and their data should be stored in a subdirectory of CIDA/Branches.</li>
+<li>CIDA/Projects: Data for projects for the consulting arm (i.e., those with a P-number) should be stored in a subdirectory of CIDA/Projects. Use this <a href="https://app.smartsheet.com/b/form/d1d93ae08f4349d48654950eea9b5bbd">form</a> to create folders in the P-drive with specific permissions, or this <a href="https://app.smartsheet.com/b/form/c22bbec56f8d4607bedc441be60bf8c8">form</a> to update the permissions of an existing folder. These forms are directly sent to SOM IT.</li>
+<li>CIDA/Shared
+<ul>
+<li>The CIDA/Shared directory is accessible to all CIDA members who have gained approval from a data manager. Folders are also accessible to external users who have been approved for access.</li>
+<li>Files and directories that you create on the shared drive inherit their permissions from their parent folder. You cannot restrict access to specific directories in accordance with data use agreements without the help of IT.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Pros:
+<ul>
+<li>All files and directories are backed up nightly; backups are stored for 30 days.</li>
+<li>Collaboration and transfers of data among CIDA members can be quick and easy.</li>
+<li>Data and code are easily findable by CIDA administration and other team members in the case of a CIDA member’s continued absence.</li>
+</ul>
+</li>
+<li>Con: working directly on this drive can be slow, especially through a VPN.</li>
+<li>Best Practices:
+<ul>
+<li>Up-to-date raw data for all projects should be available in their expected location on this drive at least weekly, and especially at project conclusion, or prior to a project not being actively worked on.</li>
+<li>Eliminate redundancies and intermediate data sets in projects with “big” data; only store the data you need to make code and reports run.</li>
+<li>It is OK not to work directly on the CIDA drive in cases where speed is a concern. If you do, know that all active projects should copy data over to the CIDA drive regularly (weekly), and especially prior to taking leave. The CIDAtools R package, located <a href="https://github.com/CIDA-CSPH/CIDAtools">here</a>, has the function <code>BackupProject()</code> that can streamline this process. By default, this function only updates folders/files in DataRaw/* and DataProcessed/* which have changed, so it should not take too long.</li>
+</ul>
+</li>
+<li>CIDA pays for this server storage on a per-GB-month basis, so be cognizant of the size of the data utilized by your projects. If possible, the project’s scope of work should charge more for data sets and project materials which are anticipated to fall above a threshold of 32 GB. <a href="https://www1.ucdenver.edu/offices/office-of-information-technology/services/billing-and-rates">The OIT’s central file storage rate</a> should be applied and multiplied to account for anticipated duration of storage. See below.</li>
+</ul>
+<p><strong>Data storage costs on CIDA drive</strong></p>
+<div class="cell" data-warnings="false">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 34%">
+<col style="width: 34%">
+<col style="width: 16%">
+<col style="width: 13%">
+</colgroup>
+<thead><tr class="header">
+<th></th>
+<th style="text-align: center;">Expected 10-year cost ($)</th>
+<th style="text-align: right;"></th>
+<th style="text-align: right;"></th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Data packet size (GB)</td>
+<td style="text-align: center;">P-drive</td>
+<td style="text-align: right;">OneDrive for Businness (per user)<sup>1</sup>
+</td>
+<td style="text-align: right;">Eureka<sup>2</sup>
+</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td style="text-align: center;">$30</td>
+<td style="text-align: right;">$600</td>
+<td style="text-align: right;">$28</td>
+</tr>
+<tr class="odd">
+<td>100</td>
+<td style="text-align: center;">$300</td>
+<td style="text-align: right;">$600</td>
+<td style="text-align: right;">$276</td>
+</tr>
+<tr class="even">
+<td>1,000 (1 TB)</td>
+<td style="text-align: center;">$3,000</td>
+<td style="text-align: right;">$600</td>
+<td style="text-align: right;">$2,760</td>
+</tr>
+<tr class="odd">
+<td>10,000 (10 TB)</td>
+<td style="text-align: center;">$30,000</td>
+<td style="text-align: right;">$1,200</td>
+<td style="text-align: right;">$27,600</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><sup>1</sup>Charged to University; not to CIDA<br><sup>2</sup>Prices are based on the HDC website.</p>
+</section><section id="onedrive-for-business" class="level4"><h4 class="anchored" data-anchor-id="onedrive-for-business">OneDrive for Business</h4>
+<ul>
+<li>OneDrive for Business is a hybrid local and cloud storage system that allows for up to 5TB of cloud storage. Individual file size is limited to 15 GB.</li>
+<li>Unlike the CIDA drive, files and directories saved to the OneDrive directory are private by default and are backed up to the cloud.</li>
+<li>OneDrive for Business is HIPAA compliant. OIT and SOM IT can access folders created on the directory, but only after a manager enters a data access request that gets approved by HR.</li>
+<li>Files can be downloaded to your local computer from the cloud on an as-needed basis off-site, which ensures a limited amount of data is stored locally.</li>
+<li>Files can also be shared with other individuals with <span class="citation" data-cites="cuanschutz.edu">@cuanschutz.edu</span> email addresses via OneDrive for Business.</li>
+<li>Things to be aware of:
+<ul>
+<li>Do not confuse this with a personal OneDrive account!</li>
+<li>Do not install OneDrive for Business on an unencrypted or personal computer. Files may sync (and be downloaded) to the local computer, which would leave potentially sensitive data vulnerable.</li>
+<li>Concurrent use of OneDrive for Business in directories tracked by Git can lead to some syncing issues with OneDrive. This can typically be solved by restarting OneDrive.</li>
+<li>Relevant project data stored in OneDrive should be copied over to the CIDA drive regularly, especially when projects become inactive.</li>
+<li>Certain institutions and groups may have policies against using OneDrive for Business, so please verify with your research group that it is acceptable for your data to live there.</li>
+</ul>
+</li>
+</ul></section><section id="external-servers" class="level4"><h4 class="anchored" data-anchor-id="external-servers">External Servers</h4>
+<ul>
+<li>Depending on the project and the data of interest, the data may be housed in an external server. External servers exist in various forms and require varying workflows.</li>
+<li>Care should be taken that data living on an external server remain on the external server. However, code, reports, and any other files necessary to the project should still be copied to the CIDA drive at regular intervals (exceptions may exist, e.g., if other processes are specified in CIDA’s memorandum of understanding with your research group).</li>
+</ul></section><section id="eureka-by-health-data-compass-hdc" class="level4"><h4 class="anchored" data-anchor-id="eureka-by-health-data-compass-hdc">Eureka by Health Data Compass (HDC)</h4>
+<ul>
+<li>Any patient level data on Eureka should only be moved off of the Google Cloud with explicit permission from HDC for that specific project and data.</li>
+<li>Raw data or data with PID should not be copied over to any other location except those approved by HDC.</li>
+<li>Backups of code, reports, and other files should still be copied over to the CIDA drive so that it is accessible to others in CIDA in case of an emergency.</li>
+<li>For projects requiring Eureka, the <a href="https://www.healthdatacompass.org/cloud-analytics-infrastructure/eureka-cost-estimator">Eureka Cost Estimator</a> can be used to determine the expected costs of a particular project a priori. These costs should be charged to the project’s PI if possible.</li>
+</ul></section><section id="github" class="level4"><h4 class="anchored" data-anchor-id="github">GitHub</h4>
+<ul>
+<li>In general, GitHub should be used for everything, except for data. While tracking small data sets in Git and pushing to GitHub is usually harmless, tracking data sets in Git can snowball the storage needed in GitHub and also slow down your git commands.</li>
+<li>Avoid tracking especially large binary data files (e.g.&nbsp;files with db, xls, xlsx, extensions). Instead, convert these files into a text file (e.g.&nbsp;tab-delimited txt file, csv file). This will speed up your git processes and help conserve storage space [see <a href="https://stackoverflow.com/questions/17888604/git-with-large-files/19494211#19494211">link</a> for more information].<br>
+</li>
+<li>Instead of tracking data, one can build in a “<a href="http://tombuntu.com/index.php/2007/12/21/how-to-use-md5sum-to-verify-data-integrity/">data-check</a>” in the code for the project to ensure the MD5 sums are as expected.</li>
+<li>Please consult the “coding guidelines” document for more information on the best practices for tracking your work in Git and GitHub.</li>
+<li>All repositories on GitHub should be updated frequently, but especially prior to leaving on vacation or any other extended time out of office.</li>
+</ul></section><section id="really-really-big-data" class="level4"><h4 class="anchored" data-anchor-id="really-really-big-data">Really, really big data</h4>
+<ul>
+<li>If your data for a particular project is particularly large, you may require or wish to have a data storage solution tailored to that particular project (and funded entirely by the project). For non-Eureka solutions, please contact the SOM IT.</li>
+<li>Consider using CIDA’s HPC option (see below).</li>
+</ul></section><section id="cida-bios-high-performance-computing-server" class="level4"><h4 class="anchored" data-anchor-id="cida-bios-high-performance-computing-server">CIDA-BIOS High Performance Computing Server</h4>
+<ul>
+<li>The HPC was purchased by CIDA and funds from a U01 grant (Katerina Kechris and Debashis Ghosh are PIs). Therefore, primary priority is given to CIDA &amp; research related to the U01 grant. Secondary priority is given to Ghosh &amp; Kechris group members. [Tertiary access can be attained by requesting access from Dr.&nbsp;Kechris via smartsheet.]</li>
+<li>The server is a Dell PowerEdge R740XD, with Intel Xeon Gold 6152 2.1G X (2) CPU, 44 cores, 1TB memory, 240 SSD X (2) mirrored disk operating system, and ~50TB of usable disk storage. The operating system is CentOS 7.x, and common research software are available such as R, R Studio, MatLab, Python, and Java.</li>
+<li>Server is not HIPAA compliant and therefore no PHI can be stored on the server.</li>
+<li>Backups are available via Wasabi: https://wasabi.com/hot-cloud-storage/.</li>
+</ul></section><section id="unapproved-data-storage-options" class="level4"><h4 class="anchored" data-anchor-id="unapproved-data-storage-options">Unapproved data storage options</h4>
+<ul>
+<li>
+<strong>Only the options listed above are approved by CIDA for temporary data storage, and only the CIDA drive is approved for ongoing data storage</strong>. Please follow the best practices and ask questions if you have them.</li>
+<li>
+<strong>The following non-exhaustive list of data storage options are not approved by CIDA</strong>:
+<ul>
+<li>Dropbox</li>
+<li>Google Drive</li>
+<li>OneDrive (personal)</li>
+<li>Unencrypted hard drive or flash drive</li>
+</ul>
+</li>
+</ul></section></section><section id="data-transfer-options" class="level3"><h3 class="anchored" data-anchor-id="data-transfer-options">Data Transfer Options</h3>
+<div class="cell" data-warnings="false">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 34%">
+<col style="width: 34%">
+<col style="width: 16%">
+<col style="width: 13%">
+</colgroup>
+<thead><tr class="header">
+<th>Mode of transfer</th>
+<th style="text-align: center;">Notes</th>
+<th style="text-align: right;"></th>
+<th style="text-align: right;"></th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>CIDA drive</td>
+<td style="text-align: center;">For transfers among CIDA members, the CIDA drive can be used for data transfer</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td>OneDrive for Business</td>
+<td style="text-align: center;">University-preferred means of transferring data</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td>Redcap</td>
+<td style="text-align: center;">Web-based, useful for ongoing projects where data updates are more frequent, ensures data format stays more consistent</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td>External hard/flash drive</td>
+<td style="text-align: center;">Acceptable: CIDA’s 48 TB NAS station, or an encrypted flash drive. Unacceptable: Unencrypted drive, even if the file is password protected</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td style="text-align: center;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td>Last resort: Email</td>
+<td style="text-align: center;">Email is not encouraged means of transferring data. In circumstances when no other approach is available, note that although email between CU-affiliated email addresses are automatically encrypted, this is not the case for external emails. You can manually encrypt by putting one of these keywords in brackets in the subject of an email: secure, safemail, or encrypt. Email from any other email system, such as gmail, is not acceptable.</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td style="text-align: center;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td>Not acceptable</td>
+<td style="text-align: center;">Non-approved web-based systems including: Dropbox, Google Drive, … Unencrypted flash/hard drives, even if the file is password protected. Email from any other email system, such as gmail</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section><section id="useful-links" class="level3"><h3 class="anchored" data-anchor-id="useful-links">Useful Links</h3>
+<p>Health Insurance Portability and Accountability Act (HIPAA):<br>
+http://www.hhs.gov/hipaa/for-professionals/index.html</p>
+<p>Health Information Technology for Economic and Clinical Health (HITECH):<br>
+http://www.hhs.gov/hipaa/for-professionals/special-topics/HITECH-act-enforcement-interim-final-rule/index.html</p>
+<p>Guidance Regarding Methods for De-identification of Protected Health Information in Accordance with the Health Insurance Portability and Accountability Act (HIPAA) Privacy Rule:<br>
+http://www.hhs.gov/hipaa/for-professionals/privacy/special-topics/de-identification/index.html</p>
+<p>VPN and Remote Desktop:<br>
+https://www1.ucdenver.edu/offices/office-of-information-technology/software/how-do-i-use/vpn-and-remote-access</p>
+<p>GitLab:<br>
+http://cidagitlab.ucdenver.pvt/</p>
+<p>OneDrive for Business:<br>
+https://www1.ucdenver.edu/offices/office-of-information-technology/software/how-do-i-use/onedrive https://www1.ucdenver.edu/docs/default-source/offices-oit-documents/how-to-documents/onedrive-staying-secure.pdf?sfvrsn=668bb7b8_4</p>
+<p>Eureka:<br>
+https://www.healthdatacompass.org/cloud-analytics-infrastructure/using-eureka https://www.healthdatacompass.org/cloud-analytics-infrastructure/eureka-cost-estimator</p>
+
+
+</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+</body></html>

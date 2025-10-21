@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Research Tools Committee">
+<meta name="dcterms.date" content="2025-10-21">
+<title>Computing on the CSPH Biostats Cluster – CIDAtools</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-8fd1faf6fd93e4e6d207ae0f9db51d78.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+</head>
+<body class="nav-sidebar floating nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../index.html" class="navbar-brand navbar-brand-logo">
+    </a>
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">CIDAtools</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/cida-csph/CIDAtools/"> <i class="bi bi-github" role="img" aria-label="CIDAtools GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+</div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../vignettes/alpine.html">Articles</a></li><li class="breadcrumb-item"><a href="../vignettes/CIDA_BIOS_Cluster.html">Computing on the CSPH Biostats Cluster</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+      <a href="../index.html" class="sidebar-logo-link">
+      </a>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Articles</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../vignettes/alpine.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Alpine HPC</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../vignettes/CIDA_BIOS_Cluster_Interactive_IDEs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RStudio/JupyterLab on the CSPH Biostats Cluster</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../vignettes/CIDA_BIOS_Cluster.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Computing on the CSPH Biostats Cluster</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../vignettes/CIDA_computing_resources.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">CIDA Computing Resources</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../vignettes/coding_guidelines.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">CIDA-coding-guidelines</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../vignettes/cron-jobs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">cron-jobs</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../vignettes/data_storage.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">CIDA-data-storage-guidelines</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../vignettes/git.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tracking code in Git/GitHub</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../vignettes/sas-macros.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">CIDA SAS Macros</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../vignettes/tabling_packages.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tabling Packages</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+ <span class="menu-text">Reference</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/backup_project.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">backup_project</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/cida_table1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">cida_table1</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/cida_word_document.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">cida_word_document</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/convertIntervalNotation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">convertIntervalNotation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/create_project.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">create_project</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/find_nearest.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">find_nearest</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/get_default_value.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">get_default_value</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/get_defaults.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">get_defaults</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/get_full_project_path.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">get_full_project_path</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/get_global_default_analyst.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">get_global_default_analyst</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/get_global_default_path.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">get_global_default_path</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/get_project_analyst.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">get_project_analyst</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/get_project_drive_path.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">get_project_drive_path</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/get_project_github.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">get_project_github</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/get_project_location.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">get_project_location</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/get_project_meta_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">get_project_meta_data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/get_project_name.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">get_project_name</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/get_project_pi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">get_project_pi</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/list_kables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">list_kables</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/nLevelsP.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">nLevelsP</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/nrowP.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">nrowP</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/pvalr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">pvalr</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/pvalue.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">pvalue</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/randblinder_shiny_tool.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">randblinder_shiny_tool</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/read_xlsx_color.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">read_xlsx_color</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/remove_global_default_analyst.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">remove_global_default_analyst</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/remove_global_default_path.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">remove_global_default_path</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/Round.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Round</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/set_default_value.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">set_default_value</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/set_full_project_path.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">set_full_project_path</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/set_global_default_analyst.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">set_global_default_analyst</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/set_global_default_path.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">set_global_default_path</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/set_project_analyst.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">set_project_analyst</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/set_project_github.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">set_project_github</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/set_project_location.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">set_project_location</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/set_project_meta_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">set_project_meta_data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/set_project_name.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">set_project_name</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/set_project_pi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">set_project_pi</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/sum_ignore_NA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">sum_ignore_NA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/tidy.power.htest.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">tidy.power.htest</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/vec_power.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">vec_power</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../CITATION.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Citation</span></a>
+  </div>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="CIDA_BIOS_Cluster.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div><div class="quarto-code-links"><h2>Code Links</h2><ul><li><a href="undefined"><i class="bi bi-link-45deg"></i></a></li></ul></div></div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../vignettes/alpine.html">Articles</a></li><li class="breadcrumb-item"><a href="../vignettes/CIDA_BIOS_Cluster.html">Computing on the CSPH Biostats Cluster</a></li></ol></nav><div class="quarto-title">
+<h1 class="title">Computing on the CSPH Biostats Cluster</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Research Tools Committee </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 21, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header><section id="definitions" class="level2"><h2 class="anchored" data-anchor-id="definitions">Definitions</h2>
+<ul>
+<li>
+<a name="def_hpc"></a><strong>HPC</strong> - High-performance Computing</li>
+<li>
+<a name="def_node"></a><strong>Node</strong> - A single computer in the cluster’s network. Most HPC clusters have a <em>head node</em> and one or more <em>compute nodes</em>
+</li>
+<li>
+<a name="def_headnode"></a><strong>Head Node</strong> - A node within the cluster which serves as the user’s access/login point to the cluster. Depending on cluster configuration, the head node may also be responsible for scheduling and distributing jobs to the compute nodes.</li>
+<li>
+<a name="def_compnode"></a><strong>Compute Node</strong> - A node within the cluster which is designated for running user-submitting jobs. Compute nodes usually offer large amounts of computational resources (CPU cores, RAM, etc).</li>
+<li>
+<a name="def_clust"></a><strong>Cluster</strong> - A group of networked computers, usually running cluster-management software to coordinate resource sharing among multiple users.</li>
+<li>
+<a name="def_job"></a><strong>Job</strong> - A computational task executed on the cluster. A submitted job will be scheduled and executed on one of the compute nodes.</li>
+</ul></section><section id="introduction-to-hpc-high-performance-computing" class="level2"><h2 class="anchored" data-anchor-id="introduction-to-hpc-high-performance-computing">Introduction to HPC (High-Performance Computing)</h2>
+<p>An HPC cluster is a group of networked high-performance computers (<em>nodes</em>).</p>
+<p>A typical cluster will have multiple <em>compute nodes</em> which can perform heavy computation, as well as a <em>head node</em> which serves as the user’s access point to the cluster, and may also be responsible for scheduling jobs among the <em>compute nodes</em>. The <em>compute nodes</em> in an cluster typically have compute resources (CPU Cores, RAM, Disk Space) which far exceed those of a typical laptop or desktop computer.</p>
+<p>Because HPC clusters are intended to serve a group of people (i.e.&nbsp;A biostatistics department) rather than a single user, HPC clusters use the concept of <a href="#def_job">jobs</a> to allow for multiple users to effectively share the cluster’s resources.</p>
+<p>When a user is ready to run something (an analysis, processing pipeline, etc) on the cluster, they will submit a new <em>job</em> to the cluster. The cluster will then schedule and run the job as soon as compute resources are available.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="figures/CIDA_BIOS_Cluster/cluster_basic_diagram.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The example figure above shows an example cluster with three users. Each user connects to the Head Node to submit their jobs.</p>
+<p>User 1 has submitted two jobs, which are both running on Compute Node 1. User 2 has submitted a single job, which is also running on Compute Node 2. User 3 has submitted a job which requires a larger amount of compute resources (CPU cores, RAM, etc). This job runs on Compute Node 2 to provide the user with the resources they requested.</p>
+<p>HPC clusters are useful for:</p>
+<ol type="1">
+<li>Performing analyses which take a long time to run (i.e.&nbsp;A large-scale analysis which takes hours to complete)</li>
+<li>Performing analyses which are too resource-intensive (require too much RAM, Disk Space, etc) to run on a typical computer.</li>
+</ol></section><section id="csph-biostats-hpc-cluster" class="level2"><h2 class="anchored" data-anchor-id="csph-biostats-hpc-cluster">CSPH Biostats HPC Cluster</h2>
+<p>The CSPH Biostats cluster consists of four nodes. The <code>csphbiostats.ucdenver.pvt</code> node serves as both a head node and one of the compute nodes (i.e.&nbsp;Submitted jobs may also run on this node), and the <code>cidalappc[1-3].ucdenver.pvt</code> nodes serve as compute nodes.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="figures/CIDA_BIOS_Cluster/Biostats_HPC_diagram.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The CIDA/Biostats server uses the <a href="https://slurm.schedmd.com">SLURM</a> system to manage job scheduling and resource management on the cluster.</p>
+</section><section id="accessing-the-csph-biostats-cluster" class="level2"><h2 class="anchored" data-anchor-id="accessing-the-csph-biostats-cluster">Accessing the CSPH Biostats Cluster</h2>
+<p>To access the CSPH Biostats cluster, first submit a support ticket on the <a href="https://medschool.cuanschutz.edu/informationservices">SOM IS web page</a> requesting:</p>
+<ol type="1">
+<li>Access to the ‘CSPH/CIDA Biostats Cluster’.</li>
+<li>(optional) A directory under <code>/biostats_share</code> (i.e.&nbsp;<code>/biostats_share/&lt;your_username&gt;</code>).</li>
+</ol>
+<p>Once approved, an account will be created for you on the server.</p>
+<p>To log in to the CSPH Biostats Cluster, you can use SSH from the command line or an SSH client of your choice.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="figures/CIDA_BIOS_Cluster/biostats_hpc_ssh.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>If you are connecting from the command line (like the above example), run:</p>
+<pre><code>ssh &lt;your_username&gt;@csphbiostats.ucdenver.pvt</code></pre>
+<p>where <code>&lt;your_username&gt;</code> is your CU system username (i.e Your username for UCDAccess, Outlook, etc)</p>
+<p>On login, you will be prompted for a password which will be your CU system password (i.e.&nbsp;Your password for UCDAccess, Outlook, etc).</p>
+<p>Once you’ve successfully logged in, you should see a prompt like the final line in the screenshot, showing that you are logged in to <code>csphbiostats.ucdenver.pvt</code>.</p>
+<p>To make future logins more convenient, you could configure an SSH config profile and RSA key pair, which will enable password-less login.</p>
+</section><section id="submitting-a-job-on-the-csph-biostats-cluster" class="level2"><h2 class="anchored" data-anchor-id="submitting-a-job-on-the-csph-biostats-cluster">Submitting a Job on the CSPH Biostats Cluster</h2>
+<p>In the sections below, I will describe a few different ways of submitting a job on the cluster, along with their potential use cases.</p>
+<section id="using-sbatch" class="level3"><h3 class="anchored" data-anchor-id="using-sbatch">Using <code>sbatch</code>
+</h3>
+<p>The most common way of submitting a job on the cluster is to use the <code>sbatch</code> command.</p>
+<p>To submit a job using <code>sbatch</code>, you should first create a batch script which will list the commands to be executed as part of your job.</p>
+<p>The below example shows a simple batch script <code>my_batch.sh</code> which executes a single R script.</p>
+<pre><code>#!/bin/bash
+#SBATCH --job-name=my_batch
+#SBATCH --output=my_batch.log
+#SBATCH --error=my_batch.err
+
+Rscript my_analysis.R</code></pre>
+<p>The first line:</p>
+<p><code>#!/bin/bash</code></p>
+<p>is required, and is used to determine how your script will be executed. In this case, the script will be executed using <code>bash</code>.</p>
+<p>The next few lines will be parsed by SLURM to set parameters/options for your batch job.</p>
+<pre><code>#SBATCH --job-name=my_batch
+#SBATCH --output=my_batch.log
+#SBATCH --error=my_batch.err</code></pre>
+<p>In order:</p>
+<ol type="1">
+<li>
+<code>--job-name</code> - Sets a name for your job.</li>
+<li>
+<code>--output</code> - Sets the output log file for your job. Any log messsages or outputs from your script will be sent to this file.</li>
+<li>
+<code>--error</code> - Sets the error log file for your job. Any log or error messages produced by your script will be sent to this file.</li>
+</ol>
+<p>Any comment line containing <code>#SBATCH</code> before the first command in your script will be parsed by SLURM.</p>
+<p>Although <code>#SBATCH</code> lines are not required, I recommend at least providing the <code>--output</code> and <code>--error</code> options, since otherwise your output and error streams will both be directed to the default file <code>slurm-&lt;job_id&gt;.out</code></p>
+<p>We can submit this job by running:</p>
+<pre><code>sbatch my_batch.sh</code></pre>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="figures/CIDA_BIOS_Cluster/cluster_sbatch.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>When we execute the <code>sbatch</code> command, SLURM will assign the job an ID and schedule the job to execute. In this case, our job is assigned ID <code>6179</code> (first arrow in the figure).</p>
+<p>By using the <code>squeue</code> command, we can obtain the status of all jobs currently scheduled across the cluster (including those submitted by other users).</p>
+<p>Using the assigned job ID, we can use the <code>JOBID</code> column to identify our job in the queue (second arrow in the figure).</p>
+<p>The <code>squeue</code> also provides some useful information about our job:</p>
+<ul>
+<li>The <code>ST</code> column tells us that our job is in the running (<code>R</code>) state.</li>
+<li>The <code>TIME</code> column tells us that our job has been running for 9 seconds.</li>
+<li>The <code>NODELIST(REASON)</code> column tells us that our job is executing on the <code>csphbiostats.ucdenver.pvt</code> node.</li>
+</ul>
+<section id="when-to-use-sbatch" class="level4"><h4 class="anchored" data-anchor-id="when-to-use-sbatch">When to use <code>sbatch</code>
+</h4>
+<p>Using <code>sbatch</code> is most beneficial for long-running scripts or analyses. After the job has been submitted using <code>sbatch</code>, your job will execute on the cluster until completion. You can continue to work on the cluster (submitting other jobs, etc) or log out without affecting any of your running jobs.</p>
+<p>You can monitor the progress of your job using by checking your log (<code>--output</code>) and error (<code>--error</code>) output files to see any outputs/messages printed by your script.</p>
+<p>Additionally, you can use the <code>squeue</code> command to obtain other information about your job, including the current state (<code>ST</code>), the elapsed runtime (<code>TIME</code>), and location of your job (<code>NODELIST</code>).</p>
+</section></section><section id="using-srun" class="level3"><h3 class="anchored" data-anchor-id="using-srun">Using <code>srun</code>
+</h3>
+<p>Submitting a job using SLURM’s <code>srun</code> command will schedule and run the job as soon as possible. When the job begins to run, you will see the output of the job in your terminal as it executes.</p>
+<p>Similar to running a script locally on the command line (i.e.&nbsp;<code>./my_script.sh</code>), you will not be able to execute other commands in your terminal window until the submitted job is complete.</p>
+<p>An example below shows execution of a simple shell script using <code>srun</code>.</p>
+<p>The command:</p>
+<pre><code>srun --exclude=csphbiostats.ucdenver.pvt ./my_script.sh</code></pre>
+<p>will schedule a new job to run the script <code>./my_script.sh</code>.</p>
+<p>The <code>--exclude</code> flag tells SLURM to schedule the job on any node except the node(s) listed. In this case, we exclude the <code>csphbiostats.ucdenver.pvt</code> node to ensure our job runs on one of the <code>cidalappc[1-3].ucdenver.pvt</code> nodes (and the first line of the script output shows our job ran on <code>cidalappc01</code>).</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="figures/CIDA_BIOS_Cluster/cluster_srun.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="interactive-jobs" class="level4"><h4 class="anchored" data-anchor-id="interactive-jobs">Interactive Jobs</h4>
+<p><code>srun</code> is also useful for running <em>interactive</em> jobs. An interactive job opens a terminal session on a compute node, allowing you to run commands and script interactively.</p>
+<p>Interactive jobs are useful for running quick commands or scripts, or anytime you’d like to directly monitor the output of your script/command.</p>
+<p>The command:</p>
+<pre><code>srun --pty --exclude=csphbiostats.ucdenver.pvt /bin/bash -i</code></pre>
+<p>will schedule a new interactive job on a compute node.</p>
+<p>This command is similar to the previous <code>srun</code> command we used but has a few key differences:</p>
+<ol type="1">
+<li>The addition of the <code>--pty</code> flag tells SLURM that this is an interactive job.</li>
+<li>The command <code>/bin/bash -i</code> will execute an interactive shell on the compute node.</li>
+</ol>
+<p>After submitting the job, we see the prompt string has changed from:</p>
+<p><code>[hillandr@csphbiostats job_example]</code></p>
+<p>to</p>
+<p><code>[hillandr@cidalappc01 job_example]</code>.</p>
+<p>This indicates that we are now running an interactive job on the compute node <code>cidalappc01</code>.</p>
+<p>At this point, we can execute any commands or scripts normally.</p>
+<p>To end the interactive job, type <code>exit</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="figures/CIDA_BIOS_Cluster/interactive_job.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="when-to-use-srun" class="level4"><h4 class="anchored" data-anchor-id="when-to-use-srun">When to use <code>srun</code>
+</h4>
+<p><code>srun</code> is useful for running interactive jobs with fast-running commands/scripts, or for debugging issues with a larger script you will eventually submit using <code>sbatch</code>.</p>
+<p>I don’t recommend using <code>srun</code> for long-running jobs, as if you disconnect from the cluster while the <code>srun</code> command is still executing, the job may be cancelled.</p>
+</section></section></section><section id="uploading-data-to-the-csph-biostats-cluster" class="level2"><h2 class="anchored" data-anchor-id="uploading-data-to-the-csph-biostats-cluster">Uploading Data to the CSPH Biostats Cluster</h2>
+<p>To upload and download data from the cluster, it is most convenient to use SFTP. There are multiple ways to use SFTP, including through the command line using the <code>sftp</code> command (Mac/Unix-like systems only)</p>
+<p>On Mac, the <a href="https://cyberduck.io">Cyberduck</a> application is a free and intuitive GUI SFTP client. On Windows systems, <a href="https://winscp.net/eng/index.php">WinSCP</a> is another popular choice.</p>
+<p>The below screenshots show an example of connecting to <code>csphbiostats.ucdenver.pvt</code> using Cyberduck on Mac.</p>
+<p>First, open Cyberduck and click the ‘Open Connection’ button on the top bar.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="figures/CIDA_BIOS_Cluster/cyberduck_1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Next, ensure that the ‘SFTP’ option is selected in the dropdown, then input your SSH credentials.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="figures/CIDA_BIOS_Cluster/cyberduck_2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>If successful, you should see a file browser interface showing your home directory on <code>csphbiostats.ucdenver.pvt</code>.</p>
+<p>You can use the interface to navigate and download and existing files. You can also drag-and-drop files from your local machine to upload them to the cluster.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="figures/CIDA_BIOS_Cluster/cyberduck_3.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="networked-storage" class="level3"><h3 class="anchored" data-anchor-id="networked-storage">Networked Storage</h3>
+<p>The CSPH Biostats cluster uses a shared filesystem for many important directories, including <code>/home</code> and <code>/biostats_share</code>. This means that any files (scripts, data, etc) you upload to one of these directories on <code>csphbiostats.ucdenver.pvt</code> will be accessible from any node in the cluster.</p>
+<p>Similarly, any output files generated from a job running on a compute node will also be accessible from <code>csphbiostats.ucdenver.pvt</code>, making it easy to download the results of a job.</p>
+</section><section id="other-slurm-resources" class="level3"><h3 class="anchored" data-anchor-id="other-slurm-resources">Other SLURM Resources</h3>
+<p>The SLURM system has an excellent <a href="https://slurm.schedmd.com/documentation.html">website</a>, with documentation for each command. I recommend reading the documentation for at least the <a href="https://slurm.schedmd.com/sbatch.html">sbatch</a> command, as it contains information about many configuration options not listed in this document.</p>
+
+
+</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+</body></html>

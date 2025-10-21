@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Research Tools Committee">
+<meta name="dcterms.date" content="2025-10-21">
+<title>RStudio/JupyterLab on the CSPH Biostats Cluster – CIDAtools</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-8fd1faf6fd93e4e6d207ae0f9db51d78.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+</head>
+<body class="nav-sidebar floating nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../index.html" class="navbar-brand navbar-brand-logo">
+    </a>
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">CIDAtools</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/cida-csph/CIDAtools/"> <i class="bi bi-github" role="img" aria-label="CIDAtools GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+</div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../vignettes/alpine.html">Articles</a></li><li class="breadcrumb-item"><a href="../vignettes/CIDA_BIOS_Cluster_Interactive_IDEs.html">RStudio/JupyterLab on the CSPH Biostats Cluster</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+      <a href="../index.html" class="sidebar-logo-link">
+      </a>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Articles</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../vignettes/alpine.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Alpine HPC</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../vignettes/CIDA_BIOS_Cluster_Interactive_IDEs.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">RStudio/JupyterLab on the CSPH Biostats Cluster</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../vignettes/CIDA_BIOS_Cluster.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Computing on the CSPH Biostats Cluster</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../vignettes/CIDA_computing_resources.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">CIDA Computing Resources</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../vignettes/coding_guidelines.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">CIDA-coding-guidelines</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../vignettes/cron-jobs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">cron-jobs</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../vignettes/data_storage.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">CIDA-data-storage-guidelines</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../vignettes/git.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tracking code in Git/GitHub</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../vignettes/sas-macros.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">CIDA SAS Macros</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../vignettes/tabling_packages.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tabling Packages</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+ <span class="menu-text">Reference</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/backup_project.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">backup_project</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/cida_table1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">cida_table1</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/cida_word_document.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">cida_word_document</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/convertIntervalNotation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">convertIntervalNotation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/create_project.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">create_project</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/find_nearest.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">find_nearest</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/get_default_value.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">get_default_value</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/get_defaults.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">get_defaults</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/get_full_project_path.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">get_full_project_path</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/get_global_default_analyst.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">get_global_default_analyst</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/get_global_default_path.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">get_global_default_path</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/get_project_analyst.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">get_project_analyst</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/get_project_drive_path.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">get_project_drive_path</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/get_project_github.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">get_project_github</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/get_project_location.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">get_project_location</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/get_project_meta_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">get_project_meta_data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/get_project_name.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">get_project_name</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/get_project_pi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">get_project_pi</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/list_kables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">list_kables</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/nLevelsP.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">nLevelsP</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/nrowP.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">nrowP</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/pvalr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">pvalr</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/pvalue.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">pvalue</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/randblinder_shiny_tool.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">randblinder_shiny_tool</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/read_xlsx_color.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">read_xlsx_color</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/remove_global_default_analyst.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">remove_global_default_analyst</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/remove_global_default_path.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">remove_global_default_path</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/Round.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Round</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/set_default_value.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">set_default_value</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/set_full_project_path.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">set_full_project_path</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/set_global_default_analyst.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">set_global_default_analyst</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/set_global_default_path.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">set_global_default_path</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/set_project_analyst.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">set_project_analyst</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/set_project_github.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">set_project_github</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/set_project_location.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">set_project_location</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/set_project_meta_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">set_project_meta_data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/set_project_name.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">set_project_name</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/set_project_pi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">set_project_pi</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/sum_ignore_NA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">sum_ignore_NA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/tidy.power.htest.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">tidy.power.htest</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/vec_power.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">vec_power</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../CITATION.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Citation</span></a>
+  </div>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="CIDA_BIOS_Cluster_Interactive_IDEs.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div><div class="quarto-code-links"><h2>Code Links</h2><ul><li><a href="undefined"><i class="bi bi-link-45deg"></i></a></li></ul></div></div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../vignettes/alpine.html">Articles</a></li><li class="breadcrumb-item"><a href="../vignettes/CIDA_BIOS_Cluster_Interactive_IDEs.html">RStudio/JupyterLab on the CSPH Biostats Cluster</a></li></ol></nav><div class="quarto-title">
+<h1 class="title">RStudio/JupyterLab on the CSPH Biostats Cluster</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Research Tools Committee </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 21, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header><section id="a.-introduction" class="level2"><h2 class="anchored" data-anchor-id="a.-introduction">A. Introduction</h2>
+<p>This document will guide you through running interactive RStudio (and/or JupyterLab) sessions on the Biostats cluster.</p>
+<p>Once configured, you’ll be able to easily submit RStudio/JupyterLab SLURM jobs, and access them through your browser.</p>
+<p>We’ll cover:</p>
+<ol type="1">
+<li>
+<a href="#first-time-setup">First-time Setup</a> - Some one-time, prerequisite configuration steps on your local computer to enable connections to RStudio and JupyterLab.</li>
+<li>
+<a href="#launching-an-rstudio-session">Launching RStudio Sessions</a> - How to launch an RStudio session on the cluster and connect from your browser.</li>
+<li>
+<a href="#launching-a-jupyterlab-session">Launching JupyterLab Sessions</a> - How to launch a JupyterLab session on the cluster and connect from your browser.</li>
+<li>
+<a href="#quit-the-rstudiojupyterlab-session">Quitting RStudio/JupyterLab Sessions</a> - How to quit an RStudio/JupterLab session.</li>
+<li>
+<a href="#optional-additional-options-and-job-customization">(Optional) Additional Options</a> - Some additional options and information which may be useful.</li>
+</ol>
+<p>If you’ve never used the <code>csphbiostats</code> cluster before, you’ll need to request an account. Information on how to access the cluster is available in the <a href="https://cida-csph.github.io/CIDAtools/articles/CIDA_BIOS_Cluster.html#accessing-the-csph-biostats-cluster">Accessing the CSPH Biostats Cluster</a> section of the main Biostats HPC article.</p>
+<p>If you previously followed this guide to set up RStudio/JupyterLab and just need a refresher on how to launch an RStudio/JupyterLab job, check out the <a href="#quickstart-for-returning-users">Quickstart</a> section.</p>
+<section id="a1.-motivation" class="level3"><h3 class="anchored" data-anchor-id="a1.-motivation">A1. Motivation</h3>
+<p>Using RStudio/JupyterLab on the <code>csphbiostats</code> cluster allows you to:</p>
+<ul>
+<li>Use the cluster’s significant <a href="https://cida-csph.github.io/CIDAtools/articles/CIDA_BIOS_Cluster.html#csph-biostats-hpc-cluster">computational resources</a> to work with larger datasets than would be possible on a local machine, while coding interactively in a familiar environment.</li>
+<li>Offload time consuming analysis tasks from your local computer to the cluster (your RStudio/JupyterLab job will keep running on the cluster, even if you log out!)</li>
+<li>Running RMarkdown/Quarto/Jupyter Notebooks and generating reports directly from the cluster.</li>
+<li>Generate and view visualizations in real-time.</li>
+</ul></section><section id="a2.-capabilities" class="level3"><h3 class="anchored" data-anchor-id="a2.-capabilities">A2. Capabilities</h3>
+<p>The RStudio container runs R 4.5.0, and supports the usual RStudio functions including RMarkdown/Quartio notebooks, interactive plotting, etc. For convenience, the RStudio container has a variety of commonly used packages pre-installed, including the <code>tidyverse</code> family, and also packages many system libraries needed for compiling R packages from source.</p>
+<p>The JupyterLab container supports running Jupyter Notebooks (<code>.ipynb</code>), and supports all JupyterLab functions. By default, the JupyterLab container has the following kernels installed:</p>
+<ul>
+<li>Python 3.13</li>
+<li>R 4.5.0</li>
+<li>Julia 1.11.5</li>
+</ul></section></section><section id="b.-questions-comments-issues" class="level2"><h2 class="anchored" data-anchor-id="b.-questions-comments-issues">B. Questions, Comments, Issues</h2>
+<p>This project is <a href="https://github.com/CIDA-CSPH/Biostats-Cluster-Tools">hosted on GitHub here</a>.</p>
+<p>If you have questions, encounter difficulties, or have suggestions for improvements, feel free to either <a href="https://github.com/CIDA-CSPH/Biostats-Cluster-Tools/issues">open an issue on GitHub</a> or <a href="mailto:andrew.2.hill@cuanschutz.edu">email me directly</a>.</p>
+</section><section id="first-time-setup" class="level2"><h2 class="anchored" data-anchor-id="first-time-setup">1. First-time Setup</h2>
+<p>Although the RStudio/JupyterLab instance will run on an HPC compute node, you’ll log in to the cluster normally (via SSH), and access then RStudio/JupyterLab interface through your local browser.</p>
+<p>In order for this to work correctly, we need to configure a few SSH options when logging in to the cluster. These SSH options should only need to be configured once.</p>
+<section id="a.-locate-ssh-config-file" class="level3"><h3 class="anchored" data-anchor-id="a.-locate-ssh-config-file">1A. Locate SSH Config File</h3>
+<p>The simplest way to configure SSH connections is to use the SSH <code>config</code> file, which allows us to define persistent options that will be used each time we log in to the cluster (rather than having to remember which parameters to pass on the command line each time).</p>
+<p>On Mac/Unix-like systems, this file is located at <code>~/.ssh/config</code>, and on Windows it is located at <code>C:/Users/&lt;username&gt;/.ssh/config</code>.</p>
+<p>If you don’t see a file named <code>config</code> in that location that’s OK, just create it with your text editor of choice.</p>
+<p><strong>Note:</strong> Some GUI clients (like PuTTY on Windows) do not support port forwarding to Unix sockets (requried functionality to use RStudio/JupyterLab on the cluster). However, modern command-line versions of SSH on Mac and Windows do support this.</p>
+</section><section id="b.-add-ssh-configuration-options" class="level3"><h3 class="anchored" data-anchor-id="b.-add-ssh-configuration-options">1B. Add SSH Configuration options</h3>
+<p>Open up the <code>config</code> file in your text editor of choice. If you had a pre-existing <code>config</code> file, check if you have an entry with <code>Host csphbiostats.ucdenver.pvt</code> or <code>HostName csphbiostats.ucdenver.pvt</code>. If you already have an entry you can modify it instead of creating a new entry.</p>
+<p><strong>IMPORTANT:</strong> If you have an existing <code>config</code>, and there is an entry that begins with <code>Host *</code>, you should add the new configuration we make <strong>above</strong> the existing <code>Host *</code> section to ensure that our new configuration will take precedence.</p>
+<section id="b.1-ssh-config-template" class="level4"><h4 class="anchored" data-anchor-id="b.1-ssh-config-template">1B.1 SSH Config Template</h4>
+<p>Configure your entry to look something like the below entry template, replacing the three highlighted <code>your_username</code> placeholders with the username you use to log into the cluster with SSH:</p>
+<div class="sourceCode">
+<pre><code>Host biostats
+    HostName csphbiostats.ucdenver.pvt
+    User <mark>your_username</mark>
+    Port 22
+    LocalForward 8895 /tmp/jupyter-<mark>your_username</mark>.sock
+    LocalForward 8896 /tmp/rstudio-<mark>your-username</mark>.sock
+</code></pre>
+</div>
+</section><section id="b.2-fully-configured-ssh-config-example" class="level4"><h4 class="anchored" data-anchor-id="b.2-fully-configured-ssh-config-example">1B.2 Fully-configured SSH Config Example</h4>
+<p>As an example, a fully-configured entry looks like this:</p>
+<pre><code>Host biostats
+    HostName csphbiostats.ucdenver.pvt
+    User coopdale
+    Port 22
+    LocalForward 8895 /tmp/jupyter-coopdale.sock
+    LocalForward 8896 /tmp/rstudio-coopdale.sock</code></pre>
+<p>The three <code>your_username</code> placeholders from the template have been replaced with the user’s username <code>coopdale</code>.</p>
+</section><section id="b.3-ssh-config-explanation" class="level4"><h4 class="anchored" data-anchor-id="b.3-ssh-config-explanation">1B.3 SSH Config Explanation</h4>
+<p>As a quick breakdown of the above configuration options:</p>
+<p>The <code>Host biostats</code> line assigns this configuration the alias/name ‘biostats’. We can use this name when running SSH to automatically use all of the configuration options we specified, like:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> biostats</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The <code>User</code> field should be your cluster username, and <code>Port</code> can be set to <code>22</code> (the default port for SSH).</p>
+<p>The two key elements are the <code>LocalForward</code> fields:</p>
+<pre><code>    LocalForward 8895 /tmp/jupyter-&lt;your_username&gt;.sock
+    LocalForward 8896 /tmp/rstudio-&lt;your_username&gt;.sock</code></pre>
+<p>These options tell the SSH client to forward local traffic on these ports to specific Unix socket paths on the cluster, allowing you to access the running RStudio/JupyterLab jobs.</p>
+<p>In this case, port <code>8895</code> will be used for JupyterLab and port <code>8896</code> will be used for RStudio, but feel free to customize these to any non-reserved ports you like (most ports in the 8800-8999 range should be available).</p>
+<p>Once configured, save and close the file.</p>
+</section></section><section id="c.-test-the-ssh-connection" class="level3"><h3 class="anchored" data-anchor-id="c.-test-the-ssh-connection">1C. Test the SSH Connection</h3>
+<p>Now, we’ll run a quick check to verify that the SSH configuration is working as expected.</p>
+<p>First, we need to open a terminal window, which varies slightly by platform:</p>
+<table class="caption-top table">
+<thead><tr class="header">
+<th>OS</th>
+<th>Command</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Windows</td>
+<td>Search for ‘Powershell’ or ‘Command Prompt’</td>
+</tr>
+<tr class="even">
+<td>Mac</td>
+<td>Search for ‘Terminal’</td>
+</tr>
+</tbody>
+</table>
+<p>Once the terminal window is open, type:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> biostats</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="figures/CIDA_BC_IDEs/biostats_hpc_ssh_2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Once you’ve logged in via SSH, open a web browser on your local machine (but keep the SSH window open!) and enter:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">localhost:8895</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>in the address bar. If you assigned different ports in your config file, modify the address accordingly.</p>
+<p>In the browser, you should see an error screen. This is expected.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="figures/CIDA_BC_IDEs/localhost_test.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Moving back to your SSH window, you should see some error messages populate the screen:</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="figures/CIDA_BC_IDEs/biostats_hpc_ssh_local_forward_test.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>If you see these error messages in your SSH window, Congratulations!</p>
+<p>This means you’ve configured SSH correctly! The error messages appear because the browser is attempting to connect, but there is nothing on the other end (yet) to accept the connection.</p>
+<p>These error messages will continue to appear in your SSH window as long as you keep the <code>localhost:8895</code> browser tab open. Feel free to close the browser tab now and type <code>clear</code> in your SSH window to clear the messages from your terminal screen.</p>
+<section id="c.1-troubleshooting" class="level4"><h4 class="anchored" data-anchor-id="c.1-troubleshooting">1C.1 Troubleshooting</h4>
+<p>If you don’t see the error messages in your SSH window:</p>
+<ol type="1">
+<li>Make sure the <code>localhost:&lt;port&gt;</code> you’re visiting in browser matches one of the <code>LocalForward &lt;port&gt;</code> lines in your SSH config file.</li>
+<li>Check that you’re logging in with the <code>ssh biostats</code> alias from your SSH config file.</li>
+<li>Verify that these ports aren’t being used by something else on your machine (i.e.&nbsp;a local Jupyter Notebook).</li>
+</ol></section></section><section id="d.-get-launch-scripts" class="level3"><h3 class="anchored" data-anchor-id="d.-get-launch-scripts">1D. Get Launch scripts</h3>
+<p>To launch an RStudio/JupyterLab session, you’ll need a copy of the <code>rstudio_helper.sh</code> and <code>jupyter_helper.sh</code> scripts. These scripts help automate some of the setup for RStudio/JupyterLab sessions.</p>
+<p>In your SSH window, navigate to your home directory (<code>cd ~</code>) and run:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> /biostats_share/hillandr/containers/scripts/rstudio_helper.sh .</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> /biostats_share/hillandr/containers/scripts/jupyter_helper.sh .</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>To make copies of both scripts in your home directory (<code>~</code>).</p>
+</section></section><section id="launching-an-rstudio-session" class="level2"><h2 class="anchored" data-anchor-id="launching-an-rstudio-session">2. Launching an RStudio Session</h2>
+<p>Once you have copies of the launch scripts, in your SSH window try running:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./rstudio_helper.sh</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>You should see a message <code>Submitted batch job &lt;job_id&gt;</code>. This is the Job ID for your RStudio job, which you’ll need again when you want to shut down the RStudio session. This ID will change each time you launch a new job.</p>
+<p>Now, run <code>squeue</code>.</p>
+<p>You should see an entry for your Job ID, similar to my example below.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="figures/CIDA_BC_IDEs/biostats_hpc_rstudio_launch.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This job will also produce two output files <code>rstudio_helper.out</code> and <code>rstudio_helper.err</code> which will log outputs or errors that the system encounters.</p>
+<p>If you <em>don’t</em> see your Job ID in the <code>squeue</code> list, try inspecting the two above files for any error messages.</p>
+<section id="a.-connect-to-rstudio" class="level3"><h3 class="anchored" data-anchor-id="a.-connect-to-rstudio">2A. Connect to RStudio</h3>
+<p>If you can see your RStudio job running in <code>squeue</code>, go back to your web browser and visit</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">localhost:8896</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>in the address bar.</p>
+<p>You should see a loading screen, and eventually the RStudio interface!</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="figures/CIDA_BC_IDEs/biostats_hpc_rstudio_interface.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Congratulations! You can now use RStudio on the cluster!</p>
+<p>Feel free to try out the interface and verify that everything works as expected.</p>
+<p>When you’re finished, shut down the RStudio job by following the instructions in <a href="#quit-the-rstudiojupyterlab-session">Quit the RStudio/JupyterLab Job</a></p>
+<section id="a.1-troubleshooting" class="level4"><h4 class="anchored" data-anchor-id="a.1-troubleshooting">2A.1 Troubleshooting</h4>
+<p>If you <em>don’t</em> see the RStudio interface in your browser:</p>
+<ol type="1">
+<li>Verify that you used the correct port in the browser. (If you used the default config, RStudio is <code>8896</code>).</li>
+<li>Double check your SSH config file and make sure your <code>LocalForward</code> directives match the template from <a href="#b-1-ssh-config-template">1B.1 SSH Config Template</a>
+</li>
+<li>Run <code>squeue</code> again and verify that your job is still running. If the job is not running, check <code>rstudio_helper.err</code> and <code>rstudio_helper.out</code> for more information.</li>
+</ol></section></section><section id="b.-customizing-the-rstudio-job" class="level3"><h3 class="anchored" data-anchor-id="b.-customizing-the-rstudio-job">2B. Customizing the RStudio Job</h3>
+<p>The <code>rstudio_helper.sh</code> script essentially just automates some cleanup tasks and submits a new <code>sbatch</code> batch script which launches RStudio.</p>
+<p>If you open <code>rstudio_helper.sh</code> and scroll down to the <code>sbatch &lt;&lt;==SBATCH=SCRIPT==</code> section, you can customize the parameters of the underlying SLURM job to suit your needs:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This command redirects the rest of this script to a sbatch call.</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> <span class="op">&lt;&lt;==SBATCH=SCRIPT==</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="st">#!/bin/bash</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --job-name=rstudio_helper</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --output=rstudio_helper.out</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --error=rstudio_helper.err</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --exclude=csphbiostats.ucdenver.pvt</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --mem=64G</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --ntasks=1</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --cpus-per-task=8</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="st"># Launch the container.</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="st">apptainer run </span><span class="dt">\</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="st">    --no-mount /etc/localtime </span><span class="dt">\</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="st">    --bind /biostats_share:/biostats_share </span><span class="dt">\</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="st">/biostats_share/hillandr/containers/rstudio.sif</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="op">==SBATCH=SCRIPT==</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The default <code>rstudio_helper.sh</code> script submits a job which:</p>
+<ul>
+<li>Runs on any node <em>except</em> the head node <code>--exclude=csphbiostats.ucdenver.pvt</code>
+</li>
+<li>Requests 8 CPU Cores <code>--cpus-per-task=8</code>
+</li>
+<li>Requests 64GB of RAM <code>--mem=64G</code>
+</li>
+</ul>
+<p>You can change any of these values to meet your needs.</p>
+<p>The available resources of each compute node are listed in the article <a href="https://cida-csph.github.io/CIDAtools/articles/CIDA_BIOS_Cluster.html#csph-biostats-hpc-cluster">Computing on the CSPH Biostats Cluster</a>.</p>
+</section></section><section id="launching-a-jupyterlab-session" class="level2"><h2 class="anchored" data-anchor-id="launching-a-jupyterlab-session">3. Launching a JupyterLab Session</h2>
+<p>Once you have copies of the launch scripts, try running:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./jupyter_helper.sh</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>You should see a message <code>Submitted batch job &lt;job_id&gt;</code>. This is the Job ID for your JupyterLab job, which you’ll need again when you want to shut down the JupyterLab session. This ID will change each time you launch a new job.</p>
+<p>Now, run <code>squeue</code>.</p>
+<p>You should see an entry for your Job ID, similar to my example below.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="figures/CIDA_BC_IDEs/biostats_hpc_jupyter_launch.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This job will also produce two output files <code>jupyter_helper.out</code> and <code>jupyter_helper.err</code> which will log outputs or errors that the system encounters.</p>
+<p>If you <em>don’t</em> see your Job ID in the <code>squeue</code> list, try inspecting the two above files for any error messages.</p>
+<p><strong>IMPORTANT:</strong> The first time you launch JupyterLab, it will create a Python <code>virtualenv</code> under <code>~/jupyterlab_env</code>. This process takes time (in my experience, up to 10 minutes). If you are unable to connect to your JupyterLab instance immediately after launching the job, don’t worry! The setup process will log output to the output and error logs listed above.</p>
+<section id="a.-connect-to-jupyterlab" class="level3"><h3 class="anchored" data-anchor-id="a.-connect-to-jupyterlab">3A. Connect to JupyterLab</h3>
+<p>If you can see your JupyterLab job running in <code>squeue</code>, go back to your web browser and visit</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">localhost:8895</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>in the address bar.</p>
+<p>You should see a loading screen, and eventually the JupyterLab interface!</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="figures/CIDA_BC_IDEs/biostats_hpc_jupyter_interface.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Congratulations! You can now use JupyterLab on the cluster!</p>
+<p>Feel free to try out the interface and verify that everything works as expected.</p>
+<p>When you’re finished, shut down the JupyterLab job by following the instructions in <a href="#quit-the-rstudiojupyterlab-session">Quit the RStudio/JupyterLab Job</a></p>
+<section id="a.1-troubleshooting-1" class="level4"><h4 class="anchored" data-anchor-id="a.1-troubleshooting-1">3A.1 Troubleshooting</h4>
+<p>If you <em>don’t</em> see the JupyterLab interface in your browser:</p>
+<ol type="1">
+<li>Verify that you used the correct port in the browser. (If you used the default config, JupyterLab is <code>8895</code>).</li>
+<li>Double check your SSH config file and make sure your <code>LocalForward</code> directives match the template from <a href="#b-1-ssh-config-template">1B.1 SSH Config Template</a>.</li>
+<li>Run <code>squeue</code> again and verify that your job is still running. If the job is not running, check the <code>jupyter_helper.err</code> and <code>jupyter_helper.out</code> files for more information.</li>
+<li>If you’re launching JupyterLab for the first time, it could take up to 10 minutes for the script to initialize the <code>/jupyterlab_venv</code> virtual environment. If the job is running (via <code>squeue</code>) but you can’t connect through your browser, try waiting ~10 minutes for environment to initialize.
+<ul>
+<li>After the venv setup is complete, future launches of JupyterLab through <code>./jupyter_helper.sh</code> should take only a few seconds.</li>
+</ul>
+</li>
+</ol></section></section><section id="b.-customizing-the-jupyterlab-job" class="level3"><h3 class="anchored" data-anchor-id="b.-customizing-the-jupyterlab-job">3B. Customizing the JupyterLab Job</h3>
+<p>The <code>jupyter_helper.sh</code> script essentially just automates some cleanup tasks and submits a new <code>sbatch</code> batch script which launches JupyterLab.</p>
+<p>If you open <code>jupyter_helper.sh</code> and scroll down to the <code>sbatch &lt;&lt;==SBATCH=SCRIPT==</code> section, you can customize the parameters of the underlying SLURM job to suit your needs:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> <span class="op">&lt;&lt;==SBATCH=SCRIPT==</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="st">#!/bin/bash</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --job-name=jupyter_helper</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --output=jupyter_helper.out</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --error=jupyter_helper.err</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --exclude=csphbiostats.ucdenver.pvt</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --mem=64G</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --ntasks=1</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --cpus-per-task=8</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="st"># Launch the container.</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="st">apptainer run </span><span class="dt">\</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="st">    --bind /biostats_share:/biostats_share </span><span class="dt">\</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="st">/biostats_share/hillandr/containers/jupyterlab.sif </span><span class="dt">\</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="st">    --notebook-dir "</span><span class="va">$HOME</span><span class="st">"</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="op">==SBATCH=SCRIPT==</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The default <code>jupyter_helper.sh</code> script submits a job which:</p>
+<ul>
+<li>Runs on any node <em>except</em> the head node <code>--exclude=csphbiostats.ucdenver.pvt</code>
+</li>
+<li>Requests 8 CPU Cores <code>--cpus-per-task=8</code>
+</li>
+<li>Requests 64GB of RAM <code>--mem=64G</code>
+</li>
+</ul>
+<p>You can change any of these values to meet your needs.</p>
+<p>The available resources of each compute node are listed in the article <a href="https://cida-csph.github.io/CIDAtools/articles/CIDA_BIOS_Cluster.html#csph-biostats-hpc-cluster">Computing on the CSPH Biostats Cluster</a>.</p>
+</section></section><section id="quit-the-rstudiojupyterlab-session" class="level2"><h2 class="anchored" data-anchor-id="quit-the-rstudiojupyterlab-session">4. Quit the RStudio/JupyterLab Session</h2>
+<p>When you’re finished using JupyterLab or RStudio, run:</p>
+<pre><code>scancel &lt;job_id&gt;</code></pre>
+<p>from your SSH window to kill the job (make sure everything is saved!).</p>
+<p>A few things to note:</p>
+<ol type="1">
+<li>Like other <code>sbatch</code> jobs, the RStudio/JupyterLab jobs will continue to run after you log out of your SSH connection (you can try this yourself!).
+<ul>
+<li>This means you can log out (via SSH), then log back in later and keep using the same session.</li>
+<li>Although you <em>can</em> leave RStudio/JupyterLab running, its best to quit the session (using <code>scancel</code>) when you’re finished to free up resources for other users.</li>
+</ul>
+</li>
+<li>
+<strong>IMPORTANT: Check for a running RStudio/JupyterLab jobs (using <code>squeue</code>) before submitting a new one with <code>./rstudio_helper.sh</code> or <code>./jupyter_helper.sh</code>!!!</strong>
+<ul>
+<li>Submitting a second job will not work, and will likely break your original session as well.</li>
+<li>By running <code>squeue</code> you can quickly locate the Job ID of your running <code>rstudio_helper</code> or <code>jupyter_helper</code> Job (if one is running). You can then either cancel this job with <code>scancel</code> or just connect through your browser and keep working.</li>
+</ul>
+</li>
+</ol></section><section id="quickstart-for-returning-users" class="level2"><h2 class="anchored" data-anchor-id="quickstart-for-returning-users">5. Quickstart (for returning users)</h2>
+<p>The complete process for launching a RStudio/JupyterLab instance (once the <a href="#first-time-setup">first-time setup</a> is complete) looks like:</p>
+<ol type="1">
+<li>Open a command prompt and run <code>ssh biostats</code>.
+<ul>
+<li>
+<code>biostats</code> is the alias for <code>csphbiostats.ucdenver.pvt</code> that we configured in the <a href="#first-time-setup">first-time setup section</a>.</li>
+</ul>
+</li>
+<li>Check for a currently running RStudio/JupyterLab session using <code>squeue</code>.
+<ul>
+<li>To reconnect to a running session, skip to step 5.</li>
+<li>To cancel the existing session, use <code>scancel &lt;job_id&gt;</code>.</li>
+</ul>
+</li>
+<li>If no existing session is running, from your SSH terminal run either <code>./jupyterlab_helper.sh</code> or <code>./rstudio_helper.sh</code>.
+<ul>
+<li>The script should exit after printing a Job ID for your new session.</li>
+</ul>
+</li>
+<li>Verify that your new session is running using <code>squeue</code> and look for the Job ID.</li>
+<li>Open your browser to <code>localhost:8895</code> (JupyterLab) or <code>localhost:8896</code> (RStudio).</li>
+<li>Done!</li>
+</ol></section><section id="conclusion" class="level2"><h2 class="anchored" data-anchor-id="conclusion">6. Conclusion</h2>
+<p>At this point, you should be able to launch, connect to, and cancel RStudio and JupyterLab jobs on the cluster!</p>
+<p>The sections below provide some additional configuration options and information, but these sections are completely optional.</p>
+</section><section id="optional-additional-options-and-job-customization" class="level2"><h2 class="anchored" data-anchor-id="optional-additional-options-and-job-customization">7. (Optional) Additional Options and Job Customization</h2>
+<p>This section provides some additional information and configuration options.</p>
+<section id="a.-apptainer-containers" class="level3"><h3 class="anchored" data-anchor-id="a.-apptainer-containers">7A. Apptainer Containers</h3>
+<p>The JupyterLab and RStudio instances both run inside of Apptainer containers.</p>
+<p>Apptainer (formerly Singularity) containers are stored as self-contained files with the <code>.sif</code> extension.</p>
+<p>The benefit of hosting JupyterLab and RStudio within containers is that they offer a consistent environment where all dependencies are installed by default.</p>
+<p>The RStudio and JupyterLab containers are derived from a <a href="https://github.com/CIDA-CSPH/Biostats-Cluster-Tools/blob/main/containers/RBase/docker/Dockerfile">base container image</a> which holds installation of R, Python, and Julia languages, along with packages/libraries to support installing most other common R/Python libraries.</p>
+<section id="a.1-bind-mounts" class="level4"><h4 class="anchored" data-anchor-id="a.1-bind-mounts">7A.1 Bind Mounts</h4>
+<p>One important concept when working with containers is a ‘bind mount’. Containers are like small Linux installations which run in a separate, read-only filesystem. This means we cannot access any files <em>outside</em> of the container by default.</p>
+<p><em>Bind mounts</em> allow us to overlay specific parts of the host’s filesystem onto the container, so we can read from and write our own files (on the host system) from inside the container.</p>
+<p>By default, Apptainer sets up bind mounts for a few directories including your home directory (<code>~</code>), your working directory (<code>.</code>) and <code>/tmp</code>.</p>
+<p>The <code>jupyter_helper.sh</code> and <code>rstudio_helper.sh</code> scripts also include an additional bind mount:</p>
+<p><code>--bind /biostats_share:/biostats_share</code></p>
+<p>which allows us to access the <code>/biostats_share</code> directory from inside the container.</p>
+<p>If you find yourself unable to access files from within the container, you can add the specific directory as a bind mount by modifying the <code>*_helper.sh</code> script to include additional bind mounts:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This command redirects the rest of this script to a sbatch call.</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> <span class="op">&lt;&lt;==SBATCH=SCRIPT==</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="st">#!/bin/bash</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --job-name=jupyter_helper</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --output=jupyter_helper.out</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --error=jupyter_helper.err</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --exclude=csphbiostats.ucdenver.pvt</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --mem=64G</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --ntasks=1</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --cpus-per-task=8</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="st"># Launch the container.</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="st">apptainer run </span><span class="dt">\</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="st">    --bind /biostats_share:/biostats_share </span><span class="dt">\</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="st">    --bind /another_special_directory:/another_special_directory </span><span class="dt">\</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="st">/biostats_share/hillandr/containers/jupyterlab.sif </span><span class="dt">\</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="st">    --notebook-dir "</span><span class="va">$HOME</span><span class="st">" </span><span class="dt">\</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="st">    --venv "</span><span class="va">$HOME</span><span class="st">/my_custom_venv"</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="op">==SBATCH=SCRIPT==</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The line <code>--bind /another_special_directory:/another_special_directory</code> make the <code>/another_special_directory</code> path available in the container (make sure to use an absolute path).</p>
+<p>In general, bind mount arguments look like:</p>
+<p><code>--bind &lt;local_directory&gt;:&lt;container_path&gt;</code></p>
+<p>To mount <code>&lt;local_directory&gt;</code> path on the cluster to <code>&lt;container_path</code> inside the container.</p>
+<p>To reduce confusion, I usually mount each local path to the same path within the container (as I did with <code>/biostats_share</code>).</p>
+</section></section><section id="b.-jupyterlab-options" class="level3"><h3 class="anchored" data-anchor-id="b.-jupyterlab-options">7B. JupyterLab Options</h3>
+<p>The JupyterLab container holds an installation of Python 3.13.</p>
+<p>When launched for the first time, the container will create a new <code>virtualenv</code> environment in your home directory at <code>~/jupyterlab_venv</code>, which will hold all Python dependencies (including JupyterLab itself).</p>
+<section id="b.1-using-an-alternative-venv-for-jupyterlab" class="level4"><h4 class="anchored" data-anchor-id="b.1-using-an-alternative-venv-for-jupyterlab">7B.1 Using an alternative <code>venv</code> for JupyterLab</h4>
+<p>Although the <code>~/jupyterlab_venv</code> is used by default, you can specify a different virtualenv if you wish.</p>
+<p>You can do this by modifying the <code>jupyter_helper.sh</code> script and passing a value for the <code>--venv</code> parameter to the <code>jupyter.sif</code> container.</p>
+<p>The would look like:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This command redirects the rest of this script to a sbatch call.</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> <span class="op">&lt;&lt;==SBATCH=SCRIPT==</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="st">#!/bin/bash</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --job-name=jupyter_helper</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --output=jupyter_helper.out</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --error=jupyter_helper.err</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --exclude=csphbiostats.ucdenver.pvt</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --mem=64G</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --ntasks=1</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --cpus-per-task=8</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="st"># Launch the container.</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="st">apptainer run </span><span class="dt">\</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="st">    --bind /biostats_share:/biostats_share </span><span class="dt">\</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="st">/biostats_share/hillandr/containers/jupyterlab.sif </span><span class="dt">\</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="st">    --notebook-dir "</span><span class="va">$HOME</span><span class="st">" </span><span class="dt">\</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="st">    --venv "</span><span class="va">$HOME</span><span class="st">/my_custom_venv"</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="op">==SBATCH=SCRIPT==</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The second-to-last line <code>--venv "$HOME/my_custom_venv"</code> sets the path to the alternative venv.</p>
+<p>If this path exists already, the launch script will attempt to activate and use this virtual environment.</p>
+<p>If the path does <em>not</em> exist, it will be created and initialized with a default set of packages, which includes JupyterLab.</p>
+<p><strong>NOTE:</strong> If you do attempt to use an pre-existing virtual environment, ensure that JupyterLab is installed <em>before</em> running <code>jupyter_helper.sh</code>, as this script will fail if no JupyterLab installation is found.</p>
+</section><section id="b.2-setting-an-alternative-home" class="level4"><h4 class="anchored" data-anchor-id="b.2-setting-an-alternative-home">7B.2 Setting an Alternative home</h4>
+<p>By default, the JupyterLab interface will use your <code>$HOME</code> (<code>~</code>) directory as the launch directory.</p>
+<p>If you wish to use a different directory, you can change the <code>--notebook-dir</code> argument in <code>jupyter_helper.sh</code></p>
+</section></section><section id="c.-rstudio-options" class="level3"><h3 class="anchored" data-anchor-id="c.-rstudio-options">7C. RStudio Options</h3>
+<p>The RStudio container uses an installation of R 4.5.0, which is the latest version at the time of writing.</p>
+<p>By default, the container comes with many libraries pre-installed, including the <code>tidyverse</code> family of packages.</p>
+<p>Additionally, the container has many development libraries installed, which should allow you to compile most R packages from source if required.</p>
+<section id="c.1-renv-usage" class="level4"><h4 class="anchored" data-anchor-id="c.1-renv-usage">7C.1 Renv Usage</h4>
+<p>Although the container has many libraries pre-installed, I highly recommend using <code>renv</code> in each of your RStudio projects.</p>
+<p>You can run <code><a href="https://rstudio.github.io/renv/reference/init.html">renv::init()</a></code> from an RStudio project to initialize <code>renv</code>.</p>
+</section><section id="c.2-changing-the-r-version" class="level4"><h4 class="anchored" data-anchor-id="c.2-changing-the-r-version">7C.2 Changing the R Version</h4>
+<p>By default, the container uses R-4.5.0, but R-4.4.3 is also installed for compatibility.</p>
+<p>To change the version of R used when launching RStudio, you can change the <code>R_PATH</code> variable defined in the <code>rstudio_helper.sh</code> script:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Default version of R is 4.5.0.</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co">#R_PATH="/opt/R/4.5.0/bin/R"</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="va">R_PATH</span><span class="op">=</span><span class="st">"/opt/R/4.4.3/bin/R"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Changing this variable changes the path passed to the <code>--r-path</code> argument later in the script.</p>
+<p>Note that these paths are relative to the container, not to the cluster’s filesystem.</p>
+<p>Currently the only two supported paths (and versions of R) are:</p>
+<table class="caption-top table">
+<thead><tr class="header">
+<th>Version</th>
+<th>Path</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><strong>R-4.5.0 (default)</strong></td>
+<td>/opt/R/4.5.0/bin/R</td>
+</tr>
+<tr class="even">
+<td>R-4.4.3</td>
+<td>/opt/R/4.4.3/bin/R</td>
+</tr>
+</tbody>
+</table>
+<p>If you need an alternative version of R installed, open an issue in the <a href="https://github.com/CIDA-CSPH/Biostats-Cluster-Tools/issues">GitHub repository for this project</a> and I can add it to the container.</p>
+</section></section><section id="d.-implementation-details" class="level3"><h3 class="anchored" data-anchor-id="d.-implementation-details">7D. Implementation Details</h3>
+<p>If you are curious as to how the RStudio/JupyterLab interfaces are configured, this section provides a brief explanation.</p>
+<p>The challenge with running RStudio/JupyterLab on the cluster is that the RStudio/JupyterLab server needs to run on a compute node, which is not directly acessible (via the network) to your local machine. Additionally, hosting a public web server on these nodes could present a security risk.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="figures/CIDA_BC_IDEs/biostats_hpc_rstudio_diagram.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>To facilitate a secure connection, each RStudio/JupyterLab job creates a link between your (local) computer and the compute node running the job via a pair of SSH tunnels.</p>
+<p>The first SSH tunnel is configured locally on your machine (see the <a href="#first-time-setup">First-time Setup</a> section above):</p>
+<p>This SSH tunnel forwards any local traffic on <code>localhost:8895</code> or <code>localhost:8896</code> to specific Unix sockets (not ports) on the <code>csphbiostats</code> head node. We use Unix sockets for this since they:</p>
+<ol type="1">
+<li>Allow for file-like permissions (i.e.&nbsp;the socket is created and owned by your user, and cannot be accessed by others).</li>
+<li>Since Unix sockets are exposed as file-like objects, we can enforce unique naming (each Unix socket uses the user’s name as part of the socket path) to prevent port conflicts.</li>
+</ol>
+<p>The second SSH tunnel is opened by the RStudio/JupyterLab job on the compute node. Once the job begins executing on the compute node, the RStudio/JupyterLab launch script will:</p>
+<ol type="1">
+<li>Launch an RStudio/JupyterLab instance advertised on a Unix socket (again, we use Unix sockets instead of ports for the reasons listed above).</li>
+<li>Open a background SSH tunnel to the <code>csphbiostats</code> node, which forwards all traffic on the <code>csphbiostats</code>’s Unix socket to the compute node’s Unix socket (which is hosting the JupyterLab/RStudio instance).</li>
+</ol>
+<p>In order for this to work seamlessly, the compute node needs to be able to SSH into the head node without prompting for a password. The launch script takes care of this by generating a SSH keypair (located at <code>~/.ssh/cluster_rsa</code>) which the compute node may use to log in to the head node.</p>
+<p>Together, these two SSH tunnels form a connection between your browser visiting <code>localhost:8895</code> or <code>localhost:8896</code> and the RStudio/JupyterLab instance running on the compute node.</p>
+<p>In summary, the container’s launch script will:</p>
+<ol type="1">
+<li>Check if the SSH keypair <code>~/.ssh/cluster_rsa</code> exists.
+<ul>
+<li>If not, the launch script will automatically create this keypair and use it for future job launches.</li>
+</ul>
+</li>
+<li>Check if your job is running on the head node <code>csphbiostats</code> or a compute node (any node which is not <code>csphbiostats</code>)
+<ul>
+<li>In the event that the job is running on <code>csphbiostats</code>, we don’t need the second SSH tunnel, as your local machine will already forward traffic directly to the configured Unix socket.</li>
+</ul>
+</li>
+<li>Launch the RStudio/JupyterLab instance.</li>
+</ol>
+
+
+</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+</body></html>
