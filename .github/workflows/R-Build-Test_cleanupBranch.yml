@@ -24,7 +24,10 @@ jobs:
         r-version: ['release']
         os: [ubuntu-latest] #[ubuntu-latest, windows-latest, macos-latest]
 
-
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
 
