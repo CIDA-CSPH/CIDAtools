@@ -182,7 +182,7 @@ set_full_project_path <- function(path=''){
   return(paste('The project default full path has been changed to', path))
 }
 
-#' Gets the currently set full path to the project
+#' Gets the currently set full path to the project from .ProjData/Data.dcf
 #'
 #' @return full path to project
 #' @export

@@ -137,3 +137,12 @@ proj_location_handler <- function(loc="") {
 }
 
 
+#' Function to call to setup the package
+#'
+#'
+#' @noMd
+#' @noRd
+.onLoad <- function(libname,pkgname){
+  op <- options()
+  op.cida_tools <- list(cida_tools.current_project_path="",cida_tools.remote_current_project_path="")
+}

@@ -1,13 +1,19 @@
 #' Get Project drive path
 #'
 #' This function attempts to get the proper path for the Project(CIDA) drive either on
-#' Windows or Mac automatically.  If the expected path is not found it tried to
-#' load the project metadata path and if that fails it looks for a global default path
-#' in the user cida_defaults.dcf file.
+#' Windows or Mac automatically.  It returns the full CIDA drive(remote) path
+#' with the relative path (if provided) appended to the drive path.
+#'
+#' If open_project() has been called with a remote path specified the remote path
+#' will be used first.
+#'
+#' If that is not set it will try to determine the drive path. If the expected
+#' path is not found it will try to load the project metadata path and if that
+#' fails it looks for a global default path in the user cida_defaults.dcf file.
 #'
 #' @param file (optional) Path to subdirectory/file within the main project(CIDA) drive
 #'
-#' @return Full (absolute) file path of project(CIDA) drive
+#' @return Full (absolute) file path of project(CIDA) drive plus the subdirectory/file provided.
 #' @export
 #'
 #' @examples
@@ -19,83 +25,92 @@
 
 get_project_drive_path <- function(file = "") {
   path <- ""
+  op <- getOptions()
+  if(op.cida_tools.remote_current_project_path != ""){
+    #get project path
+    path <- op.cida_tools.remote_current_project_path
+    #remove everything after BRANCHES
 
-  # Get operating system (note that MacOS and Linux return unix)
-  os <- .Platform$OS.type
+    #double check that current project matches path provided.
+
+  }else{
+    # Get operating system (note that MacOS and Linux return unix)
+    os <- .Platform$OS.type
 
 
-  ## TODO Set a global default path somewhere and then iterativly parse each
-  # sub-directory to test instead of these static sub-directories of the CIDA path
+    ## TODO Set a global default path somewhere and then iterativly parse each
+    # sub-directory to test instead of these static sub-directories of the CIDA path
 
-  if (os == "unix") { # MacOS/Linux
+    if (os == "unix") { # MacOS/Linux
 
-    # Four potential places drive could exist based on path used for mapping
-    # and case sensitivity of the file system
-    # Then check manually set project data in .ProjData/Data.dcf
-    if (dir.exists("/Volumes/sph-cida/BRANCHES")) {
-      path <- "/Volumes/sph-cida/BRANCHES"
-    } else if(dir.exists("/Volumes/branches")){
-      path <- "/Volumes/branches"
-    }else if(dir.exists("/Volumes/sph/SPH-CIDA/BRANCHES")){
-      path <- "/Volumes/sph/SPH-CIDA/BRANCHES"
-    }else if(dir.exists("/Volumes/dept")){
-      path <- "/Volumes/dept/SPH/SPH-CIDA/BRANCHES"
-    }else if (dir.exists("/Volumes/SPH-CIDA")) {
-      path <- "/Volumes/SPH-CIDA/BRANCHES"
-    }else if(dir.exists("/Volumes/SPH")){
-      path <- "/Volumes/SPH/SPH-CIDA/BRANCHES"
-    }else if(dir.exists("/Volumes/DEPT")){
-      path <- "/Volumes/DEPT/SPH/SPH-CIDA/BRANCHES"
-    }else {
-      path <- get_default_path()
-      if(path==""){
-        stop("Nothing found at /Volumes/dept || SPH || SPH-CIDA || BRANCHES",
-             " Please ensure drive is mounted and you have entered your",
-             " password to access the drive (and are logged into the VPN if",
-             " needed.)",
-             " If still experiencing issues try set_project_data_path() or ",
-             " set_global_default_path()"
-             )
-      }else{
-        if(! dir.exists(path)){
-          stop("Automatic Path: Failed\nDefault Path:",path,": Failed\n",
+      # Four potential places drive could exist based on path used for mapping
+      # and case sensitivity of the file system
+      # Then check manually set project data in .ProjData/Data.dcf
+      if (dir.exists("/Volumes/sph-cida/BRANCHES")) {
+        path <- "/Volumes/sph-cida/BRANCHES"
+      } else if(dir.exists("/Volumes/branches")){
+        path <- "/Volumes/branches"
+      }else if(dir.exists("/Volumes/sph/SPH-CIDA/BRANCHES")){
+        path <- "/Volumes/sph/SPH-CIDA/BRANCHES"
+      }else if(dir.exists("/Volumes/dept")){
+        path <- "/Volumes/dept/SPH/SPH-CIDA/BRANCHES"
+      }else if (dir.exists("/Volumes/SPH-CIDA")) {
+        path <- "/Volumes/SPH-CIDA/BRANCHES"
+      }else if(dir.exists("/Volumes/SPH")){
+        path <- "/Volumes/SPH/SPH-CIDA/BRANCHES"
+      }else if(dir.exists("/Volumes/DEPT")){
+        path <- "/Volumes/DEPT/SPH/SPH-CIDA/BRANCHES"
+      }else {
+        path <- get_default_path()
+        if(path==""){
+          stop("Nothing found at /Volumes/dept || SPH || SPH-CIDA || BRANCHES",
+               " Please ensure drive is mounted and you have entered your",
+               " password to access the drive (and are logged into the VPN if",
+               " needed.)",
                " If still experiencing issues try set_project_data_path() or ",
-               " set_global_default_path()")
+               " set_global_default_path()"
+               )
+        }else{
+          if(! dir.exists(path)){
+            stop("Automatic Path: Failed\nDefault Path:",path,": Failed\n",
+                 " If still experiencing issues try set_project_data_path() or ",
+                 " set_global_default_path()")
+          }
         }
       }
-    }
 
-  } else if (os == "windows") { # Windows
+    } else if (os == "windows") { # Windows
 
-    # Only one spot drive can be mounted for Windows
-    if (dir.exists("P:/")) {
-      path <- "P:/"
-      if(dir.exists("P:/dept/SPH/SPH-CIDA/BRANCHES")){
-        path <- "P:/dept/SPH/SPH-CIDA/BRANCHES"
-      }else if(dir.exists("P:/SPH/SPH-CIDA/BRANCHES")){
-        path <- "P:/SPH/SPH-CIDA/BRANCHES"
-      }else if(dir.exists("P:/SPH-CIDA/BRANCHES")){
-        path <- "P:/SPH-CIDA/BRANCHES"
-      }else if(dir.exists("P:/BRANCHES")){
-        path <- "P:/BRANCHES"
-      }
-    }else {
-      path <- get_default_path()
-      if(path==""){
-        stop("Nothing found at P:/.",
-             " Please ensure drive is mounted and you have entered your",
-             " password to access the drive (and are logged into the VPN if",
-             " needed.)")
-      }else{
-        if(! dir.exists(path)){
-          stop("Automatic Path: Failed\nDefault Path:",path,": Failed (does not exist)\n",
-               " If still experiencing issues try set_project_data_path() or ",
-               " set_global_default_path()")
+      # Only one spot drive can be mounted for Windows
+      if (dir.exists("P:/")) {
+        path <- "P:/"
+        if(dir.exists("P:/dept/SPH/SPH-CIDA/BRANCHES")){
+          path <- "P:/dept/SPH/SPH-CIDA/BRANCHES"
+        }else if(dir.exists("P:/SPH/SPH-CIDA/BRANCHES")){
+          path <- "P:/SPH/SPH-CIDA/BRANCHES"
+        }else if(dir.exists("P:/SPH-CIDA/BRANCHES")){
+          path <- "P:/SPH-CIDA/BRANCHES"
+        }else if(dir.exists("P:/BRANCHES")){
+          path <- "P:/BRANCHES"
+        }
+      }else {
+        path <- get_default_path()
+        if(path==""){
+          stop("Nothing found at P:/.",
+               " Please ensure drive is mounted and you have entered your",
+               " password to access the drive (and are logged into the VPN if",
+               " needed.)")
+        }else{
+          if(! dir.exists(path)){
+            stop("Automatic Path: Failed\nDefault Path:",path,": Failed (does not exist)\n",
+                 " If still experiencing issues try set_project_data_path() or ",
+                 " set_global_default_path()")
+          }
         }
       }
+    } else {
+      stop("Operating system could not be identified")
     }
-  } else {
-    stop("Operating system could not be identified")
   }
 
   # Combine CIDA drive path with user provided subdirectory/file
@@ -586,8 +601,30 @@ create_backup_info <- function(path) {
 
 
 
+#' Sets up the project to work on so the paths can easily be determined.
+#' When both paths are specified path functions will reference the local copy.
+#' When one is specified path functions will reference the local or remote copy whichever was specified.
+#' Future updates will add some functionality to automate tasks.
+#'
+#' @param local_project_folder This is a local copy of the project folder
+#' @param remote_project_folder This is the location of the shared drive copy of the project folder
+#'
+#' @export
+open_project <- function(local_project_folder,remote_project_folder){
+  op <- options()
+  op.cida_tools.current_project_path<- local_project_folder
+  op.cida_tools.remote_current_project_path <- remote_project_folder
+}
 
-
+#' Sets up the project to work on so the paths can easily be determined.
+#' Future updates will add some functionality to automate tasks.
+#'
+#'
+#' @export
+close_project <- function(){
+  op <- options()
+  op.cida_tools <- list(cida_tools.current_project_path="",cida_tools.remote_current_project_path="")
+}
 
 
 
