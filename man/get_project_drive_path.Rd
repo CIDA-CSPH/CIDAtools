@@ -10,13 +10,20 @@ get_project_drive_path(file = "")
 \item{file}{(optional) Path to subdirectory/file within the main project(CIDA) drive}
 }
 \value{
-Full (absolute) file path of project(CIDA) drive
+Full (absolute) file path of project(CIDA) drive plus the subdirectory/file provided.
 }
 \description{
 This function attempts to get the proper path for the Project(CIDA) drive either on
-Windows or Mac automatically.  If the expected path is not found it tried to
-load the project metadata path and if that fails it looks for a global default path
-in the user cida_defaults.dcf file.
+Windows or Mac automatically.  It returns the full CIDA drive(remote) path
+with the relative path (if provided) appended to the drive path.
+}
+\details{
+If open_project() has been called with a remote path specified the remote path
+will be used first.
+
+If that is not set it will try to determine the drive path. If the expected
+path is not found it will try to load the project metadata path and if that
+fails it looks for a global default path in the user cida_defaults.dcf file.
 }
 \examples{
 # Read data from P1234PIname project

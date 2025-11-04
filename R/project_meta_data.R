@@ -107,9 +107,7 @@ get_project_github <- function(){
 get_project_analyst <- function(){
   analyst <- get_project_meta_data('analyst')
   if(analyst==""){
-    if(!is.null(getOption('CIDAtools.analyst'))){
-      analyst <- getOption('CIDAtools.analyst')
-    }
+      analyst <- getOption('CIDAtools.analyst', default="")
   }
   return(analyst)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/project_meta_data.R
 \name{get_full_project_path}
 \alias{get_full_project_path}
-\title{Gets the currently set full path to the project}
+\title{Gets the currently set full path to the project from .ProjData/Data.dcf}
 \usage{
 get_full_project_path()
 }
@@ -10,5 +10,5 @@ get_full_project_path()
 full path to project
 }
 \description{
-Gets the currently set full path to the project
+Gets the currently set full path to the project from .ProjData/Data.dcf
 }

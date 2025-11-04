@@ -25,14 +25,11 @@
 
 get_project_drive_path <- function(file = "") {
   path <- ""
-  op <- getOptions()
-  if(op.cida_tools.remote_current_project_path != ""){
+  if(options("cida_tools.remote_current_project_path") != ""){
     #get project path
-    path <- op.cida_tools.remote_current_project_path
+    path <- options("cida_tools.remote_current_project_path")
     #remove everything after BRANCHES
-
-    #double check that current project matches path provided.
-
+    path <- sub("/BRANCHES.*","",path)
   }else{
     # Get operating system (note that MacOS and Linux return unix)
     os <- .Platform$OS.type
@@ -114,7 +111,11 @@ get_project_drive_path <- function(file = "") {
   }
 
   # Combine CIDA drive path with user provided subdirectory/file
-  file_path <- file.path(path, file)
+  if(file !=""){
+    file_path <- file.path(path, file)
+  }else{
+    file_path <- path
+  }
 
   # Check if full path exists (first as file, second as directory)
   if (!dir.exists(file_path) & !file.exists(file_path)) {
@@ -161,8 +162,9 @@ create_project <- function(path = getwd(),
                            project_name = "", pi = "", analyst = "", data_location = "",
                            git_location = "") {
 
-  if(!dir.exists(path))
+  if( ! dir.exists(path) ){
     dir.create(path, recursive = TRUE, showWarnings = FALSE)
+  }
 
   # has meta been provided?
   meta <- !all(c(project_name, pi, analyst, data_location,git_location) %in% "")
@@ -204,7 +206,9 @@ create_project <- function(path = getwd(),
 
   # Add .ProjData directory containing metadata
   if(meta){
-    dir.create(paste0(path, '/.ProjData'))
+    if (! dir.exists(paste0(path, '/.ProjData'))){
+      dir.create(paste0(path, '/.ProjData'))
+    }
     proj_data <- list(ProjectName = project_name, PI = pi,
                      analyst = analyst, datalocation = data_location,
                      gitlocation = git_location)
@@ -304,6 +308,17 @@ create_project <- function(path = getwd(),
   if(!file.exists(file.path(path, paste0(basename(path), ".Rproj"))))
     writeLines(rproj, con = file.path(path, paste0(basename(path), ".Rproj")))
 
+
+  rprofile <- paste0('if( file.exists(path.expand("~/.Rprofile") ) ){',
+                       'source(path.expand("~/.Rprofile"))',
+                       '}',
+                       'library(CIDATools)',
+                       paste0('CIDATools::open_project(localpath="',path,'")'),
+
+                      collapse="\n")
+  if(!file.exists(file.path(path,"/.Rprofile")))
+    writeLines(rprofile, con = file.path(path,"/.Rprofile"))
+
   ## Copy over SOW
   message("Project created. Please remember to copy the scope of work to to Admin/ subdirectory.")
 
@@ -319,12 +334,12 @@ proj_setup <- function(path, ...){
                  analyst = dots$analyst, data_location = dots$datalocation,
                  git_location = dots$gitlocation)
 
-  # for project info
-  dir.create(paste0(path, '/.ProjData'))
-  proj_data <- list(ProjectName = project_name, PI = dots$PI,
-                   analyst = dots$analyst, datalocation = dots$datalocation,
-                   gitlocation = dots$gitlocation)
-  write.dcf(proj_data, file.path(path, '/.ProjData/Data.dcf'))
+  # Commenting out as this is written in create_project.
+  #dir.create(paste0(path, '/.ProjData'))
+  #proj_data <- list(ProjectName = project_name, PI = dots$PI,
+  #                 analyst = dots$analyst, datalocation = dots$datalocation,
+  #                 gitlocation = dots$gitlocation)
+  #write.dcf(proj_data, file.path(path, '/.ProjData/Data.dcf'))
 
 }
 
@@ -601,7 +616,8 @@ create_backup_info <- function(path) {
 
 
 
-#' Sets up the project to work on so the paths can easily be determined.
+#' Open Project
+#' This function sets up the project to work on so the paths can easily be determined.
 #' When both paths are specified path functions will reference the local copy.
 #' When one is specified path functions will reference the local or remote copy whichever was specified.
 #' Future updates will add some functionality to automate tasks.
@@ -610,21 +626,11 @@ create_backup_info <- function(path) {
 #' @param remote_project_folder This is the location of the shared drive copy of the project folder
 #'
 #' @export
-open_project <- function(local_project_folder,remote_project_folder){
-  op <- options()
-  op.cida_tools.current_project_path<- local_project_folder
-  op.cida_tools.remote_current_project_path <- remote_project_folder
+open_project <- function(local_project_folder="",remote_project_folder=""){
+  options(cida_tools.current_project_path = local_project_folder)
+  options(cida_tools.remote_current_project_path = remote_project_folder)
 }
 
-#' Sets up the project to work on so the paths can easily be determined.
-#' Future updates will add some functionality to automate tasks.
-#'
-#'
-#' @export
-close_project <- function(){
-  op <- options()
-  op.cida_tools <- list(cida_tools.current_project_path="",cida_tools.remote_current_project_path="")
-}
 
 
 

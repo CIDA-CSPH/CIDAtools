@@ -1,6 +1,7 @@
 #'
-#' get_default_path() - checks the project metadata file then checks user path
-#' file to return a default path if no path was found automatically.
+#' get_default_path() - checks the current project remote path first then
+#' project metadata file then checks user path file to return a default path to
+#'  the CIDA Drive if no path was found automatically.
 #'
 #' @return path of project(CIDA) drive
 #' @noRd
@@ -12,18 +13,28 @@ get_default_path <- function(){
   path <- ""
   ## TODO. Check project and then check User/Global Default
 
-  # Attempt to load project meta data and pull the path from it.
-  project_location=get_full_project_path()
-  project_dir=get_project_location()
-
-
-  if( (! is.null(project_location)&& project_location!="") && (! is.null(project_dir) && project_dir!="")){
-    path <- find_drive_location(project_location,project_dir)
-  }else if(! is.null(project_location)){
-    path <- project_location
-  }else if(! is.null(project_dir)){
-
+  if(! is.null(options("cida_tools.remote_current_project_path")) && options("cida_tools.remote_current_project_path")!=""){
+    tmpPath=as.character(options("cida_tools.remote_current_project_path"))
+    if( fs::dir_exists(path=tmpPath ) ){
+      path <- tmpPath
+      path <- sub("BRANCHES.*","",path)
+    }
   }
+
+  if(is.null(path) || path==""){
+    # Attempt to load project meta data and pull the path from it.
+    project_location=get_full_project_path()
+    project_dir=get_project_location()
+
+
+    if( (! is.null(project_location)&& project_location!="") && (! is.null(project_dir) && project_dir!="")){
+      path <- find_drive_location(project_location,project_dir)
+    }else if(! is.null(project_location)){
+      path <- project_location
+    }#else if(! is.null(project_dir)){
+    #}
+  }
+
   if(is.null(path) || path==""){
     #Attempt to load the global default path
     path <- get_global_default_path()
@@ -37,7 +48,10 @@ get_default_path <- function(){
 
 
 #' Internal Function to return Project Data path for use in the other methods
-#' that read .ProjData/Data.dcf
+#' that read .ProjData/Data.dcf.  If options for the local/remote path are specified
+#' they will supersede the current directory upwards traversal to find .ProjData.
+#' If the paths are empty the normal traversal will be used that will fail after 3 parent
+#' directories.
 #'
 #' @noMd
 #' @noRd
@@ -45,20 +59,35 @@ get_default_path <- function(){
 get_project_data_dir <- function(){
   path <- ""
 
-  ## TODO There should be a way to find the top project directory and not use
-  #       the ../ relative navigation below that will fail after 3 subfolders.
-  if(fs::dir_exists(path='.ProjData/')){
-    path <- '.ProjData/'
-  }else if(fs::dir_exists(path='../.ProjData/')){
-    path <- '../.ProjData/'
-  }else if(fs::dir_exists(path='../../.ProjData/')){
-    path <- '../../.ProjData/'
-  }else if(fs::dir_exists(path='../../../.ProjData/')){
-    path <- '../../../.ProjData/'
-  }else{
-    warning(".ProjData directory not found in project.",call.=FALSE,immediate. = TRUE)
-    path <- '.ProjData/'
+  if(!is.null(options("cida_tools.current_project_path")) && options("cida_tools.current_project_path") !=""){
+    tmpPath <- as.character(options("cida_tools.current_project_path"))
+    if(fs::dir_exists(path=paste0(tmpPath,'.ProjData/') )){
+      path <- paste0(tmpPath,'.ProjData/')
+    }
+  }else if(!is.null(options("cida_tools.remote_current_project_path")) && options("cida_tools.remote_current_project_path") !=""){
+    tmpPath <- as.character(options("cida_tools.remote_current_project_path"))
+    if(fs::dir_exists(path=paste0(tmpPath,'.ProjData/') )){
+      path <- paste0(tmpPath,'.ProjData/')
+    }
   }
+
+  if(path==""){
+    ## TODO There should be a way to find the top project directory and not use
+    #       the ../ relative navigation below that will fail after 3 subfolders.
+    if(fs::dir_exists(path='.ProjData/')){
+      path <- '.ProjData/'
+    }else if(fs::dir_exists(path='../.ProjData/')){
+      path <- '../.ProjData/'
+    }else if(fs::dir_exists(path='../../.ProjData/')){
+      path <- '../../.ProjData/'
+    }else if(fs::dir_exists(path='../../../.ProjData/')){
+      path <- '../../../.ProjData/'
+    }else{
+      warning(".ProjData directory not found in project.",call.=FALSE,immediate. = TRUE)
+      path <- '.ProjData/'
+    }
+  }
+
   return(path)
 }
 
@@ -143,6 +172,6 @@ proj_location_handler <- function(loc="") {
 #' @noMd
 #' @noRd
 .onLoad <- function(libname,pkgname){
-  op <- options()
-  op.cida_tools <- list(cida_tools.current_project_path="",cida_tools.remote_current_project_path="")
+  options(cida_tools.current_project_path="")
+  options(cida_tools.remote_current_project_path="")
 }
