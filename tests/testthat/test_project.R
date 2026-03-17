@@ -100,7 +100,8 @@ test_that("get project drive path",{
   options(cida_tools.remote_current_project_path= "")
   errMsg <- tryCatch({get_project_drive_path()}, error=function(x) {geterrmessage()})  
   expect_equal(errMsg, "Nothing found at /Volumes/dept || SPH || SPH-CIDA || BRANCHES Please ensure drive is mounted and you have entered your password to access the drive (and are logged into the VPN if needed.) If still experiencing issues try set_project_data_path() or  set_global_default_path()")
-  expect_equal(drive_path,"")
+  # Since the above call to get_project_drive_path() will error out, drive_path retains the old value from the first call. Commenting out for now to prevent the check.
+  #expect_equal(drive_path,"")
 })
 
 unlink(paste(test_drive_dir,"/",test_project_path,sep=""))
