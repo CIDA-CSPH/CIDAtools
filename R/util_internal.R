@@ -10,7 +10,7 @@
 #' @noMd
 #'
 warning_email <- function(){
-  email <- "andrew.2.hill@cuanschutz.edu"
+  email <- "cida-rt@olucdenver.onmicrosoft.com"
   return(email)
 }
 
