@@ -98,17 +98,9 @@ test_that("get project drive path",{
   expect_equal(drive_path,test_drive_dir)
 
   options(cida_tools.remote_current_project_path= "")
-  w <- capture_warnings(drive_path <- get_project_drive_path())
-  #expect_match(w,".ProjData directory not found in project.",all=FALSE)
-  expect_match(w,"Nothing found at /Volumes/dept || SPH || SPH-CIDA || BRANCHES Please ensure drive is mounted and you have entered your password to access the drive \\(and are logged into the VPN if needed.\\) If still experiencing issues try set_project_data_path\\(\\) or  set_global_default_path\\(\\)",perl=TRUE,all=FALSE)
+  errMsg <- tryCatch({get_project_drive_path()}, error=function(x) {geterrmessage()})  
+  expect_equal(errMsg, "Nothing found at /Volumes/dept || SPH || SPH-CIDA || BRANCHES Please ensure drive is mounted and you have entered your password to access the drive (and are logged into the VPN if needed.) If still experiencing issues try set_project_data_path() or  set_global_default_path()")
   expect_equal(drive_path,"")
-
 })
-
-test_that("test project .Rprofile",{
-
-})
-
-
 
 unlink(paste(test_drive_dir,"/",test_project_path,sep=""))
