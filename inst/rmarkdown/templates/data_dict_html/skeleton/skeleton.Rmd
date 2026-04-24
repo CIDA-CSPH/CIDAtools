@@ -1,9 +1,9 @@
 ---
 title: "Data Dictionary"
 author: |
-  | Project: `r CIDAtools::ProjectName()`
-  | Analyst: `r CIDAtools::ProjectAnalyst()`
-  | Investigator(s): `r CIDAtools::ProjectPI()`
+  | Project: `r CIDAtools::get_project_name()`
+  | Analyst: `r CIDAtools::get_project_analyst()`
+  | Investigator(s): `r CIDAtools::get_project_pi()`
   | Date generated: `r paste(format(Sys.Date(), '%B %d, %Y'))`
 output:
   html_document:

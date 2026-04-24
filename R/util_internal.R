@@ -114,4 +114,16 @@ deprecated_warn <- function(function_name="", version=""){
   warning(paste(c(function_name,"() was deprecated in version ",version)),call.=FALSE,immediate. = TRUE)
 }
 
+#' Deprecated Warning for renamed functions.
+#' renamed_warn() - Functon which notifies the user that the called function
+#' has been renamed.
+#'
+#' @param function_name The old function name.
+#' @param replacement_name The new function name.
+#' @noRd
+#' @noMd
+renamed_warn <- function(function_name="", replacement_name="") {
+  warning(paste(c(function_name, "() has been renamed to ", replacement_name, "(). Please use the updated function name in new code.")), call.=FALSE, immediate.=TRUE)
+}
+
 

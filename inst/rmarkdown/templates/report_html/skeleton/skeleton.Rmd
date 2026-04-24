@@ -1,11 +1,11 @@
 ---
 title: Report
 author: |
- | Project: `r CIDAtools::ProjectName()`
+ | Project: `r CIDAtools::get_project_name()`
  |
- | Analyst: `r CIDAtools::ProjectAnalyst()`
+ | Analyst: `r CIDAtools::get_project_analyst()`
  |
- | Investigator(s): `r CIDAtools::ProjectPI()`
+ | Investigator(s): `r CIDAtools::get_project_pi()`
  |
  | Report generated: `r paste(format(Sys.Date(), '%B %d, %Y'))`
 output:

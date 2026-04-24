@@ -34,9 +34,9 @@ library(kableExtra)
 library(CIDAtools)
 ```
 
-**Project**: `r CIDAtools::ProjectName()` \newline
-**Analyst**: `r CIDAtools::ProjectAnalyst()`\newline
-**Investigator(s)**: `r CIDAtools::ProjectPI()`\newline
+**Project**: `r CIDAtools::get_project_name()` \newline
+**Analyst**: `r CIDAtools::get_project_analyst()`\newline
+**Investigator(s)**: `r CIDAtools::get_project_pi()`\newline
 **Report generated**: `r paste(format(Sys.Date(), '%B %d, %Y'))`\newline
 
 
