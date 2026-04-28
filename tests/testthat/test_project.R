@@ -74,9 +74,10 @@ test_that("test project meta data",{
   expect_equal(analyst,"Test Name")
   expect_equal(location,"BRANCHES/dr_test/test_project/")
 
+  browser()
   options(cida_tools.remote_current_project_path= "")
 
-  #setwd(full_path)
+  setwd(full_path)
   # Process the DCF file using your function
   github <- get_project_github()
   proj_name <- get_project_name()
