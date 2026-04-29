@@ -58,7 +58,7 @@ test_that("test project meta data",{
   w <- capture_warnings(location <- get_project_location())
   expect_match(w,".ProjData directory not found in project.",all=FALSE)
   expect_match(w,".ProjData/Data.dcf File does not exist.",all=FALSE)
-  expect_equal(location,"")
+  expect_equal(location,fs::path(""))
 
   open_project(remote_project_folder=full_path)
   # Process the DCF file using your function
@@ -72,7 +72,7 @@ test_that("test project meta data",{
   expect_equal(proj_name, "Test Project")
   expect_equal(pi, "Dr. Test")
   expect_equal(analyst,"Test Name")
-  expect_equal(location,"BRANCHES/dr_test/test_project/")
+  expect_equal(location,fs::path("BRANCHES/dr_test/test_project/"))
 
   options(cida_tools.remote_current_project_path= "")
 
@@ -89,19 +89,19 @@ test_that("test project meta data",{
   expect_equal(proj_name, "Test Project")
   expect_equal(pi, "Dr. Test")
   expect_equal(analyst,"Test Name")
-  expect_equal(location,"BRANCHES/dr_test/test_project/")
+  expect_equal(location,fs::path("BRANCHES/dr_test/test_project/"))
 
 })
 
 test_that("get project drive path",{
   open_project(remote_project_folder=full_path)
   drive_path <- get_project_drive_path()
-  browser()
   expect_equal(drive_path,test_drive_dir)
 
   options(cida_tools.remote_current_project_path= "")
   errMsg <- tryCatch({get_project_drive_path()}, error=function(x) {geterrmessage()})
-  expect_equal(errMsg, "Nothing found at /Volumes/dept || SPH || SPH-CIDA || BRANCHES Please ensure drive is mounted and you have entered your password to access the drive (and are logged into the VPN if needed.) If still experiencing issues try set_project_data_path() or  set_global_default_path()")
+  expect_match(errMsg, "Nothing found at (.*?) ensure drive is mounted and you have entered your password to access the drive \\(and are logged into the VPN if needed\\.\\) If still experiencing issues try set_project_data_path\\(\\) or  set_global_default_path\\(\\)")
+  #expect_equal(errMsg, "Nothing found at /Volumes/dept || SPH || SPH-CIDA || BRANCHES Please ensure drive is mounted and you have entered your password to access the drive (and are logged into the VPN if needed.) If still experiencing issues try set_project_data_path() or  set_global_default_path()")
   # Since the above call to get_project_drive_path() will error out, drive_path retains the old value from the first call. Commenting out for now to prevent the check.
   #expect_equal(drive_path,"")
 })

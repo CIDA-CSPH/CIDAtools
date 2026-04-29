@@ -26,7 +26,7 @@ test_that("create a test project dcf file and test getter functions", {
    expect_equal(proj_name, "Test Project 5")
    expect_equal(pi, "Dr. Test")
    expect_equal(analyst,"Analyst Name")
-   expect_equal(location,"BRANCHES/dr_test/test_project/")
+   expect_equal(location,fs::path("BRANCHES/dr_test/test_project/"))
 
   })
 
@@ -40,7 +40,7 @@ test_that("create a test project dcf file and test getter functions", {
     expect_equal(get_project_analyst(),"Analyst 2")
     expect_equal(get_project_name(),"Project 1")
     expect_equal(get_project_pi(),"Dr. Test2")
-    expect_equal(get_project_location(),"BRANCHES/dr_test/test_project2/")
+    expect_equal(get_project_location(),fs::path("BRANCHES/dr_test/test_project2/"))
     expect_equal(get_project_github(),"CIDATools/Test2_test_project2")
 
   })

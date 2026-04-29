@@ -96,7 +96,10 @@ get_project_drive_path <- function(file = "") {
           stop("Nothing found at P:/.",
                " Please ensure drive is mounted and you have entered your",
                " password to access the drive (and are logged into the VPN if",
-               " needed.)")
+               " needed.)",
+               " If still experiencing issues try set_project_data_path() or ",
+               " set_global_default_path()"
+               )
         }else{
           if(! dir.exists(path)){
             stop("Automatic Path: Failed\nDefault Path:",path,": Failed (does not exist)\n",

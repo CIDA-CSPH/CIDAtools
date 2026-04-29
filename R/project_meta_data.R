@@ -156,9 +156,9 @@ get_project_pi <- function(){
 
 get_project_location <- function(path = ''){
   temp_path <- get_project_meta_data('datalocation')
-  full_path <- ""
+  full_path <- fs::path("")
   if( temp_path!="" ){
-    full_path <- file.path(temp_path, path)
+    full_path <- fs::path_join(c(temp_path, path))
   }else{
     message('Project location not found, use set_project_meta_data("datalocation", x).')
   }
