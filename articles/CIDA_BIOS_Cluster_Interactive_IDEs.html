@@ -68,7 +68,7 @@
                         <h4 data-toc-skip class="author">Research Tools
 Committee</h4>
             
-            <h4 data-toc-skip class="date">Last Updated: 2025-06-24</h4>
+            <h4 data-toc-skip class="date">Last Updated: 2026-04-29</h4>
       
 
       <div class="d-none name"><code>CIDA_BIOS_Cluster_Interactive_IDEs.Rmd</code></div>
@@ -281,17 +281,17 @@ platform:</p>
 </table>
 <p>Once the terminal window is open, type:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">ssh</span> biostats</span></code></pre></div>
-<p><img src="figures/CIDA_BIOS_Cluster_Interactive_IDEs/biostats_hpc_ssh_2.png" width="80%" style="display: block; margin: auto;"></p>
+<p><img src="figures/CIDA_BIOS_Cluster_Interactive_IDEs/biostats_hpc_ssh_2.png" class="r-plt" alt="" width="80%" style="display: block; margin: auto;"></p>
 <p>Once you’ve logged in via SSH, open a web browser on your local
 machine (but keep the SSH window open!) and enter:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="ex">localhost:8895</span></span></code></pre></div>
 <p>in the address bar. If you assigned different ports in your config
 file, modify the address accordingly.</p>
 <p>In the browser, you should see an error screen. This is expected.</p>
-<p><img src="figures/CIDA_BIOS_Cluster_Interactive_IDEs/localhost_test.png" width="80%" style="display: block; margin: auto;"></p>
+<p><img src="figures/CIDA_BIOS_Cluster_Interactive_IDEs/localhost_test.png" class="r-plt" alt="" width="80%" style="display: block; margin: auto;"></p>
 <p>Moving back to your SSH window, you should see some error messages
 populate the screen:</p>
-<p><img src="figures/CIDA_BIOS_Cluster_Interactive_IDEs/biostats_hpc_ssh_local_forward_test.png" width="80%" style="display: block; margin: auto;"></p>
+<p><img src="figures/CIDA_BIOS_Cluster_Interactive_IDEs/biostats_hpc_ssh_local_forward_test.png" class="r-plt" alt="" width="80%" style="display: block; margin: auto;"></p>
 <p>If you see these error messages in your SSH window,
 Congratulations!</p>
 <p>This means you’ve configured SSH correctly! The error messages appear
@@ -344,7 +344,7 @@ RStudio session. This ID will change each time you launch a new job.</p>
 <p>Now, run <code>squeue</code>.</p>
 <p>You should see an entry for your Job ID, similar to my example
 below.</p>
-<p><img src="figures/CIDA_BIOS_Cluster_Interactive_IDEs/biostats_hpc_rstudio_launch.png" width="80%" style="display: block; margin: auto;"></p>
+<p><img src="figures/CIDA_BIOS_Cluster_Interactive_IDEs/biostats_hpc_rstudio_launch.png" class="r-plt" alt="" width="80%" style="display: block; margin: auto;"></p>
 <p>This job will also produce two output files
 <code>rstudio_helper.out</code> and <code>rstudio_helper.err</code>
 which will log outputs or errors that the system encounters.</p>
@@ -359,7 +359,7 @@ back to your web browser and visit</p>
 <p>in the address bar.</p>
 <p>You should see a loading screen, and eventually the RStudio
 interface!</p>
-<p><img src="figures/CIDA_BIOS_Cluster_Interactive_IDEs/biostats_hpc_rstudio_interface.png" width="80%" style="display: block; margin: auto;"></p>
+<p><img src="figures/CIDA_BIOS_Cluster_Interactive_IDEs/biostats_hpc_rstudio_interface.png" class="r-plt" alt="" width="80%" style="display: block; margin: auto;"></p>
 <p>Congratulations! You can now use RStudio on the cluster!</p>
 <p>Feel free to try out the interface and verify that everything works
 as expected.</p>
@@ -440,7 +440,7 @@ job.</p>
 <p>Now, run <code>squeue</code>.</p>
 <p>You should see an entry for your Job ID, similar to my example
 below.</p>
-<p><img src="figures/CIDA_BIOS_Cluster_Interactive_IDEs/biostats_hpc_jupyter_launch.png" width="80%" style="display: block; margin: auto;"></p>
+<p><img src="figures/CIDA_BIOS_Cluster_Interactive_IDEs/biostats_hpc_jupyter_launch.png" class="r-plt" alt="" width="80%" style="display: block; margin: auto;"></p>
 <p>This job will also produce two output files
 <code>jupyter_helper.out</code> and <code>jupyter_helper.err</code>
 which will log outputs or errors that the system encounters.</p>
@@ -462,7 +462,7 @@ back to your web browser and visit</p>
 <p>in the address bar.</p>
 <p>You should see a loading screen, and eventually the JupyterLab
 interface!</p>
-<p><img src="figures/CIDA_BIOS_Cluster_Interactive_IDEs/biostats_hpc_jupyter_interface.png" width="80%" style="display: block; margin: auto;"></p>
+<p><img src="figures/CIDA_BIOS_Cluster_Interactive_IDEs/biostats_hpc_jupyter_interface.png" class="r-plt" alt="" width="80%" style="display: block; margin: auto;"></p>
 <p>Congratulations! You can now use JupyterLab on the cluster!</p>
 <p>Feel free to try out the interface and verify that everything works
 as expected.</p>
@@ -814,7 +814,7 @@ the RStudio/JupyterLab server needs to run on a compute node, which is
 not directly acessible (via the network) to your local machine.
 Additionally, hosting a public web server on these nodes could present a
 security risk.</p>
-<p><img src="figures/CIDA_BIOS_Cluster_Interactive_IDEs/biostats_hpc_rstudio_diagram.png" width="80%" style="display: block; margin: auto;"></p>
+<p><img src="figures/CIDA_BIOS_Cluster_Interactive_IDEs/biostats_hpc_rstudio_diagram.png" class="r-plt" alt="" width="80%" style="display: block; margin: auto;"></p>
 <p>To facilitate a secure connection, each RStudio/JupyterLab job
 creates a link between your (local) computer and the compute node
 running the job via a pair of SSH tunnels.</p>
@@ -884,7 +884,7 @@ forward traffic directly to the configured Unix socket.</li>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

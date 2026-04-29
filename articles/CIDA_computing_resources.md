@@ -1,0 +1,81 @@
+# CIDA Computing Resources
+
+### Introduction
+
+This document introduces the available computing resources with
+guidelines and linkes to access/request them.
+
+Who does this apply to: All members of CIDA (Professor, RA, RI, Senior
+RI, PRA, Senior PRA)
+
+### Computing Resources Available to CIDA Members
+
+This table lists the computing resources available to CIDA members.
+Please note that each compute resource has differing policies about
+storage of PHI/HIPAA data. Please see the data storage guideline for
+more information.
+
+| Computing Resource                                 | Description                                                                  | HIPAA/PHI Data |
+|----------------------------------------------------|------------------------------------------------------------------------------|----------------|
+| Personal Computer/Laptop                           | Free for CIDA members                                                        | Limited        |
+| CIDA/Biostats HPC                                  | Free for CIDA members                                                        | Limited        |
+| Alpine                                             | Almost Free for CIDA members (if requested resources \<= default allocation) | No             |
+| Commercial computing platforms such as AWS, IBM, … | Cost depends on the type of requested resouces                               | No             |
+
+#### Personal Computer 
+
+CIDA provides all its members with a PC or Macintosh based on their
+preference.
+
+#### CIDA/Biostats HPC Cluster 
+
+The CIDA/Biostats HPC Cluster is an HPC cluster running the SLURM
+cluster management software.
+
+This cluster is useful for computations which require large amounts of
+computing resource or involve long-running tasks.
+
+Instructions for accessing and using the CIDA/Biostats HPC are available
+[here](https://cida-csph.github.io/CIDAtools/articles/CIDA_BIOS_Cluster.md).
+
+|              | csphbiostats                           | cidalappc01                  | cidalappc02                  | cidalappc03                  |
+|--------------|----------------------------------------|------------------------------|------------------------------|------------------------------|
+| CPU          | 2x Intel Xeon Gold 61522 22-core CPU   | 2x AMD EPYC 7H12 64-Core CPU | 2x AMD EPYC 7H12 64-Core CPU | 2x AMD EPYC 7H12 64-Core CPU |
+| Disk storage | 50TB (Shared across all nodes)         | ”                            | ”                            | ”                            |
+| Memory Size  | 1TB                                    | 1TB                          | 512GB                        | 1TB                          |
+| OS           | Rocky Linux 9.5 (RHEL)                 | ”                            | ”                            | ”                            |
+| Software     | R, Python, RStudio Server, Jupyter Lab | ”                            | ”                            | ”                            |
+
+#### Alpine 
+
+Alpine is the University of Colorado Boulder Research Computing’s
+third-generation high performance computing (HPC) cluster. Alpine is a
+heterogeneous compute cluster currently composed of hardware provided
+from University of Colorado Boulder, Colorado State University, and
+Anschutz Medical Campus. Alpine currently offers 317 compute nodes and a
+total of 18,080 cores.
+
+Alpine can be securely accessed anywhere, anytime using OpenOnDemand or
+ssh connectivity to the CURC system. Step-by-step instruction to access
+Alpine is available at:
+<https://curc.readthedocs.io/en/latest/clusters/alpine/quick-start.html>
+
+|                 |                    Alpine                    |                                                     |
+|-----------------|:--------------------------------------------:|----------------------------------------------------:|
+| Processor       |            General compute nodes             |                                                 GPU |
+| Nodes           |                      64                      |                                                  11 |
+| Core            | 64 × AMD Milan Compute nodes (64 cores/node) | 2 × 8 GPU-enabled (3x AMD MI100) atop AMD Milan CPU |
+| Memory Size     |                    239 GB                    |                                               2 TiB |
+| Cost            |           Free for defined setting           |                                                Free |
+| HIPAA compliant |                      NO                      |                                                  NO |
+| OS              |                   RHEL 8.4                   |                                            RHEL 8.4 |
+
+### Useful Links
+
+Health Insurance Portability and Accountability Act (HIPAA):  
+[http://www.hhs.gov/hipaa/for-professionals/index.html](http://www.hhs.gov/hipaa/for-professionals/index.md)
+
+Guidance Regarding Methods for De-identification of Protected Health
+Information in Accordance with the Health Insurance Portability and
+Accountability Act (HIPAA) Privacy Rule:  
+[http://www.hhs.gov/hipaa/for-professionals/privacy/special-topics/de-identification/index.html](http://www.hhs.gov/hipaa/for-professionals/privacy/special-topics/de-identification/index.md)

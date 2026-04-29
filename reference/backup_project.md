@@ -1,0 +1,55 @@
+# Backup Project Directory
+
+This function backs up a CIDA project to the shared (P) CIDA drive. The
+backup directory can either be existing (in which only changed
+files/folders are updated), or nonexisting, in which case a full project
+backup is created.
+
+## Usage
+
+``` r
+backup_project(
+  path_from = getwd(),
+  path_to = NULL,
+  exclude = c(".DS_Store", ".Rproj.user", ".git"),
+  recreate = FALSE,
+  data_only = TRUE,
+  readme = TRUE
+)
+```
+
+## Arguments
+
+- path_from:
+
+  Path from where the folders should be copied (project directory
+  location).
+
+- path_to:
+
+  Path to where the folders should be copied (P drive, only used if
+  specified).
+
+- exclude:
+
+  files/folders NOT to be backed up to the P-drive (useful for larger
+  files that don't change often). Currently not used.
+
+- recreate:
+
+  should backup be created from the ground up? (can take longer, but
+  useful for projects with many changes)
+
+- data_only:
+
+  should only subdirs including "data" (DataRaw/ and DataProcessed/) be
+  backed up?
+
+- readme:
+
+  forces backup of project readme
+
+## Value
+
+This function has verbose output to ensure the back up is working, and
+ultimately returns a success indicator that's returned by file.copy.
