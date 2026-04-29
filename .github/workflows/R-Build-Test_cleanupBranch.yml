@@ -75,26 +75,5 @@ jobs:
         with:
           name: coverage-test-failures
           path: ${{ runner.temp }}/package
-      - name: Document
-        run: Rscript -e 'roxygen2::roxygenise()'
 
-      - name: Setup Quarto
-        uses: quarto-dev/quarto-actions/setup@v2
-        with:
-          tinytex: true
-        #  version: 'latest' # Or a specific Quarto version like '1.4.0'
 
-      - name: Build and install package
-        run: |
-          Rscript -e "remotes::install_local(build = TRUE, force = TRUE)"
-
-      - name: Build Quarto Website
-        run: Rscript -e 'altdoc::render_docs(path = ".", verbose = TRUE, parallel = FALSE, freeze = FALSE)'
-
-      - name: Deploy to GitHub pages 🚀
-        if: github.event_name != 'pull_request'
-        uses: JamesIves/github-pages-deploy-action@v4.4.1
-        with:
-          clean: false
-          branch: pages_test
-          folder: website
