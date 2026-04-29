@@ -60,7 +60,6 @@ test_that("test project meta data",{
   expect_match(w,".ProjData/Data.dcf File does not exist.",all=FALSE)
   expect_equal(location,"")
 
-  browser()
   open_project(remote_project_folder=full_path)
   # Process the DCF file using your function
   github <- get_project_github()
