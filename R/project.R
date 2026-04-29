@@ -130,7 +130,7 @@ get_project_drive_path <- function(file = "") {
   }
 
   # Return full path
-  return(file_path)
+  return(fs::path(file_path))
 }
 
 
@@ -310,7 +310,7 @@ create_project <- function(path = getwd(),
 
   # TODO: We should search for both the global (home directory) and local (project directory) .Rprofiles.
   # TODO: This uses '~', is this portable to Windows (and is RProfile stored in the same place on Windows)?
-  rprofile <- paste0(c('if( file.exists(path.expand("~/.Rprofile") ) ){',
+  rprofile <- paste0(c('if( file.exists(fs::path_expand("~/.Rprofile") ) ){',
                        'source(path.expand("~/.Rprofile"))',
                        '}',
                        'library(CIDATools)',

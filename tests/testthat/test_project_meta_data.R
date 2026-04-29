@@ -1,5 +1,5 @@
 home_dir <- fs::path_home()
-test_drive_dir <- "~/test_drive/"
+test_drive_dir <- fs::path_expand("~/test_drive/")
 fs::dir_create(path=test_drive_dir)
 test_project_path <- "BRANCHES/dr_test/test_project"
 full_project_dir <- paste(test_drive_dir,test_project_path,"/.ProjData/",sep="")

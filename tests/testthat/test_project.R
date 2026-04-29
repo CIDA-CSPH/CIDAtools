@@ -1,5 +1,5 @@
 home_dir <- fs::path_home()
-test_drive_dir <- "~/test_drive"
+test_drive_dir <- fs::path_expand("~/test_drive")
 fs::dir_create(path=test_drive_dir)
 test_project_path <- "BRANCHES/dr_test/test_project/"
 
@@ -96,6 +96,7 @@ test_that("test project meta data",{
 test_that("get project drive path",{
   open_project(remote_project_folder=full_path)
   drive_path <- get_project_drive_path()
+  browser()
   expect_equal(drive_path,test_drive_dir)
 
   options(cida_tools.remote_current_project_path= "")

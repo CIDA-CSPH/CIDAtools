@@ -91,7 +91,7 @@ get_project_data_dir <- function(){
     }
   }
 
-  return(path)
+  return(fs::path(path))
 }
 
 
