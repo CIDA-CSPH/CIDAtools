@@ -60,6 +60,7 @@ test_that("test project meta data",{
   expect_match(w,".ProjData/Data.dcf File does not exist.",all=FALSE)
   expect_equal(location,"")
 
+  browser()
   open_project(remote_project_folder=full_path)
   # Process the DCF file using your function
   github <- get_project_github()
@@ -77,6 +78,7 @@ test_that("test project meta data",{
   options(cida_tools.remote_current_project_path= "")
 
   setwd(full_path)
+  rm(github, proj_name, pi, analyst, location)
   # Process the DCF file using your function
   github <- get_project_github()
   proj_name <- get_project_name()

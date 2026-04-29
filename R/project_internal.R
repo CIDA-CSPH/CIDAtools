@@ -15,8 +15,9 @@ get_default_path <- function(){
 
   if(! is.null(options("cida_tools.remote_current_project_path")) && options("cida_tools.remote_current_project_path")!=""){
     tmpPath=as.character(options("cida_tools.remote_current_project_path"))
-    if( fs::dir_exists(path=tmpPath ) ){
+    if(fs::dir_exists(tmpPath)){
       path <- tmpPath
+      # TODO: Fix this
       path <- sub("BRANCHES.*","",path)
     }
   }
@@ -60,27 +61,29 @@ get_project_data_dir <- function(){
   path <- ""
 
   if(!is.null(options("cida_tools.current_project_path")) && options("cida_tools.current_project_path") !=""){
-    tmpPath <- as.character(options("cida_tools.current_project_path"))
-    if(fs::dir_exists(path=paste0(tmpPath,'.ProjData/') )){
-      path <- paste0(tmpPath,'.ProjData/')
+    tmpPath <- fs::path(options("cida_tools.current_project_path"))
+    checkSuffix <- fs::path_join(c(tmpPath,'.ProjData/'))
+    if(fs::dir_exists(checkSuffix)){
+      path <- checkSuffix
     }
   }else if(!is.null(options("cida_tools.remote_current_project_path")) && options("cida_tools.remote_current_project_path") !=""){
     tmpPath <- as.character(options("cida_tools.remote_current_project_path"))
-    if(fs::dir_exists(path=paste0(tmpPath,'.ProjData/') )){
-      path <- paste0(tmpPath,'.ProjData/')
+    checkSuffix <- fs::path_join(c(tmpPath,'.ProjData/'))
+    if(fs::dir_exists(checkSuffix)){
+      path <- checkSuffix
     }
   }
 
   if(path==""){
     ## TODO There should be a way to find the top project directory and not use
     #       the ../ relative navigation below that will fail after 3 subfolders.
-    if(fs::dir_exists(path='.ProjData/')){
+    if(fs::dir_exists('.ProjData/')){
       path <- '.ProjData/'
-    }else if(fs::dir_exists(path='../.ProjData/')){
+    }else if(fs::dir_exists('../.ProjData/')){
       path <- '../.ProjData/'
-    }else if(fs::dir_exists(path='../../.ProjData/')){
+    }else if(fs::dir_exists('../../.ProjData/')){
       path <- '../../.ProjData/'
-    }else if(fs::dir_exists(path='../../../.ProjData/')){
+    }else if(fs::dir_exists('../../../.ProjData/')){
       path <- '../../../.ProjData/'
     }else{
       warning(".ProjData directory not found in project.",call.=FALSE,immediate. = TRUE)
@@ -101,7 +104,7 @@ get_project_data_dir <- function(){
 #'
 get_project_data_path <- function(){
   path <- get_project_data_dir()
-  path <- paste0(path,"Data.dcf")
+  path <- fs::path_join(c(path,"Data.dcf"))
   return(path)
 }
 
