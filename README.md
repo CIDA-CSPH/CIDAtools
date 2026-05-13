@@ -18,8 +18,8 @@ efficient!
 
 To install `CIDAtools` on your local machine:
 
-    # install.packages("devtools")
-    devtools::install_github('CIDA-CSPH/CIDAtools')
+    # install.packages("pak")
+    pak::pak('CIDA-CSPH/CIDAtools')
 
 ## Creating a new project
 
@@ -29,7 +29,7 @@ the Rstudio GUI (File\>New Project\>New Directory\>New CIDA Project).
 Or, to create a new project folder structure from the R console,
 navigate to the main project directory, and run:
 
-    create_project()
+    create_project(project_name="My Project",analyst = "Your Name")
 
 Feel free to set the project name, PI, and analyst via the
 `ProjectName`, `PI`, or `analyst` arguments respectively, and see

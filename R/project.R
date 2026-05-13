@@ -145,9 +145,9 @@ get_project_drive_path <- function(file = "") {
 #'
 #'@param path Where should they be created? Default is the working directory.
 #'@param template Which subdirectories to create
-#'@param project_name Name of project, or "" for blank
+#'@param project_name Name of project, (required)
 #'@param pi Name of PI and credentials, or "" for blank
-#'@param analyst Name of Analyst(s), or "" for blank
+#'@param analyst Name of Analyst(s), (required)
 #'@param data_location Location of project on CIDA Drive, or "" for blank
 #'@param git_location Location project on GitHub
 #'@return This function creates the desired project subdirectories and readmes,
@@ -162,15 +162,21 @@ get_project_drive_path <- function(file = "") {
 create_project <- function(path = getwd(),
                            template = c('Admin', 'Background', 'Code', 'DataRaw',
                                         'DataProcessed', 'Dissemination', 'Reports'),
-                           project_name = "", pi = "", analyst = "", data_location = "",
+                           project_name, pi = "", analyst, data_location = "",
                            git_location = "") {
-
+  if (missing(project_name) || !nzchar(trimws(project_name))){
+    stop(" 'project_name' is required and cannot be empty.", call. = FALSE)
+  }
+  if (missing(analyst) || !nzchar(trimws(analyst))){
+    stop(" 'analyst' is required and cannot be empty.", call. = FALSE)
+  }
   if( ! dir.exists(path) ){
     dir.create(path, recursive = TRUE, showWarnings = FALSE)
   }
 
   # has meta been provided?
-  meta <- !all(c(project_name, pi, analyst, data_location,git_location) %in% "")
+ # meta <- !all(c(project_name, pi, analyst, data_location,git_location) %in% "")
+ 
 
   # set which ReadMe.md files to create
   template <- match.arg(template, several.ok = T)
@@ -208,15 +214,15 @@ create_project <- function(path = getwd(),
   create_readme(template = template, path = path)
 
   # Add .ProjData directory containing metadata
-  if(meta){
-    if (! dir.exists(paste0(path, '/.ProjData'))){
-      dir.create(paste0(path, '/.ProjData'))
-    }
-    proj_data <- list(ProjectName = project_name, PI = pi,
+  #if(meta){
+  if (! dir.exists(paste0(path, '/.ProjData'))){
+    dir.create(paste0(path, '/.ProjData'))
+  }
+  proj_data <- list(ProjectName = project_name, PI = pi,
                      analyst = analyst, datalocation = data_location,
                      gitlocation = git_location)
-    write.dcf(proj_data, file.path(path, '/.ProjData/Data.dcf'))
-  }
+  write.dcf(proj_data, file.path(path, '/.ProjData/Data.dcf'))
+  #}
 
   # add to current gitignore if exists
   if(file.exists(file.path(path, '.gitignore'))){
@@ -332,9 +338,15 @@ proj_setup <- function(path, ...){
   # ensure path exists
   dots <- list(...)
   project_name <- paste0(path)
-
+  analyst_val <- dots$analyst
+  if(is.null(analyst_val) || !nzchar(trimws(analyst_val))){
+    analyst_val <- "UNKNOWN - please update with set_project_analyst()"
+    warning("No analyst name was provided. Please set it with",
+    "CIDAtools::set_project_analyst('Your Name').",
+    call. = FALSE)
+  }
   create_project(path, project_name = project_name, pi = dots$PI,
-                 analyst = dots$analyst, data_location = dots$datalocation,
+                 analyst = analyst_val, data_location = dots$datalocation,
                  git_location = dots$gitlocation)
 
   # Commenting out as this is written in create_project.

@@ -8,9 +8,9 @@ create_project(
   path = getwd(),
   template = c("Admin", "Background", "Code", "DataRaw", "DataProcessed",
     "Dissemination", "Reports"),
-  project_name = "",
+  project_name,
   pi = "",
-  analyst = "",
+  analyst,
   data_location = "",
   git_location = ""
 )
@@ -20,11 +20,11 @@ create_project(
 
 \item{template}{Which subdirectories to create}
 
-\item{project_name}{Name of project, or "" for blank}
+\item{project_name}{Name of project, (required)}
 
 \item{pi}{Name of PI and credentials, or "" for blank}
 
-\item{analyst}{Name of Analyst(s), or "" for blank}
+\item{analyst}{Name of Analyst(s), (required)}
 
 \item{data_location}{Location of project on CIDA Drive, or "" for blank}
 

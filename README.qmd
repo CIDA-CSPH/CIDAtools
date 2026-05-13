@@ -15,8 +15,9 @@ of the Colorado School of Public Health) happier and more efficient!
 To install `CIDAtools` on your local machine:
 
 ```
-# install.packages("devtools")
-devtools::install_github('CIDA-CSPH/CIDAtools')
+	# install.packages("pak")
+    pak::pak('CIDA-CSPH/CIDAtools')
+
 ```
 
 ## Creating a new project
@@ -28,7 +29,7 @@ Or, to create a new project folder structure from the R console,
 navigate to the main project directory, and run: 
 
 ```
-create_project()
+create_project(project_name="My Project",analyst = "Your Name")
 ```
 
 Feel free to set the project name, PI, and analyst via the `ProjectName`, `PI`, or `analyst`

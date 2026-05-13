@@ -28,6 +28,44 @@ test_that("test project creation",{
   expect_equal(file.exists(paste0(full_path,"/test_project.Rproj")), TRUE)
   expect_equal(file.exists(paste0(full_path,"/.Rprofile")), TRUE)
 })
+test_that("create_project errors when project_name is missing", {
+  expect_error(
+    create_project(path = tempdir(), analyst = "Test"),
+    "'project_name' is required and cannot be empty."
+  )
+})
+
+test_that("create_project errors when analyst is missing", {
+  expect_error(
+    create_project(path = tempdir(), project_name = "Test"),
+    "'analyst' is required and cannot be empty."
+  )
+})
+
+test_that("create_project errors when project_name is empty string", {
+  expect_error(
+    create_project(path = tempdir(), project_name = "", analyst = "Test"),
+    "'project_name' is required and cannot be empty."
+  )
+})
+
+test_that("create_project errors when analyst is empty string", {
+  expect_error(
+    create_project(path = tempdir(), project_name = "Test", analyst = ""),
+    "'analyst' is required and cannot be empty."
+  )
+})
+
+test_that("metadata file is always created", {
+  temp_path <- file.path(tempdir(), "test_meta_always")
+  unlink(temp_path, recursive = TRUE)
+  create_project(path = temp_path,
+                 project_name = "Meta Test",
+                 analyst = "Test Analyst")
+  expect_true(dir.exists(file.path(temp_path, ".ProjData")))
+  expect_true(file.exists(file.path(temp_path, ".ProjData/Data.dcf")))
+  unlink(temp_path, recursive = TRUE)
+})
 
 test_that("test open_project",{
   open_project(remote_project_folder=full_path)
