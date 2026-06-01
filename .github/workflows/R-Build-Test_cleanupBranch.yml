@@ -10,7 +10,7 @@ name: R
 
 on:
   push:
-    branches: [] #branches: [ "cleanup_edits_SM" ]
+    branches: [ "cleanup_edits_SM" ]
 
 permissions:
   contents: read
