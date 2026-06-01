@@ -4,9 +4,7 @@
 # Perhaps remove following deprecation of the methods marked for deprecation.
 
 
-#'
-#' @noMd
-#' @noRd
+#' @inherit get_project_drive_path
 #' @export
 CIDA_drive_path <- function(file="") {
   renamed_warn(function_name="CIDA_drive_path", replacement_name="get_project_drive_path")
@@ -15,9 +13,7 @@ CIDA_drive_path <- function(file="") {
 }
 
 
-#'
-#' @noMd
-#' @noRd
+#' @inherit set_project_name
 #' @export
 SetProjectName <- function(ProjectName){
   renamed_warn(function_name="SetProjectName", replacement_name="set_project_name")
@@ -25,9 +21,7 @@ SetProjectName <- function(ProjectName){
   return(set_project_name(ProjectName))
 }
 
-#'
-#' @noMd
-#' @noRd
+#' @inherit set_project_analyst
 #' @export
 SetProjectAnalyst <- function(AnalystName){
   renamed_warn(function_name="SetProjectAnalyst", replacement_name="set_project_analyst")
@@ -36,9 +30,7 @@ SetProjectAnalyst <- function(AnalystName){
 }
 
 
-#'
-#' @noMd
-#' @noRd
+#' @inherit set_project_pi
 #' @export
 SetProjectPI <- function(PI){
   renamed_warn(function_name="SetProjectPI", replacement_name="set_project_pi")
@@ -47,9 +39,7 @@ SetProjectPI <- function(PI){
 }
 
 
-#'
-#' @noMd
-#' @noRd
+#' @inherit set_project_location
 #' @export
 SetProjectLocation <- function(path){
   renamed_warn(function_name="SetProjectLocation", replacement_name="set_project_location")
@@ -57,9 +47,7 @@ SetProjectLocation <- function(path){
   return(set_project_location(path))
 }
 
-#'
-#' @noMd
-#' @noRd
+#' @inherit get_project_analyst title description
 #' @export
 ProjectAnalyst <- function(){
   renamed_warn(function_name="ProjectAnalyst", replacement_name="get_project_analyst")
@@ -67,9 +55,7 @@ ProjectAnalyst <- function(){
   return(get_project_analyst())
 }
 
-#'
-#' @noMd
-#' @noRd
+#' @inherit get_project_name title description
 #' @export
 ProjectName <- function(){
   renamed_warn(function_name="ProjectName", replacement_name="get_project_name")
@@ -77,9 +63,7 @@ ProjectName <- function(){
   return(get_project_name())
 }
 
-#'
-#' @noMd
-#' @noRd
+#' @inherit get_project_pi title description
 #' @export
 ProjectPI <- function(){
   renamed_warn(function_name="ProjectPI", replacement_name="get_project_pi")
@@ -87,9 +71,7 @@ ProjectPI <- function(){
   return(get_project_pi())
 }
 
-#'
-#' @noMd
-#' @noRd
+#' @inherit get_project_location title description
 #' @export
 ProjectLocation <- function(){
   renamed_warn(function_name="ProjectLocation", replacement_name="get_project_location")
@@ -97,9 +79,7 @@ ProjectLocation <- function(){
   return(get_project_location())
 }
 
-#'
-#' @noMd
-#' @noRd
+#' @inherit set_project_meta_data
 #' @export
 SetProjectData <- function(Parameter,Value){
   renamed_warn(function_name="SetProjectData", replacement_name="set_project_meta_data")
@@ -107,9 +87,7 @@ SetProjectData <- function(Parameter,Value){
   set_project_meta_data(Parameter,Value)
 }
 
-#'
-#' @noMd
-#' @noRd
+#' @inherit get_project_meta_data
 #' @export
 getProjectData <- function(param){
   renamed_warn(function_name="getProjectData", replacement_name="get_project_meta_data")
@@ -117,19 +95,15 @@ getProjectData <- function(param){
   return(get_project_meta_data(param))
 }
 
-#'
-#' @noMd
-#' @noRd
+#' @inherit get_project_meta_data
 #' @export
 setAnalyst <- function(AnalystName){
-  renamed_warn(function_name="setAnalyst", replacement_name="set_project_analyst")
+  renamed_warn(function_name="setAnalyst", replacement_name="get_project_meta_data")
   #warning( paste(c("setAnalyst() renamed to set_project_analyst()")),immediate. = TRUE)
   return(set_project_analyst(AnalystName))
 }
 
-#'
-#' @noMd
-#' @noRd
+#' @inherit set_global_default_analyst
 #' @export
 setPermanentAnalyst <- function(AnalystName){
   renamed_warn(function_name="setPermanentAnalyst", replacement_name="set_global_default_analyst")
@@ -138,9 +112,7 @@ setPermanentAnalyst <- function(AnalystName){
 }
 
 
-#'
-#' @noMd
-#' @noRd
+#' @inherit remove_global_default_analyst title description
 #' @export
 removeAnalyst <- function(){
   renamed_warn(function_name="removeAnalyst", replacement_name="remove_global_default_analyst")
