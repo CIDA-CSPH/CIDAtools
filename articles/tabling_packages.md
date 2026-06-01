@@ -14,6 +14,7 @@ make a table of all variables with one line of code and minimal
 adjusting.
 
 ``` r
+
 gtsummary::tbl_summary(mtcars) 
 ```
 
@@ -22,6 +23,7 @@ gtsummary::tbl_summary(mtcars)
 You can stratify by multiple variables using `tbl_strata`
 
 ``` r
+
 trial |>
   gtsummary::tbl_strata(
     strata = trt,
@@ -38,6 +40,7 @@ labels, adjust which statistics are presented and more… It is a very
 flexible package.
 
 ``` r
+
 gtsummary::tbl_summary(trial, 
             by = trt,
             missing = "ifany",
@@ -57,13 +60,15 @@ gtsummary::tbl_summary(trial,
 
 [TABLE]
 
-**Table 1**
+**Table 1** {.table .gt_table quarto-disable-processing="false"
+quarto-bootstrap="false"}
 
 gtsummary has themes that can be adjusted as shown below. This code sets
 the default gtsummary package theme to be “jama” theme” and will be used
 for all gtsummary objects unless otherwise specified.
 
 ``` r
+
 # changing aesthetics using themes
 gtsummary::theme_gtsummary_journal("jama", set_theme = T)
 #> Setting theme "JAMA"
@@ -76,6 +81,7 @@ Themes can apply to more than visual aspects and can set how certain
 variables are displayed
 
 ``` r
+
 # changing how continuous variables are presented using themes
 gtsummary::theme_gtsummary_mean_sd(set_theme = TRUE)
 gtsummary::tbl_summary(mtcars) 
@@ -86,6 +92,7 @@ gtsummary::tbl_summary(mtcars)
 Note this theme shows median, mean and IQR
 
 ``` r
+
 gtsummary::theme_gtsummary_eda(set_theme = TRUE) #note this theme shows median, mean and IQR
 #> Setting theme "Exploratory Data Analysis"
 gtsummary::tbl_summary(mtcars) 
@@ -101,6 +108,7 @@ Other functions that may be of interest:
 tbl_uvregression() - For running a series of univariate analyses
 
 ``` r
+
 gtsummary::tbl_uvregression(
   trial,
   method = glm,
@@ -118,6 +126,7 @@ supports survival models, and some Bayesian models from the rstanarm and
 brms packages
 
 ``` r
+
 stats::glm(response ~ trt, data= trial) |> 
   gtsummary::tbl_regression(exponentiate = TRUE)
 ```
@@ -127,6 +136,7 @@ stats::glm(response ~ trt, data= trial) |>
 tbl_stack() or tbl_merge - to combine table results
 
 ``` r
+
 # stacking two tbl_regression objects
 t1 <-
   stats::glm(response ~ trt, trial, family = binomial) |>
@@ -149,6 +159,7 @@ gtsummary::tbl_stack(list(t1, t2))
 [TABLE]
 
 ``` r
+
 t3 <-
   stats::glm(response ~ trt + grade + age, trial, family = binomial) |>
   gtsummary::tbl_regression(exponentiate = TRUE)
@@ -174,6 +185,7 @@ with word or pdf outputting. Note the `autofit` function should fix any
 width problems that may occur with tables running off the page.
 
 ``` r
+
 ft <- flextable::flextable(airquality[ sample.int(10),])
 ft <- flextable::add_header_row(ft,
   colwidths = c(4, 2),
@@ -186,27 +198,29 @@ ft <- flextable::set_caption(ft, caption = "New York Air Quality Measurements")
 ft
 ```
 
-| Air quality                                                        |         |      |      | Time  |     |
-|--------------------------------------------------------------------|---------|------|------|-------|-----|
-| Ozone                                                              | Solar.R | Wind | Temp | Month | Day |
-| 41                                                                 | 190     | 7.4  | 67   | 5     | 1   |
-| 28                                                                 |         | 14.9 | 66   | 5     | 6   |
-| 19                                                                 | 99      | 13.8 | 59   | 5     | 8   |
-| 8                                                                  | 19      | 20.1 | 61   | 5     | 9   |
-| 36                                                                 | 118     | 8.0  | 72   | 5     | 2   |
-| 23                                                                 | 299     | 8.6  | 65   | 5     | 7   |
-|                                                                    | 194     | 8.6  | 69   | 5     | 10  |
-|                                                                    |         | 14.3 | 56   | 5     | 5   |
-| 18                                                                 | 313     | 11.5 | 62   | 5     | 4   |
-| 12                                                                 | 149     | 12.6 | 74   | 5     | 3   |
-| Daily air quality measurements in New York, May to September 1973. |         |      |      |       |     |
+| Air quality |  |  |  | Time |  |
+|----|----|----|----|----|----|
+| Ozone | Solar.R | Wind | Temp | Month | Day |
+| 41 | 190 | 7.4 | 67 | 5 | 1 |
+| 28 |  | 14.9 | 66 | 5 | 6 |
+| 19 | 99 | 13.8 | 59 | 5 | 8 |
+| 8 | 19 | 20.1 | 61 | 5 | 9 |
+| 36 | 118 | 8.0 | 72 | 5 | 2 |
+| 23 | 299 | 8.6 | 65 | 5 | 7 |
+|  | 194 | 8.6 | 69 | 5 | 10 |
+|  |  | 14.3 | 56 | 5 | 5 |
+| 18 | 313 | 11.5 | 62 | 5 | 4 |
+| 12 | 149 | 12.6 | 74 | 5 | 3 |
+| Daily air quality measurements in New York, May to September 1973. |  |  |  |  |  |
 
-New York Air Quality Measurements
+New York Air Quality Measurements {.table .cl-422d3032
+quarto-disable-processing="true"}
 
 Flextable also offers a variety of themes / settings that can be
 adjusted.
 
 ``` r
+
 flextable::flextable(airquality[ sample.int(10),]) |> flextable::theme_box()
 ```
 
@@ -226,6 +240,7 @@ flextable::flextable(airquality[ sample.int(10),]) |> flextable::theme_box()
 Or changing default settings like below
 
 ``` r
+
 flextable::set_flextable_defaults(
   font.size = 10, theme_fun = flextable::theme_vanilla,
   padding = 6,
@@ -257,6 +272,7 @@ The first step, the kable call is pretty simple but is fairly limited in
 themes etc.
 
 ``` r
+
 kableExtra::kable(mtcars, align = "lccrr")
 ```
 
@@ -298,6 +314,7 @@ kableExtra::kable(mtcars, align = "lccrr")
 Adding a simple kable_styling() call makes it much better visually
 
 ``` r
+
 kableExtra::kable(mtcars, align = "lccrr") |> kableExtra::kable_styling()
 ```
 
@@ -339,6 +356,7 @@ kableExtra::kable(mtcars, align = "lccrr") |> kableExtra::kable_styling()
 Below are a handful of other options found within the “Kable universe”.
 
 ``` r
+
 mtcars |>
   kableExtra::kbl(caption = "Recreating booktabs style table") |>
   kableExtra::kable_classic(full_width = F, html_font = "Cambria")
@@ -379,9 +397,11 @@ mtcars |>
 | Maserati Bora       | 15.0 |   8 | 301.0 | 335 | 3.54 | 3.570 | 14.60 |   0 |   1 |    5 |    8 |
 | Volvo 142E          | 21.4 |   4 | 121.0 | 109 | 4.11 | 2.780 | 18.60 |   1 |   1 |    4 |    2 |
 
-Recreating booktabs style table
+Recreating booktabs style table {.table .lightable-classic
+style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;"}
 
 ``` r
+
 mtcars |>
   kableExtra::kbl() |>
   kableExtra::kable_material(c("striped", "hover"))
@@ -423,6 +443,7 @@ mtcars |>
 | Volvo 142E          | 21.4 |   4 | 121.0 | 109 | 4.11 | 2.780 | 18.60 |   1 |   1 |    4 |    2 |
 
 ``` r
+
 mtcars |>
   kableExtra::kbl() |>
   kableExtra::kable_paper(bootstrap_options = "striped", full_width = F)
@@ -474,6 +495,7 @@ testing/pvals. Note the label function is helpful here (changed the
 names / levels of wt to weight and am to automatic)
 
 ``` r
+
 Hmisc::label(mtcars$wt) <- "weight"
 
 mtcars$am <- 
@@ -496,6 +518,7 @@ Here is the simplest approach to creating a summary table with the
 tableone package.
 
 ``` r
+
 tableone::CreateTableOne(data = mtcars)
 #>                   
 #>                    Overall        
@@ -517,6 +540,7 @@ You can specify which variables in included and which are factor
 variables easily in the table call.
 
 ``` r
+
 tableone::CreateTableOne(data = mtcars,
                vars = c("mpg", "cyl", "disp", "hp"),
                factorVars = c("cyl"))

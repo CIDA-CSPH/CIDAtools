@@ -128,13 +128,13 @@ RI, PRA, Senior PRA)
 
 **Data storage costs on CIDA drive**
 
-|                       | Expected 10-year cost (\$) |                                    |          |
-|-----------------------|:--------------------------:|-----------------------------------:|---------:|
-| Data packet size (GB) |          P-drive           | OneDrive for Businness (per user)¹ |  Eureka² |
-| 10                    |            \$30            |                              \$600 |     \$28 |
-| 100                   |           \$300            |                              \$600 |    \$276 |
-| 1,000 (1 TB)          |          \$3,000           |                              \$600 |  \$2,760 |
-| 10,000 (10 TB)        |          \$30,000          |                            \$1,200 | \$27,600 |
+|  | Expected 10-year cost (\$) |  |  |
+|----|:--:|---:|---:|
+| Data packet size (GB) | P-drive | OneDrive for Businness (per user)¹ | Eureka² |
+| 10 | \$30 | \$600 | \$28 |
+| 100 | \$300 | \$600 | \$276 |
+| 1,000 (1 TB) | \$3,000 | \$600 | \$2,760 |
+| 10,000 (10 TB) | \$30,000 | \$1,200 | \$27,600 |
 
 ¹Charged to University; not to CIDA  
 ²Prices are based on the HDC website.
@@ -256,16 +256,16 @@ RI, PRA, Senior PRA)
 
 ### Data Transfer Options
 
-| Mode of transfer          |                                                                                                                                                                                                                        Notes                                                                                                                                                                                                                         |     |     |
-|---------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|----:|----:|
-| CIDA drive                |                                                                                                                                                                                    For transfers among CIDA members, the CIDA drive can be used for data transfer                                                                                                                                                                                    |     |     |
-| OneDrive for Business     |                                                                                                                                                                                                   University-preferred means of transferring data                                                                                                                                                                                                    |     |     |
-| Redcap                    |                                                                                                                                                                Web-based, useful for ongoing projects where data updates are more frequent, ensures data format stays more consistent                                                                                                                                                                |     |     |
-| External hard/flash drive |                                                                                                                                                      Acceptable: CIDA’s 48 TB NAS station, or an encrypted flash drive. Unacceptable: Unencrypted drive, even if the file is password protected                                                                                                                                                      |     |     |
-|                           |                                                                                                                                                                                                                                                                                                                                                                                                                                                      |     |     |
-| Last resort: Email        | Email is not encouraged means of transferring data. In circumstances when no other approach is available, note that although email between CU-affiliated email addresses are automatically encrypted, this is not the case for external emails. You can manually encrypt by putting one of these keywords in brackets in the subject of an email: secure, safemail, or encrypt. Email from any other email system, such as gmail, is not acceptable. |     |     |
-|                           |                                                                                                                                                                                                                                                                                                                                                                                                                                                      |     |     |
-| Not acceptable            |                                                                                                                              Non-approved web-based systems including: Dropbox, Google Drive, … Unencrypted flash/hard drives, even if the file is password protected. Email from any other email system, such as gmail                                                                                                                              |     |     |
+| Mode of transfer | Notes |  |  |
+|----|:--:|---:|---:|
+| CIDA drive | For transfers among CIDA members, the CIDA drive can be used for data transfer |  |  |
+| OneDrive for Business | University-preferred means of transferring data |  |  |
+| Redcap | Web-based, useful for ongoing projects where data updates are more frequent, ensures data format stays more consistent |  |  |
+| External hard/flash drive | Acceptable: CIDA’s 48 TB NAS station, or an encrypted flash drive. Unacceptable: Unencrypted drive, even if the file is password protected |  |  |
+|  |  |  |  |
+| Last resort: Email | Email is not encouraged means of transferring data. In circumstances when no other approach is available, note that although email between CU-affiliated email addresses are automatically encrypted, this is not the case for external emails. You can manually encrypt by putting one of these keywords in brackets in the subject of an email: secure, safemail, or encrypt. Email from any other email system, such as gmail, is not acceptable. |  |  |
+|  |  |  |  |
+| Not acceptable | Non-approved web-based systems including: Dropbox, Google Drive, … Unencrypted flash/hard drives, even if the file is password protected. Email from any other email system, such as gmail |  |  |
 
 ### Useful Links
 

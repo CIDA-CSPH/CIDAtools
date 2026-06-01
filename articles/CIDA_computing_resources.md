@@ -15,12 +15,12 @@ Please note that each compute resource has differing policies about
 storage of PHI/HIPAA data. Please see the data storage guideline for
 more information.
 
-| Computing Resource                                 | Description                                                                  | HIPAA/PHI Data |
-|----------------------------------------------------|------------------------------------------------------------------------------|----------------|
-| Personal Computer/Laptop                           | Free for CIDA members                                                        | Limited        |
-| CIDA/Biostats HPC                                  | Free for CIDA members                                                        | Limited        |
-| Alpine                                             | Almost Free for CIDA members (if requested resources \<= default allocation) | No             |
-| Commercial computing platforms such as AWS, IBM, … | Cost depends on the type of requested resouces                               | No             |
+| Computing Resource | Description | HIPAA/PHI Data |
+|----|----|----|
+| Personal Computer/Laptop | Free for CIDA members | Limited |
+| CIDA/Biostats HPC | Free for CIDA members | Limited |
+| Alpine | Almost Free for CIDA members (if requested resources \<= default allocation) | No |
+| Commercial computing platforms such as AWS, IBM, … | Cost depends on the type of requested resouces | No |
 
 #### Personal Computer 
 
@@ -38,13 +38,13 @@ computing resource or involve long-running tasks.
 Instructions for accessing and using the CIDA/Biostats HPC are available
 [here](https://cida-csph.github.io/CIDAtools/articles/CIDA_BIOS_Cluster.md).
 
-|              | csphbiostats                           | cidalappc01                  | cidalappc02                  | cidalappc03                  |
-|--------------|----------------------------------------|------------------------------|------------------------------|------------------------------|
-| CPU          | 2x Intel Xeon Gold 61522 22-core CPU   | 2x AMD EPYC 7H12 64-Core CPU | 2x AMD EPYC 7H12 64-Core CPU | 2x AMD EPYC 7H12 64-Core CPU |
-| Disk storage | 50TB (Shared across all nodes)         | ”                            | ”                            | ”                            |
-| Memory Size  | 1TB                                    | 1TB                          | 512GB                        | 1TB                          |
-| OS           | Rocky Linux 9.5 (RHEL)                 | ”                            | ”                            | ”                            |
-| Software     | R, Python, RStudio Server, Jupyter Lab | ”                            | ”                            | ”                            |
+|  | csphbiostats | cidalappc01 | cidalappc02 | cidalappc03 |
+|----|----|----|----|----|
+| CPU | 2x Intel Xeon Gold 61522 22-core CPU | 2x AMD EPYC 7H12 64-Core CPU | 2x AMD EPYC 7H12 64-Core CPU | 2x AMD EPYC 7H12 64-Core CPU |
+| Disk storage | 50TB (Shared across all nodes) | ” | ” | ” |
+| Memory Size | 1TB | 1TB | 512GB | 1TB |
+| OS | Rocky Linux 9.5 (RHEL) | ” | ” | ” |
+| Software | R, Python, RStudio Server, Jupyter Lab | ” | ” | ” |
 
 #### Alpine 
 
@@ -60,15 +60,15 @@ ssh connectivity to the CURC system. Step-by-step instruction to access
 Alpine is available at:
 <https://curc.readthedocs.io/en/latest/clusters/alpine/quick-start.html>
 
-|                 |                    Alpine                    |                                                     |
-|-----------------|:--------------------------------------------:|----------------------------------------------------:|
-| Processor       |            General compute nodes             |                                                 GPU |
-| Nodes           |                      64                      |                                                  11 |
-| Core            | 64 × AMD Milan Compute nodes (64 cores/node) | 2 × 8 GPU-enabled (3x AMD MI100) atop AMD Milan CPU |
-| Memory Size     |                    239 GB                    |                                               2 TiB |
-| Cost            |           Free for defined setting           |                                                Free |
-| HIPAA compliant |                      NO                      |                                                  NO |
-| OS              |                   RHEL 8.4                   |                                            RHEL 8.4 |
+|  | Alpine |  |
+|----|:--:|---:|
+| Processor | General compute nodes | GPU |
+| Nodes | 64 | 11 |
+| Core | 64 × AMD Milan Compute nodes (64 cores/node) | 2 × 8 GPU-enabled (3x AMD MI100) atop AMD Milan CPU |
+| Memory Size | 239 GB | 2 TiB |
+| Cost | Free for defined setting | Free |
+| HIPAA compliant | NO | NO |
+| OS | RHEL 8.4 | RHEL 8.4 |
 
 ### Useful Links
 

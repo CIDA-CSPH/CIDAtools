@@ -1,4 +1,4 @@
-pandoc: 3.1.11
+pandoc: 3.8.3
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
@@ -12,7 +12,7 @@ articles:
   git: git.html
   sas-macros: sas-macros.html
   tabling_packages: tabling_packages.html
-last_built: 2026-04-29T02:15Z
+last_built: 2026-06-01T19:00Z
 urls:
   reference: https://cida-csph.github.io/CIDAtools/reference
   article: https://cida-csph.github.io/CIDAtools/articles
