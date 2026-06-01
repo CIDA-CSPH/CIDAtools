@@ -2,6 +2,9 @@
 title: "CIDATools - News"
 format: html
 ---
+# 0.2.0
+- Refactored most functions to use consistent camelCase naming conventions
+- Deprecated some unused/unsupported functions (if you encounter a deprecated function which you are actively using, please email CIDA-RT@olucdenver.onmicrosoft.com)
 
 # 0.1.1
 
