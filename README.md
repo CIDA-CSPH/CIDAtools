@@ -16,10 +16,17 @@ This package contains numerous templates and tools to make life at CIDA
 (part of the Colorado School of Public Health) happier and more
 efficient!
 
+## Installing CIDAtools
+
 To install `CIDAtools` on your local machine:
 
-    # install.packages("pak")
+    install.packages("pak") # Only required if pak is not installed
     pak::pak('CIDA-CSPH/CIDAtools')
+
+> [!NOTE]
+> If you are encountering issues with the new version of CIDAtools (`v0.2.0+`), you can install the older version using:
+>
+> <pre><code>pak::pak("CIDA-CSPH/CIDAtools<mark>@v0.1.2</mark>")</code></pre>
 
 ## Creating a new project
 
