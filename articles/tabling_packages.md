@@ -213,7 +213,7 @@ ft
 | 12 | 149 | 12.6 | 74 | 5 | 3 |
 | Daily air quality measurements in New York, May to September 1973. |  |  |  |  |  |
 
-New York Air Quality Measurements {.table .cl-422d3032
+New York Air Quality Measurements {.table .cl-92b74370
 quarto-disable-processing="true"}
 
 Flextable also offers a variety of themes / settings that can be
