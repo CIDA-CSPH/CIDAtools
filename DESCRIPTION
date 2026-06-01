@@ -1,10 +1,10 @@
 Package: CIDAtools
 Title: This package contains tools for CIDA projects
-Version: 0.2.0.9001
+Version: 0.2.0
 Authors@R: 
-  c(person("CIDA Research Tools Committee", role = c("aut", "cre"), email = "ryan.a.peterson@cuanschutz.edu"))
+  c(person("CIDA Research Tools Committee", role = c("aut", "cre"), email = "CIDA-RT@olucdenver.onmicrosoft.com"))
 Description: This package contains the numerous templates and tools to make life at CIDA (part of the Colorado School of Public Health) happier and more efficient!
-Depends: R (>= 3.5.0)
+Depends: R (>= 4.0)
 Imports: 
     dplyr,
     generics,
