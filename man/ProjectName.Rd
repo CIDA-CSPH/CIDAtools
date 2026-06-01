@@ -6,6 +6,9 @@
 \usage{
 ProjectName()
 }
+\value{
+A character string with the project name
+}
 \description{
 This function returns the Project Name or blank if none exists.
 }

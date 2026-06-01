@@ -15,27 +15,27 @@ CIDA_drive_path <- function(file="") {
 
 #' @inherit set_project_name
 #' @export
-SetProjectName <- function(ProjectName){
+SetProjectName <- function(project_name){
   renamed_warn(function_name="SetProjectName", replacement_name="set_project_name")
   #warning( paste(c("SetProjectName(ProjectName) renamed to set_project_name(project_name)")),immediate. = TRUE)
-  return(set_project_name(ProjectName))
+  return(set_project_name(project_name))
 }
 
 #' @inherit set_project_analyst
 #' @export
-SetProjectAnalyst <- function(AnalystName){
+SetProjectAnalyst <- function(analyst_name){
   renamed_warn(function_name="SetProjectAnalyst", replacement_name="set_project_analyst")
   #warning( paste(c("SetProjectAnalyst() renamed to set_project_analyst()")),immediate. = TRUE)
-  return(set_project_analyst(AnalystName))
+  return(set_project_analyst(analyst_name))
 }
 
 
 #' @inherit set_project_pi
 #' @export
-SetProjectPI <- function(PI){
+SetProjectPI <- function(pi){
   renamed_warn(function_name="SetProjectPI", replacement_name="set_project_pi")
   #warning( paste(c("SetProjectPI() renamed to set_project_pi()")),immediate. = TRUE)
-  return(set_project_pi(PI))
+  return(set_project_pi(pi))
 }
 
 
@@ -47,7 +47,7 @@ SetProjectLocation <- function(path){
   return(set_project_location(path))
 }
 
-#' @inherit get_project_analyst title description
+#' @inherit get_project_analyst
 #' @export
 ProjectAnalyst <- function(){
   renamed_warn(function_name="ProjectAnalyst", replacement_name="get_project_analyst")
@@ -55,7 +55,7 @@ ProjectAnalyst <- function(){
   return(get_project_analyst())
 }
 
-#' @inherit get_project_name title description
+#' @inherit get_project_name
 #' @export
 ProjectName <- function(){
   renamed_warn(function_name="ProjectName", replacement_name="get_project_name")
@@ -63,7 +63,7 @@ ProjectName <- function(){
   return(get_project_name())
 }
 
-#' @inherit get_project_pi title description
+#' @inherit get_project_pi
 #' @export
 ProjectPI <- function(){
   renamed_warn(function_name="ProjectPI", replacement_name="get_project_pi")
@@ -71,7 +71,7 @@ ProjectPI <- function(){
   return(get_project_pi())
 }
 
-#' @inherit get_project_location title description
+#' @inherit get_project_location
 #' @export
 ProjectLocation <- function(){
   renamed_warn(function_name="ProjectLocation", replacement_name="get_project_location")
@@ -81,10 +81,10 @@ ProjectLocation <- function(){
 
 #' @inherit set_project_meta_data
 #' @export
-SetProjectData <- function(Parameter,Value){
+SetProjectData <- function(parameter,value){
   renamed_warn(function_name="SetProjectData", replacement_name="set_project_meta_data")
   #warning( paste(c("SetProjectData() renamed to set_project_meta_data()")),immediate. = TRUE)
-  set_project_meta_data(Parameter,Value)
+  set_project_meta_data(parameter,value)
 }
 
 #' @inherit get_project_meta_data
@@ -95,24 +95,24 @@ getProjectData <- function(param){
   return(get_project_meta_data(param))
 }
 
-#' @inherit get_project_meta_data
+#' @inherit set_project_analyst
 #' @export
-setAnalyst <- function(AnalystName){
-  renamed_warn(function_name="setAnalyst", replacement_name="get_project_meta_data")
+setAnalyst <- function(analyst_name){
+  renamed_warn(function_name="setAnalyst", replacement_name="set_project_analyst")
   #warning( paste(c("setAnalyst() renamed to set_project_analyst()")),immediate. = TRUE)
-  return(set_project_analyst(AnalystName))
+  return(set_project_analyst(analyst_name))
 }
 
 #' @inherit set_global_default_analyst
 #' @export
-setPermanentAnalyst <- function(AnalystName){
+setPermanentAnalyst <- function(analyst_name, update_template=FALSE){
   renamed_warn(function_name="setPermanentAnalyst", replacement_name="set_global_default_analyst")
   #warning( paste(c("setPermanentAnalyst() renamed to set_global_default_analyst()")),immediate. = TRUE)
-  return(set_global_default_analyst(AnalystName))
+  return(set_global_default_analyst(analyst_name, update_template))
 }
 
 
-#' @inherit remove_global_default_analyst title description
+#' @inherit remove_global_default_analyst
 #' @export
 removeAnalyst <- function(){
   renamed_warn(function_name="removeAnalyst", replacement_name="remove_global_default_analyst")

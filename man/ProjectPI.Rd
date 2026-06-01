@@ -6,6 +6,9 @@
 \usage{
 ProjectPI()
 }
+\value{
+A character string with the PI name
+}
 \description{
 This function returns the PI Name or blank if none exists.
 }

@@ -21,7 +21,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        r-version: ['4.5']
+        r-version: ['release']
         os: [ubuntu-latest, windows-latest, macos-latest] #[ubuntu-latest]
 
     env:

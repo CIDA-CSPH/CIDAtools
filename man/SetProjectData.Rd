@@ -4,7 +4,12 @@
 \alias{SetProjectData}
 \title{Set data for project}
 \usage{
-SetProjectData(Parameter, Value)
+SetProjectData(parameter, value)
+}
+\arguments{
+\item{parameter}{Project Parameter to be set}
+
+\item{value}{Value to set to project parameter}
 }
 \description{
 Allows you to set misc project data parameters

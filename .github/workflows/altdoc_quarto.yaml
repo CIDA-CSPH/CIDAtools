@@ -37,7 +37,7 @@ jobs:
       - name: Install dependencies
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::rcmdcheck,altdoc::render_docs,quarto
+          extra-packages: local::.,any::rcmdcheck,any::altdoc,any::quarto
           needs: check
           
       - name: Cache R

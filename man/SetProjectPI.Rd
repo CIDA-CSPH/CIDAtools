@@ -4,7 +4,10 @@
 \alias{SetProjectPI}
 \title{Set PI Name}
 \usage{
-SetProjectPI(PI)
+SetProjectPI(pi)
+}
+\arguments{
+\item{pi}{A string containing the analyst name}
 }
 \value{
 A message stating the name has been changed.

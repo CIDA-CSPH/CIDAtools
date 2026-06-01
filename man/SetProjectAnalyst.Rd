@@ -4,7 +4,10 @@
 \alias{SetProjectAnalyst}
 \title{Set Project Analyst}
 \usage{
-SetProjectAnalyst(AnalystName)
+SetProjectAnalyst(analyst_name)
+}
+\arguments{
+\item{analyst_name}{A string containing the analyst name}
 }
 \value{
 A message stating the name has been changed.

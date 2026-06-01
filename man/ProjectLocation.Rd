@@ -6,6 +6,16 @@
 \usage{
 ProjectLocation()
 }
+\value{
+full (absolute) file path including the project location on CIDA drive
+}
 \description{
 Get Project data location on CIDA Drive
+}
+\examples{
+# Read data from current project
+\dontrun{
+df <- read.csv(ProjectLocation("DataRaw/my_proj_data.csv"))
+}
+
 }

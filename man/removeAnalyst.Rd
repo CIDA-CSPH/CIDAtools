@@ -6,6 +6,9 @@
 \usage{
 removeAnalyst()
 }
+\value{
+Message indicating success or failure
+}
 \description{
 This function removes the default analyst set with set_global_default_analyst()
  from the users ~/cida_defaults.dcf.

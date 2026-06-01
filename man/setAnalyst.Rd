@@ -2,26 +2,17 @@
 % Please edit documentation in R/temp_refactored_message.R
 \name{setAnalyst}
 \alias{setAnalyst}
-\title{Get data for project}
+\title{Set Project Analyst}
 \usage{
-setAnalyst(AnalystName)
+setAnalyst(analyst_name)
+}
+\arguments{
+\item{analyst_name}{A string containing the analyst name}
+}
+\value{
+A message stating the name has been changed.
 }
 \description{
-Allows you to get any project data parameters or all parameters.  Either specify
-the desired parameter or with no parameter it will return all available parameters.
-}
-\details{
-Possible parameters values include:
-
- - analyst - Analyst's Name
-
- - ProjectName - Project Name
-
- - PI - PI Name
-
- - datalocation - Poject folder location under the CIDA PATH.
-
- - default_full_path_to_project - Project default path which is the default full path to the project files.  Includes the local filesystem path to network mount point and network path to project folder.
-
- - gitlocation - GitHub URL for the project code
+This function allows you to set the  project analyst.
+This will overwrite the current value if exists.
 }
