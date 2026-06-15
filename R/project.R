@@ -167,16 +167,13 @@ create_project <- function(path = getwd(),
   if (missing(project_name) || !nzchar(trimws(project_name))){
     stop(" 'project_name' is required and cannot be empty.", call. = FALSE)
   }
-  if (missing(analyst) || !nzchar(trimws(analyst))){
-    stop(" 'analyst' is required and cannot be empty.", call. = FALSE)
-  }
   if( ! dir.exists(path) ){
     dir.create(path, recursive = TRUE, showWarnings = FALSE)
   }
 
   # has meta been provided?
  # meta <- !all(c(project_name, pi, analyst, data_location,git_location) %in% "")
- 
+
 
   # set which ReadMe.md files to create
   template <- match.arg(template, several.ok = T)
@@ -206,9 +203,9 @@ create_project <- function(path = getwd(),
 
 
   # write to readme file
-  if(!file.exists(file.path(path, "ReadMe.md")))
+  if(!file.exists(file.path(path, "README.md")))
     writeLines(paste0(readme, collapse = '\n'),
-               con = file.path(path, "ReadMe.md"))
+               con = file.path(path, "README.md"))
 
   # Create subdirectory readmes
   create_readme(template = template, path = path)
@@ -295,7 +292,7 @@ create_project <- function(path = getwd(),
   gitignore <- paste0(c(gitignore,
                         "DataRaw/*",
                         "DataProcessed/*",
-                        "!*/ReadMe.md"), collapse = '\n')
+                        "!*/README.md"), collapse = '\n')
 
   writeLines(gitignore, con = file.path(path, '.gitignore'))
 
@@ -435,7 +432,7 @@ create_readme <- function(template = c('Admin', 'Background', 'Code', 'DataRaw',
   }
 
   createFiles <- function(x){
-    file.path(path, paste0(x, '/ReadMe.md'))
+    file.path(path, paste0(x, '/README.md'))
   }
 
   readme <- readme[template]

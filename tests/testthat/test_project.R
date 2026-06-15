@@ -35,12 +35,12 @@ test_that("create_project errors when project_name is missing", {
   )
 })
 
-test_that("create_project errors when analyst is missing", {
-  expect_error(
-    create_project(path = tempdir(), project_name = "Test"),
-    "'analyst' is required and cannot be empty."
-  )
-})
+#test_that("create_project errors when analyst is missing", {
+#  expect_error(
+#    create_project(path = tempdir(), project_name = "Test"),
+#    "'analyst' is required and cannot be empty."
+#  )
+#})
 
 test_that("create_project errors when project_name is empty string", {
   expect_error(
@@ -49,12 +49,12 @@ test_that("create_project errors when project_name is empty string", {
   )
 })
 
-test_that("create_project errors when analyst is empty string", {
-  expect_error(
-    create_project(path = tempdir(), project_name = "Test", analyst = ""),
-    "'analyst' is required and cannot be empty."
-  )
-})
+#test_that("create_project errors when analyst is empty string", {
+#  expect_error(
+#    create_project(path = tempdir(), project_name = "Test", analyst = ""),
+#    "'analyst' is required and cannot be empty."
+#  )
+#})
 
 test_that("metadata file is always created", {
   temp_path <- file.path(tempdir(), "test_meta_always")
