@@ -1,3 +1,5 @@
+^renv$
+^renv\.lock$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^ReadMe.md
@@ -11,3 +13,6 @@ hex_sticker.R
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+^vignettes/sas-macros.Rmd
+^altdoc$
+^_quarto$

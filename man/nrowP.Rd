@@ -2,7 +2,7 @@
 % Please edit documentation in R/misc_fns.R
 \name{nrowP}
 \alias{nrowP}
-\title{Get pretty numbers of rows}
+\title{Get pretty numbers of rows - To be deprecated}
 \usage{
 nrowP(x)
 }

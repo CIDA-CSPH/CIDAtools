@@ -1,4 +1,4 @@
-#' Create a table one
+#' Create a table one - To be deprecated
 #'
 #'
 #' This is a function created to provide characteristics of a study group with
@@ -154,6 +154,8 @@ cida_table1 <- function(data,
                         exportWord = FALSE,
                         useSciNotation = FALSE
                         ) {
+
+  deprecation_warn("cida_table1.cida_table1")
 
   # Check variables are in provided data
   if (any(!(includeVars %in% colnames(data))) &
@@ -493,7 +495,7 @@ cida_table1 <- function(data,
   }
 }
 
-#' Internal function for p-value calculation in cida_table1
+#' Internal function for p-value calculation in cida_table1 - To be deprecated
 #'
 #' @param x the row_variable
 #' @param name the variables name
@@ -512,6 +514,7 @@ pvalue <- function(x,
                    include_total = include_total,
                    nonParametricVars = nonParametricVars) {
 
+  deprecation_warn("cida_table1.pvalue")
 
   # Construct vectors of data y, and groups (strata) g
   if (isTRUE(include_total)) {

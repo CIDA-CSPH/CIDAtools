@@ -2,7 +2,7 @@
 % Please edit documentation in R/misc_fns.R
 \name{sum_ignore_NA}
 \alias{sum_ignore_NA}
-\title{Sum ignoring NAs}
+\title{Sum ignoring NAs - To be deprecated}
 \usage{
 sum_ignore_NA(...)
 }

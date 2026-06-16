@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_xlsx_color.R
 \name{read_xlsx_color}
 \alias{read_xlsx_color}
-\title{Read in xlsx with fill colour}
+\title{Read in xlsx with fill colour - To be deprecated}
 \usage{
 read_xlsx_color(file, colorColumns, sheet = NULL, header = T)
 }

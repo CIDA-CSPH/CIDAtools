@@ -2,7 +2,7 @@
 % Please edit documentation in R/reporting_fns.R
 \name{list_kables}
 \alias{list_kables}
-\title{List tables with the same columns}
+\title{List tables with the same columns - To be deprecated}
 \usage{
 list_kables(tabs, bo = c("striped", "condensed"), ...)
 }

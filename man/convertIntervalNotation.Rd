@@ -2,7 +2,7 @@
 % Please edit documentation in R/misc_fns.R
 \name{convertIntervalNotation}
 \alias{convertIntervalNotation}
-\title{Convert Interval Notation}
+\title{Convert Interval Notation - To be deprecated}
 \usage{
 convertIntervalNotation(x)
 }

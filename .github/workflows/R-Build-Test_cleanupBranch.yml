@@ -10,7 +10,7 @@ name: R
 
 on:
   push:
-    branches: [] #branches: [ "cleanup_edits_SM" ]
+    branches: [ "cleanup_edits_SM" ]
 
 permissions:
   contents: read
@@ -22,8 +22,12 @@ jobs:
       fail-fast: true
       matrix:
         r-version: ['release']
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, windows-latest, macos-latest] #[ubuntu-latest]
 
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
 
@@ -33,10 +37,22 @@ jobs:
           r-version: ${{ matrix.r-version }}
           use-public-rspm: true
 
+      - name: Cache R
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: ${{ runner.os }}-r-${{ matrix.r-version }}-${{ hashFiles('DESCRIPTION') }}-${{ hashFiles('**/renv.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-r-${{ matrix.r-version }}-${{ hashFiles('**/renv.lock') }}
+            ${{ runner.os }}-r-${{ matrix.r-version }}
+
+
+
       - name: Install dependencies
+        if: steps.cache-r.outputs.cache-hit != 'true'
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::rcmdcheck
+          extra-packages: any::rcmdcheck,altdoc,quarto,roxygen2,remotes
           needs: check
 
       - name: Check Package
@@ -44,4 +60,20 @@ jobs:
         with:
           upload-snapshots: true
           build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'
+          error-on: '"error"'
+
+      - name: Show testthat output
+        if: always()
+        run: |
+          ## --------------------------------------------------------------------
+          find '${{ runner.temp }}/package' -name 'testthat.Rout*' -exec cat '{}' \; || true
+        shell: bash
+
+      - name: Upload test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-test-failures
+          path: ${{ runner.temp }}/package
+
 

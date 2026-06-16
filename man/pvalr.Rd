@@ -2,7 +2,7 @@
 % Please edit documentation in R/reporting_fns.R
 \name{pvalr}
 \alias{pvalr}
-\title{Pretty p-values}
+\title{Pretty p-values - To be deprecated}
 \usage{
 pvalr(pvals, sig.limit = 0.001, digits = 3, html = FALSE, equal_sign = "")
 }

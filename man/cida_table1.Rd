@@ -2,7 +2,7 @@
 % Please edit documentation in R/cida_table1.R
 \name{cida_table1}
 \alias{cida_table1}
-\title{Create a table one}
+\title{Create a table one - To be deprecated}
 \usage{
 cida_table1(
   data,

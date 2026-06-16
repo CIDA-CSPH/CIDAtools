@@ -1,4 +1,4 @@
-#' Pretty p-values
+#' Pretty p-values - To be deprecated
 #'
 #' This function helps print p-values in RMD output
 #'
@@ -12,7 +12,7 @@
 #' @export
 #'
 pvalr <- function(pvals, sig.limit = .001, digits = 3, html = FALSE, equal_sign = "") {
-
+  deprecation_warn("reporting_fns.pvalr")
   roundr <- function(x, digits = 1) {
     res <- sprintf(paste0('%.', digits, 'f'), x)
     zzz <- paste0('0.', paste(rep('0', digits), collapse = ''))
@@ -34,7 +34,7 @@ pvalr <- function(pvals, sig.limit = .001, digits = 3, html = FALSE, equal_sign 
   }, sig.limit = sig.limit)
 }
 
-#' List tables with the same columns
+#' List tables with the same columns - To be deprecated
 #'
 #' This function will print a group of tables together in a decently pretty way.
 #' May need a bit of finagling.
@@ -48,7 +48,7 @@ pvalr <- function(pvals, sig.limit = .001, digits = 3, html = FALSE, equal_sign 
 #' @export
 
 list_kables <- function(tabs, bo = c("striped", "condensed"), ...) {
-
+  deprecation_warn("reporting_fns.list_kables")
   idx <- sapply(tabs, nrow)
 
   tabs %>%

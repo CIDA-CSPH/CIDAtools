@@ -2,7 +2,7 @@
 % Please edit documentation in R/misc_fns.R
 \name{vec_power}
 \alias{vec_power}
-\title{Vectorized power estimates}
+\title{Vectorized power estimates - To be deprecated}
 \usage{
 vec_power(fun = stats::power.t.test, ...)
 }
