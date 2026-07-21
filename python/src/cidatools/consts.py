@@ -1,0 +1,8 @@
+
+# The name of the folder which holds cidatools-specific information
+CIDA_DIRECTORY_NAME = ".cida"
+
+# The name of the project config file in CIDA_DIRECTORY_NAME
+CIDA_PROJECT_CONFIG_NAME = "project.json"
+
+# 
