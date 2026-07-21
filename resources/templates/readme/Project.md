@@ -1,12 +1,12 @@
-**Project Name**: {{.ProjectName}}
+**Project Name**: {{ config.project_name }}
 
-**PI**: {{.PI}}
+**PI**: {{ config.principal_investigator }}
 
-**Analyst**: {{.Analyst}}
+**Analyst**: {% if config.analyst is string or config.analyst is none %} {{ config.analyst }} {% else %} {{ config.analyst | join(', ') }} {% endif %} 
 
-**CIDA Drive Location**: {{.DataLocation}}
+**CIDA Drive Location**: {{ config.data_location }}
 
-**GitHub Location**: {{.GitLocation}}
+**GitHub Location**: {{ config.git_location }}
 
 Details about the folders:
 
@@ -14,7 +14,7 @@ Details about the folders:
 |------------------|-----------------------------------------------------------------------------------|
 | `Admin/`         | Contains the scope of work and other administrative documents                     |
 | `Background/`    | Contains the background information for the analysis                              |
-| `Code/`          | Contains all R scripts for this project                                           |
+| `Code/`          | Contains all scripts and code for this project                                    |
 | `DataRaw/`       | Contains all raw data provided by investigators                                   |
 | `DataProcessed/` | Contains the processed data used for analysis                                     |
 | `Dissemination/` | Contains any materials produced for dissemination, ie. Abstracts, Posters, Papers |
