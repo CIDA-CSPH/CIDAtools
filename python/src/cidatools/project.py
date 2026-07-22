@@ -36,7 +36,7 @@ def _read_config(config_path: pathlib.Path) -> CIDAProject:
     :return: A CIDAProject object.
     """
     with open(config_path, "r") as f:
-        return CIDAProject.model_validate_json(json.load(f))
+        return CIDAProject.model_validate(json.load(f))
 
 
 def _write_config(project_root: pathlib.Path, config: CIDAProject, overwrite: bool = False) -> None:
@@ -288,6 +288,8 @@ def create_local_project(
 
     # Create default .gitignore
     _write_gitignore(project_root=project_root)
+
+    return project_config
 
 
 def create_project(project_path: pathlib.Path = None) -> CIDAProject:
