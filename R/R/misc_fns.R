@@ -182,5 +182,3 @@ tidy.power.htest <- function(x, ...) {
   class(x) <- "list"
   as.data.frame(x)
 }
-
-

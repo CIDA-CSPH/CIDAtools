@@ -17,15 +17,19 @@ class CIDAProjectDefaults(BaseSettings, frozen=True):
 
     # These settings are hardcoded for now, and can not be changed.
     _directory_name: Literal[".cida"] = PrivateAttr(default=".cida")
-    _github_organization: Literal["https://github.com/CIDA-CSPH/"] = PrivateAttr(default="https://github.com/CIDA-CSPH/")
+    _github_organization: Literal["https://github.com/CIDA-CSPH/"] = PrivateAttr(
+        default="https://github.com/CIDA-CSPH/"
+    )
     _project_config_name: Literal["project.json"] = PrivateAttr(default="project.json")
 
     # Default analyst is a global variable which can be persisted to settings.
     default_analyst: str | None = Field(default=None)
 
 
-def read_project_defaults(path: pathlib.Path = CIDA_PROJECT_DEFAULTS_PATH, create: bool = True) -> CIDAProjectDefaults:
-    """ Loads the cidatools project defaults from file.
+def read_project_defaults(
+    path: pathlib.Path = CIDA_PROJECT_DEFAULTS_PATH, create: bool = True
+) -> CIDAProjectDefaults:
+    """Loads the cidatools project defaults from file.
     :param path:
     :param create: Create the project defaults file if it doesn't already exist.
     :return: An instance of CIDAProjectDefaults.
@@ -48,4 +52,3 @@ def read_project_defaults(path: pathlib.Path = CIDA_PROJECT_DEFAULTS_PATH, creat
 def _read_project_defaults(path: pathlib.Path) -> CIDAProjectDefaults:
     with open(path, "r") as f:
         return CIDAProjectDefaults.model_validate({"source_file": path} | json.load(f))
-

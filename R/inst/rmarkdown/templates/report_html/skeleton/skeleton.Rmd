@@ -43,7 +43,7 @@ Introduction text
 
 Methods text
 
-# Results 
+# Results
 
 ## Descriptive Statistics
 
@@ -85,4 +85,3 @@ Interpretations, discussion
 ```{r, echo=FALSE, out.width='70%', fig.show='hold'}
 knitr::include_graphics(logo)
 ```
-

@@ -292,7 +292,3 @@ get_full_project_data <- function(){
   }
   return(proj_data)
 }
-
-
-
-

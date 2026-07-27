@@ -2,7 +2,7 @@
 
 **PI**: {{ config.principal_investigator }}
 
-**Analyst**: {% if config.analyst is string or config.analyst is none %} {{ config.analyst }} {% else %} {{ config.analyst | join(', ') }} {% endif %} 
+**Analyst**: {% if config.analyst is string or config.analyst is none %} {{ config.analyst }} {% else %} {{ config.analyst | join(', ') }} {% endif %}
 
 **CIDA Drive Location**: {{ config.data_location }}
 

@@ -78,4 +78,3 @@ read_xlsx_color <- function(file, colorColumns, sheet = NULL, header = T){
   if(length(sheets) == 1) return(z[[1]])
   return(z)
 }
-

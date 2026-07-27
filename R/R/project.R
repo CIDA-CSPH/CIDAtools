@@ -642,8 +642,3 @@ open_project <- function(local_project_folder="",remote_project_folder=""){
   options(cida_tools.current_project_path = local_project_folder)
   options(cida_tools.remote_current_project_path = remote_project_folder)
 }
-
-
-
-
-

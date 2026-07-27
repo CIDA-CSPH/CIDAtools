@@ -1,18 +1,18 @@
 ---
 title: Report
 output:
-  pdf_document: 
+  pdf_document:
     fig_caption: yes
     number_sections: yes
-header-includes: 
-  \usepackage{fancyhdr} 
-  \usepackage{graphicx} 
+header-includes:
+  \usepackage{fancyhdr}
+  \usepackage{graphicx}
   \usepackage{eurosym}
-  \usepackage{booktabs,xcolor} 
+  \usepackage{booktabs,xcolor}
   \usepackage{float}
   \floatplacement{figure}{H}
-  \pagestyle{fancy} 
-  \fancyhf{} 
+  \pagestyle{fancy}
+  \fancyhf{}
   \addtolength{\headheight}{1.0cm}
   \rfoot{Page \thepage} \fancypagestyle{plain}{\pagestyle{fancy}}
 geometry: margin=1in
@@ -50,7 +50,7 @@ Introduction text
 
 Methods text
 
-# Results 
+# Results
 
 ## Descriptive Statistics
 
@@ -71,11 +71,11 @@ furniture::table1(
   "Distance (mi)" = dist,
   splitby = ~ group,
   test = TRUE,
-  type = c("simple", "condensed"), 
-  output = "latex", 
-  align = "c", 
+  type = c("simple", "condensed"),
+  output = "latex",
+  align = "c",
   caption = "Sample characteristics"
-) %>% 
+) %>%
   kable_styling(latex_options = "hold_position")
 ```
 
@@ -88,5 +88,3 @@ Interpretations, discussion
 # References
 
 # Appendix
-
-

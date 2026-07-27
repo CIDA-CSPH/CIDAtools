@@ -125,5 +125,3 @@ deprecated_warn <- function(function_name="", version=""){
 renamed_warn <- function(function_name="", replacement_name="") {
   warning(paste(c(function_name, "() has been renamed to ", replacement_name, "(). Please use the updated function name in new code.")), call.=FALSE, immediate.=TRUE)
 }
-
-

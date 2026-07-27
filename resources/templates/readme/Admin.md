@@ -6,4 +6,3 @@ Details about the files:
 
 | File | Description |
 |------|-------------|
-

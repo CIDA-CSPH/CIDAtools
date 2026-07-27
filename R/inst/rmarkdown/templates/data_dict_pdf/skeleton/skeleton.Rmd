@@ -4,17 +4,17 @@ output:
   pdf_document:
     fig_caption: yes
 number_sections: yes
-header-includes: 
-  \usepackage{fancyhdr} 
-  \usepackage{graphicx} 
+header-includes:
+  \usepackage{fancyhdr}
+  \usepackage{graphicx}
   \usepackage{eurosym}
-  \usepackage{booktabs,xcolor} 
+  \usepackage{booktabs,xcolor}
   \usepackage{float}
   \usepackage{caption}
   \captionsetup[table]{labelformat=empty}
   \floatplacement{figure}{H}
-  \pagestyle{fancy} 
-  \fancyhf{} 
+  \pagestyle{fancy}
+  \fancyhf{}
   \addtolength{\headheight}{2.0cm}
   \rfoot{Page \thepage} \fancypagestyle{plain}{\pagestyle{fancy}}
 geometry: margin=0.6in
@@ -58,13 +58,13 @@ makedic <- function(dfname){
   Values <- lapply(df, values)
   Values <- sapply(Values, paste0, collapse = ' \\\n ')
   Type <- sapply(df, class)
-  # POSIXt classes will have 2 classes need to remove one and 
+  # POSIXt classes will have 2 classes need to remove one and
   # set to date
   Type <- lapply(Type, sub, pattern = 'POSIXt', replacement = "Date")
   Type <- sapply(Type, grep, pattern = 'POSI', value = T, invert = T)
-  dic <- data.frame(Variables = names(df), Type = Type, 
-                    "Unique Values" = Values, 
-                    stringsAsFactors = F, row.names = NULL, 
+  dic <- data.frame(Variables = names(df), Type = Type,
+                    "Unique Values" = Values,
+                    stringsAsFactors = F, row.names = NULL,
                     check.names = F)
   return(dic)
 }
@@ -76,7 +76,7 @@ printtbl <- function(dfname){
   return()
 }
 
-``` 
+```
 
 
 ```{r tables, results = 'asis'}

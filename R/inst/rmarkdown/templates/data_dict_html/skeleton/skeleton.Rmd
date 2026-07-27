@@ -29,7 +29,7 @@ library(pander)
 # set your datasets as objects
 # load(file = '')
 
-## Placeholder: 
+## Placeholder:
 data("cars")
 cars$group <- rep(1:2, each = 25)
 data("iris")
@@ -58,13 +58,13 @@ makedic <- function(dfname){
   Values <- lapply(df, values)
   Values <- sapply(Values, paste0, collapse = ' \\\n ')
   Type <- sapply(df, class)
-  # POSIXt classes will have 2 classes need to remove one and 
+  # POSIXt classes will have 2 classes need to remove one and
   # set to date
   Type <- lapply(Type, sub, pattern = 'POSIXt', replacement = "Date")
   Type <- sapply(Type, grep, pattern = 'POSI', value = T, invert = T)
-  dic <- data.frame(Variables = names(df), Type = Type, 
-                    "Unique Values" = Values, 
-                    stringsAsFactors = F, row.names = NULL, 
+  dic <- data.frame(Variables = names(df), Type = Type,
+                    "Unique Values" = Values,
+                    stringsAsFactors = F, row.names = NULL,
                     check.names = F)
   return(dic)
 }
@@ -76,7 +76,7 @@ printtbl <- function(dfname){
   return()
 }
 
-``` 
+```
 
 
 ```{r tables, results = 'asis'}

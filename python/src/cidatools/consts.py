@@ -1,4 +1,3 @@
-
 # The name of the folder which holds cidatools-specific information
 CIDA_DIRECTORY_NAME = ".cida"
 

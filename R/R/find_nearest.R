@@ -83,6 +83,3 @@ getlower <- function(x, y, upper = FALSE){
   x_max[x_max == -1] <- 1
   return (x_max[i > n])
 }
-
-
-

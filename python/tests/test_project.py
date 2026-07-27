@@ -34,7 +34,9 @@ def git_location(request):
 
 
 @pytest.fixture()
-def local_project(project_name, principal_investigator, analyst, data_location, git_location):
+def local_project(
+    project_name, principal_investigator, analyst, data_location, git_location
+):
     # Make a temporary directory
     tmpdir = tempfile.TemporaryDirectory()
 
@@ -45,7 +47,7 @@ def local_project(project_name, principal_investigator, analyst, data_location, 
         principal_investigator=principal_investigator,
         analyst=analyst,
         data_location=data_location,
-        git_location=git_location
+        git_location=git_location,
     )
 
     # Provide the temporary directory and config file
@@ -79,8 +81,12 @@ def test_create_local_project(local_project):
 
 def test_double_create_local_project():
     with tempfile.TemporaryDirectory() as tmpdir:
-        project.create_local_project(project_name="MyNewProject", project_root=pathlib.Path(tmpdir))
-        project.create_local_project(project_name="MyNewProject", project_root=pathlib.Path(tmpdir))
+        project.create_local_project(
+            project_name="MyNewProject", project_root=pathlib.Path(tmpdir)
+        )
+        project.create_local_project(
+            project_name="MyNewProject", project_root=pathlib.Path(tmpdir)
+        )
         print("Done!")
 
 
