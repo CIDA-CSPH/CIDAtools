@@ -1,6 +1,11 @@
+import functools
+import pathlib
+import sys
 
-GREEN_CHECK = "\x1b[32m\u2713\x1b[0m"
-RED_XMARK = "\x1b[31m\u2717\x1b[0m"
+GREEN_CHECK = "\x1b[1m\x1b[32m\u2713\x1b[0m"
+RED_XMARK = "\x1b[1m\x1b[31m\u2717\x1b[0m"
+YELLOW_TRIANGLE = "\x1b[1m\x1b[33m\u26a0\x1b[0m"
+BLUE_REFRESH = "\x1b[1m\x1b[34m\u27F3\x1b[0m"
 
 
 def print_success(message: str):
@@ -8,7 +13,14 @@ def print_success(message: str):
     :param message: Message to print.
     :return:
     """
-    print(f"{GREEN_CHECK} {message}")
+    print(f"{GREEN_CHECK} {message}", file=sys.stderr)
+
+
+def print_warning(message: str):
+    """ Prints a warning message.
+    :param message: Message to print.
+    """
+    print(f"{YELLOW_TRIANGLE} {message}", file=sys.stderr)
 
 
 def print_failure(message: str):
@@ -16,5 +28,65 @@ def print_failure(message: str):
     :param message: Message to print.
     :return:
     """
-    print(f"{RED_XMARK} {message}")
+    print(f"{RED_XMARK} {message}", file=sys.stderr)
+
+
+def print_refresh(message: str):
+    """
+    Prints a refresh message.
+    :param message:
+    :return:
+    """
+    print(f"{BLUE_REFRESH} {message}", file=sys.stderr)
+
+
+def filesize_mtime_cache(f):
+    """ Wrap a single argument function which reads a file, and execute f only if the file's size or mtime have changed.
+    :param f:
+    :return:
+    """
+
+    file_size = None
+    file_mtime = None
+    ret_val = None
+
+    @functools.wraps(f)
+    def inner(path: pathlib.Path):
+        nonlocal file_size, file_mtime, ret_val
+
+        # If the file doesn't exist, nothing we can do.
+        if not path.is_file():
+            print_failure(f"File not found: {path}")
+            return None
+
+        # Retrieve the current file stats.
+        cur_stat = path.stat()
+        cur_size = cur_stat.st_size
+        cur_mtime = cur_stat.st_mtime
+
+        # Check if file size or mtime have changed.
+        if cur_size != file_size or cur_mtime != file_mtime:
+            # Print load message
+            if cur_size is None or cur_mtime is None:
+                # Message on first time load.
+                print_refresh(f"Loading {path} from disk...")
+            else:
+                # Notify that we have refreshed.
+                print_refresh(f"Reloading, contents of file {path} changed on disk...")
+
+            # Update stats.
+            file_size = cur_size
+            file_mtime = cur_mtime
+
+            # Execute f(path) and store the result.
+            ret_val = f(path)
+
+            # Print success message.
+            print_success("File reloaded.")
+
+        # Return the stored value
+        return ret_val
+
+    # Return the wrapped function.
+    return inner
 

@@ -82,3 +82,8 @@ def test_double_create_local_project():
         project.create_local_project(project_name="MyNewProject", project_root=pathlib.Path(tmpdir))
         project.create_local_project(project_name="MyNewProject", project_root=pathlib.Path(tmpdir))
         print("Done!")
+
+
+def test_project_status(local_project):
+    tmpdir, local_config = local_project
+    project.project_status(project_root=pathlib.Path(tmpdir.name))

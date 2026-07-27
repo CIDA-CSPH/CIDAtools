@@ -214,3 +214,7 @@ cython_debug/
 #.idea/
 
 .DS_Store
+
+
+# Test projects
+test_proj/

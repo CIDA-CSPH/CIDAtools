@@ -1,42 +1,90 @@
-import datetime
-import glob
+import functools
 import pathlib
 import json
-import logging
 import re
 import shutil
 from enum import StrEnum
 from importlib import resources
+from typing import Literal
 
 from jinja2 import Template
-from pydantic import BaseModel, model_validator, Field
+from pydantic import BaseModel, model_validator, Field, PrivateAttr
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from cidatools.consts import CIDA_DIRECTORY_NAME, CIDA_PROJECT_CONFIG_NAME
-from cidatools.utils import print_success, print_failure
-
-log = logging.getLogger(__name__)
-
-
-class CIDAProjectSchema(StrEnum):
-    V1 = "v1"
+from cidatools.defaults import read_project_defaults, CIDAProjectDefaults
+from cidatools.utils import print_success, print_failure, print_warning, filesize_mtime_cache
 
 
-class CIDAProject(BaseModel):
-    project_schema: CIDAProjectSchema = Field(default=CIDAProjectSchema.V1, frozen=True)
-    project_name: str | None
-    principal_investigator: str | None
-    analyst: str | list[str] | None
-    data_location: str | None
-    git_location: str | None
+class CIDAProjectModel(BaseModel, frozen=True):
+    project_name: str | None = Field(serialization_alias="project_name")
+    principal_investigator: str | None = Field(serialization_alias="principal_investigator")
+    data_location: str | None = Field(serialization_alias="data_location")
+    git_location: str | None = Field(serialization_alias="git_location")
+    analyst: str | list[str] | None = Field(serialization_alias="analyst")
 
 
-def _read_config(config_path: pathlib.Path) -> CIDAProject:
+class CIDAProject:
+
+    def __init__(self, source_file: pathlib.Path):
+        """ The user-facing interface for a CIDA project.
+        :param source_file: The path to the file which this loads.
+        """
+        self._source_file: pathlib.Path = source_file
+
+    def __write_property(self, **kwargs):
+        inst_copy = _read_config(self._source_file).model_copy(update={k: v for k, v in kwargs.items()})
+        with open(self._source_file, "w") as cf:
+            cf.write(inst_copy.model_dump_json(indent=4))
+
+    def __read_defaults(self) -> CIDAProjectDefaults:
+        return read_project_defaults(self._source_file)
+
+    def __read_property(self, property_name: str):
+        # Read (if changed) or access the loaded config.
+        config_ = _read_config(self._source_file)
+
+        # Check if the property is set in the loaded config.
+        property_value = getattr(config_, property_name)
+
+        # If the property is not set in the loaded config, check the defaults.
+        defaults_ = _read
+        return None
+
+    @property
+    def project_name(self):
+        return self.project_name_
+
+    @project_name.setter
+    def project_name(self, project_name: str) -> None:
+        self.project_name_ = project_name
+        self.__write_property(project_name=project_name)
+
+    @property
+    def principal_investigator(self):
+        return self.principal_investigator_
+
+    @property
+    def data_location(self):
+        return self.data_location_
+
+    @property
+    def git_location(self):
+        return self.git_location_
+
+    @property
+    def analyst(self):
+        return self.analyst_
+
+
+@filesize_mtime_cache
+def _read_config(config_path: pathlib.Path) -> CIDAProjectModel:
     """ Deserializes a CIDA project JSON file into a `CIDAProject` object.
     :param config_path:
     :return: A CIDAProject object.
     """
     with open(config_path, "r") as f:
-        return CIDAProject.model_validate(json.load(f))
+        return CIDAProjectModel.model_validate({"source_file": config_path} | json.load(f))
 
 
 def _write_config(project_root: pathlib.Path, config: CIDAProject, overwrite: bool = False) -> None:
@@ -64,7 +112,7 @@ def _write_config(project_root: pathlib.Path, config: CIDAProject, overwrite: bo
         print_success(f"Created new project JSON at {config_path}.")
     # Otherwise, print a fail message.
     else:
-        log.warning(f"{config_path} already exists, will not overwrite. Pass overwrite=True to force an overwrite.")
+        #log.warning(f"{config_path} already exists, will not overwrite. Pass overwrite=True to force an overwrite.")
         print_failure(f"CIDA project config already exists at {config_path}, will not overwrite.")
 
 
@@ -104,7 +152,7 @@ def _write_templated_readme(project_root: pathlib.Path, template_name: str, conf
         print_success(f"Created README.md at {readme_path.relative_to(project_root)}.")
     # Otherwise print an error message.
     else:
-        log.warning(f"{readme_path} already exists, will not overwrite. Pass overwrite=True to force an overwrite.")
+        #log.warning(f"{readme_path} already exists, will not overwrite. Pass overwrite=True to force an overwrite.")
         print_failure(f"{readme_path.relative_to(project_root)} already exists, will not overwrite.")
 
 
@@ -161,7 +209,9 @@ def _write_rproj(project_root: pathlib.Path, config: CIDAProject):
 
 
 def _write_gitignore(project_root: pathlib.Path):
-    """ Creates a .gitignore file at the given path if None exists. """
+    """ Creates a .gitignore file at the given path if None exists.
+    :param project_root: The root directory for the project.
+    """
     if not project_root.is_dir():
         print_failure(f"project_root {project_root} is not a directory, ensure directory exists.")
         return
@@ -179,20 +229,48 @@ def _write_gitignore(project_root: pathlib.Path):
         print_success(f"Created {gitignore_path.relative_to(project_root)}.")
 
 
-def current_project() -> CIDAProject | None:
+def project_status(project_root: pathlib.Path = None) -> CIDAProject:
+    """ Prints the status of the CIDA project at `project_root`.
+
+    If project_root is not specified, use the current working directory.
+    :param project_root: The root directory for the project.
+    :return:
+    """
+    if project_root is None:
+        project_root = pathlib.Path.cwd().absolute()
+
+    cur_project = current_project(project_root)
+    if cur_project is None:
+        print_failure("No CIDA project found.")
+        return
+    else:
+        print_success(f"Loaded CIDA project.")
+
+    # Check issues
+    print("Project Config: ")
+    longest_key = max(len(k) for k in cur_project.__dict__.keys())
+    for key, val in cur_project.__dict__.items():
+        print(f"{key.ljust(longest_key)} : {val}")
+
+    # Check for Git repository.
+
+
+def current_project(project_root: pathlib.Path = None) -> CIDAProject | None:
     """ Returns the currently active CIDA project or None
 
     Searches recursively for a CIDA project config file, starting at the working directory and working upwards
     toward the root directory.
+
+    :param project_root: The root directory for the project.
     :return: A CIDAProject object or None
     """
-    # Get the absolute path to our current location
-    cur_dir = pathlib.Path.cwd().absolute()
+    # Accept a user-provided project path, or use the working directory if none is provided.
+    project_root = pathlib.Path.cwd().absolute() if project_root is None else project_root
 
     # Quit when we reach the root directory.
-    while cur_dir != cur_dir.parent:
+    while project_root != project_root.parent:
         # Check the current directory for a CIDA folder
-        project_path = cur_dir.joinpath(CIDA_DIRECTORY_NAME)
+        project_path = project_root.joinpath(CIDA_DIRECTORY_NAME)
         # If the path exists, check if it is a folder
         if project_path.exists():
             # If it is a folder, check if the config file exists inside.
@@ -200,15 +278,15 @@ def current_project() -> CIDAProject | None:
                 config_path = project_path.joinpath(CIDA_PROJECT_CONFIG_NAME)
                 # If the config file exists, parse JSON and return the object.
                 if config_path.is_file():
-                    return _read_config(project_path)
+                    return CIDAProject(config_path)
                 else:
-                    log.error(f"Project directory found at {project_path} but there is no {CIDA_PROJECT_CONFIG_NAME} file inside.")
+                    print_failure(f"Project directory found at {project_path} but there is no {CIDA_PROJECT_CONFIG_NAME} file inside.")
                     return None
             else:
-                log.error(f"'{project_path}' exists but is not a directory.")
+                print_failure(f"'{project_path}' is not a directory.")
                 return None
         else:
-            cur_dir = cur_dir.parent
+            project_root = project_root.parent
     # If we find nothing, return None
     return None
 
@@ -232,26 +310,23 @@ def create_local_project(
     :param git_location:
     :return:
     """
+    # If the project name does not exist, use a placeholder.
+    project_name = "CIDAProject" if project_name is None else project_name
+
     # If the project path is not specified, use the working directory.
-    if project_root is None:
-        project_root = pathlib.Path.cwd()
+    project_root = pathlib.Path.cwd() if project_root is None else project_root
 
     # If the project path does not exist, create it.
     if not project_root.exists():
         project_root.mkdir(parents=True)
         print_success(f"Created new project directory at {project_root}.")
     elif current_project() is not None:
-        log.warning(f"A CIDA project already exists at {project_root}")
+        print_warning(f"A CIDA project already exists at {project_root}.")
     else:
         print_success("Project directory already exists.")
 
     # Build a new project config.
     project_config_dir = project_root.joinpath(CIDA_DIRECTORY_NAME)
-    project_config_path = project_config_dir.joinpath(CIDA_PROJECT_CONFIG_NAME)
-
-    # Warn if the directory already has a project in it.
-    if project_config_dir.exists() or project_config_path.exists():
-        log.warning(f"This directory may already contain a CIDA project.")
 
     # Create the project config directory
     project_config_dir.mkdir(parents=True, exist_ok=True)
@@ -292,6 +367,46 @@ def create_local_project(
     return project_config
 
 
+def create_github_project(
+        project_name: str = None,
+        repository_url: str = None,
+        project_root: pathlib.Path = None,
+        template_url: str = None,
+        principal_investigator: str = None,
+        analyst: str | list[str] = None,
+        data_location: str = None,
+) -> CIDAProject:
+    """ Creates a new CIDA project with GitHub integration.
+
+    :param project_name: A name for the new project.
+    :param repository_url: URL for the GitHub repository to be created for this project.
+    :param project_root: The (local) root directory for the project.
+    :param template_url: URL for a template repository to be used for this project.
+    :param principal_investigator:
+    :param analyst:
+    :param data_location:
+    :return:
+    """
+    if project_name is None and repository_url is None:
+        raise ValueError("Must specify either project_name or repository_url.")
+
+    # If the project name does not exist, use a placeholder.
+    project_name = "CIDAProject" if project_name is None else project_name
+
+    # If the project path is not specified, use the working directory.
+    project_root = pathlib.Path.cwd() if project_root is None else project_root
+
+    # If the project path does not exist, create it.
+    if not project_root.exists():
+        project_root.mkdir(parents=True)
+        print_success(f"Created new project directory at {project_root}.")
+    elif current_project() is not None:
+        print_failure(f"A CIDA project already exists at {project_root}.")
+        return
+    else:
+        print_success("Project directory already exists.")
+
+
 def create_project(project_path: pathlib.Path = None) -> CIDAProject:
     """ Interactive flow for creating a CIDA project.
 
@@ -310,5 +425,45 @@ def create_project(project_path: pathlib.Path = None) -> CIDAProject:
         project_path = pathlib.Path.cwd()
 
     #
+
+
+def project_attribute(f):
+    """ Decorator used to create CIDA project attributes.
+    :param f: The function to be wrapped.
+    :return: A decorated project attribute getter.
+    """
+    @functools.wraps(f)
+    def wrapper():
+        cur_proj = current_project()
+        if cur_proj is not None:
+            return f(cur_proj)
+        return None
+
+    return wrapper
+
+
+@project_attribute
+def get_project_name(project: CIDAProject):
+    return project.project_name
+
+
+@project_attribute
+def get_project_principal_investigator(project: CIDAProject) -> str | None:
+    return project.principal_investigator
+
+
+@project_attribute
+def get_project_analyst(project: CIDAProject) -> None | str | list[str]:
+    return project.analyst
+
+
+@project_attribute
+def get_project_data_location(project: CIDAProject) -> str | None:
+    return project.data_location
+
+
+@project_attribute
+def get_project_git_location(project: CIDAProject) -> str | None:
+    return project.git_location
 
 
