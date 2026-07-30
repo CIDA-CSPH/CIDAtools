@@ -1,45 +1,50 @@
 import pathlib
-
-import pytest
-from pydantic import ValidationError, BaseModel
-
-import cidatools.defaults
-from cidatools import project
 import tempfile
 
+import pytest
+from cidatools import project
 from cidatools.consts import CIDA_DIRECTORY_NAME, CIDA_PROJECT_CONFIG_NAME
 from cidatools.project import CIDAProjectModel
+from pydantic import ValidationError
 
 
 @pytest.fixture(
     params=[
-        dict(
-            project_name="MyNewProject",
-            principal_investigator="Dr. PI",
-            analyst="Single Analyst",
-            data_location=None,
-            git_location=None,
-        ),
-        dict(
-            project_name="MyNewProject2",
-            principal_investigator=None,
-            analyst=["Analyst 1", "Analyst 2"],
-            data_location="/path/on/P/drive",
-            git_location=None,
-        ),
-        dict(
-            project_name="MyNewProject3",
-            principal_investigator=None,
-            analyst=["Analyst 1", "Analyst 2"],
-            data_location=None,
-            git_location="https://github.com/CIDA-CSPH/someRepo",
-        ),
-        dict(project_name=None, principal_investigator=None, analyst=None, data_location=None, git_location=None),
+        {
+            "project_name": "MyNewProject",
+            "principal_investigator": "Dr. PI",
+            "analyst": "Single Analyst",
+            "data_location": None,
+            "git_location": None,
+        },
+        {
+            "project_name": "MyNewProject2",
+            "principal_investigator": None,
+            "analyst": ["Analyst 1", "Analyst 2"],
+            "data_location": "/path/on/P/drive",
+            "git_location": None,
+        },
+        {
+            "project_name": "MyNewProject3",
+            "principal_investigator": None,
+            "analyst": ["Analyst 1", "Analyst 2"],
+            "data_location": None,
+            "git_location": "https://github.com/CIDA-CSPH/someRepo",
+        },
+        {
+            "project_name": None,
+            "principal_investigator": None,
+            "analyst": None,
+            "data_location": None,
+            "git_location": None,
+        },
     ]
 )
 def local_project(request):
     # Unpack parameters
-    project_name, principal_investigator, analyst, data_location, git_location = request.param.values()
+    project_name, principal_investigator, analyst, data_location, git_location = (
+        request.param.values()
+    )
 
     # Make a temporary directory
     tmpdir = tempfile.TemporaryDirectory()
@@ -86,19 +91,23 @@ def test_create_local_project(local_project):
 
 def test_double_create_local_project():
     with tempfile.TemporaryDirectory() as tmpdir:
-        project.create_local_project(project_name="MyNewProject", project_root=pathlib.Path(tmpdir))
-        project.create_local_project(project_name="MyNewProject", project_root=pathlib.Path(tmpdir))
+        project.create_local_project(
+            project_name="MyNewProject", project_root=pathlib.Path(tmpdir)
+        )
+        project.create_local_project(
+            project_name="MyNewProject", project_root=pathlib.Path(tmpdir)
+        )
         print("Done!")
 
 
 def test_project_status(local_project):
-    tmpdir, local_project_inst = local_project
+    tmpdir, _ = local_project
     project.project_status(project_root=pathlib.Path(tmpdir.name))
 
 
 def test_set_attribute_valid(local_project):
     # Get a project
-    tmpdir, local_project_inst = local_project
+    _, local_project_inst = local_project
 
     # Modify an attribute in a valid way.
     new_name = "Andrew's Project"
@@ -111,7 +120,7 @@ def test_set_attribute_valid(local_project):
 
 def test_set_attribute_invalid(local_project):
     # Get a project
-    tmpdir, local_project_inst = local_project
+    _, local_project_inst = local_project
 
     # Modify an attribute to something invalid
     invalid_name = 0xFFFF

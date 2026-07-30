@@ -26,7 +26,7 @@ Maintained by the CIDA Research Tools Committee.
 """
 
 # Epilog appears at the end of the help screen.
-CIDATOOLS_EPILOG = f"""
+CIDATOOLS_EPILOG = """
 Questions, Comments or Suggestions: mailto:CIDA-RT@olucdenver.onmicrosoft.com
 Found a bug? https://github.com/CIDA-CSPH/CIDAtools/issues
 """
@@ -106,16 +106,23 @@ def banner():
     banner_width = max(map(len, banner_rows))
     # Get the points where the colors change on the banner.
     color_change_points = [
-        i / (len(CIDATOOLS_DEFAULT_COLOR_PALETTE) - 1) for i in range(len(CIDATOOLS_DEFAULT_COLOR_PALETTE))
+        i / (len(CIDATOOLS_DEFAULT_COLOR_PALETTE) - 1)
+        for i in range(len(CIDATOOLS_DEFAULT_COLOR_PALETTE))
     ]
     # Compute the colors for each column of the banner.
-    c_c = [_lerp_rgb_1d(i=i / banner_width, cmap=parsed_colors, ccp=color_change_points) for i in range(banner_width)]
+    c_c = [
+        _lerp_rgb_1d(i=i / banner_width, cmap=parsed_colors, ccp=color_change_points)
+        for i in range(banner_width)
+    ]
     # Compute banner width.
     footer_rows = CIDATOOLS_BANNER_FOOTER.split("\n")
     total_width = max(banner_width, max(map(len, footer_rows)))
     # Apply color codes to each character in the banner string.
     colored_banner_rows = (
-        "".join(" " if s_i == " " else f"\033[38;2;{c[0]};{c[1]};{c[2]}m{s_i}\033[0m" for c, s_i in zip(c_c, row))
+        "".join(
+            " " if s_i == " " else f"\033[38;2;{c[0]};{c[1]};{c[2]}m{s_i}\033[0m"
+            for c, s_i in zip(c_c, row)
+        )
         for row in banner_rows
     )
     # Center the banner.

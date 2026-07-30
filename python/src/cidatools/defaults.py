@@ -1,14 +1,11 @@
-import functools
 import json
-from typing import Literal
-
-from pydantic import PrivateAttr, Field, BaseModel
-from pydantic_settings import BaseSettings, SettingsConfigDict
-
 import pathlib
 
-from cidatools.utils import print_failure, print_success
+from pydantic import Field, ValidationError
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
 from cidatools.persistence import PersistentField, PersistentWrapper
+from cidatools.utils import print_failure, print_success
 
 CIDA_PROJECT_DEFAULTS_PATH = pathlib.Path("~/.cida/project_defaults.json").expanduser()
 
@@ -53,13 +50,13 @@ def _write_project_defaults(defaults_path: pathlib.Path, defaults: CIDADefaults 
         tmp_defaults_path.replace(defaults_path)
         print_success(f"Wrote updated defaults to {defaults_path}.")
         return new_defaults
-    except Exception as e:
+    except (FileNotFoundError, ValidationError) as e:
         print_failure(f"Unable to write defaults: {e}")
 
 
 def _read_project_defaults(
     defaults_path: pathlib.Path = CIDA_PROJECT_DEFAULTS_PATH, create: bool = True
-) -> CIDADefaultsConfig | None:
+) -> CIDADefaultsModel | None:
     """Loads the cidatools project defaults from file.
     :param defaults_path:
     :param create: Create the project defaults file if it doesn't already exist.
@@ -69,24 +66,26 @@ def _read_project_defaults(
         if create:
             _write_project_defaults(defaults_path)
         else:
-            print_failure(f"CIDA defaults path {defaults_path} does not exist, and create=False.")
+            print_failure(
+                f"CIDA defaults path {defaults_path} does not exist, and create=False."
+            )
             return None
     else:
         try:
             with open(defaults_path, "r") as f:
-                return CIDADefaultsConfig.model_validate(json.load(f))
-        except Exception as e:
+                return CIDADefaultsModel.model_validate(json.load(f))
+        except (FileNotFoundError, ValidationError) as e:
             print_failure(f"Unable to load defaults: {e}")
         return None
     try:
         with open(defaults_path, "r") as f:
-            return CIDADefaultsConfig.model_validate(json.load(f))
-    except Exception as e:
+            return CIDADefaultsModel.model_validate(json.load(f))
+    except (FileNotFoundError, ValidationError) as e:
         print_failure(f"Unable to read config file: {e}")
     return None
 
 
 # class CIDADefaults:
-#     default_analyst = PersistentField(CIDADefaultsConfig)
+#     default_analyst = PersistentField(CIDADefaultsModel)
 #
 #     def __init__(self, path: pathlib.Path = CIDA_PROJECT_DEFAULTS_PATH):

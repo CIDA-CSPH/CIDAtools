@@ -1,13 +1,9 @@
 import pathlib
 import tempfile
 
-import pytest
-from pydantic import BaseModel
-
-from cidatools import project
 from cidatools.consts import CIDA_DIRECTORY_NAME, CIDA_PROJECT_CONFIG_NAME
 from cidatools.defaults import CIDADefaults, CIDADefaultsModel
-from cidatools.project import CIDAProjectModel, CIDAProject
+from cidatools.project import CIDAProject, CIDAProjectModel
 
 
 def test_defaults_persistence(mocker):
@@ -30,7 +26,9 @@ def test_defaults_persistence(mocker):
 def test_project_persistence(mocker):
     with tempfile.TemporaryDirectory() as tmpdir:
         # Fake path for project file
-        fake_path = pathlib.Path(tmpdir).joinpath(CIDA_DIRECTORY_NAME, CIDA_PROJECT_CONFIG_NAME)
+        fake_path = pathlib.Path(tmpdir).joinpath(
+            CIDA_DIRECTORY_NAME, CIDA_PROJECT_CONFIG_NAME
+        )
         fake_path.parent.mkdir(parents=True, exist_ok=False)
         # Fake project model
         fake_project = CIDAProjectModel(
@@ -65,7 +63,9 @@ def test_project_persistence_with_defaults(mocker):
         # Patch the default path, but don't instance the wrapper.
         mocker.patch.object(CIDADefaults, "path", fake_defaults_path)
         # Fake path for project file
-        fake_path = pathlib.Path(tmpdir).joinpath(CIDA_DIRECTORY_NAME, CIDA_PROJECT_CONFIG_NAME)
+        fake_path = pathlib.Path(tmpdir).joinpath(
+            CIDA_DIRECTORY_NAME, CIDA_PROJECT_CONFIG_NAME
+        )
         fake_path.parent.mkdir(parents=True, exist_ok=False)
         # Fake project model
         fake_project = CIDAProjectModel(

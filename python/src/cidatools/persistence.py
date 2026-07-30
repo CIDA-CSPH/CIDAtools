@@ -10,7 +10,6 @@ T = TypeVar("T", bound=BaseModel)
 
 
 class PersistentWrapper(abc.ABC):
-
     @property
     @abc.abstractmethod
     def path(self) -> pathlib.Path:
@@ -64,7 +63,6 @@ def _check_attrs(obj):
 
 
 class PersistentField:
-
     def __init__(self) -> None:
         pass
 
@@ -97,10 +95,18 @@ class PersistentField:
 
         def getter(instance):
             # Load model
-            _model = PersistentField._load_model(instance) if instance.can_persist else instance.model
+            _model = (
+                PersistentField._load_model(instance)
+                if instance.can_persist
+                else instance.model
+            )
             # Return the loaded value.
             tmp_get = getattr(_model, name)
-            if tmp_get is None and instance.parent is not None and hasattr(instance.parent, name):
+            if (
+                tmp_get is None
+                and instance.parent is not None
+                and hasattr(instance.parent, name)
+            ):
                 tmp_get = getattr(instance.parent, name)
             return tmp_get
 
@@ -112,7 +118,9 @@ class PersistentField:
         def setter(instance, value):
             can_persist = instance.can_persist
             # Load model
-            _existing_model = PersistentField._load_model(instance) if can_persist else instance.model
+            _existing_model = (
+                PersistentField._load_model(instance) if can_persist else instance.model
+            )
             # Update the existing model
             _updated_model = _existing_model.model_copy(update={name: value})
             # Validate the updated model
