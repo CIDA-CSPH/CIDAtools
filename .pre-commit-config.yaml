@@ -16,3 +16,13 @@ repos:
     hooks:
       - id: black
         files: '^python/'
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.16.0
+    hooks:
+      # Run the linter.
+      - id: ruff-check
+        args: [ --fix ]
+        files: '^python/'
+      # Run the formatter.
+      - id: ruff-format
+        files: '^python/'
