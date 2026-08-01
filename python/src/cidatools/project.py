@@ -500,7 +500,8 @@ def create_github_project(
 
     # TODO: Optionally stage, commit and push the project updates.
     print_success(
-        f"Created new CIDA project.\n  Local path: {_project_root}\n  GitHub URL: {repo_url}.\nYour project configuration has been updated, changes are unstaged in the working directory."
+        f"Created new CIDA project.\n  Local path: {_project_root}\n  GitHub URL: {repo_url}.\n"
+        "Your project configuration has been updated, changes are unstaged in the working directory."
     )
 
     # Return the new CIDAProject
