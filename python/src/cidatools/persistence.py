@@ -35,9 +35,11 @@ class PersistentWrapper(abc.ABC):
     def __init_subclass__(cls, **kwargs):
         super().__init_subclass__(**kwargs)
 
-        for required_var in ["__model__", "__parent__"]:
-            if required_var not in cls.__dict__ or cls.__dict__[required_var] is None:
-                raise TypeError(f"Subclass of PersistentWrapper must define {required_var}.")
+        if "__model__" not in cls.__dict__ or cls.__dict__["__model__"] is None:
+            raise TypeError("Subclass of PersistentWrapper must set '__model__' to a non-None value.")
+
+        if "__parent__" not in cls.__dict__:
+            raise TypeError("Subclass of PersistentWrapper must define '__parent__'.")
 
     def __init__(self, path: pathlib.Path):
         self._model = self.__model__()
