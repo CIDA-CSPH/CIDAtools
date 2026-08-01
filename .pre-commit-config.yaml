@@ -4,8 +4,6 @@ repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:
-      - id: trailing-whitespace
-        files: '^(python|R)/'
       - id: end-of-file-fixer
         files: '^(python|R)/'
       - id: check-yaml
