@@ -1,0 +1,1 @@
+Git credential manager may not be your

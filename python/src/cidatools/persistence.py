@@ -10,32 +10,16 @@ T = TypeVar("T", bound=BaseModel)
 
 
 class PersistentWrapper(abc.ABC):
+    __model__: type[T] = None
+    __parent__: PersistentWrapper = None
+    __persistent_path__: pathlib.Path = None
+
     @property
-    @abc.abstractmethod
     def path(self) -> pathlib.Path:
         """Returns the path where the persistent model is stored on disk.
         :return:
         """
-        raise NotImplementedError
-
-    @property
-    @abc.abstractmethod
-    def parent(self) -> "PersistentWrapper | None":
-        """Returns the parent PersistentWrapper or None.
-
-        If a parent is defined, it will be searched in the case where the PersistentField is None
-        at the current level.
-        :return: A PersistentWrapper class or None.
-        """
-        raise NotImplementedError
-
-    @property
-    @abc.abstractmethod
-    def model_type(self) -> type[T]:
-        """Returns the type of the model which is being wrapped. Should extend BaseModel.
-        :return: A type derived from BaseModel
-        """
-        raise NotImplementedError
+        return self.__persistent_path__
 
     @property
     def model(self) -> T:
@@ -44,22 +28,26 @@ class PersistentWrapper(abc.ABC):
         """
         return self._model
 
-    @model.setter
-    def model(self, value: T):
-        self._model = value
-
     @property
     def can_persist(self):
         return os.access(self.path, os.R_OK | os.W_OK)
 
-    def __init__(self):
-        self.model = self.model_type()
+    def __init_subclass__(cls, **kwargs):
+        super().__init_subclass__(**kwargs)
+
+        for required_var in ["__model__", "__parent__"]:
+            if required_var not in cls.__dict__ or cls.__dict__[required_var] is None:
+                raise TypeError(f"Subclass of PersistentWrapper must define {required_var}.")
+
+    def __init__(self, path: pathlib.Path):
+        self._model = self.__model__()
+        self.__persistent_path__ = path
 
 
 def _check_attrs(obj):
-    for attr in ["path", "parent", "model_type"]:
+    for attr in ["__persistent_path__", "__parent__", "__model__"]:
         if not hasattr(obj, attr):
-            raise ValueError(f"{obj.__name__} has no attribute '{attr}'.")
+            raise ValueError(f"{obj} has no attribute '{attr}'.")
 
 
 class PersistentField:
@@ -76,7 +64,7 @@ class PersistentField:
 
     def __set_name__(self, owner, name):
         # Check that the name we are assigning is actually a field of the model class
-        if name not in owner.model_type.model_fields:
+        if name not in owner.__model__.model_fields:
             raise ValueError(f"Field {name} is not a field of {owner.model_type}.")
         # Create a getter for this name
         self._getter = self._build_getter(name)
@@ -87,7 +75,7 @@ class PersistentField:
     def _load_model(instance):
         with open(instance.path, "r") as f:
             # Load the model from file.
-            _model = instance.model_type.model_validate(json.load(f))
+            _model = instance.__model__.model_validate(json.load(f))
         return _model
 
     @staticmethod
@@ -95,19 +83,11 @@ class PersistentField:
 
         def getter(instance):
             # Load model
-            _model = (
-                PersistentField._load_model(instance)
-                if instance.can_persist
-                else instance.model
-            )
+            _model = PersistentField._load_model(instance) if instance.can_persist else instance.model
             # Return the loaded value.
             tmp_get = getattr(_model, name)
-            if (
-                tmp_get is None
-                and instance.parent is not None
-                and hasattr(instance.parent, name)
-            ):
-                tmp_get = getattr(instance.parent, name)
+            if tmp_get is None and instance.__parent__ is not None and hasattr(instance.__parent__, name):
+                tmp_get = getattr(instance.__parent__, name)
             return tmp_get
 
         # Return the constructed function
@@ -118,9 +98,7 @@ class PersistentField:
         def setter(instance, value):
             can_persist = instance.can_persist
             # Load model
-            _existing_model = (
-                PersistentField._load_model(instance) if can_persist else instance.model
-            )
+            _existing_model = PersistentField._load_model(instance) if can_persist else instance.model
             # Update the existing model
             _updated_model = _existing_model.model_copy(update={name: value})
             # Validate the updated model

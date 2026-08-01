@@ -23,5 +23,5 @@ dev = [
 [project.scripts]
 cidatools = "cidatools.cli:cli"
 
-[tool.black]
+[tool.ruff]
 line-length = 120
