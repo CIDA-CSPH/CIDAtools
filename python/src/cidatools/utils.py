@@ -45,3 +45,30 @@ def print_info(message: str):
     :return:
     """
     print(f"{BLUE_INFO} {message}", file=sys.stderr)
+
+
+def print_red(message: str):
+    """
+    Prints a red message.
+    :param message:
+    :return:
+    """
+    print(f"\x1b[1m\x1b[31m{message}\x1b[0m")
+
+
+def print_yellow(message: str):
+    """
+    Prints a yellow message.
+    :param message:
+    :return:
+    """
+    print(f"\x1b[1m\x1b[33m{message}\x1b[0m")
+
+
+def print_green(message: str):
+    """
+    Prints a green message.
+    :param message:
+    :return:
+    """
+    print(f"\x1b[1m\x1b[32m{message}\x1b[0m")

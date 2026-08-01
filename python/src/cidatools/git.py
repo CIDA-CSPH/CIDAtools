@@ -139,7 +139,7 @@ def setup_github():
 
     IMPORTANT: Do not hardcode this token into any code, scripts, or files you commit to GitHub!
     """
-    # Check the current github status
+    # Check the current GitHub integration status
     git_status = _check_git_integration()
 
     # If GCM is not set up, prompt user for manual token.
@@ -406,3 +406,18 @@ def clone_github_repository(repository_url: str, local_path: pathlib.Path) -> bo
 
     # Success is determined by status code.
     return clone_res.returncode == 0
+
+
+def get_git_remote_url(name: str = "origin") -> str | None:
+    """Checks the URL for a git remote.
+    :return: str containing URL name or None
+    """
+    # Use subprocess to run git.
+    remote_out = subprocess.run(["git", "remote", "get-url", name], check=True, capture_output=True)
+    # If we get an error, return None
+    if remote_out.returncode != 0:
+        return None
+    # Get the url provided by Git.
+    remote_url = remote_out.stdout.decode().strip()
+    # Return the URL
+    return remote_url

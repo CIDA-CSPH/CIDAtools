@@ -30,7 +30,7 @@ class PersistentWrapper(abc.ABC):
 
     @property
     def can_persist(self):
-        return os.access(self.path, os.R_OK | os.W_OK)
+        return os.access(self.path, os.R_OK | os.W_OK) and os.path.isfile(self.path)
 
     def __init_subclass__(cls, **kwargs):
         super().__init_subclass__(**kwargs)

@@ -18,10 +18,11 @@ from cidatools.git import (
     clone_github_repository,
     create_empty_github_repository,
     create_github_repository_from_template,
+    get_git_remote_url,
     list_github_templates,
 )
 from cidatools.persistence import PersistentField, PersistentWrapper
-from cidatools.utils import print_failure, print_success, print_warning
+from cidatools.utils import print_failure, print_green, print_red, print_success, print_warning, print_yellow
 
 
 class CIDAProjectModel(BaseModel, frozen=True):
@@ -138,8 +139,7 @@ def _write_templated_readme(
         # Write the rendered template to file.
         with open(readme_path, "w") as f:
             f.write(rendered_template_str)
-
-        print_success(f"Created README.md at {readme_path.relative_to(project_root)}.")
+        # print_success(f"Created README.md at {readme_path.relative_to(project_root)}.")
     # Otherwise print an error message.
     else:
         # log.warning(f"{readme_path} already exists, will not overwrite. Pass overwrite=True to force an overwrite.")
@@ -247,13 +247,48 @@ def project_status(project_root: pathlib.Path | None = None):
         print_success("Loaded CIDA project.")
 
     # Check issues
-    print("Project Config: ")
-    longest_key = max(len(k) for k in cur_project.__dict__)
-    for key, val in cur_project.__dict__.items():
-        print(f"{key.ljust(longest_key)} : {val}")
+    print("Project Configuration:")
+    if cur_project.can_persist:
+        print_green(f"  Config located at: {cur_project.path}")
+    else:
+        print_red(f"  Memory persistence, path: {cur_project.path} is not valid.")
+    longest_key = max(len(k) for k in cur_project.__model__.model_fields)
+    for field_name in cur_project.__model__.model_fields:
+        print(f"  {field_name.ljust(longest_key)} : {getattr(cur_project, field_name)}")
 
     # Check for Git repository.
-    return
+    print("\nGit Configuration:")
+    git_location = cur_project.git_location
+    remote_url = get_git_remote_url()
+    if remote_url is None:
+        msg_fun = print_red
+    else:
+        msg_fun = print
+
+    msg_fun(f"  Remote URL : {remote_url}\n")
+
+    if remote_url.startswith("git@"):
+        print_yellow(
+            f"  Warning: Your git remote '{remote_url}' appears to be an SSH URL.\n"
+            f"  To enable CIDAtools GitHub integration, we recommend using Git Credential Manager\n"
+            f"  and HTTPS URLs (i.e https://github.com/CSPH-CIDA/<repo_name>)."
+        )
+    else:
+        if git_location == remote_url:
+            print_green("    Git remote matches project config.")
+        elif git_location is None:
+            print_yellow(
+                f"  'git_location' is not set in project config.\n"
+                f"  Try running 'cidatools set git_location {remote_url}' to fix."
+            )
+        else:
+            print_red(
+                f"    Git repository configured for remote {remote_url}, but git_location is set to {git_location}.\n"
+                f"    This may be a project configuration error.\n"
+                f"    If this is not expected, run 'cidatools set git_location {remote_url}' to update project config."
+            )
+
+        print(f"    Git Remote: {remote_url}")
 
 
 def current_project(project_root: pathlib.Path | None = None) -> CIDAProject | None:
@@ -283,7 +318,7 @@ def current_project(project_root: pathlib.Path | None = None) -> CIDAProject | N
                 config_path = project_path.joinpath(CIDA_PROJECT_CONFIG_NAME)
                 # If the config file exists, parse JSON and return the object.
                 if config_path.is_file():
-                    return CIDAProject(path=project_path)
+                    return CIDAProject(path=config_path)
                 else:
                     print_failure(
                         f"Project directory found at {project_path} but there is no {CIDA_PROJECT_CONFIG_NAME} file inside."
@@ -310,7 +345,7 @@ def create_local_project(
     """Creates a CIDA project structure at `project_root`.
 
     This function operates offline, does not configure an associated GitHub repository, and uses the basic/default project template.
-    :param project_root:
+    :param project_root: The root directory for the project. defaults to the current working directory.
     :param project_name:
     :param principal_investigator:
     :param analyst:
@@ -358,13 +393,13 @@ def create_local_project(
 
     # Create the other directories and populate with READMEs
     project_subdirs = CIDA_PROJECT_DEFAULT_FOLDERS if folders_to_create is None else folders_to_create
+    print_success(f"Creating subdirectories: {', '.join(f + '/' for f in project_subdirs)}.")
     for project_subdir in project_subdirs:
         # Get the path to this subdirectory.
         project_subdir_path = _project_root.joinpath(project_subdir)
         # If the subdirectory does not already exist, get it.
         if not project_subdir_path.exists():
-            project_subdir_path.mkdir(parents=True)
-            print_success(f"Created {project_subdir}/ subdirectory.")
+            project_subdir_path.mkdir(parents=True, exist_ok=True)
         # Write the README to this subdirectory.
         _write_templated_readme(
             project_root=_project_root,
@@ -400,7 +435,7 @@ def create_github_project(
 
     :param project_name: A name for the new project.
     :param repository_name: An optional name for the repository.
-        If none is specified, the `project_name` will be used.
+        If none is specified, the name of the `project_root` directory will be used.
     :param project_root: The (local) root directory for the project.
     :param template_name: The name of a template project to use.
         To see available templates, call list_github_templates().

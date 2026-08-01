@@ -14,6 +14,7 @@ dependencies = [
 [dependency-groups]
 dev = [
     "coverage>=7.15.2",
+    "detect-secrets>=1.5.0",
     "pre-commit>=4.6.1",
     "pytest>=9.1.1",
     "pytest-cov>=7.1.0",

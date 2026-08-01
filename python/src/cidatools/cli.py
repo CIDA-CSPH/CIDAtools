@@ -5,7 +5,10 @@ import pathlib
 import sys
 from importlib.metadata import version
 
-from cidatools.project import project_status
+from cidatools.defaults import CIDA_PROJECT_DEFAULT_FOLDERS
+from cidatools.git import create_empty_github_repository, create_github_repository_from_template
+from cidatools.project import create_github_project, create_local_project, project_status
+from cidatools.utils import print_failure, print_success
 
 # The block between the 'fmt: off' and 'fmt: on' blocks below is necessary to prevent
 # code formatters from modifying the internal spacing the of the banner.
@@ -36,7 +39,7 @@ Found a bug? https://github.com/CIDA-CSPH/CIDAtools/issues
 CIDATOOLS_DEFAULT_COLOR_PALETTE = ["FF595E", "FFCA3A", "8AC926", "1982C4", "6A4C93"]
 
 
-def cli():
+def cli() -> int:
     """Entrypoint for CLI commands.
     :return:
     """
@@ -55,11 +58,143 @@ def cli():
     # Each subcommand is a subparser
     subparsers = parser.add_subparsers(dest="command", required=True)
 
+    ## Project Status
     status = subparsers.add_parser(name="status")
     status.set_defaults(func=lambda a: project_status(project_root=a.C))
 
+    ## Project Creation
+    create = subparsers.add_parser(name="create")
+    # Required arguments for project/repo creation.
+    create.add_argument("target", choices=["github_project", "project", "repo"])
+    create.add_argument(
+        "directory",
+        type=pathlib.Path,
+        default=None,
+        help="The directory where the new project will be created. By default, the current working directory will be used.",
+    )
+    # Optional arguments for project/repo creation.
+    create.add_argument(
+        "--template", type=str, help="If specified, will to create the new repository using this template name."
+    )
+    create.add_argument(
+        "--description",
+        type=str,
+        help="If specified, will be used as the description of the new GitHub repository. (No effect for non-GitHub projects)",
+    )
+    create.add_argument(
+        "--repo-name",
+        type=str,
+        help="If specified, will be used as the name of the new GitHub repository, overriding the default directory name (No effect for non-GitHub projects)",
+    )
+    create.add_argument(
+        "--create-folders",
+        type=str,
+        nargs="+",
+        help="Which folders to create when creating a local project (no effect for GitHub projects, as this is determined by the template used).",
+        default=CIDA_PROJECT_DEFAULT_FOLDERS,
+    )
+    # Repository visibility
+    visibility = create.add_mutually_exclusive_group()
+    visibility.add_argument("--private", action="store_true", help="If specified, make a private repository.")
+    visibility.add_argument(
+        "--internal",
+        action="store_true",
+        default=True,
+        help="If specified, make a internal (visible to other members of CIDA) repository.",
+    )
+    # Project metadata
+    create.add_argument(
+        "--project-name", type=str, default=None, help="If specified, will set the project name for the new project"
+    )
+    create.add_argument(
+        "--analyst", type=str, default=None, nargs="+", help="If specified, will set the analyst(s) for the new project"
+    )
+    create.add_argument(
+        "--pi",
+        type=str,
+        default=None,
+        nargs="+",
+        help="If specified, will set the principal investigator for the new project",
+    )
+    create.add_argument(
+        "--data-location", type=str, default=None, help="If specified, will set the data location for the new project"
+    )
+    create.add_argument(
+        "--git-location",
+        type=str,
+        default=None,
+        help="If specified, will set the git location for the new project (No effect for a GitHub project, as this value is set to the URL of the created repository).",
+    )
+    create.set_defaults(func=_cli_create)
+
     args = parser.parse_args()
-    args.func(args)
+    return args.func(args)
+
+
+def _cli_create(args: argparse.Namespace) -> int:
+    """Entrypoint for the CLI 'create' subcommand.
+    :param args: The parsed argument namespace.
+    :return:
+    """
+    project_directory = args.directory.absolute()
+    if args.target == "github_project":
+        # If not specified, we create a default (empty) repository.
+        template_name = "empty" if args.template is None else args.template
+        # Create a new GitHub project.
+        create_result = create_github_project(
+            project_name=project_directory.name if args.project_name is None else args.project_name,
+            project_root=project_directory,
+            repository_name=args.repo_name,
+            template_name=template_name,
+            description=args.description,
+            visibility="private" if args.private else "internal" if args.internal else "public",
+            analyst=args.analyst,
+            principal_investigator=args.pi,
+            data_location=args.data_location,
+        )
+
+        if create_result is None:
+            print_failure("Error creating new GitHub project.")
+            return 1
+        else:
+            print_success(f"Successfully created new GitHub project at {create_result.git_location}.")
+            return 0
+    elif args.target == "project":
+        create_result = create_local_project(
+            project_name=project_directory.name if args.project_name is None else args.project_name,
+            project_root=project_directory,
+            principal_investigator=args.pi,
+            analyst=args.analyst,
+            data_location=args.data_location,
+            git_location=args.git_location,
+        )
+        if create_result is None:
+            print_failure("Error creating new CIDA project.")
+            return 1
+        else:
+            print_success("Successfully created CIDA project.")
+            return 0
+    elif args.target == "repository":
+        if args.template is None:
+            repo_url = create_empty_github_repository(
+                name=project_directory.name if args.repo_name is None else args.repo_name,
+                description=args.description,
+                visibility="private" if args.private else "internal" if args.internal else "public",
+            )
+        else:
+            repo_url = create_github_repository_from_template(
+                name=project_directory.name if args.repo_name is None else args.repo_name,
+                description=args.description,
+                visibility="private" if args.private else "internal" if args.internal else "public",
+                template_name=args.template,
+            )
+        if repo_url is None:
+            print_failure("Error creating new repository.")
+            return 1
+        else:
+            print_success(f"Created a new GitHub repository at: {repo_url}.")
+            return 0
+    return 1
 
 
 def _parse_rgb(rgb_hex: str):
@@ -106,23 +241,16 @@ def banner():
     banner_width = max(map(len, banner_rows))
     # Get the points where the colors change on the banner.
     color_change_points = [
-        i / (len(CIDATOOLS_DEFAULT_COLOR_PALETTE) - 1)
-        for i in range(len(CIDATOOLS_DEFAULT_COLOR_PALETTE))
+        i / (len(CIDATOOLS_DEFAULT_COLOR_PALETTE) - 1) for i in range(len(CIDATOOLS_DEFAULT_COLOR_PALETTE))
     ]
     # Compute the colors for each column of the banner.
-    c_c = [
-        _lerp_rgb_1d(i=i / banner_width, cmap=parsed_colors, ccp=color_change_points)
-        for i in range(banner_width)
-    ]
+    c_c = [_lerp_rgb_1d(i=i / banner_width, cmap=parsed_colors, ccp=color_change_points) for i in range(banner_width)]
     # Compute banner width.
     footer_rows = CIDATOOLS_BANNER_FOOTER.split("\n")
     total_width = max(banner_width, max(map(len, footer_rows)))
     # Apply color codes to each character in the banner string.
     colored_banner_rows = (
-        "".join(
-            " " if s_i == " " else f"\033[38;2;{c[0]};{c[1]};{c[2]}m{s_i}\033[0m"
-            for c, s_i in zip(c_c, row)
-        )
+        "".join(" " if s_i == " " else f"\033[38;2;{c[0]};{c[1]};{c[2]}m{s_i}\033[0m" for c, s_i in zip(c_c, row))
         for row in banner_rows
     )
     # Center the banner.
@@ -139,5 +267,5 @@ def banner():
 
 
 if __name__ == "__main__":
-    cli()
-    sys.exit(0)
+    exit_code = cli()
+    sys.exit(exit_code)
