@@ -110,7 +110,7 @@ def _write_default_token(github_token: str) -> None:
     defaults = CIDADefaults()
     try:
         defaults.github_token = github_token
-    except AttributeError, FileNotFoundError, ValidationError:
+    except (AttributeError, FileNotFoundError, ValidationError):
         print_failure("Unable to set GitHub token.")
     print_success(f"Github token has been written to {defaults.path}")
 
@@ -122,7 +122,7 @@ def _read_default_token() -> str | None:
     defaults = CIDADefaults()
     try:
         return defaults.github_token
-    except AttributeError, FileNotFoundError, ValidationError:
+    except (AttributeError, FileNotFoundError, ValidationError):
         print_failure("Unable to read GitHub token.")
     return None
 
