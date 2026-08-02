@@ -8,7 +8,6 @@ from importlib.metadata import version
 from cidatools.defaults import CIDA_PROJECT_DEFAULT_FOLDERS
 from cidatools.git import create_empty_github_repository, create_github_repository_from_template
 from cidatools.project import create_github_project, create_local_project, project_status
-from cidatools.utils import print_failure, print_success
 
 # The block between the 'fmt: off' and 'fmt: on' blocks below is necessary to prevent
 # code formatters from modifying the internal spacing the of the banner.
@@ -155,10 +154,8 @@ def _cli_create(args: argparse.Namespace) -> int:
         )
 
         if create_result is None:
-            print_failure("Error creating new GitHub project.")
             return 1
         else:
-            print_success(f"Successfully created new GitHub project at {create_result.git_location}.")
             return 0
     elif args.target == "project":
         create_result = create_local_project(
@@ -170,10 +167,8 @@ def _cli_create(args: argparse.Namespace) -> int:
             git_location=args.git_location,
         )
         if create_result is None:
-            print_failure("Error creating new CIDA project.")
             return 1
         else:
-            print_success("Successfully created CIDA project.")
             return 0
     elif args.target == "github-repo":
         if args.template is None:

@@ -2,6 +2,7 @@ import pathlib
 import re
 import shutil
 import subprocess
+import time
 from enum import Flag, auto
 from posixpath import join as posixjoin
 from typing import Any, Literal
@@ -321,7 +322,7 @@ def _pre_create_github_repository(name: str, visibility: str) -> tuple[bool, str
         exist_resp.status_code == 404
         and exist_json.get("documentation_url") == "https://docs.github.com/rest/repos/repos#get-a-repository"
     ):
-        print_success(f"Repository {repo_url} is available.")
+        print_success(f"Repository URL {repo_url} is available.")
         return True, gh_token, repo_url
     elif exist_resp.status_code in [200, 301]:
         print_failure(f"Unable to create repository, {repo_url} already exists.")
@@ -421,6 +422,10 @@ def create_github_repository_from_template(
 
     # If the repo is private, we are done.
     if ret_val is not None and visibility == "internal":
+        # BAD HACK: Sometimes this request can fail if we call PATCH too quickly after the repo creation.
+        #           To fix, we just wait a little bit before calling patch.
+        # TODO: Do something better here.
+        time.sleep(0.5)
         # Due to GitHub API limitation, we cannot create an 'internal' repo in a single step,
         # so we must create the repo as private, then send a follow-up request to modify the
         # repository visibility.
