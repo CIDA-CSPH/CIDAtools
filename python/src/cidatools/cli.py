@@ -55,15 +55,16 @@ def cli() -> int:
         type=pathlib.Path,
         help="Subsequent commands will reference the project in the given directory instead of the working directory.",
     )
-    # Each subcommand is a subparser
+    # Each subcommand is a sub-parser
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    ## Project Status
+    # Project Status Sub-parser
     status = subparsers.add_parser(name="status")
     status.set_defaults(func=lambda a: project_status(project_root=a.C))
 
-    ## Project Creation
+    # Project Creation Sub-parser
     create = subparsers.add_parser(name="create")
+
     # Required arguments for project/repo creation.
     create.add_argument("target", choices=["github-project", "github-repo", "project"])
     create.add_argument(
@@ -139,13 +140,13 @@ def _cli_create(args: argparse.Namespace) -> int:
     project_directory = args.directory.absolute()
     if args.target == "github-project":
         # If not specified, we create a default (empty) repository.
-        template_name = "empty" if args.template is None else args.template
+        # template_name = "empty" if args.template is None else args.template
         # Create a new GitHub project.
         create_result = create_github_project(
             project_name=project_directory.name if args.project_name is None else args.project_name,
             project_root=project_directory,
             repository_name=args.repo_name,
-            template_name=template_name,
+            template_name=args.template,
             description=args.description,
             visibility="private" if args.private else "internal" if args.internal else "public",
             analyst=args.analyst,

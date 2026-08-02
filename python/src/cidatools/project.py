@@ -16,10 +16,8 @@ from cidatools.consts import (
 from cidatools.defaults import CIDA_PROJECT_DEFAULT_FOLDERS, CIDADefaults
 from cidatools.git import (
     clone_github_repository,
-    create_empty_github_repository,
-    create_github_repository_from_template,
+    create_github_repository,
     get_git_remote_url,
-    list_github_templates,
 )
 from cidatools.persistence import PersistentField, PersistentWrapper
 from cidatools.utils import (
@@ -475,54 +473,18 @@ def create_github_project(
     else:
         print_success("Project directory already exists.")
 
-    # Retrieve the available templates.
-    template_list = list_github_templates(include_empty=True, display=template_name is None)
-
-    # If we cannot list templates, we cannot continue.
-    if template_list is None:
-        print_failure("Unable to list templates.")
-        return None
-
     # Determine the repo name with the following precedence:
     #   1. The repository_name (if specified)
     #   2. The name of the current working directory.
     repo_name = repository_name if repository_name is not None else _project_root.name
-    # If a template name is not chosen, prompt interactively.
-    if template_name is None:
-        # The user's selection defaults to 0 (an empty repository)
-        user_i = None
-        while user_i not in range(len(template_list)):
-            user_choice = input("Choose a template from the above list (default 0): ")
-            if user_choice == "":
-                user_i = 0
-            else:
-                try:
-                    user_i = int(user_choice)
-                except ValueError:
-                    pass
-        # Use the user's selection to choose the template.
-        if user_i == 0:
-            _template_name = "empty"
-        else:
-            _template_name = template_list[user_i].name
-    else:
-        _template_name = template_name
 
-    # If an empty project is requested, create it.
-    if _template_name == "empty":
-        repo_url = create_empty_github_repository(
-            name=repo_name,
-            description=description,
-            visibility=visibility,
-        )
-    # Otherwise create from the selected template.
-    else:
-        repo_url = create_github_repository_from_template(
-            name=repo_name,
-            description=description,
-            visibility=visibility,
-            template_name=_template_name,
-        )
+    # Create the new GitHub repo.
+    repo_url = create_github_repository(
+        name=repo_name,
+        description=description,
+        visibility=visibility,
+        template_name=template_name,
+    )
 
     # If there was an error during repository creation, stop here.
     if repo_url is None:
@@ -549,7 +511,7 @@ def create_github_project(
 
     # TODO: Optionally stage, commit and push the project updates.
     print_success(
-        f"Created new CIDA project.\n  Local path: {_project_root}\n  GitHub URL: {repo_url}.\n"
+        f"Created new CIDA project.\n    Local path: {_project_root}\n    GitHub URL: {repo_url}.\n"
         "Your project configuration has been updated, changes are unstaged in the working directory."
     )
 

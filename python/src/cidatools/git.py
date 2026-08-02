@@ -450,6 +450,75 @@ def create_github_repository_from_template(
     return ret_val
 
 
+def create_github_repository(
+    name: str,
+    description: str | None = None,
+    visibility: Literal["internal", "private", "public"] = "internal",
+    template_name: str | None = None,
+) -> str | None:
+    """Function to create a new GitHub repository.
+    This function is intended for interactive use, and is a wrapper around the more specific
+    `create_empty_github_repository()` and `create_github_repository_from_template()` functions.
+
+    If you do not need the interactive component (i.e. in a script), call one of those functions instead.
+    :param name: A name for the repository. (e.g. https://github.com/CIDA-CSPH/<name>)
+    :param description: An optional description for the repository. (default: None)
+    :param visibility: The visibility of the new GitHub repo.
+    :param template_name: The name of the template to use. (default: None)
+        If None, will interactively prompt the user to choose a template.
+        If 'empty', will create a new empty GitHub repo.
+        Otherwise, will attempt to create a GitHub repo with the given template name.
+    :return: A string containing the GitHub repository URL, or None if repo creation failed.
+    """
+
+    # If a template name is not chosen, prompt interactively.
+    if template_name is None:
+        # Retrieve the available templates.
+        template_list = list_github_templates(include_empty=True, display=template_name is None)
+
+        # If we cannot list templates, we cannot continue.
+        if template_list is None:
+            print_failure("Unable to list templates.")
+            return None
+
+        # The user's selection defaults to 0 (an empty repository)
+        user_i = None
+        while user_i not in range(len(template_list)):
+            user_choice = input("Choose a template from the above list (default 0): ")
+            if user_choice == "":
+                user_i = 0
+            else:
+                try:
+                    user_i = int(user_choice)
+                except ValueError:
+                    pass
+        # Use the user's selection to choose the template.
+        if user_i == 0:
+            _template_name = "empty"
+        else:
+            _template_name = template_list[user_i].name
+    else:
+        _template_name = template_name
+
+    # If an empty project is requested, create it.
+    if _template_name == "empty":
+        repo_url = create_empty_github_repository(
+            name=name,
+            description=description,
+            visibility=visibility,
+        )
+    # Otherwise create from the selected template.
+    else:
+        repo_url = create_github_repository_from_template(
+            name=name,
+            description=description,
+            visibility=visibility,
+            template_name=_template_name,
+        )
+
+    return repo_url
+
+
 def clone_github_repository(repository_url: str, local_path: pathlib.Path) -> bool:
     """Clones a GitHub repository via git.
     :param repository_url: URL of the repository to clone
@@ -460,8 +529,13 @@ def clone_github_repository(repository_url: str, local_path: pathlib.Path) -> bo
     if local_path.exists() and not local_path.is_dir():
         print_failure("Path exists but is not a directory.")
 
-    # Run the clone operation
-    clone_res = subprocess.run(["git", "clone", repository_url, local_path.absolute()], check=True)
+    # Run the clone operation.
+    try:
+        clone_res = subprocess.run(
+            ["git", "clone", repository_url, local_path.absolute()], check=True, capture_output=True
+        )
+    except subprocess.CalledProcessError:
+        return False
 
     # Success is determined by status code.
     return clone_res.returncode == 0
