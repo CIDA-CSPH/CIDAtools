@@ -352,6 +352,10 @@ def create_empty_github_repository(
     if not status:
         return None
 
+    json_d = {"name": name, "visibility": visibility}
+    if description is not None:
+        json_d["description"] = description
+
     # Perform the repository creation request
     resp = requests.post(
         GITHUB_REPO_CREATE_API_URL,
@@ -361,11 +365,7 @@ def create_empty_github_repository(
             "Authorization": f"Bearer {token}",
             "X-GitHub-Api-Version": "2026-03-10",
         },
-        json={
-            "name": name,
-            "description": description,
-            "visibility": visibility,
-        },
+        json=json_d,
     )
 
     # Handle the API response, which tells us if the repo was created or not.
@@ -397,6 +397,10 @@ def create_github_repository_from_template(
     if not status:
         return None
 
+    json_d = {"name": name, "owner": "CIDA-CSPH", "private": True}
+    if description is not None:
+        json_d["description"] = description
+
     # Make the request to create the new repository.
     resp = requests.post(
         GITHUB_REPO_CREATE_FROM_TEMPLATE_API_URL.format(template_name=template_name),
@@ -406,7 +410,7 @@ def create_github_repository_from_template(
             "Authorization": f"Bearer {token}",
             "X-GitHub-Api-Version": "2026-03-10",
         },
-        json={"owner": "CIDA-CSPH", "name": name, "description": description, "private": True},
+        json=json_d,
     )
 
     # Check status code
