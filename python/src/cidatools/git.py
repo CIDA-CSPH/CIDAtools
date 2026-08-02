@@ -423,9 +423,9 @@ def create_github_repository_from_template(
     # If the repo is private, we are done.
     if ret_val is not None and visibility == "internal":
         # BAD HACK: Sometimes this request can fail if we call PATCH too quickly after the repo creation.
-        #           To fix, we just wait a little bit before calling patch.
-        # TODO: Do something better here.
-        time.sleep(0.5)
+        #           To fix, we just wait a little bit before calling PATCH.
+        # TODO: Do something better here
+        time.sleep(2)
         # Due to GitHub API limitation, we cannot create an 'internal' repo in a single step,
         # so we must create the repo as private, then send a follow-up request to modify the
         # repository visibility.
@@ -440,12 +440,15 @@ def create_github_repository_from_template(
             json={"visibility": "internal"},
         )
 
+        # Get JSON body from response
+        update_json = update_resp.json()
+
         # Check status code on our request
         if update_resp.status_code == 200:
             print_success("Successfully updated repository visibility (internal).")
         elif update_resp.status_code == 422:
             print_warning(
-                "Insufficient permission to set repo visibility to 'internal', visibility will remain 'private'."
+                f"Unable to set repo visibility to 'internal', visibility will remain 'private': {update_json['message']}"
             )
         else:
             print_warning(
