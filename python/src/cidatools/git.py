@@ -4,10 +4,10 @@ import shutil
 import subprocess
 from enum import Flag, auto
 from posixpath import join as posixjoin
-from typing import Literal
+from typing import Any, Literal
 
 import requests
-from pydantic import BaseModel, ValidationError
+from pydantic import BaseModel, ValidationError, field_validator
 
 from cidatools.consts import (
     CIDA_GITHUB_ORGANIZATION,
@@ -54,6 +54,18 @@ class TemplateRepoList(BaseModel):
     total_count: int
     incomplete_results: bool
     items: list[TemplateRepo]
+
+    @field_validator("items", mode="before")
+    @classmethod
+    def filter_non_template_repos(cls, value: Any) -> list:
+        """Pre-filter for template repositories
+        This function filters out any repositories in the list which are not template repos.
+        :param value: A list of JSON repository objects.
+        :return: A filtered list of JSON repository objects.
+        """
+        if not isinstance(value, list):
+            raise TypeError("Expected 'items' to be a list.")
+        return [elem for elem in value if elem.get("is_template")]
 
 
 def _check_git_integration() -> GitStatus:
@@ -206,7 +218,7 @@ def _get_github_token() -> str:
     return None
 
 
-def list_github_templates(display: bool = True, include_empty: bool = True) -> list[TemplateRepo]:
+def list_github_templates(display: bool = True, include_empty: bool = True) -> list[TemplateRepo] | None:
     """Function to list the available CIDAtools GitHub templates.
     :param display: Whether to print the list of templates to the console.
     :param include_empty: If true, include the option to create an empty repository.
@@ -216,15 +228,19 @@ def list_github_templates(display: bool = True, include_empty: bool = True) -> l
     gh_token = _get_github_token()
     if gh_token is None:
         print_failure("Unable to list template repositories.")
+        return None
     # Perform the search request
     resp = requests.get(
-        posixjoin(GITHUB_SEARCH_API_URL, "?q=org:CIDA-CSPH+topic:cidatools-template"),
+        GITHUB_SEARCH_API_URL + "?q=org:CIDA-CSPH+topic:cidatools-template",
         headers={
             "User-Agent": "CIDA-CSPH/CIDAtools",
             "Accept": "application/vnd.github+json",
             "Authorization": f"Bearer {gh_token}",
         },
     )
+    if resp.status_code != 200:
+        print_failure("Unable to list template repositories.")
+        return None
     # Construct the model for the response.
     template_list = TemplateRepoList.model_validate(resp.json())
     # List of items to display.

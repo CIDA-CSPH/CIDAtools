@@ -477,6 +477,11 @@ def create_github_project(
     # Retrieve the available templates.
     template_list = list_github_templates(include_empty=True, display=template_name is None)
 
+    # If we cannot list templates, we cannot continue.
+    if template_list is None:
+        print_failure("Unable to list templates.")
+        return None
+
     # Determine the repo name with the following precedence:
     #   1. The repository_name (if specified)
     #   2. The name of the current working directory.
