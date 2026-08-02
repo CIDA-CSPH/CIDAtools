@@ -1,14 +1,6 @@
-# CIDATools
+# CIDAtools 
 
-
-# CIDAtools <a href='https://cida-csph.github.io/CIDAtools'><img src='man/figures/CIDAtoolshex.png' align="right" height="139" width = "139"/></a>
-
-<figure>
-<a
-href="https://github.com/CIDA-CSPH/CIDAtools/actions/workflows/R-CMD-check.yaml"><img
-src="https://github.com/CIDA-CSPH/CIDAtools/actions/workflows/R-CMD-check.yaml/badge.svg" /></a>
-<figcaption>R-CMD-check</figcaption>
-</figure>
+<a href='https://cida-csph.github.io/CIDAtools'><img src='man/figures/CIDAtoolshex.png' align="right" height="139" width = "139"/></a>
 
 ## Overview
 
@@ -18,6 +10,7 @@ efficient!
 
 ## Installing CIDAtools
 
+### R Installation
 To install `CIDAtools` on your local machine:
 
     install.packages("pak") # Only required if pak is not installed
@@ -27,6 +20,13 @@ To install `CIDAtools` on your local machine:
 > If you are encountering issues with the new version of CIDAtools (`v0.2.0+`), you can install the older version using:
 >
 > <pre><code>pak::pak("CIDA-CSPH/CIDAtools<mark>@v0.1.2</mark>")</code></pre>
+
+### Python installation
+
+Install `cidatools` via PIP using the fragment below:
+
+    pip install 'cidatools @ git+https://github.com/CIDA-CSPH/CIDAtools.git@cidatools_2.0#subdirectory=python'
+
 
 ## Creating a new project
 
