@@ -43,9 +43,9 @@ class TemplateRepo(BaseModel):
     def empty(cls):
         return TemplateRepo(
             id=0,
-            name="(No Template)",
-            full_name="(No Template)",
-            description="Creates an empty GitHub repository",
+            name="empty",
+            full_name="empty",
+            description="An empty repository (no template).",
             url=None,
         )
 
@@ -66,6 +66,10 @@ class TemplateRepoList(BaseModel):
         if not isinstance(value, list):
             raise TypeError("Expected 'items' to be a list.")
         return [elem for elem in value if elem.get("is_template")]
+
+    @property
+    def items_with_empty(self) -> list[TemplateRepo]:
+        return [TemplateRepo.empty(), *self.items]
 
 
 def _check_git_integration() -> GitStatus:
@@ -248,10 +252,10 @@ def list_github_templates(display: bool = True, include_empty: bool = True) -> l
         return None
     # Construct the model for the response.
     template_list = TemplateRepoList.model_validate(resp.json())
-    # List of items to display.
-    all_items = template_list.items
-    if include_empty:
-        all_items = [TemplateRepo.empty()] + template_list.items if include_empty else template_list.items
+
+    # Choose the correct item list to display.
+    items_list = template_list.items_with_empty if include_empty else template_list.items
+
     # Only print if requested.
     if display:
         # Length of longest list ID.
@@ -264,11 +268,11 @@ def list_github_templates(display: bool = True, include_empty: bool = True) -> l
                 f"[{{i:{i_len}}}] {{name:{repo_len}}} - {{description}}".format(
                     i=i, name=repo_i.name, description=repo_i.description
                 )
-                for i, repo_i in enumerate(template_list.items)
+                for i, repo_i in enumerate(items_list)
             )
         )
     # Return the list of templates
-    return all_items
+    return items_list
 
 
 def _pre_create_github_repository(name: str, visibility: str) -> tuple[bool, str | None, str | None]:
@@ -470,17 +474,16 @@ def create_github_repository(
         Otherwise, will attempt to create a GitHub repo with the given template name.
     :return: A string containing the GitHub repository URL, or None if repo creation failed.
     """
+    # Retrieve the available templates.
+    template_list = list_github_templates(include_empty=True, display=template_name is None)
+
+    # If we cannot list templates, we cannot continue.
+    if template_list is None:
+        print_failure("Unable to list templates.")
+        return None
 
     # If a template name is not chosen, prompt interactively.
     if template_name is None:
-        # Retrieve the available templates.
-        template_list = list_github_templates(include_empty=True, display=template_name is None)
-
-        # If we cannot list templates, we cannot continue.
-        if template_list is None:
-            print_failure("Unable to list templates.")
-            return None
-
         # The user's selection defaults to 0 (an empty repository)
         user_i = None
         while user_i not in range(len(template_list)):
@@ -493,11 +496,15 @@ def create_github_repository(
                 except ValueError:
                     pass
         # Use the user's selection to choose the template.
-        if user_i == 0:
-            _template_name = "empty"
-        else:
-            _template_name = template_list[user_i].name
+        _template_name = template_list[user_i].name
     else:
+        # List all template names
+        valid_template_names = [template.name for template in template_list]
+        # Check that the chosen name is one of the options.
+        if not any(template_name == valid_template_name for valid_template_name in valid_template_names):
+            print_failure(f"Template '{template_name}' is not a a valid template in: {', '.join(valid_template_names)}")
+            return None
+        # Assign the template name
         _template_name = template_name
 
     # If an empty project is requested, create it.
