@@ -3,6 +3,7 @@ import json
 import pathlib
 import re
 import shutil
+import time
 from importlib import resources
 from typing import Literal
 
@@ -490,6 +491,11 @@ def create_github_project(
     if repo_url is None:
         print_failure("Unable to create new GitHub project.")
         return None
+
+    # Like in 'create_github_repository_from_template()', there can be an issue when
+    # cloning a repo too quickly after creation, so we wait here for a few seconds.
+    # TODO: Do something better here
+    time.sleep(2)
 
     # Now, pull the GitHub repo from url.
     clone_success = clone_github_repository(repository_url=repo_url, local_path=_project_root)

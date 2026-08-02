@@ -553,7 +553,8 @@ def clone_github_repository(repository_url: str, local_path: pathlib.Path) -> bo
         clone_res = subprocess.run(
             ["git", "clone", repository_url, local_path.absolute()], check=True, capture_output=True
         )
-    except subprocess.CalledProcessError:
+    except subprocess.CalledProcessError as e:
+        print_failure(e.stderr.decode())
         return False
 
     # Success is determined by status code.
