@@ -53,7 +53,7 @@ def test_list_github_templates(mocker):
     # Check that we parsed the template list correctly
     assert len(template_list) == 2
     empty_template = template_list[0]
-    assert empty_template.name == "(No Template)"
+    assert empty_template.name == "empty"
     template_entry = template_list[1]
     # Check that the values match
     assert template_entry.name == "ct_default_template"
