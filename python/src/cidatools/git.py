@@ -158,15 +158,20 @@ def setup_github():
     git_status = _check_git_integration()
 
     # If GCM is not set up, prompt user for manual token.
-    if not (git_status.GCM_CONFIGURED and git_status.GCM_INSTALLED):
+    if git_status.GCM_CONFIGURED:
+        print_success("Detected Git Credential Manager is installed and configured.")
+        return
+    elif not (git_status.GCM_CONFIGURED and git_status.GCM_INSTALLED):
         print_info(
             "Git Credential Manager is not installed, CIDAtools can still work with a manually configured GitHub token."
         )
 
-    resp_l = "n"
+    resp_l = None
     while resp_l not in ["y", "n"]:
         response = input("Would you like to configure a GitHub token now? [y/N]:")
-        if response != "":
+        if response == "":
+            resp_l = "n"
+        else:
             resp_l = response.strip().lower()
 
     if resp_l == "y":

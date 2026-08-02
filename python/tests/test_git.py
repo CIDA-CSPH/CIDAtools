@@ -27,27 +27,29 @@ def test_retrieve_default_token(mocker):
 
 def test_list_github_templates(mocker):
     # Mock the GitHub token retrieval
-    # get_token = mocker.patch("cidatools.git._get_github_token")
-    # get_token.return_value = "my_fake_token"
+    get_token = mocker.patch("cidatools.git._get_github_token")
+    get_token.return_value = "my_fake_token"
     # Mock the get request.
-    # mocker_request = mocker.patch("requests.get")
-    # mocker_request.return_value.status_code = 200
-    # mocker_request.return_value.json.return_value = {
-    #     "incomplete_results": False,
-    #     "items": [
-    #         {
-    #             "description": "Default CIDAtools template",
-    #             "full_name": "CIDA-CSPH/ct_default_template",
-    #             "id": 1300873186,
-    #             "is_template": True,
-    #             "name": "ct_default_template",
-    #             "node_id": "R_kgDOTYm_4g",
-    #             "url": "https://api.github.com/repos/CIDA-CSPH/ct_default_template",
-    #         }
-    #     ],
-    #     "total_count": 1,
-    # }
+    mocker_request = mocker.patch("requests.get")
+    mocker_request.return_value.status_code = 200
+    mocker_request.return_value.json.return_value = {
+        "incomplete_results": False,
+        "items": [
+            {
+                "description": "Default CIDAtools template",
+                "full_name": "CIDA-CSPH/ct_default_template",
+                "id": 1300873186,
+                "is_template": True,
+                "name": "ct_default_template",
+                "node_id": "R_kgDOTYm_4g",
+                "url": "https://api.github.com/repos/CIDA-CSPH/ct_default_template",
+            }
+        ],
+        "total_count": 1,
+    }
     template_list = list_github_templates()
+    # Check that we get a list
+    assert isinstance(template_list, list)
     # Check that we parsed the template list correctly
     assert len(template_list) == 2
     empty_template = template_list[0]

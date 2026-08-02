@@ -96,6 +96,7 @@ def _write_config(project_root: pathlib.Path, config: CIDAProjectModel, overwrit
 
     # If path exists, don't overwrite unless overwrite=True.
     if overwrite or not (config_path.exists() and config_path.is_file()):
+        config_path.parent.mkdir(parents=True, exist_ok=True)
         tmp_config_path = config_path.with_suffix(".tmp")
         with open(tmp_config_path, "w") as f:
             f.write(config.model_dump_json(indent=4))
@@ -489,11 +490,16 @@ def create_github_project(
     # If a template name is not chosen, prompt interactively.
     if template_name is None:
         # The user's selection defaults to 0 (an empty repository)
-        user_i = 0
+        user_i = None
         while user_i not in range(len(template_list)):
             user_choice = input("Choose a template from the above list (default 0): ")
-            if user_choice != "":
-                user_i = int(user_choice)
+            if user_choice == "":
+                user_i = 0
+            else:
+                try:
+                    user_i = int(user_choice)
+                except ValueError:
+                    pass
         # Use the user's selection to choose the template.
         if user_i == 0:
             _template_name = "empty"
