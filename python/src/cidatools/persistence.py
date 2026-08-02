@@ -11,7 +11,7 @@ T = TypeVar("T", bound=BaseModel)
 
 class PersistentWrapper(abc.ABC):
     __model__: type[T] = None
-    __parent__: PersistentWrapper = None
+    __parent__: "PersistentWrapper" = None
     __persistent_path__: pathlib.Path = None
 
     @property
