@@ -11,7 +11,7 @@ CIDA_GITHUB_ORGANIZATION = "https://github.com/CIDA-CSPH/"
 GITHUB_API_BASE_URL = "https://api.github.com"
 
 # GitHub Repository Search API
-GITHUB_SEARCH_API_URL = f"{GITHUB_API_BASE_URL}/search/repositories"
+GITHUB_SEARCH_API_URL = f"{GITHUB_API_BASE_URL}/search/repositories/"
 
 # GitHub Repository Creation API
 GITHUB_REPO_CREATE_API_URL = f"{GITHUB_API_BASE_URL}/orgs/CIDA-CSPH/repos"

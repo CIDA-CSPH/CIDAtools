@@ -3,6 +3,7 @@ import re
 import shutil
 import subprocess
 from enum import Flag, auto
+from posixpath import join as posixjoin
 from typing import Literal
 
 import requests
@@ -10,6 +11,7 @@ from pydantic import BaseModel, ValidationError
 
 from cidatools.consts import (
     CIDA_GITHUB_ORGANIZATION,
+    GITHUB_REPO_API_URL,
     GITHUB_REPO_CREATE_API_URL,
     GITHUB_REPO_CREATE_FROM_TEMPLATE_API_URL,
     GITHUB_SEARCH_API_URL,
@@ -20,6 +22,7 @@ from cidatools.utils import (
     print_failure,
     print_info,
     print_success,
+    print_warning,
 )
 
 
@@ -215,7 +218,7 @@ def list_github_templates(display: bool = True, include_empty: bool = True) -> l
         print_failure("Unable to list template repositories.")
     # Perform the search request
     resp = requests.get(
-        GITHUB_SEARCH_API_URL + "?q=org:CIDA-CSPH+topic:cidatools-template",
+        posixjoin(GITHUB_SEARCH_API_URL, "?q=org:CIDA-CSPH+topic:cidatools-template"),
         headers={
             "User-Agent": "CIDA-CSPH/CIDAtools",
             "Accept": "application/vnd.github+json",
@@ -278,7 +281,7 @@ def _pre_create_github_repository(name: str, visibility: str) -> tuple[bool, str
 
     # Check if repo exists already
     exist_resp = requests.get(
-        GITHUB_SEARCH_API_URL + name,
+        posixjoin(GITHUB_REPO_API_URL, name),
         headers={
             "User-Agent": "CIDA-CSPH/CIDAtools",
             "Accept": "application/vnd.github+json",
@@ -286,14 +289,17 @@ def _pre_create_github_repository(name: str, visibility: str) -> tuple[bool, str
             "X-GitHub-Api-Version": "2026-03-10",
         },
     )
-
+    exist_json = exist_resp.json()
     # Check the status code on the API response.
-    repo_url = f"{CIDA_GITHUB_ORGANIZATION}/{name}"
-    if exist_resp.status_code == 404:
+    repo_url = posixjoin(CIDA_GITHUB_ORGANIZATION, name)
+    if (
+        exist_resp.status_code == 404
+        and exist_json.get("documentation_url") == "https://docs.github.com/rest/repos/repos#get-a-repository"
+    ):
         print_success(f"Repository {repo_url} is available.")
         return True, gh_token, repo_url
     elif exist_resp.status_code in [200, 301]:
-        print_failure(f"Repository {name} already exists (Status: {exist_resp.status_code}).")
+        print_failure(f"Unable to create repository, {repo_url} already exists.")
         return False, None, None
     elif exist_resp.status_code == 403:
         print_failure(f"Unable to check for repository existence (Status: {exist_resp.status_code}).")
@@ -330,7 +336,7 @@ def create_empty_github_repository(
             "Authorization": f"Bearer {token}",
             "X-GitHub-Api-Version": "2026-03-10",
         },
-        data={
+        json={
             "name": name,
             "description": description,
             "visibility": visibility,
@@ -375,20 +381,52 @@ def create_github_repository_from_template(
             "Authorization": f"Bearer {token}",
             "X-GitHub-Api-Version": "2026-03-10",
         },
-        data={
-            "owner": "CIDA-CSPH",
-            "name": name,
-            "description": description,
-            "visibility": visibility,
-        },
+        json={"owner": "CIDA-CSPH", "name": name, "description": description, "private": True},
     )
 
+    # Check status code
     if resp.status_code == 201:
-        print_success(f"Successfully created a new GitHub repository at: {repo_url}")
-        return repo_url
+        ret_val = repo_url
     else:
+        ret_val = None
+
+    # If the repo is private, we are done.
+    if ret_val is not None and visibility == "internal":
+        # Due to GitHub API limitation, we cannot create an 'internal' repo in a single step,
+        # so we must create the repo as private, then send a follow-up request to modify the
+        # repository visibility.
+        update_resp = requests.patch(
+            posixjoin(GITHUB_REPO_API_URL, name),
+            headers={
+                "User-Agent": "CIDA-CSPH/CIDAtools",
+                "Accept": "application/vnd.github+json",
+                "Authorization": f"Bearer {token}",
+                "X-GitHub-Api-Version": "2026-03-10",
+            },
+            json={"visibility": "internal"},
+        )
+
+        # Check status code on our request
+        if update_resp.status_code == 200:
+            print_success("Successfully updated repository visibility (internal).")
+        elif update_resp.status_code == 422:
+            print_warning(
+                "Insufficient permission to set repo visibility to 'internal', visibility will remain 'private'."
+            )
+        else:
+            print_warning(
+                f"Unable to set repo visibility to 'internal', visibility will remain 'private'. (Status: {update_resp.status_code})."
+            )
+
+    # Print the deferred success or failure message for the initial repository create, so that this
+    # message appears last for users.
+    if ret_val is None:
         print_failure(f"Unable to create a new GitHub repository: (Status: {resp.status_code}).")
-        return None
+    else:
+        print_success(f"Successfully created a new GitHub repository at: {repo_url}")
+
+    # Return the result.
+    return ret_val
 
 
 def clone_github_repository(repository_url: str, local_path: pathlib.Path) -> bool:
@@ -408,12 +446,20 @@ def clone_github_repository(repository_url: str, local_path: pathlib.Path) -> bo
     return clone_res.returncode == 0
 
 
-def get_git_remote_url(name: str = "origin") -> str | None:
+def get_git_remote_url(project_root: pathlib.Path | None = None, name: str = "origin") -> str | None:
     """Checks the URL for a git remote.
+    :param project_root: The root directory of the project to get the remote URL for.
+    :param name: The name of the remote to fetch the URL for (default: 'origin').
     :return: str containing URL name or None
     """
+    project_root = pathlib.Path.cwd() if project_root is None else project_root
     # Use subprocess to run git.
-    remote_out = subprocess.run(["git", "remote", "get-url", name], check=True, capture_output=True)
+    try:
+        remote_out = subprocess.run(
+            ["git", "-C", str(project_root.absolute()), "remote", "get-url", name], check=True, capture_output=True
+        )
+    except subprocess.CalledProcessError:
+        return None
     # If we get an error, return None
     if remote_out.returncode != 0:
         return None

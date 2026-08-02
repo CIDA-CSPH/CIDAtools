@@ -1,10 +1,9 @@
-import sys
 from importlib import resources
 
 GREEN_CHECK = "\x1b[1m\x1b[32m\u2713\x1b[0m"
 RED_XMARK = "\x1b[1m\x1b[31m\u2717\x1b[0m"
 YELLOW_TRIANGLE = "\x1b[1m\x1b[33m\u26a0\x1b[0m"
-BLUE_INFO = "\x1b[1m\x1b[34m\u24d8\x1b[0m"
+BLUE_INFO = "\x1b[1m\x1b[34m\u2139\x1b[0m"
 
 
 def get_user_prompt_by_name(name: str) -> str:
@@ -20,14 +19,14 @@ def print_success(message: str):
     :param message: Message to print.
     :return:
     """
-    print(f"{GREEN_CHECK} {message}", file=sys.stderr)
+    print(f"{GREEN_CHECK} {message}")
 
 
 def print_warning(message: str):
     """Prints a warning message.
     :param message: Message to print.
     """
-    print(f"{YELLOW_TRIANGLE} {message}", file=sys.stderr)
+    print(f"{YELLOW_TRIANGLE} {message}")
 
 
 def print_failure(message: str):
@@ -35,7 +34,7 @@ def print_failure(message: str):
     :param message: Message to print.
     :return:
     """
-    print(f"{RED_XMARK} {message}", file=sys.stderr)
+    print(f"{RED_XMARK} {message}")
 
 
 def print_info(message: str):
@@ -44,7 +43,7 @@ def print_info(message: str):
     :param message:
     :return:
     """
-    print(f"{BLUE_INFO} {message}", file=sys.stderr)
+    print(f"{BLUE_INFO} {message}")
 
 
 def print_red(message: str):
@@ -53,7 +52,7 @@ def print_red(message: str):
     :param message:
     :return:
     """
-    print(f"\x1b[1m\x1b[31m{message}\x1b[0m")
+    print(f"\x1b[31m{message}\x1b[0m")
 
 
 def print_yellow(message: str):
@@ -62,7 +61,7 @@ def print_yellow(message: str):
     :param message:
     :return:
     """
-    print(f"\x1b[1m\x1b[33m{message}\x1b[0m")
+    print(f"\x1b[33m{message}\x1b[0m")
 
 
 def print_green(message: str):
@@ -71,4 +70,4 @@ def print_green(message: str):
     :param message:
     :return:
     """
-    print(f"\x1b[1m\x1b[32m{message}\x1b[0m")
+    print(f"\x1b[32m{message}\x1b[0m")

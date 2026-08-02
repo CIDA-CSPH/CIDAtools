@@ -65,7 +65,7 @@ def cli() -> int:
     ## Project Creation
     create = subparsers.add_parser(name="create")
     # Required arguments for project/repo creation.
-    create.add_argument("target", choices=["github_project", "project", "repo"])
+    create.add_argument("target", choices=["github-project", "github-repo", "project"])
     create.add_argument(
         "directory",
         type=pathlib.Path,
@@ -137,7 +137,7 @@ def _cli_create(args: argparse.Namespace) -> int:
     :return:
     """
     project_directory = args.directory.absolute()
-    if args.target == "github_project":
+    if args.target == "github-project":
         # If not specified, we create a default (empty) repository.
         template_name = "empty" if args.template is None else args.template
         # Create a new GitHub project.
@@ -174,7 +174,7 @@ def _cli_create(args: argparse.Namespace) -> int:
         else:
             print_success("Successfully created CIDA project.")
             return 0
-    elif args.target == "repository":
+    elif args.target == "github-repo":
         if args.template is None:
             repo_url = create_empty_github_repository(
                 name=project_directory.name if args.repo_name is None else args.repo_name,
@@ -189,10 +189,8 @@ def _cli_create(args: argparse.Namespace) -> int:
                 template_name=args.template,
             )
         if repo_url is None:
-            print_failure("Error creating new repository.")
             return 1
         else:
-            print_success(f"Created a new GitHub repository at: {repo_url}.")
             return 0
     return 1
 

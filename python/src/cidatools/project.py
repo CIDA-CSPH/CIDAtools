@@ -22,7 +22,15 @@ from cidatools.git import (
     list_github_templates,
 )
 from cidatools.persistence import PersistentField, PersistentWrapper
-from cidatools.utils import print_failure, print_green, print_red, print_success, print_warning, print_yellow
+from cidatools.utils import (
+    print_failure,
+    print_green,
+    print_info,
+    print_red,
+    print_success,
+    print_warning,
+    print_yellow,
+)
 
 
 class CIDAProjectModel(BaseModel, frozen=True):
@@ -247,7 +255,7 @@ def project_status(project_root: pathlib.Path | None = None):
         print_success("Loaded CIDA project.")
 
     # Check issues
-    print("Project Configuration:")
+    print_info("Project Configuration:")
     if cur_project.can_persist:
         print_green(f"  Config located at: {cur_project.path}")
     else:
@@ -257,38 +265,33 @@ def project_status(project_root: pathlib.Path | None = None):
         print(f"  {field_name.ljust(longest_key)} : {getattr(cur_project, field_name)}")
 
     # Check for Git repository.
-    print("\nGit Configuration:")
+    print_info("Git Configuration:")
     git_location = cur_project.git_location
-    remote_url = get_git_remote_url()
+    remote_url = get_git_remote_url(project_root=project_root)
     if remote_url is None:
-        msg_fun = print_red
+        print_red("  No git repository found, or git is not installed.\n")
     else:
-        msg_fun = print
-
-    msg_fun(f"  Remote URL : {remote_url}\n")
-
-    if remote_url.startswith("git@"):
-        print_yellow(
-            f"  Warning: Your git remote '{remote_url}' appears to be an SSH URL.\n"
-            f"  To enable CIDAtools GitHub integration, we recommend using Git Credential Manager\n"
-            f"  and HTTPS URLs (i.e https://github.com/CSPH-CIDA/<repo_name>)."
-        )
-    else:
-        if git_location == remote_url:
-            print_green("    Git remote matches project config.")
-        elif git_location is None:
+        print_green(f"  Remote URL : {remote_url}\n")
+        if remote_url.startswith("git@"):
             print_yellow(
-                f"  'git_location' is not set in project config.\n"
-                f"  Try running 'cidatools set git_location {remote_url}' to fix."
+                f"  Warning: Your git remote '{remote_url}' appears to be an SSH URL.\n"
+                f"  To enable CIDAtools GitHub integration, we recommend using Git Credential Manager\n"
+                f"  and HTTPS URLs (i.e https://github.com/CSPH-CIDA/<repo_name>)."
             )
         else:
-            print_red(
-                f"    Git repository configured for remote {remote_url}, but git_location is set to {git_location}.\n"
-                f"    This may be a project configuration error.\n"
-                f"    If this is not expected, run 'cidatools set git_location {remote_url}' to update project config."
-            )
-
-        print(f"    Git Remote: {remote_url}")
+            if git_location is None:
+                print_yellow(
+                    f"  'git_location' is not set in project config.\n"
+                    f"  Try running 'cidatools set git_location {remote_url}' to fix."
+                )
+            elif git_location == remote_url:
+                print_green("    Git remote matches project config.")
+            else:
+                print_red(
+                    f"    Git repository configured for remote {remote_url}, but git_location is set to {git_location}.\n"
+                    f"    This may be a project configuration error.\n"
+                    f"    If this is not expected, run 'cidatools set git_location {remote_url}' to update project config."
+                )
 
 
 def current_project(project_root: pathlib.Path | None = None) -> CIDAProject | None:
