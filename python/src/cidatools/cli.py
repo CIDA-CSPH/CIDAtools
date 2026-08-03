@@ -5,9 +5,9 @@ import pathlib
 import sys
 from importlib.metadata import version
 
-from cidatools.defaults import CIDA_PROJECT_DEFAULT_FOLDERS
+from cidatools.defaults import CIDA_PROJECT_DEFAULT_FOLDERS, CIDADefaults
 from cidatools.git import create_empty_github_repository, create_github_repository_from_template
-from cidatools.project import create_github_project, create_local_project, project_status
+from cidatools.project import create_github_project, create_local_project, current_project, project_status
 
 # The block between the 'fmt: off' and 'fmt: on' blocks below is necessary to prevent
 # code formatters from modifying the internal spacing the of the banner.
@@ -127,14 +127,96 @@ def cli() -> int:
     )
     create.set_defaults(func=_cli_create)
 
+    # Project Metadata Get
+    get = subparsers.add_parser(name="get")
+    get.add_argument("field", type=str, help="The metadata field to get")
+    get.add_argument("--default", action="store_true", help="If specified, will search the default values only.")
+    get.set_defaults(func=_cli_get)
+
+    # Project Metadata Set
+    set_ = subparsers.add_parser(name="set")
+    set_.add_argument("field", type=str, help="The metadata field to set.")
+    set_.add_argument("value", type=str, nargs="+", help="The new metadata value.")
+    set_.add_argument("--default", action="store_true", help="If specified, will set the default value.")
+    set_.set_defaults(func=_cli_set)
+
+    # Project Metadata Unset
+    unset = subparsers.add_parser(name="unset")
+    unset.add_argument("field", type=str, help="The metadata field to unset.")
+    unset.add_argument("--default", action="store_true", help="If specified, will unset the default value.")
+    unset.set_defaults(func=_cli_unset)
+
+    # Parse the arguments and dispatch to the sub-parser handler
     args = parser.parse_args()
     return args.func(args)
+
+
+def _cli_get(args: argparse.Namespace) -> int:
+    """Entrypoint for the CLI 'get' subcommand.
+    :param args: The parsed argument namespace.
+    :return: Integer status code
+    """
+    # Check if default flag is requested.
+    if args.default:
+        wrapper = CIDADefaults()
+    else:
+        wrapper = current_project(project_root=args.C)
+    # If we can't obtain the wrapper, exit.
+    if wrapper is None:
+        return 1
+    # Check if the requested field is valid
+    if args.field in wrapper.__model__.model_fields:
+        print(getattr(wrapper, args.field))
+        return 0
+    return 1
+
+
+def _cli_set(args: argparse.Namespace) -> int:
+    """Entrypoint for the CLI 'set' subcommand.
+    :param args: The parsed argument namespace.
+    :return: Integer status code
+    """
+    # Check if default flag is requested.
+    if args.default:
+        wrapper = CIDADefaults()
+    else:
+        wrapper = current_project(project_root=args.C)
+    # If we can't obtain the wrapper, exit.
+    if wrapper is None:
+        return 1
+    # Check if the requested field is valid
+    if args.field in wrapper.__model__.model_fields:
+        # Auto-unpack a singleton value so we don't store a list unnecessarily.
+        value_ = args.value[0] if isinstance(args.value, list) and len(args.value) == 1 else args.value
+        setattr(wrapper, args.field, value_)
+        return 0
+    return 1
+
+
+def _cli_unset(args: argparse.Namespace) -> int:
+    """Entrypoint for the CLI 'unset' subcommand.
+    :param args: The parsed argument namespace.
+    :return: Integer status code
+    """
+    # Check if default flag is requested.
+    if args.default:
+        wrapper = CIDADefaults()
+    else:
+        wrapper = current_project(project_root=args.C)
+    # If we can't obtain the wrapper, exit.
+    if wrapper is None:
+        return 1
+    # Check if the requested field is valid
+    if args.field in wrapper.__model__.model_fields:
+        setattr(wrapper, args.field, None)
+        return 0
+    return 1
 
 
 def _cli_create(args: argparse.Namespace) -> int:
     """Entrypoint for the CLI 'create' subcommand.
     :param args: The parsed argument namespace.
-    :return:
+    :return: Integer status code
     """
     project_directory = args.directory.absolute()
     if args.target == "github-project":

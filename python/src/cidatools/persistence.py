@@ -6,6 +6,8 @@ from typing import TypeVar
 
 from pydantic import BaseModel
 
+from cidatools.utils import print_warning
+
 T = TypeVar("T", bound=BaseModel)
 
 
@@ -115,7 +117,8 @@ class PersistentField:
                 tmp_path.replace(instance.path)
             # Otherwise, we save to the internal model attribute.
             else:
-                instance.model = _valid_model
+                print_warning("Unable to persist, updated value will not be saved.")
+                instance._model = _valid_model
 
         # Return the constructed function
         return setter

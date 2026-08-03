@@ -4,6 +4,7 @@ from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from cidatools.persistence import PersistentField, PersistentWrapper
+from cidatools.utils import print_failure
 
 CIDA_PROJECT_DEFAULTS_PATH = pathlib.Path("~/.cida/project_defaults.json").expanduser()
 
@@ -36,4 +37,13 @@ class CIDADefaults(PersistentWrapper):
     github_token: str | None = PersistentField()
 
     def __init__(self):
+        # Try to create the defaults path
+        try:
+            if not CIDA_PROJECT_DEFAULTS_PATH.exists():
+                CIDA_PROJECT_DEFAULTS_PATH.parent.mkdir(parents=True, exist_ok=True)
+                temp_model = CIDADefaultsModel()
+                with open(CIDA_PROJECT_DEFAULTS_PATH, "w+") as f:
+                    f.write(temp_model.model_dump_json(indent=4))
+        except (PermissionError, FileNotFoundError, FileExistsError, NotADirectoryError) as e:
+            print_failure(f"Error when initializing CIDADefaults: {e}")
         super().__init__(path=CIDA_PROJECT_DEFAULTS_PATH)
