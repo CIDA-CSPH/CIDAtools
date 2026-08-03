@@ -218,3 +218,7 @@ cython_debug/
 
 # Test projects
 test_proj/
+test_gh_proj/
+
+# Other
+misc/
