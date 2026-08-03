@@ -1,0 +1,1 @@
+'git' is not installed. Please install git using the instructions at: https://cida-csph.github.io/cida-rt-kb/git/github_setup_01/#git-installation

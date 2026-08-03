@@ -24,3 +24,10 @@ repos:
     hooks:
       - id: detect-secrets
         args: [ '--baseline', '.secrets.baseline' ]
+  - repo: local
+    hooks:
+      - id: copy-resources
+        name: "Copy Package Resources"
+        entry: ./scripts/copy_resources.sh
+        language: script
+        pass_filenames: false
