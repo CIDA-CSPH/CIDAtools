@@ -164,7 +164,6 @@ def setup_github():
 
     # If GCM is not set up, prompt user for manual token.
     if git_status.GCM_CONFIGURED:
-        print_success("Detected Git Credential Manager is installed and configured.")
         return
     elif not (git_status.GCM_CONFIGURED and git_status.GCM_INSTALLED):
         print_info(

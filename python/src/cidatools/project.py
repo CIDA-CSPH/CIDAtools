@@ -294,7 +294,7 @@ def project_status(project_root: pathlib.Path | None = None):
                 )
 
 
-def current_project(project_root: pathlib.Path | None = None) -> CIDAProject | None:
+def current_project(project_root: pathlib.Path | str | None = None) -> CIDAProject | None:
     """Returns the currently active CIDA project or None
 
     Searches recursively for a CIDA project config file, starting at the working directory and working upwards
@@ -304,7 +304,13 @@ def current_project(project_root: pathlib.Path | None = None) -> CIDAProject | N
     :return: A CIDAProject object or None
     """
     # Accept a user-provided project path, or use the working directory if none is provided.
-    project_root = (pathlib.Path.cwd() if project_root is None else project_root).absolute()
+    project_root = (
+        pathlib.Path.cwd()
+        if project_root is None
+        else pathlib.Path(project_root)
+        if isinstance(project_root, str)
+        else project_root
+    ).absolute()
 
     if not project_root.is_dir():
         print_failure(f"Path {project_root} is not a directory.")
@@ -362,13 +368,19 @@ def create_local_project(
     project_name = "CIDAProject" if project_name is None else project_name
 
     # If the project path is not specified, use the working directory.
-    _project_root = (pathlib.Path.cwd() if project_root is None else project_root).absolute()
+    _project_root = (
+        pathlib.Path.cwd()
+        if project_root is None
+        else pathlib.Path(project_root)
+        if isinstance(project_root, str)
+        else project_root
+    ).absolute()
 
     # If the project path does not exist, create it.
     if not _project_root.exists():
         _project_root.mkdir(parents=True)
         print_success(f"Created new project directory at {_project_root}.")
-    elif current_project() is not None:
+    elif current_project(project_root=_project_root) is not None:
         print_warning(f"A CIDA project already exists at {_project_root}.")
     else:
         print_success("Project directory already exists.")
@@ -456,7 +468,13 @@ def create_github_project(
         )
 
     # If the project path is not specified, use the working directory.
-    _project_root = pathlib.Path.cwd() if project_root is None else project_root
+    _project_root = (
+        pathlib.Path.cwd()
+        if project_root is None
+        else pathlib.Path(project_root)
+        if isinstance(project_root, str)
+        else project_root
+    ).absolute()
 
     # If the project path does not exist, create it.
     if not _project_root.exists():
@@ -552,7 +570,7 @@ def project_attribute(f):
     """
 
     @functools.wraps(f)
-    def wrapper(project: CIDAProject | None):
+    def wrapper(*args, project: CIDAProject | None = None, **kwargs):
         # If the project is given, we use it, otherwise, default to the current_project().
         project = current_project() if project is None else project
 
@@ -562,7 +580,7 @@ def project_attribute(f):
             return None
 
         # Otherwise call the function with the project.
-        return f(project)
+        return f(*args, **kwargs, project=project)
 
     return wrapper
 
@@ -573,7 +591,7 @@ def get_project_name(project: CIDAProject):
 
 
 @project_attribute
-def set_project_name(project: CIDAProject, project_name: str | None) -> None:
+def set_project_name(project_name: str | None, project: CIDAProject = None) -> None:
     project.project_name = project_name
 
 
@@ -583,7 +601,7 @@ def get_project_principal_investigator(project: CIDAProject) -> str | None:
 
 
 @project_attribute
-def set_project_principal_investigator(project: CIDAProject, principal_investigator: str | None) -> None:
+def set_project_principal_investigator(principal_investigator: str | None, project: CIDAProject = None) -> None:
     project.principal_investigator = principal_investigator
 
 
@@ -593,7 +611,7 @@ def get_project_analyst(project: CIDAProject) -> None | str | list[str]:
 
 
 @project_attribute
-def set_project_analyst(project: CIDAProject, analyst: str | list[str] | None) -> None:
+def set_project_analyst(analyst: str | list[str] | None, project: CIDAProject = None) -> None:
     project.analyst = analyst
 
 
@@ -603,7 +621,7 @@ def get_project_data_location(project: CIDAProject) -> str | None:
 
 
 @project_attribute
-def set_project_data_location(project: CIDAProject, data_location: str | None) -> None:
+def set_project_data_location(data_location: str | None, project: CIDAProject = None) -> None:
     project.data_location = data_location
 
 
@@ -613,5 +631,5 @@ def get_project_git_location(project: CIDAProject) -> str | None:
 
 
 @project_attribute
-def set_project_git_location(project: CIDAProject, git_location: str | None) -> None:
+def set_project_git_location(git_location: str | None, project: CIDAProject = None) -> None:
     project.git_location = git_location
