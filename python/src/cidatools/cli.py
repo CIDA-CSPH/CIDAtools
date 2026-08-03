@@ -29,6 +29,9 @@ Maintained by the CIDA Research Tools Committee.
 
 # Epilog appears at the end of the help screen.
 CIDATOOLS_EPILOG = """
+For more information on specific commands, use the help flag with a subcommand
+(i.e. cidatools create --help)
+
 Questions, Comments or Suggestions: mailto:CIDA-RT@olucdenver.onmicrosoft.com
 Found a bug? https://github.com/CIDA-CSPH/CIDAtools/issues
 """
@@ -58,11 +61,11 @@ def cli() -> int:
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     # Project Status Sub-parser
-    status = subparsers.add_parser(name="status")
+    status = subparsers.add_parser(name="status", help="Get status of a CIDA project.")
     status.set_defaults(func=lambda a: project_status(project_root=a.C))
 
     # Project Creation Sub-parser
-    create = subparsers.add_parser(name="create")
+    create = subparsers.add_parser(name="create", help="Create a new CIDA project or GitHub repo.")
 
     # Required arguments for project/repo creation.
     create.add_argument("target", choices=["github-project", "github-repo", "project"])
@@ -128,20 +131,20 @@ def cli() -> int:
     create.set_defaults(func=_cli_create)
 
     # Project Metadata Get
-    get = subparsers.add_parser(name="get")
+    get = subparsers.add_parser(name="get", help="Get CIDA project metadata or defaults.")
     get.add_argument("field", type=str, help="The metadata field to get")
     get.add_argument("--default", action="store_true", help="If specified, will search the default values only.")
     get.set_defaults(func=_cli_get)
 
     # Project Metadata Set
-    set_ = subparsers.add_parser(name="set")
+    set_ = subparsers.add_parser(name="set", help="Set CIDA project metadata or defaults.")
     set_.add_argument("field", type=str, help="The metadata field to set.")
     set_.add_argument("value", type=str, nargs="+", help="The new metadata value.")
     set_.add_argument("--default", action="store_true", help="If specified, will set the default value.")
     set_.set_defaults(func=_cli_set)
 
     # Project Metadata Unset
-    unset = subparsers.add_parser(name="unset")
+    unset = subparsers.add_parser(name="unset", help="Unset CIDA project metadata or defaults.")
     unset.add_argument("field", type=str, help="The metadata field to unset.")
     unset.add_argument("--default", action="store_true", help="If specified, will unset the default value.")
     unset.set_defaults(func=_cli_unset)
