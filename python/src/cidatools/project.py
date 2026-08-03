@@ -321,23 +321,12 @@ def current_project(project_root: pathlib.Path | str | None = None) -> CIDAProje
         # Check the current directory for a CIDA folder
         project_path = project_root.joinpath(CIDA_DIRECTORY_NAME)
         # If the path exists, check if it is a folder
-        if project_path.exists():
-            # If it is a folder, check if the config file exists inside.
-            if project_path.is_dir():
-                config_path = project_path.joinpath(CIDA_PROJECT_CONFIG_NAME)
-                # If the config file exists, parse JSON and return the object.
-                if config_path.is_file():
-                    return CIDAProject(path=config_path)
-                else:
-                    print_failure(
-                        f"Project directory found at {project_path} but there is no {CIDA_PROJECT_CONFIG_NAME} file inside."
-                    )
-                    return None
-            else:
-                print_failure(f"'{project_path}' is not a directory.")
-                return None
-        else:
-            project_root = project_root.parent
+        if project_path.exists() and project_path.is_dir():
+            config_path = project_path.joinpath(CIDA_PROJECT_CONFIG_NAME)
+            # If the config file exists, parse JSON and return the object.
+            if config_path.is_file():
+                return CIDAProject(path=config_path)
+        project_root = project_root.parent
     # If we find nothing, return None
     return None
 
