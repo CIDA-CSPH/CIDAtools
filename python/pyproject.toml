@@ -27,10 +27,11 @@ dev = [
 cidatools = "cidatools.cli:cli"
 
 [build-system]
-requires = ["setuptools>=83.0"]
+requires = ["setuptools>=83.0", "setuptools_scm>=10.2.1"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools_scm]
+write_to = "cidatools/version.py"
 
 [tool.setuptools.package-data]
 "cidatools" = ["resources/**/*"]
