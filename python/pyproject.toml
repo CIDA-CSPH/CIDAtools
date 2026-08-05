@@ -1,6 +1,6 @@
 [project]
 name = "cidatools"
-version = "2.0.0"
+dynamic = ["version"]
 description = "CIDAtools implementation for Python"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -29,6 +29,8 @@ cidatools = "cidatools.cli:cli"
 [build-system]
 requires = ["setuptools>=83.0"]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools.git-scm]
 
 [tool.setuptools.package-data]
 "cidatools" = ["resources/**/*"]

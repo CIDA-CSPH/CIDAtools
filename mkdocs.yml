@@ -1,0 +1,13 @@
+site_name: CIDAtools Documentation
+
+nav:
+  - Overview: index.md
+  - Getting Started: getting_started.md
+  - Project Management: project_management.md
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
