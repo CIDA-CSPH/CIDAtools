@@ -30,7 +30,7 @@ cidatools = "cidatools.cli:cli"
 requires = ["setuptools>=83.0"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools.git-scm]
+[tool.setuptools_scm]
 
 [tool.setuptools.package-data]
 "cidatools" = ["resources/**/*"]
