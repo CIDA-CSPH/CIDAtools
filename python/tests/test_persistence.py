@@ -26,9 +26,7 @@ def test_defaults_persistence(mocker):
 def test_project_persistence(mocker):
     with tempfile.TemporaryDirectory() as tmpdir:
         # Fake path for project file
-        fake_path = pathlib.Path(tmpdir).joinpath(
-            CIDA_DIRECTORY_NAME, CIDA_PROJECT_CONFIG_NAME
-        )
+        fake_path = pathlib.Path(tmpdir).joinpath(CIDA_DIRECTORY_NAME, CIDA_PROJECT_CONFIG_NAME)
         fake_path.parent.mkdir(parents=True, exist_ok=False)
         # Fake project model
         fake_project = CIDAProjectModel(
@@ -54,7 +52,7 @@ def test_project_persistence(mocker):
 def test_project_persistence_with_defaults(mocker):
     with tempfile.TemporaryDirectory() as tmpdir:
         # Fake defaults path
-        fake_defaults_path = pathlib.Path(tmpdir).joinpath("projet_defaults.json")
+        fake_defaults_path = pathlib.Path(tmpdir).joinpath("project_defaults.json")
         # Fake defaults
         fake_defaults = CIDADefaultsModel(analyst="Default Fake Analyst")
         # Write defaults
@@ -63,9 +61,7 @@ def test_project_persistence_with_defaults(mocker):
         # Patch the default path, but don't instance the wrapper.
         mocker.patch.object(CIDADefaults, "path", fake_defaults_path)
         # Fake path for project file
-        fake_path = pathlib.Path(tmpdir).joinpath(
-            CIDA_DIRECTORY_NAME, CIDA_PROJECT_CONFIG_NAME
-        )
+        fake_path = pathlib.Path(tmpdir).joinpath(CIDA_DIRECTORY_NAME, CIDA_PROJECT_CONFIG_NAME)
         fake_path.parent.mkdir(parents=True, exist_ok=False)
         # Fake project model
         fake_project = CIDAProjectModel(

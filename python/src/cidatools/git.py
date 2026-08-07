@@ -17,7 +17,7 @@ from cidatools.consts import (
     GITHUB_REPO_CREATE_FROM_TEMPLATE_API_URL,
     GITHUB_SEARCH_API_URL,
 )
-from cidatools.defaults import CIDADefaults
+from cidatools.defaults import CIDADefaults, GithubCredentials
 from cidatools.utils import (
     get_user_prompt_by_name,
     print_failure,
@@ -120,25 +120,25 @@ def _check_git_integration() -> GitStatus:
     return git_status
 
 
-def _write_default_token(github_token: str) -> None:
+def write_default_credentials(github_creds: GithubCredentials) -> None:
     """Writes the GitHub token to the CIDA defaults file.
     :return: The GitHub token to write.
     """
     defaults = CIDADefaults()
     try:
-        defaults.github_token = github_token
+        defaults.github_creds = github_creds
     except (AttributeError, FileNotFoundError, ValidationError):
         print_failure("Unable to set GitHub token.")
     print_success(f"Github token has been written to {defaults.path}")
 
 
-def _read_default_token() -> str | None:
-    """Reads the GitHub token from the CIDA defaults file.
+def read_default_credentials() -> GithubCredentials | None:
+    """Reads the GitHub credentials from the CIDA defaults file.
     :return: A string token or None
     """
     defaults = CIDADefaults()
     try:
-        return defaults.github_token
+        return defaults.github_creds
     except (AttributeError, FileNotFoundError, ValidationError):
         print_failure("Unable to read GitHub token.")
     return None
@@ -184,14 +184,14 @@ def setup_github():
         # Retrieve the GitHub token from file.
         github_token = input("Enter GitHub Token:")
         # Write GitHub token to file.
-        _write_default_token(github_token)
+        write_default_credentials(github_token)
     elif resp_l == "n":
         return
 
 
-def _get_gcm_token() -> str | None:
+def get_gcm_credentials() -> GithubCredentials | None:
     """Function to retrieve GCM token"""
-    # Retrieve a token from GCM
+    # Retrieve the token from GCM
     raw_gcm_out = subprocess.run(
         ["git", "credential-manager", "get"],
         capture_output=True,
@@ -199,27 +199,27 @@ def _get_gcm_token() -> str | None:
         check=True,
     ).stdout.decode()
     if not raw_gcm_out.startswith("protocol=https"):
-        print_failure("Unable to retrieve GCM token.")
+        print_failure("Unable to retrieve GCM credentials.")
         return None
     # Parse the GCM response
     gcm_creds = {k: v for k, v in [tup.split("=") for tup in raw_gcm_out.strip().split("\n")]}
-    print_info(f"Retrieved GCM token for user '{gcm_creds['username']}'")
-    # Return the token
-    return gcm_creds["password"]
+    print_info(f"Retrieved GCM credentials for user '{gcm_creds['username']}'")
+    # Return the credentials
+    return GithubCredentials.model_validate(gcm_creds)
 
 
-def _get_github_token() -> str:
+def get_github_credentials() -> GithubCredentials | None:
     """Retrieves a GitHub token to be used for CIDAtools functionality
     This function will first attempt to retrieve a GitHub token from Git Credential Manager, but will
     also check the CIDADefaults.
     """
     # First, try GCM
-    token = _get_gcm_token()
-    # Check if we got something
-    if token is not None:
-        return token
-    # If GCM didn't work, check for something in CIDA defaults
-    token = _read_default_token()
+    creds = get_gcm_credentials()
+    # If we get something, return it.
+    if creds is not None:
+        return creds
+    # If GCM didn't work, check for something in CIDA defaults.
+    token = read_default_credentials()
     # Check if we got something.
     if token is not None:
         return token
@@ -234,8 +234,8 @@ def list_github_templates(display: bool = True, include_empty: bool = True) -> l
     :return: A list of `TemplateRepo` objects.
     """
     # Check if we have a GitHub token set.
-    gh_token = _get_github_token()
-    if gh_token is None:
+    gh_creds = get_github_credentials()
+    if gh_creds is None:
         print_failure("Unable to list template repositories.")
         return None
     # Perform the search request
@@ -244,7 +244,7 @@ def list_github_templates(display: bool = True, include_empty: bool = True) -> l
         headers={
             "User-Agent": "CIDA-CSPH/CIDAtools",
             "Accept": "application/vnd.github+json",
-            "Authorization": f"Bearer {gh_token}",
+            "Authorization": f"Bearer {gh_creds.password}",
         },
     )
     if resp.status_code != 200:
@@ -299,8 +299,8 @@ def _pre_create_github_repository(name: str, visibility: str) -> tuple[bool, str
         return False, None, None
 
     # Check if we have a GitHub token set.
-    gh_token = _get_github_token()
-    if gh_token is None:
+    gh_creds = get_github_credentials()
+    if gh_creds is None:
         print_failure("Unable to check existence of GitHub repository.")
         return False, None, None
 
@@ -310,7 +310,7 @@ def _pre_create_github_repository(name: str, visibility: str) -> tuple[bool, str
         headers={
             "User-Agent": "CIDA-CSPH/CIDAtools",
             "Accept": "application/vnd.github+json",
-            "Authorization": f"Bearer {gh_token}",
+            "Authorization": f"Bearer {gh_creds.password}",
             "X-GitHub-Api-Version": "2026-03-10",
         },
     )
@@ -322,7 +322,7 @@ def _pre_create_github_repository(name: str, visibility: str) -> tuple[bool, str
         and exist_json.get("documentation_url") == "https://docs.github.com/rest/repos/repos#get-a-repository"
     ):
         print_success(f"Repository URL {repo_url} is available.")
-        return True, gh_token, repo_url
+        return True, gh_creds.password, repo_url
     elif exist_resp.status_code in [200, 301]:
         print_failure(f"Unable to create repository, {repo_url} already exists.")
         return False, None, None
@@ -370,7 +370,9 @@ def create_empty_github_repository(
 
     # Handle the API response, which tells us if the repo was created or not.
     if resp.status_code == 201:
-        print_success(f"Successfully created a new GitHub repository at: {repo_url}")
+        print_success(
+            f"Successfully created a new GitHub repository at: {repo_url}\n Clone this repo by running 'git clone {repo_url}'."
+        )
         return repo_url
     elif resp.status_code == 403:
         print_failure(f"Forbidden from creating a new GitHub repository: (Status: {resp.status_code}).")
@@ -459,7 +461,9 @@ def create_github_repository_from_template(
     if ret_val is None:
         print_failure(f"Unable to create a new GitHub repository: (Status: {resp.status_code}).")
     else:
-        print_success(f"Successfully created a new GitHub repository at: {repo_url}")
+        print_success(
+            f"Successfully created a new GitHub repository at: {repo_url}\nClone this repo by running 'git clone {repo_url}'."
+        )
 
     # Return the result.
     return ret_val
@@ -550,7 +554,10 @@ def clone_github_repository(repository_url: str, local_path: pathlib.Path) -> bo
     # Run the clone operation.
     try:
         clone_res = subprocess.run(
-            ["git", "clone", repository_url, local_path.absolute()], check=True, capture_output=True
+            ["git", "clone", repository_url, local_path.absolute()],
+            check=True,
+            capture_output=True,
+            stderr=subprocess.DEVNULL,
         )
     except subprocess.CalledProcessError as e:
         print_failure(e.stderr.decode())

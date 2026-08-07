@@ -220,3 +220,4 @@ demo/
 
 # Other
 misc/
+/python/src/cidatools/version.py

@@ -1,23 +1,55 @@
 import json
+import pathlib
+import tempfile
 from posixpath import join as posixjoin
 from typing import Literal
 
 import pytest
 
 from cidatools.consts import CIDA_GITHUB_ORGANIZATION
+from cidatools.defaults import CIDADefaults, CIDADefaultsModel, GithubCredentials
 from cidatools.git import (
-    _get_github_token,
     create_empty_github_repository,
     create_github_repository_from_template,
+    get_github_credentials,
     list_github_templates,
 )
 
 
-def test_retrieve_gcm_token(mocker):
+def test_retrieve_gcm_creds(mocker):
     mock_gcm = mocker.patch("subprocess.run")
     mock_gcm.return_value.stdout = b"protocol=https\nhost=github.com\nusername=Andrew0Hill\npassword=gho_FaKeTokeN\n\n"
-    gcm_token = _get_github_token()
-    assert gcm_token == "gho_FaKeTokeN"
+    gcm_creds = get_github_credentials()
+    assert gcm_creds == GithubCredentials(
+        username="Andrew0Hill",
+        password="gho_FaKeTokeN",
+        protocol="https",
+        host="github.com",
+    )
+
+
+def test_retrieve_default_creds(mocker):
+    with tempfile.TemporaryDirectory() as tmpdir:
+        # Patch the GCM call to pretend we don't get credentials.
+        mock_gcm = mocker.patch("subprocess.run")
+        mock_gcm.return_value.stdout = b"git: 'credential-manager' is not a git command. See 'git --help'."
+        # Now add a fake set of default credentials.
+        fake_defaults_path = pathlib.Path(tmpdir).joinpath("project_defaults.json")
+        fake_creds = GithubCredentials(
+            username="defaultUser",
+            password="gho_deFaULTPassWord",
+        )
+        # Fake defaults
+        fake_defaults = CIDADefaultsModel(github_creds=fake_creds)
+        # Write defaults
+        with open(fake_defaults_path, "w") as f:
+            f.write(fake_defaults.model_dump_json())
+        # Patch the default path, but don't instance the wrapper.
+        mocker.patch.object(CIDADefaults, "path", fake_defaults_path)
+        # Call the cred function
+        retrieved_creds = get_github_credentials()
+        # Check that it reads from defaults.
+        assert retrieved_creds == fake_creds
 
 
 @pytest.mark.skip(reason="Not implemented")
@@ -26,9 +58,9 @@ def test_retrieve_default_token(mocker):
 
 
 def test_list_github_templates(mocker):
-    # Mock the GitHub token retrieval
-    get_token = mocker.patch("cidatools.git._get_github_token")
-    get_token.return_value = "my_fake_token"
+    # Mock the GitHub creds retrieval
+    get_creds = mocker.patch("cidatools.git.get_github_credentials")
+    get_creds.return_value = GithubCredentials(username="my_fake_user", password="my_fake_token")
     # Mock the get request.
     mocker_request = mocker.patch("requests.get")
     mocker_request.return_value.status_code = 200
@@ -63,9 +95,9 @@ def test_list_github_templates(mocker):
 
 
 def test_create_empty_github_repository_success(pytestconfig, mocker):
-    # Mock the GitHub token retrieval
-    get_token = mocker.patch("cidatools.git._get_github_token")
-    get_token.return_value = "my_fake_token"
+    # Mock the GitHub creds retrieval
+    get_creds = mocker.patch("cidatools.git.get_github_credentials")
+    get_creds.return_value = GithubCredentials(username="my_fake_user", password="my_fake_token")
     # The get request is mocked for the initial existence check.
     mock_get = mocker.patch("requests.get")
     mock_get.return_value.status_code = 404
@@ -88,9 +120,9 @@ def test_create_empty_github_repository_success(pytestconfig, mocker):
 def test_create_github_repository_from_template_success(
     pytestconfig, mocker, visibility: Literal["internal", "public", "private"]
 ):
-    # Mock the GitHub token retrieval
-    get_token = mocker.patch("cidatools.git._get_github_token")
-    get_token.return_value = "my_fake_token"
+    # Mock the GitHub creds retrieval
+    get_creds = mocker.patch("cidatools.git.get_github_credentials")
+    get_creds.return_value = GithubCredentials(username="my_fake_user", password="my_fake_token")
     # The get request is mocked for the initial existence check.
     mock_get = mocker.patch("requests.get")
     mock_get.return_value.status_code = 404
@@ -115,7 +147,7 @@ def test_create_github_repository_from_template_success(
     # If repo is public, everything should fail.
     if visibility == "public":
         assert repo_url is None
-        get_token.assert_not_called()
+        get_creds.assert_not_called()
         mock_post.assert_not_called()
         mock_patch.assert_not_called()
     # A private repo should generate successfully, but should not call the patch method

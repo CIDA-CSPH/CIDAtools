@@ -1,6 +1,6 @@
 import pathlib
 
-from pydantic import Field
+from pydantic import BaseModel, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from cidatools.persistence import PersistentField, PersistentWrapper
@@ -19,13 +19,20 @@ CIDA_PROJECT_DEFAULT_FOLDERS = (
 )
 
 
+class GithubCredentials(BaseModel, frozen=True):
+    host: str = Field(default="github.com")
+    protocol: str = Field(default="https")
+    username: str
+    password: str
+
+
 class CIDADefaultsModel(BaseSettings, frozen=True):
-    model_config = SettingsConfigDict(env_prefix="CIDATOOLS_")
+    model_config = SettingsConfigDict(env_prefix="CIDATOOLS_", env_nested_delimiter="__")
     # Default analyst for new projects, is only used if analyst not specified when creating project.
     analyst: str | list[str] | None = Field(default=None)
 
     # Token used for GitHub operations. Should have access to CSPH-CIDA organization and have 'repo' scope.
-    github_token: str | None = Field(default=None)
+    github_creds: GithubCredentials | None = Field(default=None)
 
 
 class CIDADefaults(PersistentWrapper):
@@ -34,7 +41,7 @@ class CIDADefaults(PersistentWrapper):
 
     # Defaults
     analyst: str | list[str] | None = PersistentField()
-    github_token: str | None = PersistentField()
+    github_creds: GithubCredentials | None = PersistentField()
 
     def __init__(self):
         # Try to create the defaults path
