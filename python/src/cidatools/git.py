@@ -120,32 +120,21 @@ def _check_git_integration() -> GitStatus:
     return git_status
 
 
-def write_default_credentials(github_creds: GithubCredentials) -> None:
-    """Writes the GitHub token to the CIDA defaults file.
-    :return: The GitHub token to write.
-    """
-    defaults = CIDADefaults()
-    try:
-        defaults.github_creds = github_creds
-    except (AttributeError, FileNotFoundError, ValidationError):
-        print_failure("Unable to set GitHub token.")
-    print_success(f"Github token has been written to {defaults.path}")
+# def write_default_credentials(github_creds: GithubCredentials) -> None:
+#     """Writes the GitHub token to the CIDA defaults file.
+#     :return: The GitHub token to write.
+#     """
+#     defaults = CIDADefaults()
+#     try:
+#         defaults.github_creds = github_creds
+#     except (AttributeError, FileNotFoundError, ValidationError):
+#         print_failure("Unable to set GitHub token.")
+#     print_success(f"Github token has been written to {defaults.path}")
 
 
-def read_default_credentials() -> GithubCredentials | None:
-    """Reads the GitHub credentials from the CIDA defaults file.
-    :return: A string token or None
-    """
-    defaults = CIDADefaults()
-    try:
-        return defaults.github_creds
-    except (AttributeError, FileNotFoundError, ValidationError):
-        print_failure("Unable to read GitHub token.")
-    return None
-
-
-def setup_github():
+def setup_github(force_pat: bool = True):
     """Function to guide users through setting up cidatools GitHub integration.
+    :param force_pat: If set, will force creation of a PAT even if Git Credential Manager is installed.
     :return: None
     """
     # TODO: Should this be a common resource so the R version can use the same text?
@@ -159,53 +148,83 @@ def setup_github():
 
     IMPORTANT: Do not hardcode this token into any code, scripts, or files you commit to GitHub!
     """
-    # Check the current GitHub integration status
-    git_status = _check_git_integration()
-
     # If GCM is not set up, prompt user for manual token.
-    if git_status.GCM_CONFIGURED:
-        return
-    elif not (git_status.GCM_CONFIGURED and git_status.GCM_INSTALLED):
-        print_info(
-            "Git Credential Manager is not installed, CIDAtools can still work with a manually configured GitHub token."
-        )
+    if not force_pat:
+        # Check the current GitHub integration status
+        git_status = _check_git_integration()
+        # Check GCM status
+        if git_status.GCM_CONFIGURED:
+            pass
+        elif not (git_status.GCM_CONFIGURED and git_status.GCM_INSTALLED):
+            print_info(
+                "Git Credential Manager is not installed, CIDAtools can still work with a manually configured GitHub token."
+            )
 
     resp_l = None
     while resp_l not in ["y", "n"]:
-        response = input("Would you like to configure a GitHub token now? [y/N]:")
+        response = input("Would you like to configure a GitHub token now? [y/N]: ")
         if response == "":
             resp_l = "n"
         else:
             resp_l = response.strip().lower()
 
     if resp_l == "y":
+        # Get GitHub username:
+        github_username = input("Enter GitHub Username: ")
         # Prompt the user.
         print(prompt_str)
         # Retrieve the GitHub token from file.
-        github_token = input("Enter GitHub Token:")
+        github_token = input("Enter GitHub Token: ")
         # Write GitHub token to file.
-        write_default_credentials(github_token)
+        defaults = CIDADefaults()
+        defaults.github_username = github_username
+        defaults.github_password = github_token
+        # write_default_credentials(GithubCredentials())
     elif resp_l == "n":
         return
+
+
+def get_default_credentials() -> GithubCredentials | None:
+    """Reads the GitHub credentials from the CIDA defaults file.
+    :return: A string token or None
+    """
+    defaults = CIDADefaults()
+    try:
+        tmp_creds = defaults.github_creds
+    except (AttributeError, FileNotFoundError, ValidationError):
+        print_failure("Unable to read GitHub credentials from CIDA defaults.")
+        return None
+
+    if tmp_creds.username is None or tmp_creds.password is None:
+        print_failure("CIDA default GitHub credentials are not set.")
+        return None
+
+    print_info(f"Retrieved CIDA default GitHub credentials for user '{tmp_creds.username}'")
+    return tmp_creds
 
 
 def get_gcm_credentials() -> GithubCredentials | None:
     """Function to retrieve GCM token"""
     # Retrieve the token from GCM
-    raw_gcm_out = subprocess.run(
+    raw_gcm_result = subprocess.run(
         ["git", "credential-manager", "get"],
         capture_output=True,
         input=b"protocol=https\nhost=github.com\n\n",
         check=True,
-    ).stdout.decode()
+    )
+    raw_gcm_out = raw_gcm_result.stdout.decode("utf-8")
     if not raw_gcm_out.startswith("protocol=https"):
         print_failure("Unable to retrieve GCM credentials.")
         return None
     # Parse the GCM response
     gcm_creds = {k: v for k, v in [tup.split("=") for tup in raw_gcm_out.strip().split("\n")]}
-    print_info(f"Retrieved GCM credentials for user '{gcm_creds['username']}'")
     # Return the credentials
-    return GithubCredentials.model_validate(gcm_creds)
+    tmp_creds = GithubCredentials.model_validate(gcm_creds)
+    if tmp_creds.username is None or tmp_creds.password is None:
+        print_failure("Retrieved GCM credentials, but missing username or password!")
+        return None
+    print_info(f"Retrieved GCM credentials for user '{tmp_creds.username}'")
+    return tmp_creds
 
 
 def get_github_credentials() -> GithubCredentials | None:
@@ -213,17 +232,17 @@ def get_github_credentials() -> GithubCredentials | None:
     This function will first attempt to retrieve a GitHub token from Git Credential Manager, but will
     also check the CIDADefaults.
     """
-    # First, try GCM
-    creds = get_gcm_credentials()
+    # First, check for something in CIDA defaults.
+    creds = get_default_credentials()
     # If we get something, return it.
-    if creds is not None:
+    if creds is not None and creds.username is not None and creds.password is not None:
         return creds
-    # If GCM didn't work, check for something in CIDA defaults.
-    token = read_default_credentials()
+    # Next, try GCM
+    creds = get_gcm_credentials()
     # Check if we got something.
-    if token is not None:
-        return token
-    print_failure("Unable to retrieve GitHub token from GCM or CIDA defaults.")
+    if creds is not None and creds.username is not None and creds.password is not None:
+        return creds
+    print_failure("Unable to retrieve GitHub token from CIDA defaults or GCM")
     return None
 
 

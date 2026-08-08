@@ -7,7 +7,7 @@ from typing import Literal
 import pytest
 
 from cidatools.consts import CIDA_GITHUB_ORGANIZATION
-from cidatools.defaults import CIDADefaults, CIDADefaultsModel, GithubCredentials
+from cidatools.defaults import CIDADefaultsModel, GithubCredentials
 from cidatools.git import (
     create_empty_github_repository,
     create_github_repository_from_template,
@@ -17,22 +17,27 @@ from cidatools.git import (
 
 
 def test_retrieve_gcm_creds(mocker):
-    mock_gcm = mocker.patch("subprocess.run")
-    mock_gcm.return_value.stdout = b"protocol=https\nhost=github.com\nusername=Andrew0Hill\npassword=gho_FaKeTokeN\n\n"
-    gcm_creds = get_github_credentials()
-    assert gcm_creds == GithubCredentials(
-        username="Andrew0Hill",
-        password="gho_FaKeTokeN",
-        protocol="https",
-        host="github.com",
-    )
+    with tempfile.TemporaryDirectory() as tmpdir:
+        # Now add a fake set of default credentials.
+        fake_defaults_path = pathlib.Path(tmpdir).joinpath("project_defaults.json")
+        # Patch the default path, but don't instance the wrapper.
+        mocker.patch("cidatools.defaults.CIDA_PROJECT_DEFAULTS_PATH", fake_defaults_path)
+        mock_gcm = mocker.patch("subprocess.run")
+        mock_gcm.return_value.stdout = (
+            b"protocol=https\nhost=github.com\nusername=Andrew0Hill\npassword=gho_FaKeTokeN\n\n"
+        )
+        retrieved_creds = get_github_credentials()
+        assert retrieved_creds == GithubCredentials(
+            username="Andrew0Hill",
+            password="gho_FaKeTokeN",
+        )
 
 
 def test_retrieve_default_creds(mocker):
     with tempfile.TemporaryDirectory() as tmpdir:
         # Patch the GCM call to pretend we don't get credentials.
-        mock_gcm = mocker.patch("subprocess.run")
-        mock_gcm.return_value.stdout = b"git: 'credential-manager' is not a git command. See 'git --help'."
+        # mock_gcm = mocker.patch("subprocess.run")
+        # mock_gcm.return_value.stdout = b"git: 'credential-manager' is not a git command. See 'git --help'."
         # Now add a fake set of default credentials.
         fake_defaults_path = pathlib.Path(tmpdir).joinpath("project_defaults.json")
         fake_creds = GithubCredentials(
@@ -40,12 +45,12 @@ def test_retrieve_default_creds(mocker):
             password="gho_deFaULTPassWord",
         )
         # Fake defaults
-        fake_defaults = CIDADefaultsModel(github_creds=fake_creds)
+        fake_defaults = CIDADefaultsModel(github_username=fake_creds.username, github_password=fake_creds.password)
         # Write defaults
         with open(fake_defaults_path, "w") as f:
             f.write(fake_defaults.model_dump_json())
         # Patch the default path, but don't instance the wrapper.
-        mocker.patch.object(CIDADefaults, "path", fake_defaults_path)
+        mocker.patch("cidatools.defaults.CIDA_PROJECT_DEFAULTS_PATH", fake_defaults_path)
         # Call the cred function
         retrieved_creds = get_github_credentials()
         # Check that it reads from defaults.
