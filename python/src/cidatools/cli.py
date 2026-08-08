@@ -6,8 +6,9 @@ import sys
 from importlib.metadata import version
 
 from cidatools.defaults import CIDA_PROJECT_DEFAULT_FOLDERS, CIDADefaults
-from cidatools.git import create_empty_github_repository, create_github_repository_from_template
+from cidatools.git import create_empty_github_repository, create_github_repository_from_template, setup_github
 from cidatools.project import create_github_project, create_local_project, current_project, project_status
+from cidatools.utils import print_failure
 
 # The block between the 'fmt: off' and 'fmt: on' blocks below is necessary to prevent
 # code formatters from modifying the internal spacing the of the banner.
@@ -149,6 +150,10 @@ def cli() -> int:
     unset.add_argument("--default", action="store_true", help="If specified, will unset the default value.")
     unset.set_defaults(func=_cli_unset)
 
+    # Setup Commands
+    setup = subparsers.add_parser(name="setup", help="Setup CIDAtools integrations (GitHub, etc).")
+    setup.add_argument("target", choices=["github"], help="Which component to set up.")
+    setup.set_defaults(func=_cli_setup)
     # Parse the arguments and dispatch to the sub-parser handler
     args = parser.parse_args()
     return args.func(args)
@@ -214,6 +219,19 @@ def _cli_unset(args: argparse.Namespace) -> int:
         setattr(wrapper, args.field, None)
         return 0
     return 1
+
+
+def _cli_setup(args: argparse.Namespace) -> int:
+    """Entrypoint for the CLI 'setup' subcommand.
+    :param args: The parsed argument namespace.
+    :return: Integer status code
+    """
+    if args.target == "github":
+        setup_github(force_pat=False)
+        return 0
+    else:
+        print_failure(f"Unknown target '{args.target}'")
+        return 1
 
 
 def _cli_create(args: argparse.Namespace) -> int:

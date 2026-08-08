@@ -159,6 +159,15 @@ def setup_github(force_pat: bool = True):
             print_info(
                 "Git Credential Manager is not installed, CIDAtools can still work with a manually configured GitHub token."
             )
+    # Access the current defaults, if configured
+    defaults = CIDADefaults()
+
+    if defaults is not None:
+        cur_user = defaults.github_username
+        cur_pass = defaults.github_password
+        if cur_user is not None and cur_pass is not None:
+            print_info(f"There are existing credentials configured:\nUsername: {cur_user}\nToken: {cur_pass}")
+            print_warning("Proceeding will overwrite the above existing credentials.")
 
     resp_l = None
     while resp_l not in ["y", "n"]:
@@ -176,7 +185,6 @@ def setup_github(force_pat: bool = True):
         # Retrieve the GitHub token from file.
         github_token = input("Enter GitHub Token: ")
         # Write GitHub token to file.
-        defaults = CIDADefaults()
         defaults.github_username = github_username
         defaults.github_password = github_token
         # write_default_credentials(GithubCredentials())
@@ -229,8 +237,7 @@ def get_gcm_credentials() -> GithubCredentials | None:
 
 def get_github_credentials() -> GithubCredentials | None:
     """Retrieves a GitHub token to be used for CIDAtools functionality
-    This function will first attempt to retrieve a GitHub token from Git Credential Manager, but will
-    also check the CIDADefaults.
+    This function will first attempt to retrieve a GitHub token from CIDADefaults, but will fall back to Git Credential Manager.
     """
     # First, check for something in CIDA defaults.
     creds = get_default_credentials()
