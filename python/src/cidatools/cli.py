@@ -48,11 +48,11 @@ def cli() -> int:
     """
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        description=banner(),
+        description=cidatools_banner(),
         epilog=CIDATOOLS_EPILOG,
     )
     # Print version information.
-    parser.add_argument("-v", "--version", action="version", version=banner())
+    parser.add_argument("-v", "--version", action="version", version=cidatools_banner())
     parser.add_argument(
         "-C",
         type=pathlib.Path,
@@ -329,22 +329,20 @@ def _lerp_rgb_1d(i: float, cmap: list[tuple[int, int, int]], ccp: list[float]):
 
 
 @functools.lru_cache(maxsize=1)
-def banner():
+def banner(banner_str: str, color_palette: list[str], footer: str | None = None):
     # Parse the default color palette into something usable.
-    parsed_colors = list(map(_parse_rgb, CIDATOOLS_DEFAULT_COLOR_PALETTE))
+    parsed_colors = list(map(_parse_rgb, color_palette))
     # Split banner string into rows.
-    banner_rows = CIDATOOLS_BANNER.split("\n")
+    banner_rows = banner_str.split("\n")
     # Get the length of the banner.
     banner_width = max(map(len, banner_rows))
     # Get the points where the colors change on the banner.
-    color_change_points = [
-        i / (len(CIDATOOLS_DEFAULT_COLOR_PALETTE) - 1) for i in range(len(CIDATOOLS_DEFAULT_COLOR_PALETTE))
-    ]
+    color_change_points = [i / (len(color_palette) - 1) for i in range(len(color_palette))]
     # Compute the colors for each column of the banner.
     c_c = [_lerp_rgb_1d(i=i / banner_width, cmap=parsed_colors, ccp=color_change_points) for i in range(banner_width)]
     # Compute banner width.
-    footer_rows = CIDATOOLS_BANNER_FOOTER.split("\n")
-    total_width = max(banner_width, max(map(len, footer_rows)))
+    footer_rows = footer.split("\n") if footer is not None else []
+    total_width = max(banner_width, max(map(len, footer_rows))) if len(footer_rows) > 0 else banner_width
     # Apply color codes to each character in the banner string.
     colored_banner_rows = (
         "".join(" " if s_i == " " else f"\033[38;2;{c[0]};{c[1]};{c[2]}m{s_i}\033[0m" for c, s_i in zip(c_c, row))
@@ -360,6 +358,12 @@ def banner():
     # Return the whole banner.
     return "\n".join(row.center(total_width) for row in padded_banner_rows) + "\n".join(
         row.center(total_width) for row in footer_rows
+    )
+
+
+def cidatools_banner():
+    return banner(
+        banner_str=CIDATOOLS_BANNER, color_palette=CIDATOOLS_DEFAULT_COLOR_PALETTE, footer=CIDATOOLS_BANNER_FOOTER
     )
 
 
