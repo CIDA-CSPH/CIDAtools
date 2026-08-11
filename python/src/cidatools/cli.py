@@ -3,6 +3,7 @@ import functools
 import math
 import pathlib
 import sys
+from collections.abc import Sequence
 from importlib.metadata import version
 
 from cidatools.defaults import CIDA_PROJECT_DEFAULT_FOLDERS, CIDADefaults
@@ -39,7 +40,7 @@ Found a bug? https://github.com/CIDA-CSPH/CIDAtools/issues
 # fmt: on
 
 # This is the 'Vibrant Summer' palette from https://coolors.co/palette/ff595e-ffca3a-8ac926-1982c4-6a4c93
-CIDATOOLS_DEFAULT_COLOR_PALETTE = ["FF595E", "FFCA3A", "8AC926", "1982C4", "6A4C93"]
+CIDATOOLS_DEFAULT_COLOR_PALETTE = ("FF595E", "FFCA3A", "8AC926", "1982C4", "6A4C93")
 
 
 def cli() -> int:
@@ -294,7 +295,7 @@ def _cli_create(args: argparse.Namespace) -> int:
     return 1
 
 
-def _parse_rgb(rgb_hex: str):
+def _parse_rgb(rgb_hex: str) -> tuple[int, ...]:
     """Convenience function for parsing RGB hex color codes into usable RGB tuples.
     :param rgb_hex: An RGB hex string.
     :return:
@@ -303,7 +304,7 @@ def _parse_rgb(rgb_hex: str):
     return tuple(int(rgb_hex[i : i + 2], 16) for i in range(0, 6, 2))
 
 
-def _lerp_rgb_1d(i: float, cmap: list[tuple[int, int, int]], ccp: list[float]):
+def _lerp_rgb_1d(i: float, cmap: Sequence[Sequence[int]], ccp: Sequence[float]):
     """Function to determine a color
     :param i: The normalized value [0,1] which we are computing colors for.
     :param cmap: The colormap to use for the lerp.
@@ -329,17 +330,19 @@ def _lerp_rgb_1d(i: float, cmap: list[tuple[int, int, int]], ccp: list[float]):
 
 
 @functools.lru_cache(maxsize=1)
-def banner(banner_str: str, color_palette: list[str], footer: str | None = None):
+def banner(banner_str: str, color_palette: Sequence[str], footer: str | None = None):
     # Parse the default color palette into something usable.
-    parsed_colors = list(map(_parse_rgb, color_palette))
+    parsed_colors = tuple(map(_parse_rgb, color_palette))
     # Split banner string into rows.
     banner_rows = banner_str.split("\n")
     # Get the length of the banner.
     banner_width = max(map(len, banner_rows))
     # Get the points where the colors change on the banner.
-    color_change_points = [i / (len(color_palette) - 1) for i in range(len(color_palette))]
+    color_change_points = tuple(i / (len(color_palette) - 1) for i in range(len(color_palette)))
     # Compute the colors for each column of the banner.
-    c_c = [_lerp_rgb_1d(i=i / banner_width, cmap=parsed_colors, ccp=color_change_points) for i in range(banner_width)]
+    c_c = tuple(
+        _lerp_rgb_1d(i=i / banner_width, cmap=parsed_colors, ccp=color_change_points) for i in range(banner_width)
+    )
     # Compute banner width.
     footer_rows = footer.split("\n") if footer is not None else []
     total_width = max(banner_width, max(map(len, footer_rows))) if len(footer_rows) > 0 else banner_width
