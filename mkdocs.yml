@@ -3,7 +3,26 @@ site_name: CIDAtools Documentation
 nav:
   - Overview: index.md
   - Getting Started: getting_started.md
-  - Project Management: project_management.md
+  - CIDAtools Functionality:
+    - Project Management: project_management.md
+    - Git Integration: git_integration.md
+    - P-Drive Backup: backup.md
+    - Uncategorized/Misc: misc.md
+  - Contributing to CIDAtools: contributing.md
+theme:
+  features:
+    - navigation.expand
+  palette:
+    # Palette toggle for light mode
+    - scheme: default
+      toggle:
+        icon: lucide/sun
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - scheme: slate
+      toggle:
+        icon: lucide/moon
+        name: Switch to light mode
 
 markdown_extensions:
   - admonition
@@ -11,3 +30,10 @@ markdown_extensions:
   - pymdownx.superfences
   - pymdownx.tabbed:
       alternate_style: true
+      combine_header_slug: true
+      slugify: !!python/object/apply:pymdownx.slugs.slugify
+        kwds:
+          case: lower
+  - pymdownx.snippets:
+  - toc:
+      toc_depth: 3

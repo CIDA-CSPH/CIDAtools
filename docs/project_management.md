@@ -1,7 +1,6 @@
 ---
-icon: lucide/folder-root
+icon: lucide/folder-open
+title: Project Management
 ---
 
-# Project Management Functions
-
-The 
+--8<-- "docs/generated/categories/project.md"

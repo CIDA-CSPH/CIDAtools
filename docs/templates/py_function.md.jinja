@@ -1,0 +1,37 @@
+=== "Python"
+{% filter indent(width=4, first=True) -%}
+{% if func.py.deprecated -%}
+!!! bug "Deprecated Function"
+    This function has been deprecated, and will be removed in a future CIDAtools release.
+{% endif -%}
+{% if func.py.description is defined -%}
+<h4>Description</h4>
+{{ func.py.description }}
+{% endif -%}
+<h4>Usage</h4>
+```python
+{{ func.name }}({% if func.py.arguments is none %})
+{% else %}
+{% for arg in func.py.arguments -%}
+{{ arg.name | indent(4,first=True) }}{% if arg.default_value is not none %}={{ arg.default_value }}{% endif %}{% if not loop.last %},{% endif %}
+{% endfor -%}
+)
+{% endif -%}
+```
+<h4>Arguments</h4>
+{% if func.py.arguments is not none %}
+{% for arg in func.py.arguments -%}
+- `{{ arg.name }}` (`{{ arg.type_hint }}`) - {{ arg.description }}
+{% endfor %}
+{% else -%}
+*No arguments*
+{% endif -%}
+{% if func.py.return_value is defined -%}
+<h4>Returns `{{ func.py.return_value.type_hint }}`</h4>
+{% if func.py.return_value.description is not none %}
+{{ func.py.return_value.description }}
+{% else %}
+*No return value*
+{% endif %}
+{% endif -%}
+{%  endfilter %}

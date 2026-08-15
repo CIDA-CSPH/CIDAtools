@@ -1,0 +1,33 @@
+=== "R"
+{% filter indent(width=4, first=True) -%}
+{% if func.r.deprecated -%}
+!!! bug "Deprecated Function"
+    This function has been deprecated, and will be removed in a future CIDAtools release.
+{% endif -%}
+{% if func.r.description is not none -%}
+<h4>Description</h4>
+{{ func.r.description }}
+{% endif -%}
+{% if func.r.usage is not none -%}
+<h4>Usage</h4>
+```R
+{{ func.r.usage }}
+```
+{% endif -%}
+<h4>Arguments</h4>
+{% if func.r.arguments is not none %}
+{% for arg in func.r.arguments -%}
+- `{{ arg.name }}` - {{ arg.description }}
+{% endfor %}
+{% else -%}
+*No arguments*
+{% endif -%}
+{% if func.r.value is not none -%}
+<h4>Returns</h4>
+{{ func.r.value }}
+{% endif %}
+{% if func.r.seealso is not none -%}
+<h4>See Also</h4>
+{{ func.r.seealso }}
+{% endif -%}
+{% endfilter %}

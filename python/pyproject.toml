@@ -16,11 +16,13 @@ dependencies = [
 dev = [
     "coverage>=7.15.2",
     "detect-secrets>=1.5.0",
+    "griffe>=2.1.0",
     "jupyterlab>=4.6.2",
     "pre-commit>=4.6.1",
     "pytest>=9.1.1",
     "pytest-cov>=7.1.0",
     "pytest-mock>=3.15.1",
+    "texsoup>=0.3.3",
 ]
 
 [project.scripts]

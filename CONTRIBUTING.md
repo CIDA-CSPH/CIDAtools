@@ -1,3 +1,7 @@
+---
+icon: lucide/braces
+---
+
 # Contributing
 
 We welcome suggestions and contributions for CIDAtools!

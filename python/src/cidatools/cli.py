@@ -330,7 +330,7 @@ def _lerp_rgb_1d(i: float, cmap: Sequence[Sequence[int]], ccp: Sequence[float]):
 
 
 @functools.lru_cache(maxsize=1)
-def banner(banner_str: str, color_palette: Sequence[str], footer: str | None = None):
+def banner(banner_str: str, color_palette: Sequence[str], footer: str | None = None) -> None:
     # Parse the default color palette into something usable.
     parsed_colors = tuple(map(_parse_rgb, color_palette))
     # Split banner string into rows.
