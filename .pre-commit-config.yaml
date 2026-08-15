@@ -31,3 +31,9 @@ repos:
         entry: ./scripts/copy_resources.sh
         language: script
         pass_filenames: false
+      - id: generate-md-docs
+        name: "Generate Zensical Markdown files"
+        entry: python3 ./scripts/generate_docs.py
+        args: ["--output-dir", "docs/generated", "--template-dir", "docs/templates", "--rd-dir", "R/man"]
+        language: system
+        pass_filenames: false

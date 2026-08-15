@@ -151,9 +151,9 @@ def process_rd(rd_path: str):
     return RFunction.model_validate(rfunc_d)
 
 
-def load_r_functions():
+def load_r_functions(r_doc_dir: pathlib.Path):
     # Parse all Rd files.
-    rd_files = glob.glob("../R/man/*.Rd")
+    rd_files = glob.glob(str(r_doc_dir.joinpath("*.Rd")))
     # Iterate and read each file.
     rd_out = {}
     for rd_file in rd_files:
@@ -275,9 +275,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--template-dir", default="../docs/templates", type=pathlib.Path, help="Path where templates are stored (template paths in this script are relative to this directory).")
     parser.add_argument("--output-dir", default="../docs/generated", type=pathlib.Path, help="Path where generated documentation should be stored.")
+    parser.add_argument("--rd-dir", default="../R/man", type=pathlib.Path, help="Path where Roxygen R documentation files are stored.")
     args = parser.parse_args()
     # Parse the Rd documents for R
-    cidatools_r = load_r_functions()
+    cidatools_r = load_r_functions(r_doc_dir=args.rd_dir)
     # Parse the Python code using Griffe
     cidatools_py = load_py_functions()
     # TODO: Find a way to integrate CLI functions here
