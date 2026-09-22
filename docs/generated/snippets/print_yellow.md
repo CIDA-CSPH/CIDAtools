@@ -8,7 +8,7 @@
     <h4>Usage</h4>
     ```python
     print_yellow(
-        message
+        message: str
     )
     ```
     <h4>Arguments</h4>

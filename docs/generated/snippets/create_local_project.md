@@ -10,13 +10,13 @@
     <h4>Usage</h4>
     ```python
     create_local_project(
-        project_root=None,
-        project_name=None,
-        principal_investigator=None,
-        analyst=None,
-        data_location=None,
-        git_location=None,
-        folders_to_create=None
+        project_root: Path | None=None,
+        project_name: str | None=None,
+        principal_investigator: str | None=None,
+        analyst: str | list[str] | None=None,
+        data_location: str | None=None,
+        git_location: str | None=None,
+        folders_to_create: list[str] | None=None
     )
     ```
     <h4>Arguments</h4>

@@ -544,6 +544,8 @@ def create_project(project_path: pathlib.Path | None = None) -> CIDAProject | No
     For non-interactive project creation (for use in a script, etc.) use `create_project_local()` or `create_project_github()`.
     :param project_path: Path to the directory where the project will be created, or None.
     :return:
+    :cidatools create_project project:
+    :cidatools-cli-link create:
     """
     # If the project path is not specified, use the working directory.
     if project_path is None:

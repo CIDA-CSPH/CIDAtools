@@ -8,8 +8,8 @@
     <h4>Usage</h4>
     ```python
     set_project_principal_investigator(
-        principal_investigator,
-        project=None
+        principal_investigator: str | None,
+        project: CIDAProject=None
     )
     ```
     <h4>Arguments</h4>

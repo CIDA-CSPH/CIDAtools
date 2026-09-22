@@ -8,9 +8,9 @@
     <h4>Usage</h4>
     ```python
     create_empty_github_repository(
-        name,
-        description,
-        visibility='internal'
+        name: str,
+        description: str | None,
+        visibility: Literal='internal'
     )
     ```
     <h4>Arguments</h4>

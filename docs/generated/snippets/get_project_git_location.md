@@ -8,7 +8,7 @@
     <h4>Usage</h4>
     ```python
     get_project_git_location(
-        project
+        project: CIDAProject
     )
     ```
     <h4>Arguments</h4>

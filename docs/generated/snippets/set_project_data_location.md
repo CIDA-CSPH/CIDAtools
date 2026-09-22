@@ -8,8 +8,8 @@
     <h4>Usage</h4>
     ```python
     set_project_data_location(
-        data_location,
-        project=None
+        data_location: str | None,
+        project: CIDAProject=None
     )
     ```
     <h4>Arguments</h4>

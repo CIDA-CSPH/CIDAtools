@@ -8,8 +8,8 @@
     <h4>Usage</h4>
     ```python
     get_git_remote_url(
-        project_root=None,
-        name='origin'
+        project_root: Path | None=None,
+        name: str='origin'
     )
     ```
     <h4>Arguments</h4>

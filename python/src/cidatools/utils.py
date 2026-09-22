@@ -1,3 +1,4 @@
+from collections.abc import Sequence
 from importlib import resources
 
 GREEN_CHECK = "\x1b[1m\x1b[32m\u2713\x1b[0m"
@@ -71,3 +72,37 @@ def print_green(message: str):
     :return:
     """
     print(f"\x1b[32m{message}\x1b[0m")
+
+
+def parse_rgb(rgb_hex: str) -> tuple[int, ...]:
+    """Convenience function for parsing RGB hex color codes into usable RGB tuples.
+    :param rgb_hex: An RGB hex string.
+    :return:
+    """
+    rgb_hex = rgb_hex.lstrip("#")
+    return tuple(int(rgb_hex[i : i + 2], 16) for i in range(0, 6, 2))
+
+
+def lerp_rgb_1d(i: float, cmap: Sequence[Sequence[int]], ccp: Sequence[float]):
+    """Function to linearly interpolate between a sequence of RGB colors.
+    :param i: The normalized value [0,1] which we are computing colors for.
+    :param cmap: The colormap to use for the lerp.
+    :param ccp: The list of indices in the interval [0, 1] where each color begins.
+    :return:
+    """
+    # Clamp i within the range.
+    if i <= 0:
+        return cmap[0]
+    elif i >= 1:
+        return cmap[-1]
+    # Find the low index (first color in the lerp)
+    low_idx = max(j for j in range(len(ccp)) if i - ccp[j] >= 0)
+    # High index is the next color
+    high_idx = low_idx + 1
+    # Get both colors from the map
+    c1 = cmap[low_idx]
+    c2 = cmap[high_idx]
+    # Normalize i from a global interpolation to a local (between two colors) value
+    i_norm = (i - ccp[low_idx]) / (ccp[high_idx] - ccp[low_idx])
+    # Lerp between the colors.
+    return tuple(round(e[0] * (1 - i_norm) + e[1] * i_norm) for e in zip(c1, c2))

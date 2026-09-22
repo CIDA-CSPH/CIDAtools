@@ -8,10 +8,10 @@
     <h4>Usage</h4>
     ```python
     create_github_repository_from_template(
-        name,
-        template_name,
-        description,
-        visibility='internal'
+        name: str,
+        template_name: str,
+        description: str | None,
+        visibility: Literal='internal'
     )
     ```
     <h4>Arguments</h4>

@@ -10,7 +10,7 @@
     <h4>Usage</h4>
     ```python
     project_status(
-        project_root=None
+        project_root: Path | None=None
     )
     ```
     <h4>Arguments</h4>

@@ -8,8 +8,8 @@
     <h4>Usage</h4>
     ```python
     clone_github_repository(
-        repository_url,
-        local_path
+        repository_url: str,
+        local_path: Path
     )
     ```
     <h4>Arguments</h4>

@@ -3,34 +3,6 @@ icon: lucide/rocket
 title: Getting Started
 ---
 
-## Installing CIDAtools
-
-CIDAtools is available for R, Python and CLI.
-
-=== "R"
-
-    ```R
-    install.packages("pak") # Only required if pak is not installed
-    pak::pak('CIDA-CSPH/CIDAtools')
-    ```
-
-    !!! info
-    
-        If you encounter issues with the new version of CIDAtools (v2.0.0+), you can install the older version using: 
-        
-        <pre><code>pak::pak("CIDA-CSPH/CIDAtools<mark>@v0.1.2</mark>")</pre></code>
-
-=== "Python/CLI"
-
-    ```python
-    pip install git+https://github.com/CIDA-CSPH/CIDAtools#subdirectory=python
-    ```
-    
-    !!! info
-        
-        To use the CLI version of CIDAtools, install Python and the CIDAtools package using the instructions above.
-        After installation, the `cidatools` command will be available in your terminal.
-
 
 ## (Optional) GitHub Configuration
 

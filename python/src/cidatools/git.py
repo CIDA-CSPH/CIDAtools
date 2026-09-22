@@ -136,6 +136,7 @@ def setup_github(force_pat: bool = True):
     """Function to guide users through setting up cidatools GitHub integration.
     :param force_pat: If set, will force creation of a PAT even if Git Credential Manager is installed.
     :return: None
+    :cidatools setup_github:
     """
     # TODO: Should this be a common resource so the R version can use the same text?
     prompt_str = """

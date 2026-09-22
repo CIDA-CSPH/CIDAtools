@@ -45,3 +45,4 @@ proj_setup() is the internal wrapper for this that gets called when
 }
 \keyword{createproject}
 \keyword{project}
+\cidatools{create_project}{project}

@@ -8,8 +8,8 @@
     <h4>Usage</h4>
     ```python
     list_github_templates(
-        display=True,
-        include_empty=True
+        display: bool=True,
+        include_empty: bool=True
     )
     ```
     <h4>Arguments</h4>

@@ -158,6 +158,7 @@ get_project_drive_path <- function(file = "") {
 #'@seealso proj_setup() is the internal wrapper for this that gets called when
 #'  using the RStudio GUI to create a project
 #'
+#'@cidatools create_project project
 #'@export
 create_project <- function(path = getwd(),
                            template = c('Admin', 'Background', 'Code', 'DataRaw',

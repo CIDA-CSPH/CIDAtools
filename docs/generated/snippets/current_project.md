@@ -11,7 +11,7 @@
     <h4>Usage</h4>
     ```python
     current_project(
-        project_root=None
+        project_root: Path | str | None=None
     )
     ```
     <h4>Arguments</h4>

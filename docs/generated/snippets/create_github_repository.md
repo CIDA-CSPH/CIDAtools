@@ -12,10 +12,10 @@
     <h4>Usage</h4>
     ```python
     create_github_repository(
-        name,
-        description=None,
-        visibility='internal',
-        template_name=None
+        name: str,
+        description: str | None=None,
+        visibility: Literal='internal',
+        template_name: str | None=None
     )
     ```
     <h4>Arguments</h4>

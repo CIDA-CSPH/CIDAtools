@@ -8,7 +8,7 @@
     <h4>Usage</h4>
     ```python
     get_user_prompt_by_name(
-        name
+        name: str
     )
     ```
     <h4>Arguments</h4>

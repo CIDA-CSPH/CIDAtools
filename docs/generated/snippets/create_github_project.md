@@ -8,15 +8,15 @@
     <h4>Usage</h4>
     ```python
     create_github_project(
-        project_name=None,
-        repository_name=None,
-        project_root=None,
-        template_name=None,
-        principal_investigator=None,
-        analyst=None,
-        data_location=None,
-        description=None,
-        visibility='internal'
+        project_name: str | None=None,
+        repository_name: str | None=None,
+        project_root: Path | None=None,
+        template_name: str | None=None,
+        principal_investigator: str | None=None,
+        analyst: str | list[str] | None=None,
+        data_location: str | None=None,
+        description: str | None=None,
+        visibility: Literal='internal'
     )
     ```
     <h4>Arguments</h4>

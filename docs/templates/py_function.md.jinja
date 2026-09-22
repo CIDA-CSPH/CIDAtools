@@ -13,7 +13,7 @@
 {{ func.name }}({% if func.py.arguments is none %})
 {% else %}
 {% for arg in func.py.arguments -%}
-{{ arg.name | indent(4,first=True) }}{% if arg.default_value is not none %}={{ arg.default_value }}{% endif %}{% if not loop.last %},{% endif %}
+{{ arg.name | indent(4,first=True) }}{%  if arg.type_hint is not none %}: {{ arg.type_hint }}{% endif %}{% if arg.default_value is not none %} = {{ arg.default_value }}{% endif %}{% if not loop.last %},{% endif %}
 {% endfor -%}
 )
 {% endif -%}

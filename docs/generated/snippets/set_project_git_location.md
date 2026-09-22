@@ -8,8 +8,8 @@
     <h4>Usage</h4>
     ```python
     set_project_git_location(
-        git_location,
-        project=None
+        git_location: str | None,
+        project: CIDAProject=None
     )
     ```
     <h4>Arguments</h4>

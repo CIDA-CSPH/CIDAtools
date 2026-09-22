@@ -8,9 +8,9 @@
     <h4>Usage</h4>
     ```python
     banner(
-        banner_str,
-        color_palette,
-        footer=None
+        banner_str: str,
+        color_palette: Sequence,
+        footer: str | None=None
     )
     ```
     <h4>Arguments</h4>
