@@ -125,3 +125,48 @@ deprecated_warn <- function(function_name="", version=""){
 renamed_warn <- function(function_name="", replacement_name="") {
   warning(paste(c(function_name, "() has been renamed to ", replacement_name, "(). Please use the updated function name in new code.")), call.=FALSE, immediate.=TRUE)
 }
+
+GREEN_CHECK = paste0("\x1b[1m\x1b[32m", "\u2713", "\x1b[0m")
+RED_XMARK = paste0("\x1b[1m\x1b[31m", "\u2717", "\x1b[0m")
+YELLOW_TRIANGLE = paste0("\x1b[1m\x1b[33m", "\u26a0", "\x1b[0m")
+BLUE_INFO = paste0("\x1b[1m\x1b[34m", "\u2139", "\x1b[0m")
+
+RED = "\x1b[31m"
+YELLOW = "\x1b[33m"
+GREEN = "\x1b[32m"
+CLEAR = "\x1b[0m"
+
+#'@export
+print_success <- function(msg) {
+  message(paste(GREEN_CHECK, msg))
+}
+
+#'@export
+print_warning <- function(msg) {
+  message(paste(YELLOW_TRIANGLE, msg))
+}
+
+#'@export
+print_failure <- function(msg) {
+  message(paste(RED_XMARK, msg))
+}
+
+#'@export
+print_info <- function(msg) {
+  message(paste(BLUE_INFO, msg))
+}
+
+#'@export
+print_red <- function(msg) {
+  message(paste0(RED, msg, CLEAR))
+}
+
+#'@export
+print_yellow <- function(msg) {
+  message(paste0(YELLOW, msg, CLEAR))
+}
+
+#'@export
+print_green <- function(msg) {
+  message(paste(GREEN, msg, CLEAR))
+}

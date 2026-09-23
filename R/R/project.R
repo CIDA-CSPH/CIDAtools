@@ -160,176 +160,24 @@ get_project_drive_path <- function(file = "") {
 #'
 #'@cidatools create_project project
 #'@export
-create_project <- function(path = getwd(),
-                           template = c('Admin', 'Background', 'Code', 'DataRaw',
-                                        'DataProcessed', 'Dissemination', 'Reports'),
-                           project_name, pi = "", analyst, data_location = "",
-                           git_location = "") {
-  if (missing(project_name) || !nzchar(trimws(project_name))){
-    stop(" 'project_name' is required and cannot be empty.", call. = FALSE)
-  }
-  if( ! dir.exists(path) ){
-    dir.create(path, recursive = TRUE, showWarnings = FALSE)
-  }
-
-  # has meta been provided?
- # meta <- !all(c(project_name, pi, analyst, data_location,git_location) %in% "")
-
-
-  # set which ReadMe.md files to create
-  template <- match.arg(template, several.ok = T)
-
-  # Overall readme
-
-  readme <- c(paste0("**Project Name**: ", project_name, "  "),
-              paste0("**PI**: ", pi, "  "),
-              paste0("**Analyst**: ", analyst, "  "),
-              paste0("**CIDA drive Location**: ", proj_location_handler(data_location), "  "),
-              paste0("**GitHub Location**: ", git_location, "  "),
-              "",
-              "Details about the folders:",
-              '',
-              "File | Description",
-              "---|----------------------------------------------------------",
-              paste("Admin | contains the scope of work and other",
-                    "administrative documents"),
-              paste("Background | contains the background information for",
-                    "the analysis"),
-              "Code | contains all R scripts for this project",
-              "DataRaw | contain all raw data provided by investigators",
-              "DataProcessed | contains the processed data used for analysis",
-              paste("Dissemination | contains any materials produced for",
-                    "dissemination, ie. Abstracts, Posters, Papers"),
-              "Reports | contains all output, rmarkdown files and report")
-
-
-  # write to readme file
-  if(!file.exists(file.path(path, "README.md")))
-    writeLines(paste0(readme, collapse = '\n'),
-               con = file.path(path, "README.md"))
-
-  # Create subdirectory readmes
-  create_readme(template = template, path = path)
-
-  # Add .ProjData directory containing metadata
-  #if(meta){
-  if (! dir.exists(paste0(path, '/.ProjData'))){
-    dir.create(paste0(path, '/.ProjData'))
-  }
-  proj_data <- list(ProjectName = project_name, PI = pi,
-                     analyst = analyst, datalocation = data_location,
-                     gitlocation = git_location)
-  write.dcf(proj_data, file.path(path, '/.ProjData/Data.dcf'))
-  #}
-
-  # add to current gitignore if exists
-  if(file.exists(file.path(path, '.gitignore'))){
-    gitignore <- readLines(con = file.path(path, '.gitignore'))
-  } else {
-    gitignore <- NULL
-  }
-
-  # add R template gitignore
-  # (source: https://github.com/github/gitignore/blob/master/R.gitignore)
-  gitignore <- paste0(c(gitignore,
-                        "# History files",
-                        ".Rhistory",
-                        ".Rapp.history",
-
-                        "# Session Data files",
-                        ".RData",
-
-                        "# User-specific files",
-                        ".Ruserdata",
-
-                        "# Example code in package build process",
-                        "*-Ex.R",
-
-                        "# Output files from R CMD build",
-                        "/*.tar.gz",
-
-                        "# Output files from R CMD check",
-                        "/*.Rcheck/",
-
-                        "# RStudio files",
-                        ".Rproj.user/",
-
-                        "# produced vignettes",
-                        "vignettes/*.html",
-                        "vignettes/*.pdf",
-
-                        paste0("# OAuth2 token, see https://github.com/",
-                               "hadley/httr/releases/tag/v0.3"),
-                        ".httr-oauth",
-
-                        "# knitr and R markdown default cache directories",
-                        "/*_cache/",
-                        "/cache/",
-
-                        "# Temporary files created by R markdown",
-                        "*.utf8.md",
-                        "*.knit.md"), collapse = '\n')
-
-  # by file type
-  gitignore <- paste0(c(gitignore,
-                        "# R Data files",
-                        "*.RData",
-                        "*.rda",
-                        "*.rdata",
-                        "*.rda",
-                        "# Text files",
-                        "*.csv",
-                        "*.txt",
-                        "*.dat",
-                        "# Excel",
-                        "*.xls*",
-                        "# SAS",
-                        "*.sas7bdat",
-                        "*.xport",
-                        "# Access",
-                        "*.mdb"), collapse = '\n')
-
-  # by Folder
-  gitignore <- paste0(c(gitignore,
-                        "DataRaw/*",
-                        "DataProcessed/*",
-                        "!*/README.md"), collapse = '\n')
-
-  writeLines(gitignore, con = file.path(path, '.gitignore'))
-
-  # Create .Rproj file
-  rproj <- paste0(c("Version: 1.0",
-                    "",
-                    "RestoreWorkspace: Default",
-                    "SaveWorkspace: Default",
-                    "AlwaysSaveHistory: Default",
-                    "",
-                    "EnableCodeIndexing: Yes",
-                    "UseSpacesForTab: Yes",
-                    "NumSpacesForTab: 2",
-                    "Encoding: UTF-8",
-                    "",
-                    "RnwWeave: knitr",
-                    "LaTeX: pdfLaTeX"), collapse = "\n")
-
-  if(!file.exists(file.path(path, paste0(basename(path), ".Rproj"))))
-    writeLines(rproj, con = file.path(path, paste0(basename(path), ".Rproj")))
-
-  # TODO: We should search for both the global (home directory) and local (project directory) .Rprofiles.
-  # TODO: This uses '~', is this portable to Windows (and is RProfile stored in the same place on Windows)?
-  rprofile <- paste0(c('if( file.exists(fs::path_expand("~/.Rprofile") ) ){',
-                       'source(path.expand("~/.Rprofile"))',
-                       '}',
-                       'library(CIDATools)',
-                       paste0('CIDATools::open_project(localpath="',path,'")')),
-                      collapse="\n")
-  if(!file.exists(file.path(path,"/.Rprofile")))
-    writeLines(rprofile, con = file.path(path,"/.Rprofile"))
-
-  ## Copy over SOW
-  message("Project created. Please remember to copy the scope of work to to Admin/ subdirectory.")
-
-  invisible(template)
+create_project <- function(
+      project_root = NULL,
+      project_name = NULL, 
+      pi = NULL, 
+      analyst = NULL, 
+      data_location = NULL,
+      git_location = NULL
+    ){
+  # If the project name does not exist, use a placeholder
+  project_name <- ifelse(is.null(project_name), "CIDAProject", project_name)
+  
+  # If the project path is not specified, use the working directory.
+  project_root <- fs::path_abs(ifelse(is.null(project_name), getwd(), project_root))
+  
+  # If the proejct path does not exist, create it.
+  #if(fs::file_exists())
+  
+  
 }
 
 proj_setup <- function(path, ...){

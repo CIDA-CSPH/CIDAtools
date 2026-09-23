@@ -4,7 +4,7 @@ Version: 2.0.0
 Authors@R:
   c(person("CIDA Research Tools Committee", role = c("aut", "cre"), email = "CIDA-RT@olucdenver.onmicrosoft.com"))
 Description: This package contains the numerous templates and tools to make life at CIDA (part of the Colorado School of Public Health) happier and more efficient!
-Depends: R (>= 4.0)
+Depends:R (>= 4.0)
 Imports:
     dplyr,
     generics,
@@ -35,7 +35,6 @@ Suggests:
     broom.helpers,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
-Config/roxygen2/packages: cidatoolsdoc
 License: CC0
 Encoding: UTF-8
 RoxygenNote: 7.3.3

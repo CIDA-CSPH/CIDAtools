@@ -5,6 +5,6 @@
 === "CLI"
     <h4>Usage</h4>
     ```shell
-    [1;34musage: [0m[1;35mcidatools setup[0m [[32m-h[0m] [32m{github}[0m
+    usage: [0m[1;35mcidatools setup[0m [[32m-h[0m] [32m{github}[0m
 
     ```

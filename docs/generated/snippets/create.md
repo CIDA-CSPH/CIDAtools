@@ -5,13 +5,13 @@
 === "CLI"
     <h4>Usage</h4>
     ```shell
-    [1;34musage: [0m[1;35mcidatools create[0m [[32m-h[0m] [[36m--template [33mTEMPLATE[0m] [[36m--description [33mDESCRIPTION[0m]
-                            [[36m--repo-name [33mREPO_NAME[0m]
-                            [[36m--create-folders [33mCREATE_FOLDERS [CREATE_FOLDERS ...][0m]
-                            [[36m--private[0m | [36m--internal[0m] [[36m--project-name [33mPROJECT_NAME[0m]
-                            [[36m--analyst [33mANALYST [ANALYST ...][0m] [[36m--pi [33mPI [PI ...][0m]
-                            [[36m--data-location [33mDATA_LOCATION[0m]
-                            [[36m--git-location [33mGIT_LOCATION[0m]
-                            [32m{github-project,github-repo,project}[0m [32mdirectory[0m
+    usage: [0m[1;35mcidatools create[0m [[32m-h[0m] [[36m--template [33mTEMPLATE[0m] [[36m--description [33mDESCRIPTION[0m]
+                     [[36m--repo-name [33mREPO_NAME[0m]
+                     [[36m--create-folders [33mCREATE_FOLDERS [CREATE_FOLDERS ...][0m]
+                     [[36m--private[0m | [36m--internal[0m] [[36m--project-name [33mPROJECT_NAME[0m]
+                     [[36m--analyst [33mANALYST [ANALYST ...][0m] [[36m--pi [33mPI [PI ...][0m]
+                     [[36m--data-location [33mDATA_LOCATION[0m]
+                     [[36m--git-location [33mGIT_LOCATION[0m]
+                     [32m{github-project,github-repo,project}[0m [32mdirectory[0m
 
     ```

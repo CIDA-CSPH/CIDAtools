@@ -7,6 +7,7 @@ import time
 from importlib import resources
 from typing import Literal
 
+from detect_secrets.audit.io import print_error
 from jinja2 import Template
 from pydantic import BaseModel, Field, ValidationError
 
@@ -351,7 +352,10 @@ def create_local_project(
     :param git_location:
     :param folders_to_create: A list of folders to create as part of the project.
     If not specified, uses CIDA_PROJECT_DEFAULT_FOLDERS
-    :return:
+    :return: A CIDAProject object.
+
+    :cidatools:
+    :cidatools-cli-link create:
     """
     # If the project name does not exist, use a placeholder.
     project_name = "CIDAProject" if project_name is None else project_name
@@ -371,6 +375,8 @@ def create_local_project(
         print_success(f"Created new project directory at {_project_root}.")
     elif current_project(project_root=_project_root) is not None:
         print_warning(f"A CIDA project already exists at {_project_root}.")
+    elif _project_root.is_file():
+        print_error(f"The path '{_project_root}' exists, but is a file!")
     else:
         print_success("Project directory already exists.")
 
@@ -448,7 +454,9 @@ def create_github_project(
     :param data_location:
     :param description: An optional description for the repository. (default: None)
     :param visibility: The visibility for the repository (default: 'internal')
-    :return:
+    :return: A CIDAProject instance if project creation was successful, otherwise None.
+    :cidatools:
+    :cidatools-cli-link create:
     """
     # The project name is required since we need something to use as the repo name.
     if project_name is None and repository_name is None and project_root is None:
@@ -544,7 +552,7 @@ def create_project(project_path: pathlib.Path | None = None) -> CIDAProject | No
     For non-interactive project creation (for use in a script, etc.) use `create_project_local()` or `create_project_github()`.
     :param project_path: Path to the directory where the project will be created, or None.
     :return:
-    :cidatools create_project project:
+    :cidatools:
     :cidatools-cli-link create:
     """
     # If the project path is not specified, use the working directory.
@@ -577,50 +585,115 @@ def project_attribute(f):
 
 
 @project_attribute
-def get_project_name(project: CIDAProject):
+def get_project_name(project: CIDAProject) -> str | None:
+    """Retrieves the project name field of a CIDA project.
+    :param project: The CIDA project to retrieve the name for. If none is specified, uses the value of `current_project()`.
+    :return: Returns the project name or None.
+    :cidatools:
+    :cidatools-cli-link get:
+    """
     return project.project_name
 
 
 @project_attribute
 def set_project_name(project_name: str | None, project: CIDAProject = None) -> None:
+    """Sets the project name field of a CIDA project.
+    :param project_name: The new value for the project name field. If None, will *unset* the value.
+    :param project: The CIDA project to set a new name for. If none is specified, uses the value of `current_project()`.
+    :return: None
+    :cidatools:
+    :cidatools-cli-link set:
+    """
     project.project_name = project_name
 
 
 @project_attribute
 def get_project_principal_investigator(project: CIDAProject) -> str | None:
+    """Retrieves the principal investigator field of a CIDA project.
+    :param project: The CIDA project to retrieve the principal investigator for. If none is specified, uses the value of `current_project()`.
+    :return: Returns the principal investigator or None.
+    :cidatools:
+    :cidatools-cli-link get:
+    """
     return project.principal_investigator
 
 
 @project_attribute
 def set_project_principal_investigator(principal_investigator: str | None, project: CIDAProject = None) -> None:
+    """Sets the principal investigator field of a CIDA project.
+    :param principal_investigator: The new value for the principal investigator field. If None, will *unset* the value.
+    :param project: The CIDA project to set a new principal investigator for. If none is specified, uses the value of `current_project()`.
+    :return: None
+    :cidatools:
+    :cidatools-cli-link set:
+    """
     project.principal_investigator = principal_investigator
 
 
 @project_attribute
 def get_project_analyst(project: CIDAProject) -> None | str | list[str]:
+    """Retrieves the project analyst field of a CIDA project.
+    :param project: The CIDA project to retrieve the analyst for.
+    :return: None
+    :cidatools:
+    :cidatools-cli-link get:
+    """
     return project.analyst
 
 
 @project_attribute
 def set_project_analyst(analyst: str | list[str] | None, project: CIDAProject = None) -> None:
+    """Sets the project analyst field of a CIDA project.
+    :param analyst: The new value for the analyst field. If none is specified, uses the value of `current_project()`.
+    :param project: The CIDA project to set the analyst for. If none is specified, uses the value of `current_project()`.
+    :return: None
+    :cidatools:
+    :cidatools-cli-link set:
+    """
     project.analyst = analyst
 
 
 @project_attribute
 def get_project_data_location(project: CIDAProject) -> str | None:
+    """Retrieves the project data location field of a CIDA project
+    :param project: The CIDA project to retrieve the data location for. If none is specified, uses the value of `current_project()`.
+    :return: None
+    :cidatools:
+    :cidatools-cli-link get:
+    """
     return project.data_location
 
 
 @project_attribute
 def set_project_data_location(data_location: str | None, project: CIDAProject = None) -> None:
+    """Sets the project data location field of a CIDA project.
+    :param data_location: The new value for the data location. If none is specified, uses the value of `current_project()`.
+    :param project: The CIDA project to set the data location for. If none is specified, uses the value of `current_project()`.
+    :return: None
+    :cidatools:
+    :cidatools-cli-link set:
+    """
     project.data_location = data_location
 
 
 @project_attribute
 def get_project_git_location(project: CIDAProject) -> str | None:
+    """Retrieves the project git location field of a CIDA project.
+    :param project: The CIDA project to retrieve the git location for. If none is specified, uses the value of `current_project()`.
+    :return: None
+    :cidatools:
+    :cidatools-cli-link get:
+    """
     return project.git_location
 
 
 @project_attribute
 def set_project_git_location(git_location: str | None, project: CIDAProject = None) -> None:
+    """Sets the project git location field of a CIDA project.
+    :param git_location: The new value for the git location. If none is specified, uses the value of `current_project()`.
+    :param project: The CIDA project to set the git location for. If none is specified, uses the value of `current_project()`.
+    :return: None
+    :cidatools:
+    :cidatools-cli-link set:
+    """
     project.git_location = git_location

@@ -48,7 +48,15 @@ class CLI:
     @property
     def usage_dict(self) -> dict[str, str]:
         """Returns a dictionary that maps subcommand name to usage string."""
-        return {k: v.format_usage() for k, v in self._parser_registry.items()}
+        out_d = {}
+        for k, v in self._parser_registry.items():
+            # Raw usage string.
+            tmp_str = v.format_usage()
+            # Remove the 'usage: ' prefix.
+            out_str = "\n".join(x[7:] for x in tmp_str.split("\n"))
+            out_d[k] = out_str
+        return out_d
+        # return {k: v.format_usage() for k, v in self._parser_registry.items()}
 
     def get_usage(self, subparser: str) -> str | None:
         """This function returns the formatted usage for a specific subparser.

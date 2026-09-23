@@ -67,7 +67,7 @@ class CIDAToolsDocExtension(griffe.Extension):
         # A CIDAtools CLI instance which we use to look up the usage strings for CLI functions.
         self.cli = CLI()
         #self.tag_pattern = re.compile(rf":cidatools\s+(?P<handler>({'|'.join(CIDAToolsFuncType)}))\s+(?P<tag>\w+)(?:\s+(?P<category>\w+))?\s*:\s*")
-        self.cidatools_tag_pattern = re.compile(rf":cidatools\s+(?P<tag>\w+)(?:\s+(?P<category>\w+))?\s*:\s*")
+        self.cidatools_tag_pattern = re.compile(rf":cidatools(?:\s+(?P<tag>\w+))?(?:\s+(?P<category>\w+))?\s*:\s*")
         self.cidatools_cli_tag_pattern = re.compile(rf":cidatools-cli-link\s+(?P<parser>\w+)\s*:\s*")
 
     def on_function(self, *, func: Function, loader: GriffeLoader, **kwargs: Any) -> None:
@@ -101,6 +101,8 @@ class CIDAToolsDocExtension(griffe.Extension):
             docstring = func.docstring.value[:start] + func.docstring.value[end:]
             # Get the group values
             meta_d.update(cidatools_tag.groupdict())
+            if meta_d.get("tag") is None:
+                meta_d["tag"] = func.name
             if meta_d.get("category") is None:
                 meta_d["category"] = func.module.name
             # Reassign the docstring value

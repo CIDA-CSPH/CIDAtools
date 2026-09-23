@@ -5,21 +5,15 @@
 \title{Create Project Directory + readme files}
 \usage{
 create_project(
-  path = getwd(),
-  template = c("Admin", "Background", "Code", "DataRaw", "DataProcessed",
-    "Dissemination", "Reports"),
-  project_name,
-  pi = "",
-  analyst,
-  data_location = "",
-  git_location = ""
+  project_root = NULL,
+  project_name = NULL,
+  pi = NULL,
+  analyst = NULL,
+  data_location = NULL,
+  git_location = NULL
 )
 }
 \arguments{
-\item{path}{Where should they be created? Default is the working directory.}
-
-\item{template}{Which subdirectories to create}
-
 \item{project_name}{Name of project, (required)}
 
 \item{pi}{Name of PI and credentials, or "" for blank}
@@ -29,6 +23,10 @@ create_project(
 \item{data_location}{Location of project on CIDA Drive, or "" for blank}
 
 \item{git_location}{Location project on GitHub}
+
+\item{path}{Where should they be created? Default is the working directory.}
+
+\item{template}{Which subdirectories to create}
 }
 \value{
 This function creates the desired project subdirectories and readmes,

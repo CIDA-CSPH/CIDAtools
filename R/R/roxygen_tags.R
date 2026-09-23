@@ -21,7 +21,7 @@ roxy_tag_rd.roxy_tag_cidatools <- function(x, base_path, env) {
   return(rd_section("cidatools", x$val))
 }
 
-#' 
+#'
 #' @export
 format.rd_section_cidatools <- function(x, ...) {
   return(paste0("\\cidatools{", x$value[[1]], "}", "{", x$value[[2]], "}"))

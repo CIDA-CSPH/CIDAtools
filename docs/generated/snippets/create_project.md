@@ -12,26 +12,24 @@
     ```R
 
     create_project(
-      path = getwd(),
-      template = c("Admin", "Background", "Code", "DataRaw", "DataProcessed",
-        "Dissemination", "Reports"),
-      project_name,
-      pi = "",
-      analyst,
-      data_location = "",
-      git_location = ""
+      project_root = NULL,
+      project_name = NULL,
+      pi = NULL,
+      analyst = NULL,
+      data_location = NULL,
+      git_location = NULL
     )
 
     ```
     <h4>Arguments</h4>
 
-    - `path` - Where should they be created? Default is the working directory.
-    - `template` - Which subdirectories to create
     - `project_name` - Name of project, (required)
     - `pi` - Name of PI and credentials, or "" for blank
     - `analyst` - Name of Analyst(s), (required)
     - `data_location` - Location of project on CIDA Drive, or "" for blank
     - `git_location` - Location project on GitHub
+    - `path` - Where should they be created? Default is the working directory.
+    - `template` - Which subdirectories to create
 
     <h4>Returns</h4>
 
@@ -73,13 +71,13 @@
 === "CLI"
     <h4>Usage</h4>
     ```shell
-    [1;34musage: [0m[1;35mcidatools create[0m [[32m-h[0m] [[36m--template [33mTEMPLATE[0m] [[36m--description [33mDESCRIPTION[0m]
-                            [[36m--repo-name [33mREPO_NAME[0m]
-                            [[36m--create-folders [33mCREATE_FOLDERS [CREATE_FOLDERS ...][0m]
-                            [[36m--private[0m | [36m--internal[0m] [[36m--project-name [33mPROJECT_NAME[0m]
-                            [[36m--analyst [33mANALYST [ANALYST ...][0m] [[36m--pi [33mPI [PI ...][0m]
-                            [[36m--data-location [33mDATA_LOCATION[0m]
-                            [[36m--git-location [33mGIT_LOCATION[0m]
-                            [32m{github-project,github-repo,project}[0m [32mdirectory[0m
+    usage: [0m[1;35mcidatools create[0m [[32m-h[0m] [[36m--template [33mTEMPLATE[0m] [[36m--description [33mDESCRIPTION[0m]
+                     [[36m--repo-name [33mREPO_NAME[0m]
+                     [[36m--create-folders [33mCREATE_FOLDERS [CREATE_FOLDERS ...][0m]
+                     [[36m--private[0m | [36m--internal[0m] [[36m--project-name [33mPROJECT_NAME[0m]
+                     [[36m--analyst [33mANALYST [ANALYST ...][0m] [[36m--pi [33mPI [PI ...][0m]
+                     [[36m--data-location [33mDATA_LOCATION[0m]
+                     [[36m--git-location [33mGIT_LOCATION[0m]
+                     [32m{github-project,github-repo,project}[0m [32mdirectory[0m
 
     ```

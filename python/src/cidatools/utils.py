@@ -6,6 +6,11 @@ RED_XMARK = "\x1b[1m\x1b[31m\u2717\x1b[0m"
 YELLOW_TRIANGLE = "\x1b[1m\x1b[33m\u26a0\x1b[0m"
 BLUE_INFO = "\x1b[1m\x1b[34m\u2139\x1b[0m"
 
+RED = "\x1b[31m"
+YELLOW = "\x1b[33m"
+GREEN = "\x1b[32m"
+CLEAR = "\x1b[0m"
+
 
 def get_user_prompt_by_name(name: str) -> str:
     """Gets a user prompt (stored in the 'resources/templates/user_prompts/' directory) as a string
@@ -53,7 +58,7 @@ def print_red(message: str):
     :param message:
     :return:
     """
-    print(f"\x1b[31m{message}\x1b[0m")
+    print(f"{RED}{message}{CLEAR}")
 
 
 def print_yellow(message: str):
@@ -62,7 +67,7 @@ def print_yellow(message: str):
     :param message:
     :return:
     """
-    print(f"\x1b[33m{message}\x1b[0m")
+    print(f"{YELLOW}{message}{CLEAR}")
 
 
 def print_green(message: str):
@@ -71,7 +76,7 @@ def print_green(message: str):
     :param message:
     :return:
     """
-    print(f"\x1b[32m{message}\x1b[0m")
+    print(f"{GREEN}{message}{CLEAR}")
 
 
 def parse_rgb(rgb_hex: str) -> tuple[int, ...]:
