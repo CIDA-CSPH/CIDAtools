@@ -319,8 +319,8 @@ create_project <- function(path = getwd(),
   rprofile <- paste0(c('if( file.exists(fs::path_expand("~/.Rprofile") ) ){',
                        'source(path.expand("~/.Rprofile"))',
                        '}',
-                       'library(CIDATools)',
-                       paste0('CIDATools::open_project(localpath="',path,'")')),
+                       'library(CIDAtools)',
+                       paste0('CIDAtools::open_project(localpath="',path,'")')),
                       collapse="\n")
   if(!file.exists(file.path(path,"/.Rprofile")))
     writeLines(rprofile, con = file.path(path,"/.Rprofile"))
