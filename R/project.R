@@ -314,17 +314,6 @@ create_project <- function(path = getwd(),
   if(!file.exists(file.path(path, paste0(basename(path), ".Rproj"))))
     writeLines(rproj, con = file.path(path, paste0(basename(path), ".Rproj")))
 
-  # TODO: We should search for both the global (home directory) and local (project directory) .Rprofiles.
-  # TODO: This uses '~', is this portable to Windows (and is RProfile stored in the same place on Windows)?
-  rprofile <- paste0(c('if( file.exists(fs::path_expand("~/.Rprofile") ) ){',
-                       'source(path.expand("~/.Rprofile"))',
-                       '}',
-                       'library(CIDAtools)',
-                       paste0('CIDAtools::open_project(localpath="',path,'")')),
-                      collapse="\n")
-  if(!file.exists(file.path(path,"/.Rprofile")))
-    writeLines(rprofile, con = file.path(path,"/.Rprofile"))
-
   ## Copy over SOW
   message("Project created. Please remember to copy the scope of work to to Admin/ subdirectory.")
 
