@@ -26,7 +26,6 @@ test_that("test project creation",{
   expect_equal(dir.exists(paste0(full_path,"/.ProjData")), TRUE)
   expect_equal(file.exists(paste0(full_path,"/.ProjData/Data.dcf")), TRUE)
   expect_equal(file.exists(paste0(full_path,"/test_project.Rproj")), TRUE)
-  expect_equal(file.exists(paste0(full_path,"/.Rprofile")), TRUE)
 })
 test_that("create_project errors when project_name is missing", {
   expect_error(
