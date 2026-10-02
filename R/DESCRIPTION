@@ -8,6 +8,7 @@ Depends:R (>= 4.0)
 Imports:
     dplyr,
     generics,
+    S7,
     flextable,
     table1,
     shiny,

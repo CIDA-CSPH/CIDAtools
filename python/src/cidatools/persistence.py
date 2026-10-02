@@ -6,7 +6,7 @@ from typing import TypeVar
 
 from pydantic import BaseModel
 
-from cidatools.utils import print_warning
+from cidatools.utils import print_failure, print_warning
 
 T = TypeVar("T", bound=BaseModel)
 
@@ -86,6 +86,12 @@ class PersistentField:
     def _build_getter(name: str):
 
         def getter(instance):
+            can_persist = instance.can_persist
+            if can_persist:
+                _model = PersistentField._load_model(instance)
+            else:
+                print_failure("Unable to retrieve value.")
+                raise ValueError("Unable to retrieve value.")
             # Load model
             _model = PersistentField._load_model(instance) if instance.can_persist else instance.model
             # Return the loaded value.
