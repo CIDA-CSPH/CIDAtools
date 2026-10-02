@@ -378,7 +378,7 @@ def create_local_project(
     elif _project_root.is_file():
         print_error(f"The path '{_project_root}' exists, but is a file!")
     else:
-        print_success("Project directory already exists.")
+        print_info("Project directory already exists.")
 
     # Build a new project config.
     project_config_dir = _project_root.joinpath(CIDA_DIRECTORY_NAME)
