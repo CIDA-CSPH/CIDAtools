@@ -10,7 +10,8 @@ create_project(
   pi = NULL,
   analyst = NULL,
   data_location = NULL,
-  git_location = NULL
+  git_location = NULL,
+  folders_to_create = NULL
 )
 }
 \arguments{
@@ -24,23 +25,22 @@ create_project(
 
 \item{git_location}{Location project on GitHub}
 
+\item{folders_to_create}{A list of the project subdirectories to create.
+If NULL, uses the value of 'CIDA_PROJECT_DEFAULT_FOLDERS'.}
+
 \item{path}{Where should they be created? Default is the working directory.}
 
 \item{template}{Which subdirectories to create}
 }
 \value{
-This function creates the desired project subdirectories and readmes,
- as well as a standard .gitignore file files. It will not overwrite the file
- however if it does not exist. It does not return anything.
+Function to create a CIDA project locally. This will create the 
+ CIDA project structure with subdirectories, .gitignore, READMEs, etc, but
+ will not replace existing files.
 }
 \description{
 This function creates the standard project organization structure for CIDA
 within a folder that already exists.
 }
-\seealso{
-proj_setup() is the internal wrapper for this that gets called when
- using the RStudio GUI to create a project
-}
-\keyword{createproject}
+\keyword{create_project}
 \keyword{project}
 \cidatools{create_project}{project}

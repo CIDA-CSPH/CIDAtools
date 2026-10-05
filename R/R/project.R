@@ -14,6 +14,131 @@ setter_with_warn <- function(self, name, value) {
   return(self)
 }
 
+#' Function to help with caching of the metadata file, to avoid unecessary
+#' reads and writes.
+#' 
+#' @param path The path to the metadata file.
+cache_helper <- function(path) {
+  # Stats for the file
+  file_stats <- fs::file_info(path)
+  cache_size <- file_stats$size
+  cache_mtime <- file_stats$modification_time
+  cache_model <- read_raw_metadata(path)
+  
+  reload <- function(force=F){
+    # Get current stats of the file
+    cur_stats <- fs::file_info(path)
+    cur_size <- cur_stats$size
+    cur_mtime <- cur_stats$modification_time
+    # Check against cache, if different we update the loaded value.
+    if(force || ((cur_size != cache_size) || (cur_mtime != cache_mtime))){
+      cache_model <<- read_raw_metadata(path)
+      cache_size <<- cur_size
+      cache_mtime <<- cur_mtime
+      print_info(glue::glue("{path} reloaded."))
+    }
+  }
+  
+  getter <- function(name){
+    # Reload if needed
+    reload()
+    # Retrieve value from model
+    return(S7::prop(cache_model, name))
+  }
+  
+  setter <- function(name, value){
+    # Reload if needed
+    reload()
+    # Create an argument list with one element
+    arg_list <- setNames(list(value), name)
+    # Check if new value and current value are the same
+    if(!identical(S7::prop(cache_model, name), value)){
+      # Set value on model
+      new_model <- rlang::inject(S7::set_props(cache_model, !!!arg_list))
+      # Write value to disk.
+      write_raw_metadata(path, new_model)
+    }
+  }
+  
+  return(list(getter=getter, setter=setter, model=cache_model))
+}
+
+#' Class to encapsulate a CIDA project.
+#' 
+#' @description
+#' This function acts as a wrapper for a CIDA project, allowing reading/writing
+#' of metadata values. 
+#'
+#' @param project_name The name for the current project.
+#' @param principal_investigator The principal investigator for the project.
+#' @param data_location The location of the data for the project.
+#' @param git_location The location of git remote for the project.
+#' @param analyst The analyst for the project. 
+#' @param metadata User-specified metadata, can be used to customize templates
+#'  with extra information not stored in the provided fields.
+#' @export
+CIDAProject <- S7::new_class(
+  "CIDAProject",
+  properties=list(
+    .getter = S7::new_property(S7::class_function),
+    .setter = S7::new_property(S7::class_function),
+    path = S7::new_property(S7::class_character),
+    project_name = S7::new_property(
+        NULL | S7::class_character,
+        getter = function(self){self@.getter("project_name")},
+        setter = function(self, value){self@.setter("project_name", value); self}
+    ),
+    principal_investigator = S7::new_property(
+      NULL | S7::class_character,
+      getter = function(self){self@.getter("principal_investigator")},
+      setter = function(self, value){self@.setter("principal_investigator", value); self}
+    ),
+    data_location = S7::new_property(
+      NULL | S7::class_character,
+      getter = function(self){self@.getter("data_location")},
+      setter = function(self, value){self@.setter("data_location", value); self}
+      ),
+    git_location = S7::new_property(
+      NULL | S7::class_character,
+      getter = function(self){self@.getter("git_location")},
+      setter = function(self, value){self@.setter("git_location", value); self}
+      ),
+    analyst = S7::new_property(
+      NULL | S7::class_character,
+      getter = function(self){self@.getter("analyst")},
+      setter = function(self, value){self@.setter("analyst", value); self}
+      ),
+    metadata = S7::new_property(
+      NULL | S7::class_list,
+      getter = function(self){self@.getter("metadata")},
+      setter = function(self, value){self@.setter("metadata", value); self}
+      )
+  ),
+  constructor=function(path){
+    # TODO: do we need this?
+    path
+    # Create cache helper and unpack functions
+    gs_list <- cache_helper(path)
+    getter <- gs_list$getter
+    setter <- gs_list$setter
+    model <- gs_list$model
+    # Return the constructed object
+    S7::new_object(
+      S7::S7_object(), 
+      path=path, 
+      .getter=getter, 
+      .setter=setter,
+      project_name=model@project_name,
+      principal_investigator=model@principal_investigator,
+      data_location=model@data_location,
+      git_location=model@git_location,
+      analyst=model@analyst,
+      metadata=model@metadata
+    )
+  }
+  
+)
+
 
 #' Class to encapsulate a CIDA project.
 #' 
@@ -24,58 +149,31 @@ setter_with_warn <- function(self, name, value) {
 #' @param analyst The analyst for the project. 
 #' @param metadata User-specified metadata, can be used to customize templates
 #'  with extra information not stored in the provided fields.
-#' @importFrom S7 new_class class_character new_property
-#' @export
-CIDAProject <- S7::new_class(
-  "CIDAProject",
+CIDAProjectModel <- S7::new_class(
+  "CIDAProjectModel",
   properties=list(
-    project_name = S7::new_property(
-      NULL | S7::class_character, 
-      getter=function(self) { self@project_name }, 
-      setter=function(self, value) { 
-        setter_with_warn(self=self, name="project_name", value=value)
+    project_name = S7::new_property(NULL | S7::class_character),
+    principal_investigator = S7::new_property(NULL | S7::class_character),
+    data_location = S7::new_property(NULL | S7::class_character),
+    git_location = S7::new_property(NULL | S7::class_character),
+    analyst = S7::new_property(NULL | S7::class_character),
+    metadata = S7::new_property(NULL | S7::class_list)
+  ),
+  validator=function(self){
+    scalar_props <- c("project_name", "principal_investigator", "data_location", "git_location")
+    for(scalar_prop in scalar_props) {
+      prop_val <- S7::prop(self, scalar_prop)
+      prop_len <- length(prop_val)
+      if((!is.null(prop_val)) && (prop_len != 1)){
+        return(glue::glue("@{scalar_prop} must be NULL or scalar, but has length {prop_len}."))
       }
-    ),
-    principal_investigator = S7::new_property(
-      NULL | S7::class_character,
-      getter=function(self) { self@principal_investigator }, 
-      setter=function(self, value) { 
-        setter_with_warn(self=self, name="principal_investigator", value=value)
-      }
-    ),
-    data_location = S7::new_property(
-      NULL | S7::class_character,
-      getter=function(self) { self@data_location }, 
-      setter=function(self, value) { 
-        setter_with_warn(self=self, name="data_location", value=value)
-      }
-    ),
-    git_location = S7::new_property(
-      NULL | S7::class_character,
-      getter=function(self) { self@git_location }, 
-      setter=function(self, value) {
-        setter_with_warn(self=self, name="git_location", value=value)
-      }
-    ),
-    analyst = S7::new_property(
-      NULL | S7::class_character,
-      getter=function(self) { self@analyst }, 
-      setter=function(self, value) { 
-        setter_with_warn(self=self, name="analyst", value=value)
-      }
-    ),
-    metadata = S7::new_property(
-      NULL | S7::class_list,
-      getter=function(self) { self@metadata }, 
-      setter=function(self, value) { 
-        setter_with_warn(self=self, name="metadata", value=value)
-      }
-    )
-  )
+    }
+    return(NULL)
+  }
 )
 
 #' Function to convert the CIDAProject class to a list (for JSON serialization)
-S7::method(as.list, CIDAProject) <- function(x, ...) {
+S7::method(as.list, CIDAProjectModel) <- function(x, ...) {
   # Get all property names
   all_prop_names <- S7::prop_names(x)
   # Return a list of all 'public' properties.
@@ -95,9 +193,9 @@ read_raw_metadata <- function(path) {
       stop(e)
     }
   )
-  # Construct a CIDAProject object.
-  cida_project <- suppressMessages(do.call(CIDAProject, json_text))
-  # Return the CIDAProject object.
+  # Construct a CIDAProjectModel object.
+  cida_project <- suppressMessages(do.call(CIDAProjectModel, json_text))
+  # Return the CIDAProjectModel object.
   return(cida_project)
 }
 
@@ -108,29 +206,13 @@ read_raw_metadata <- function(path) {
 write_raw_metadata <- function(path, metadata) {
   tryCatch(
     {metadata_list <- as.list(metadata)
-    jsonlite::write_json(metadata_list, path)},
+    jsonlite::write_json(metadata_list, path, auto_unbox=T, null="null", pretty=4)},
     error=function(e) {
       print_failure(glue::glue("Unable to write metadata to '{path}': {e}"))
       stop(e)
     })
 }
 
-#' Function to update a metadata entry, and write to file.
-#' 
-#' This is an internal function which shouldn't be called by users directly.
-#' @param path Path to metadata file to read and write.
-#' @param key The name/key of the metadata entry to be updated.
-#' @param value The value of the the metadata entry to be updated.
-update_raw_metadata <- function(path, key, value) {
-  # Read the existing metadata from file.
-  exist_meta <- read_raw_metadata(path)
-  
-  # Set the property (which validates type)
-  S7::prop(exist_meta, key) <- value
-  
-  # Write the metadata to file
-  write_raw_metadata(path, metadata)
-}
 
 #' Retrieve the currently active CIDA project.
 #'
@@ -181,13 +263,13 @@ current_project <- function(project_root = NULL) {
 #'@param analyst Name of Analyst(s), (required)
 #'@param data_location Location of project on CIDA Drive, or "" for blank
 #'@param git_location Location project on GitHub
-#'@return This function creates the desired project subdirectories and readmes,
-#'  as well as a standard .gitignore file files. It will not overwrite the file
-#'  however if it does not exist. It does not return anything.
-#'@keywords project createproject
+#'@param folders_to_create A list of the project subdirectories to create.
+#'  If NULL, uses the value of 'CIDA_PROJECT_DEFAULT_FOLDERS'.
+#'@return Function to create a CIDA project locally. This will create the 
+#'  CIDA project structure with subdirectories, .gitignore, READMEs, etc, but
+#'  will not replace existing files. 
+#'@keywords project create_project
 #'
-#'@seealso proj_setup() is the internal wrapper for this that gets called when
-#'  using the RStudio GUI to create a project
 #'
 #'@cidatools create_project project
 #'@export
@@ -197,7 +279,8 @@ create_project <- function(
       pi = NULL, 
       analyst = NULL, 
       data_location = NULL,
-      git_location = NULL
+      git_location = NULL,
+      folders_to_create=NULL
     ){
   # If the project name does not exist, use a placeholder
   project_name <- ifelse(is.null(project_name), "CIDAProject", project_name)
@@ -237,10 +320,90 @@ create_project <- function(
   write_raw_metadata(path = project_metadata_path, metadata = project_metadata)
   
   # Create the main README file.
+  write_templated_readme(project_root=project_root, template_name="Project.md", metadata=project_metadata)
   
+  # Create the other directories and populate with READMEs
+  project_subdirs <- folders_to_create
+  for(project_subdir in project_subdirs) {
+    # Get the path to this subdirectory.
+    project_subdir_path <- fs::path_join(c(project_root, project_subdir))
+    # If the subdirectory does not already exist, create it.
+    if(!fs::file_exists(project_subdir_path)) {
+      dir.create(project_subdir_path, recursive = T, showWarnings = F)
+    }
+    # Write the README to this subdirectory.
+    write_templated_readme(
+      project_root = project_root,
+      template_name = glue::glue("{project_subdir}.md"),
+      subdir = project_subdir,
+      metadata = metadata
+    )
+  }
   
+  # Create the Rprofile hook 
+  # TODO: No.
+  
+  # Create default Rproj.
+  write_rproj(project_root=project_root, metadata=project_metadata)
+  
+  # Create default .gitignore
+  write_gitignore(project_root=project_root)
+  
+  # Return the created project metadata
+  return(project_metadata)
+}
+
+#' Creates a .gitignore file at the given path if none exists.
+write_gitignore <- function(project_root) {
+  
+  if((!fs::file_exists(project_root)) || (!fs::is_dir(project_root))){
+    print_failure(glue::glue("project_root {project_root} is not a directory, ensure directory exists."))
+  }
+  # Generate gitignore path
+  gitignore_path <- fs::path_join(c(project_root, ".gitignore"))
+  # Relative path for printing.
+  gitignore_rel_path <- fs::path_rel(gitignore_path, start=project_root)
+  
+  # If path already exists, don't create a new one.
+  if(fs::file_exists(gitignore_path) && fs::is_file(gitignore_path)) {
+    print_failure(glue::glue("{gitignore_rel_path} already exists, will not overwrite."))
+  }else{
+    # Template gitignore
+    default_gitignore <- system.file("extdata", "gitignore")
+    # Create the gitignore file.
+    fs::file_copy(default_gitignore, gitignore_path)
+    # Print success
+    print_success(glue::glue("Created {gitignore_rel_path}."))
+  }
+}
+
+
+#' Creates an .Rproj file in the current directory if none exists.
+write_rproj <- function(project_root, metadata) {
+  
+  if((!fs::file_exists(project_root)) || (!fs::is_dir(project_root))){
+    print_failure(glue::glue("project_root {project_root} is not a directory, ensure directory exists."))
+  }
+  
+  # Generate the name for the project based on the project name, or use a default if not available
+  rproj_name <- ifelse(is.null(metadata.project_name), "CIDAProject", metadata.project_name)
+  rproj_path <- fs::path_join(c(project_root, glue::glue("{rproj_name}.Rproj")))
+  
+  # Path to .Rproj, relative to project root directory.
+  rproj_relative <- fs::path_rel(rproj_path, start=project_root)
+  
+  if(fs::file_exists(rproj_path) && fs::is_file(rproj_path)){
+    print_failure(glue::glue("{rproj_relative} already exists, will not create new .Rproj."))    
+  }else {
+    # The template file for the CIDA project.
+    default_rproj <- system.file("extdata", "DefaultCIDAProject.Rproj")
+    fs::file_copy(default_rproj, rproj_path)
+    # Print success
+    print_success(glue::glue("Created {rproj_relative}."))
+  }
   
 }
+
 
 #' Writes a templated README to a project folder
 write_templated_readme <- function(project_root, template_name, metadata, overwrite=FALSE, subdir=NULL) {
@@ -275,6 +438,18 @@ write_templated_readme <- function(project_root, template_name, metadata, overwr
     rel_readme_path <- fs::path_rel(readme_path, start=project_root)
     print_failure(glue::glue("{rel_readme_path} already exists, will not overwrite."))
   }
+}
+
+create_github_project <- function(
+    project_name = NULL,
+    repository_name = NULL, 
+    project_root = NULL, 
+    template_name = NULL, 
+    principal_investigator = NULL, 
+    analyst = NULL, 
+    data_location = NULL, 
+    description = NULL, 
+    visibility = "internal"
+){
   
-  #TODO: Finish me
 }

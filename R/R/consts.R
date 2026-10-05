@@ -7,6 +7,17 @@ CIDA_PROJECT_CONFIG_NAME <- "project.json"
 # The CIDA GitHub organization
 CIDA_GITHUB_ORGANIZATION <- "https://github.com/CIDA-CSPH/"
 
+# Default folders for a local project
+CIDA_PROJECT_DEFAULT_FOLDERS = c(
+  "Admin",
+  "Background",
+  "Code",
+  "DataRaw",
+  "DataProcessed",
+  "Dissemination",
+  "Reports"
+)
+
 # GitHub API Base
 GITHUB_API_BASE_URL <- "https://api.github.com"
 

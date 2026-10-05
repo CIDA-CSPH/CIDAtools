@@ -17,7 +17,8 @@
       pi = NULL,
       analyst = NULL,
       data_location = NULL,
-      git_location = NULL
+      git_location = NULL,
+      folders_to_create = NULL
     )
 
     ```
@@ -28,20 +29,17 @@
     - `analyst` - Name of Analyst(s), (required)
     - `data_location` - Location of project on CIDA Drive, or "" for blank
     - `git_location` - Location project on GitHub
+    - `folders_to_create` - A list of the project subdirectories to create.
+    If NULL, uses the value of 'CIDA_PROJECT_DEFAULT_FOLDERS'.
     - `path` - Where should they be created? Default is the working directory.
     - `template` - Which subdirectories to create
 
     <h4>Returns</h4>
 
-    This function creates the desired project subdirectories and readmes,
-     as well as a standard .gitignore file files. It will not overwrite the file
-     however if it does not exist. It does not return anything.
+    Function to create a CIDA project locally. This will create the 
+     CIDA project structure with subdirectories, .gitignore, READMEs, etc, but
+     will not replace existing files.
 
-
-    <h4>See Also</h4>
-
-    proj_setup() is the internal wrapper for this that gets called when
-     using the RStudio GUI to create a project
 
 === "Python"
     <h4>Description</h4>
