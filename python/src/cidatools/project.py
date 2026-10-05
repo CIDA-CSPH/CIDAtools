@@ -233,6 +233,7 @@ def _write_gitignore(project_root: pathlib.Path):
         with resources.as_file(
             resources.files("cidatools").joinpath("resources").joinpath("gitignore")
         ) as default_gitignore:
+            # Create the gitignore file.
             shutil.copy(default_gitignore, gitignore_path)
         # Print success
         print_success(f"Created {gitignore_path.relative_to(project_root)}.")
@@ -257,10 +258,7 @@ def project_status(project_root: pathlib.Path | None = None):
 
     # Check issues
     print_info("Project Configuration:")
-    if cur_project.can_persist:
-        print_green(f"  Config located at: {cur_project.path}")
-    else:
-        print_red(f"  Memory persistence, path: {cur_project.path} is not valid.")
+    print_green(f"  Config located at: {cur_project.path}")
     longest_key = max(len(k) for k in cur_project.__model__.model_fields)
     for field_name in cur_project.__model__.model_fields:
         print(f"  {field_name.ljust(longest_key)} : {getattr(cur_project, field_name)}")
@@ -407,7 +405,7 @@ def create_local_project(
     for project_subdir in project_subdirs:
         # Get the path to this subdirectory.
         project_subdir_path = _project_root.joinpath(project_subdir)
-        # If the subdirectory does not already exist, get it.
+        # If the subdirectory does not already exist, create it.
         if not project_subdir_path.exists():
             project_subdir_path.mkdir(parents=True, exist_ok=True)
         # Write the README to this subdirectory.

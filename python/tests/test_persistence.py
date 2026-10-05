@@ -15,10 +15,9 @@ def test_defaults_persistence(mocker):
         # Write defaults
         with open(fake_defaults_path, "w") as f:
             f.write(fake_defaults.model_dump_json())
-        # Patch the default path
-        mocker.patch.object(CIDADefaults, "path", fake_defaults_path)
         # Create defaults wrapper
         defaults_wrapper = CIDADefaults()
+        defaults_wrapper._path = fake_defaults_path
         # Check that the value is correct
         assert defaults_wrapper.analyst == "Fake Analyst"
 

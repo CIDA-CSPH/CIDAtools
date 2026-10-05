@@ -6,7 +6,7 @@ from typing import TypeVar
 
 from pydantic import BaseModel
 
-from cidatools.utils import print_failure, print_warning
+from cidatools.utils import print_info
 
 T = TypeVar("T", bound=BaseModel)
 
@@ -14,25 +14,6 @@ T = TypeVar("T", bound=BaseModel)
 class PersistentWrapper(abc.ABC):
     __model__: type[T] = None
     __parent__: "PersistentWrapper" = None
-    __persistent_path__: pathlib.Path = None
-
-    @property
-    def path(self) -> pathlib.Path:
-        """Returns the path where the persistent model is stored on disk.
-        :return:
-        """
-        return self.__persistent_path__
-
-    @property
-    def model(self) -> T:
-        """Returns an instance of the wrapped model, which is used if can_persist=False
-        :return:
-        """
-        return self._model
-
-    @property
-    def can_persist(self):
-        return os.access(self.path, os.R_OK | os.W_OK) and os.path.isfile(self.path)
 
     def __init_subclass__(cls, **kwargs):
         super().__init_subclass__(**kwargs)
@@ -43,13 +24,72 @@ class PersistentWrapper(abc.ABC):
         if "__parent__" not in cls.__dict__:
             raise TypeError("Subclass of PersistentWrapper must define '__parent__'.")
 
+    @property
+    def path(self):
+        return self._path
+
+    def needs_reload(self) -> bool:
+        # If we have never loaded from file, load the defaults now.
+        if self._key_mtime is None or self._key_size is None:
+            return True
+
+        # Check file stats to see if anything has changed since last reload.
+        file_stats = os.stat(self.path)
+        return self._key_mtime != file_stats.st_mtime or self._key_size != file_stats.st_size
+
+    def reload(self, force: bool = False):
+        if force or self.needs_reload():
+            with open(self.path, "r") as f:
+                # Load the model from file.
+                self._model = self.__model__.model_validate(json.load(f))
+                # Update file stats
+                file_stats = os.fstat(f.fileno())
+                self._key_mtime = file_stats.st_mtime
+                self._key_size = file_stats.st_size
+                print_info(f"{self.path} reloaded.")
+
     def __init__(self, path: pathlib.Path):
-        self._model = self.__model__()
-        self.__persistent_path__ = path
+        self._path = path
+        self._model = None
+        self._key_mtime = None
+        self._key_size = None
+        self._internal_cache = None
+
+    def ensure_loaded(self):
+        # Load model on first access.
+        if self._model is None:
+            self.reload(force=True)
+
+    def _get_model_attr(self, item):
+        if item not in self.__model__.model_fields:
+            raise AttributeError(f"Field {item} does not exist.")
+        # Make sure some model is loaded
+        self.reload()
+        # Get the attribute from the underlying model.
+        return getattr(self._model, item)
+
+    def _set_model_attr(self, key, value):
+        # For other keys, check if it is a valid model key.
+        if key not in self.__model__.model_fields:
+            raise AttributeError(f"Field {key} does not exist.")
+        # Reload if required.
+        self.reload()
+        # Update the existing model
+        _updated_model = self._model.model_copy(update={key: value})
+        # Validate the updated model
+        _valid_model = _updated_model.model_validate(_updated_model.model_dump())
+        # Write new model to disk
+        tmp_path = self.path.with_suffix(".tmp")
+        with open(tmp_path, "w") as f:
+            f.write(_valid_model.model_dump_json(indent=4))
+        # Once written, replace the tmp
+        tmp_path.replace(self.path)
+        # Note, we do not update the cached model here
+        # so the next attribute access should pull from disk
 
 
 def _check_attrs(obj):
-    for attr in ["__persistent_path__", "__parent__", "__model__"]:
+    for attr in ["__parent__", "__model__"]:
         if not hasattr(obj, attr):
             raise ValueError(f"{obj} has no attribute '{attr}'.")
 
@@ -76,28 +116,13 @@ class PersistentField:
         self._setter = self._build_setter(name)
 
     @staticmethod
-    def _load_model(instance):
-        with open(instance.path, "r") as f:
-            # Load the model from file.
-            _model = instance.__model__.model_validate(json.load(f))
-        return _model
-
-    @staticmethod
     def _build_getter(name: str):
 
         def getter(instance):
-            can_persist = instance.can_persist
-            if can_persist:
-                _model = PersistentField._load_model(instance)
-            else:
-                print_failure("Unable to retrieve value.")
-                raise ValueError("Unable to retrieve value.")
-            # Load model
-            _model = PersistentField._load_model(instance) if instance.can_persist else instance.model
             # Return the loaded value.
-            tmp_get = getattr(_model, name)
+            tmp_get = instance._get_model_attr(name)
             if tmp_get is None and instance.__parent__ is not None and hasattr(instance.__parent__, name):
-                tmp_get = getattr(instance.__parent__, name)
+                tmp_get = instance.__parent__._get_model_attr(name)
             return tmp_get
 
         # Return the constructed function
@@ -106,25 +131,7 @@ class PersistentField:
     @staticmethod
     def _build_setter(name: str):
         def setter(instance, value):
-            can_persist = instance.can_persist
-            # Load model
-            _existing_model = PersistentField._load_model(instance) if can_persist else instance.model
-            # Update the existing model
-            _updated_model = _existing_model.model_copy(update={name: value})
-            # Validate the updated model
-            _valid_model = _updated_model.model_validate(_updated_model.model_dump())
-            # If we can persist, we write to the file.
-            if can_persist:
-                # Write new model to disk
-                tmp_path = instance.path.with_suffix(".tmp")
-                with open(tmp_path, "w") as f:
-                    f.write(_valid_model.model_dump_json(indent=4))
-                # Once written, replace the tmp
-                tmp_path.replace(instance.path)
-            # Otherwise, we save to the internal model attribute.
-            else:
-                print_warning("Unable to persist, updated value will not be saved.")
-                instance._model = _valid_model
+            instance._set_model_attr(name, value)
 
         # Return the constructed function
         return setter
