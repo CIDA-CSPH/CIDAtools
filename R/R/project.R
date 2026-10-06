@@ -117,7 +117,21 @@ S7::method(as.list, CIDAProjectModel) <- function(x, ...) {
   # Get all property names
   all_prop_names <- S7::prop_names(x)
   # Return a list of all 'public' properties.
-  return(setNames(lapply(all_prop_names, function(name) { S7::prop(x, name) }), all_prop_names))
+  return(
+    setNames(
+      lapply(
+        all_prop_names,
+        function(name) {
+          tmp_v <- S7::prop(x, name)
+          if(is.null(tmp_v)){
+            return(NA)
+          }
+          return(tmp_v)
+        }
+      ),
+      all_prop_names
+    )
+  )
 }
 
 
@@ -150,7 +164,7 @@ current_project <- function(project_root = NULL) {
       config_path <- fs::path_join(c(project_path, CIDA_PROJECT_CONFIG_NAME))
       # If the config file exists, parse JSON and return the object.
       if(fs::file_exists(config_path)){
-        return(read_model(config_path, CIDAProjectModel))
+        return(CIDAProject(path=config_path))
       }
     }
     project_root <- fs::path_dir(project_root)
@@ -381,7 +395,7 @@ write_templated_readme <- function(project_root, template_name, metadata, overwr
     write(rendered_template_string, readme_path)
     # Print success message
     readme_path_rel <- fs::path_rel(readme_path, start=project_root)
-    print_success(glue::glue("Created README.md at {readme_path_rel}"))
+    print_success(glue::glue("Created {readme_path_rel}"))
   } else{
     rel_readme_path <- fs::path_rel(readme_path, start=project_root)
     print_failure(glue::glue("{rel_readme_path} already exists, will not overwrite."))

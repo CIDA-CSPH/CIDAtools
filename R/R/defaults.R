@@ -68,7 +68,21 @@ S7::method(as.list, CIDADefaultsModel) <- function(x, ...) {
   # Get all property names
   all_prop_names <- S7::prop_names(x)
   # Return a list of all 'public' properties.
-  return(setNames(lapply(all_prop_names, function(name) { S7::prop(x, name) }), all_prop_names))
+  return(
+    setNames(
+      lapply(
+        all_prop_names,
+        function(name) {
+          tmp_v <- S7::prop(x, name)
+          if(is.null(tmp_v)){
+            return(NA)
+          }
+          return(tmp_v)
+        }
+      ),
+      all_prop_names
+    )
+  )
 }
 
 
