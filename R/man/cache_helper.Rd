@@ -5,7 +5,7 @@
 \title{Function to help with caching of the metadata file, to avoid unecessary
 reads and writes.}
 \usage{
-cache_helper(path)
+cache_helper(path, model)
 }
 \arguments{
 \item{path}{The path to the metadata file.}

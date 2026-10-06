@@ -126,6 +126,61 @@ renamed_warn <- function(function_name="", replacement_name="") {
   warning(paste(c(function_name, "() has been renamed to ", replacement_name, "(). Please use the updated function name in new code.")), call.=FALSE, immediate.=TRUE)
 }
 
+#' Render an Rmarkdown document and write the output to the specified directory
+#'
+#' @param output_dir The directory where the output should be saved.
+#' @param prefix The prefix of output file.
+#' @param date_fmt A format string (e.g. '%Y%m%d-%H%M%S') used to format a
+#'  date string that is appended to the filename. If NULL, don't append date.
+#' @export
+render <- function(output_dir=NULL, prefix=NULL, date_fmt=NULL) {
+
+  # If user provides a date format, append a date string to the output file.
+  if(!is.null(date_fmt)){
+    date_str <- format(Sys.time(), date_fmt)
+  }else{
+    date_str <- NULL
+  }
+
+  # Create the output filename
+  output_file <- paste(prefix, date_str, sep = "_")
+
+  # Normalize the output directory
+  output_dir <- here::here(output_dir)
+
+  # Construct the render function we return.
+  render_func <- function(inputFile, encoding) {
+    tryCatch({
+      # Separate, unique intermediate directories
+      intermediate_dir <- tempfile(pattern="knit_")
+      print_info(glue::glue("Using temporary directory {intermediate_dir}"))
+      # Render the document
+      rmarkdown::render(
+        input = inputFile,
+        encoding = encoding,
+        output_dir = output_dir,
+        output_file = output_file,
+        intermediates_dir = intermediate_dir
+      )
+      # Print success message
+      print_success(glue::glue("Rendered {output_file} to {output_dir}"))
+    },
+    error=function(e){
+      # If error, print and stop
+      print_error(glue::glue("Unable to render document: {e}"))
+      stop(e)
+    },
+    finally={
+      # Clean up by removing intermediate directory.
+      unlink(intermediate_dir, recursive=T)
+    })
+  }
+
+  # Return render function
+  return(render_func)
+}
+
+
 GREEN_CHECK = paste0("\x1b[1m\x1b[32m", "\u2713", "\x1b[0m")
 RED_XMARK = paste0("\x1b[1m\x1b[31m", "\u2717", "\x1b[0m")
 YELLOW_TRIANGLE = paste0("\x1b[1m\x1b[33m", "\u26a0", "\x1b[0m")

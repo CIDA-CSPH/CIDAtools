@@ -14,7 +14,7 @@
     create_project(
       project_root = NULL,
       project_name = NULL,
-      pi = NULL,
+      principal_investigator = NULL,
       analyst = NULL,
       data_location = NULL,
       git_location = NULL,
@@ -25,7 +25,6 @@
     <h4>Arguments</h4>
 
     - `project_name` - Name of project, (required)
-    - `pi` - Name of PI and credentials, or "" for blank
     - `analyst` - Name of Analyst(s), (required)
     - `data_location` - Location of project on CIDA Drive, or "" for blank
     - `git_location` - Location project on GitHub
@@ -33,6 +32,7 @@
     If NULL, uses the value of 'CIDA_PROJECT_DEFAULT_FOLDERS'.
     - `path` - Where should they be created? Default is the working directory.
     - `template` - Which subdirectories to create
+    - `pi` - Name of PI and credentials, or "" for blank
 
     <h4>Returns</h4>
 

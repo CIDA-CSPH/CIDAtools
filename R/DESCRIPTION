@@ -7,11 +7,13 @@ Description: This package contains the numerous templates and tools to make life
 Depends: R (>= 4.0)
 Imports:
     dplyr,
+    readr,
     generics,
     S7,
     flextable,
     table1,
     shiny,
+    here,
     fs
 Suggests:
     git2r,

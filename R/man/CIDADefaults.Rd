@@ -4,12 +4,7 @@
 \alias{CIDADefaults}
 \title{Creates a wrapper around CIDA defaults}
 \usage{
-CIDADefaults(
-  .getter = function() NULL,
-  .setter = function() NULL,
-  .parent = NULL,
-  analyst = NULL
-)
+CIDADefaults(path = NULL)
 }
 \description{
 Creates a wrapper around CIDA defaults

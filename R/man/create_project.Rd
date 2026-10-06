@@ -7,7 +7,7 @@
 create_project(
   project_root = NULL,
   project_name = NULL,
-  pi = NULL,
+  principal_investigator = NULL,
   analyst = NULL,
   data_location = NULL,
   git_location = NULL,
@@ -16,8 +16,6 @@ create_project(
 }
 \arguments{
 \item{project_name}{Name of project, (required)}
-
-\item{pi}{Name of PI and credentials, or "" for blank}
 
 \item{analyst}{Name of Analyst(s), (required)}
 
@@ -31,6 +29,8 @@ If NULL, uses the value of 'CIDA_PROJECT_DEFAULT_FOLDERS'.}
 \item{path}{Where should they be created? Default is the working directory.}
 
 \item{template}{Which subdirectories to create}
+
+\item{pi}{Name of PI and credentials, or "" for blank}
 }
 \value{
 Function to create a CIDA project locally. This will create the 
