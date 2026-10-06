@@ -148,7 +148,8 @@ def _write_templated_readme(
         # Write the rendered template to file.
         with open(readme_path, "w") as f:
             f.write(rendered_template_str)
-        # print_success(f"Created README.md at {readme_path.relative_to(project_root)}.")
+        # Print success message.
+        print_success(f"Created {readme_path.relative_to(project_root)}.")
     # Otherwise print an error message.
     else:
         # log.warning(f"{readme_path} already exists, will not overwrite. Pass overwrite=True to force an overwrite.")
