@@ -1,5 +1,3 @@
-library(roxygen2)
-
 #' Parse the cidatools Roxygen tag.
 #'
 #' This function is responsible for parsing the '@@cidatools' symbol
@@ -12,13 +10,13 @@ library(roxygen2)
 #' 
 #' @exportS3Method roxygen2::roxy_tag_parse
 roxy_tag_parse.roxy_tag_cidatools <- function(x) {
-  return(tag_words(x, min=2, max=2))
+  return(roxygen2::tag_words(x, min=2, max=2))
 }
 
 #' 
 #' @exportS3Method roxygen2::roxy_tag_rd
 roxy_tag_rd.roxy_tag_cidatools <- function(x, base_path, env) {
-  return(rd_section("cidatools", x$val))
+  return(roxygen2::rd_section("cidatools", x$val))
 }
 
 #'
