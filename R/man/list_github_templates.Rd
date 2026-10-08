@@ -2,10 +2,10 @@
 % Please edit documentation in R/git.R
 \name{list_github_templates}
 \alias{list_github_templates}
-\title{Function to list the available CIDAtools GitHub templates.}
+\title{List the available CIDAtools GitHub templates}
 \usage{
 list_github_templates(display = T, include_empty = T)
 }
 \description{
-Function to list the available CIDAtools GitHub templates.
+List the available CIDAtools GitHub templates
 }

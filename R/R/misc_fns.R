@@ -275,7 +275,7 @@ getlower <- function(x, y, upper = FALSE){
 #'
 #' @export
 randblinder_shiny_tool <- function() {
-  .Defunct("shiny_tool", msg = "This function has been moved to a separate package (https://github.com/CIDA-CSPH/randblinder). After installing, run randblinder::shiny_tool().")
+  .Defunct("shiny_tool", msg = "This function has been moved to the 'randblinder' package (https://github.com/CIDA-CSPH/randblinder). After installing, run randblinder::shiny_tool().")
 }
 
 #' Read in xlsx with fill colour - To be deprecated

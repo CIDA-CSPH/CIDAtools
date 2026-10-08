@@ -121,8 +121,6 @@ CIDADefaults <- S7::new_class(
     )
   ),
   constructor = function(path=NULL){
-    # TODO: ???
-    path
     # Get the default path if none is supplied
     path <- ifelse(is.null(path), get_defaults_path(), path)
     # Initialize the defaults if needed

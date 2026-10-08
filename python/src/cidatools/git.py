@@ -1,3 +1,4 @@
+import json
 import pathlib
 import re
 import shutil
@@ -139,16 +140,7 @@ def setup_github(force_pat: bool = True):
     :cidatools setup_github:
     """
     # TODO: Should this be a common resource so the R version can use the same text?
-    prompt_str = """
-    To create a new GitHub Token:
-    1. Navigate to https://github.com/settings/tokens and select 'Personal access tokens → Tokens (classic)'.
-    2. Click 'Generate new token → Generate new token (classic).'
-    3. Name your token, set 'Expiration = No expiration' and check the 'repo (full control of private repositories)' scope.
-    4. Copy the generated token, and paste into the prompt below.
-    5. On the tokens page, find your token and click 'Configure SSO → CIDA-CSPH'. This will allow the token to access repositories in the CIDA organization.
-
-    IMPORTANT: Do not hardcode this token into any code, scripts, or files you commit to GitHub!
-    """
+    create_token_str = print_info(get_user_prompt_by_name("create_github_token.txt"))
     # If GCM is not set up, prompt user for manual token.
     if not force_pat:
         # Check the current GitHub integration status
@@ -163,6 +155,7 @@ def setup_github(force_pat: bool = True):
     # Access the current defaults, if configured
     defaults = CIDADefaults()
 
+    # TODO: This is never None, we need to catch an error here instead.
     if defaults is not None:
         cur_user = defaults.github_username
         cur_pass = defaults.github_password
@@ -182,7 +175,7 @@ def setup_github(force_pat: bool = True):
         # Get GitHub username:
         github_username = input("Enter GitHub Username: ")
         # Prompt the user.
-        print(prompt_str)
+        print(create_token_str)
         # Retrieve the GitHub token from file.
         github_token = input("Enter GitHub Token: ")
         # Write GitHub token to file.
@@ -194,11 +187,11 @@ def setup_github(force_pat: bool = True):
 
 
 def get_default_credentials() -> GithubCredentials | None:
-    """Reads the GitHub credentials from the CIDA defaults file.
+    """Read default GitHub credentials from the CIDA defaults file.
     :return: A string token or None
     """
-    defaults = CIDADefaults()
     try:
+        defaults = CIDADefaults()
         tmp_creds = defaults.github_creds
     except (AttributeError, FileNotFoundError, ValidationError):
         print_failure("Unable to read GitHub credentials from CIDA defaults.")
@@ -240,16 +233,17 @@ def get_github_credentials() -> GithubCredentials | None:
     """Retrieves a GitHub token to be used for CIDAtools functionality
     This function will first attempt to retrieve a GitHub token from CIDADefaults, but will fall back to Git Credential Manager.
     """
-    # First, check for something in CIDA defaults.
+    # First, check for something in CIDA defaults
     creds = get_default_credentials()
-    # If we get something, return it.
+    # If we get something, return it
     if creds is not None and creds.username is not None and creds.password is not None:
         return creds
     # Next, try GCM
     creds = get_gcm_credentials()
-    # Check if we got something.
+    # If we get something, return it
     if creds is not None and creds.username is not None and creds.password is not None:
         return creds
+    # Otherwise, return None
     print_failure("Unable to retrieve GitHub token from CIDA defaults or GCM")
     return None
 
@@ -274,9 +268,30 @@ def list_github_templates(display: bool = True, include_empty: bool = True) -> l
             "Authorization": f"Bearer {gh_creds.password}",
         },
     )
+
+    # Check status code
     if resp.status_code != 200:
-        print_failure("Unable to list template repositories.")
+        # Try to parse the error response.
+        err_str = f"Unable to list template repositories (Status {resp.status_code}"
+        try:
+            err_json = resp.json()
+        except json.JSONDecodeError:
+            print_failure(err_str + ")")
+            return None
+        match err_json:
+            case {"message": msg, "errors": [*errors]}:
+                try:
+                    err_tmp = "\n".join(e.get("message") for e in errors)
+                    err_str += f" {msg}):\n\t{err_tmp}"
+                except:  # noqa: E722
+                    err_str += ")"
+            case {"message": msg}:
+                err_str += f" {msg})"
+            case _:
+                err_str += ")"
+        print_failure(err_str)
         return None
+
     # Construct the model for the response.
     template_list = TemplateRepoList.model_validate(resp.json())
 
@@ -286,9 +301,9 @@ def list_github_templates(display: bool = True, include_empty: bool = True) -> l
     # Only print if requested.
     if display:
         # Length of longest list ID.
-        i_len = len(str(len(template_list.items)))
+        i_len = len(str(len(items_list)))
         # Length of longest repo name.
-        repo_len = max(len(r.name) for r in template_list.items)
+        repo_len = max(len(r.name) for r in items_list)
         # Display the choices
         print(
             "\n".join(

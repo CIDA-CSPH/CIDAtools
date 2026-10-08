@@ -71,4 +71,5 @@ class CIDADefaults(PersistentWrapper):
                     f.write(temp_model.model_dump_json(indent=4))
         except (PermissionError, FileNotFoundError, FileExistsError, NotADirectoryError) as e:
             print_failure(f"Error when initializing CIDADefaults: {e}")
+            raise
         super().__init__(path=CIDA_PROJECT_DEFAULTS_PATH)

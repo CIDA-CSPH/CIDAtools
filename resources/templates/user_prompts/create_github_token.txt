@@ -1,0 +1,8 @@
+To create a new GitHub Token:
+1. Navigate to https://github.com/settings/tokens and select 'Personal access tokens → Tokens (classic)'.
+2. Click 'Generate new token → Generate new token (classic).'
+3. Name your token, set 'Expiration = No expiration' and check the 'repo (full control of private repositories)' scope.
+4. Copy the generated token, and paste into the prompt below.
+5. On the tokens page, find your token and click 'Configure SSO → CIDA-CSPH'. This will allow the token to access repositories in the CIDA organization.
+
+IMPORTANT: Do not hardcode this token into any code, scripts, or files you commit to GitHub!
