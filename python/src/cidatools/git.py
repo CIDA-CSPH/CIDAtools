@@ -328,7 +328,7 @@ def _pre_create_github_repository(name: str, visibility: str) -> tuple[bool, str
     :return:
     """
     # Check if repo name is valid
-    if re.match(r"[^a-zA-Z0-9_\-\.]", name):
+    if (not isinstance(name, str)) or re.match(r"[^a-zA-Z0-9_\-\.]", name):
         print_failure(f"{name} is not a valid repository name.")
         return False, None, None
 
@@ -395,7 +395,7 @@ def create_empty_github_repository(
         return None
 
     json_d = {"name": name, "visibility": visibility}
-    if description is not None:
+    if isinstance(description, str):
         json_d["description"] = description
 
     # Perform the repository creation request
@@ -483,19 +483,19 @@ def create_github_repository_from_template(
             json={"visibility": "internal"},
         )
 
-        # Get JSON body from response
-        update_json = update_resp.json()
-
         # Check status code on our request
         if update_resp.status_code == 200:
             print_success("Successfully updated repository visibility (internal).")
         elif update_resp.status_code == 422:
+            # Get JSON body from response
+            update_json = update_resp.json()
+            # Print a warning message
             print_warning(
                 f"Unable to set repo visibility to 'internal', visibility will remain 'private': {update_json['message']}"
             )
         else:
             print_warning(
-                f"Unable to set repo visibility to 'internal', visibility will remain 'private'. (Status: {update_resp.status_code})."
+                f"Unable to set repo visibility to 'internal', visibility will remain 'private' (Status: {update_resp.status_code})."
             )
 
     # Print the deferred success or failure message for the initial repository create, so that this
@@ -592,14 +592,16 @@ def clone_github_repository(repository_url: str, local_path: pathlib.Path) -> bo
     # The local path should either not exist, or exist but be a directory.
     if local_path.exists() and not local_path.is_dir():
         print_failure("Path exists but is not a directory.")
+        return False
 
+    # TODO: Check git integration status, need to know if we are using GCM or token-based auth.
+    #  If token auth, we need to add the token into the URL.
     # Run the clone operation.
     try:
         clone_res = subprocess.run(
             ["git", "clone", repository_url, local_path.absolute()],
             check=True,
             capture_output=True,
-            stderr=subprocess.DEVNULL,
         )
     except subprocess.CalledProcessError as e:
         print_failure(e.stderr.decode())
