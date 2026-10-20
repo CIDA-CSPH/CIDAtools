@@ -15,6 +15,14 @@ class PersistentWrapper(abc.ABC):
     __model__: type[T] = None
     __parent__: "PersistentWrapper" = None
 
+    def __init__(self, path: pathlib.Path, silent: bool = False):
+        self._path = path
+        self._silent = silent
+        self._model = None
+        self._key_mtime = None
+        self._key_size = None
+        self._internal_cache = None
+
     def __init_subclass__(cls, **kwargs):
         super().__init_subclass__(**kwargs)
 
@@ -27,6 +35,10 @@ class PersistentWrapper(abc.ABC):
     @property
     def path(self):
         return self._path
+
+    @property
+    def silent(self):
+        return self._silent
 
     def needs_reload(self) -> bool:
         # If we have never loaded from file, load the defaults now.
@@ -46,14 +58,8 @@ class PersistentWrapper(abc.ABC):
                 file_stats = os.fstat(f.fileno())
                 self._key_mtime = file_stats.st_mtime
                 self._key_size = file_stats.st_size
-                print_info(f"{self.path} reloaded.")
-
-    def __init__(self, path: pathlib.Path):
-        self._path = path
-        self._model = None
-        self._key_mtime = None
-        self._key_size = None
-        self._internal_cache = None
+                if not self._silent:
+                    print_info(f"{self.path} reloaded.")
 
     def ensure_loaded(self):
         # Load model on first access.

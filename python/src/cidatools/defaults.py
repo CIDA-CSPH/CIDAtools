@@ -61,7 +61,7 @@ class CIDADefaults(PersistentWrapper):
             password=self.github_password,
         )
 
-    def __init__(self):
+    def __init__(self, silent: bool = False):
         # Try to create the defaults path
         try:
             if not CIDA_PROJECT_DEFAULTS_PATH.exists():
@@ -72,4 +72,4 @@ class CIDADefaults(PersistentWrapper):
         except (PermissionError, FileNotFoundError, FileExistsError, NotADirectoryError) as e:
             print_failure(f"Error when initializing CIDADefaults: {e}")
             raise
-        super().__init__(path=CIDA_PROJECT_DEFAULTS_PATH)
+        super().__init__(path=CIDA_PROJECT_DEFAULTS_PATH, silent=silent)

@@ -20,19 +20,37 @@ def get_user_prompt_by_name(name: str) -> str:
     return resources.files("cidatools").joinpath("resources/templates/user_prompts").joinpath(name).read_text()
 
 
+def print_icon(icon, message):
+    """Prints a message with an icon on each line.
+    :param icon: The icon (character) to use.
+    :param message: The message to print.
+    :return:
+    """
+    box_vert = "\u2502"
+    box_middle = "\u251c"
+    box_end = "\u2514"
+    tmp_lines = message.splitlines()
+    print(
+        "\n".join(
+            f"{icon if i == 0 else box_vert if message_line == '' else box_middle if i != len(tmp_lines) - 1 else box_end} {message_line}"
+            for i, message_line in enumerate(tmp_lines)
+        )
+    )
+
+
 def print_success(message: str):
     """Prints a success message.
     :param message: Message to print.
     :return:
     """
-    print(f"{GREEN_CHECK} {message}")
+    print_icon(GREEN_CHECK, message)
 
 
 def print_warning(message: str):
     """Prints a warning message.
     :param message: Message to print.
     """
-    print(f"{YELLOW_TRIANGLE} {message}")
+    print_icon(YELLOW_TRIANGLE, message)
 
 
 def print_failure(message: str):
@@ -40,7 +58,7 @@ def print_failure(message: str):
     :param message: Message to print.
     :return:
     """
-    print(f"{RED_XMARK} {message}")
+    print_icon(RED_XMARK, message)
 
 
 def print_info(message: str):
@@ -49,7 +67,7 @@ def print_info(message: str):
     :param message:
     :return:
     """
-    print(f"{BLUE_INFO} {message}")
+    print_icon(BLUE_INFO, message)
 
 
 def print_red(message: str):

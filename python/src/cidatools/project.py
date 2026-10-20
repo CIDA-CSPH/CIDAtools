@@ -23,13 +23,14 @@ from cidatools.git import (
 )
 from cidatools.persistence import PersistentField, PersistentWrapper
 from cidatools.utils import (
+    CLEAR,
+    GREEN,
+    RED,
+    YELLOW,
     print_failure,
-    print_green,
     print_info,
-    print_red,
     print_success,
     print_warning,
-    print_yellow,
 )
 
 
@@ -44,7 +45,7 @@ class CIDAProjectModel(BaseModel, frozen=True):
 class CIDAProject(PersistentWrapper):
     # Class Attributes
     __model__ = CIDAProjectModel
-    __parent__ = CIDADefaults()
+    __parent__ = CIDADefaults(silent=True)
 
     # Persistent fields
     project_name = PersistentField()
@@ -250,7 +251,7 @@ def project_status(project_root: pathlib.Path | None = None):
     if project_root is None:
         project_root = pathlib.Path.cwd().absolute()
 
-    cur_project = current_project(project_root)
+    cur_project = current_project(project_root, silent=True)
     if cur_project is None:
         print_failure("No CIDA project found.")
         return
@@ -258,49 +259,55 @@ def project_status(project_root: pathlib.Path | None = None):
         print_success("Loaded CIDA project.")
 
     # Check issues
-    print_info("Project Configuration:")
-    print_green(f"  Config located at: {cur_project.path}")
+    config_message = "Project Configuration:\n"
+    # print_info("Project Configuration:")
+    config_message += f"{GREEN}Config located at: {cur_project.path}{CLEAR}\n"
+    # print_green(f"  Config located at: {cur_project.path}")
     longest_key = max(len(k) for k in cur_project.__model__.model_fields)
     for field_name in cur_project.__model__.model_fields:
-        print(f"  {field_name.ljust(longest_key)} : {getattr(cur_project, field_name)}")
+        config_message += f"{field_name.ljust(longest_key)} : {getattr(cur_project, field_name)}\n"
+    print_info(config_message)
 
     # Check for Git repository.
-    print_info("Git Configuration:")
+    git_config_message = "Git Configuration:\n"
     git_location = cur_project.git_location
     remote_url = get_git_remote_url(project_root=project_root)
     if remote_url is None:
-        print_red("  No git repository found, or git is not installed.\n")
+        git_config_message += f"{RED}No git repository found, or git is not installed.{CLEAR}\n"
     else:
-        print_green(f"  Remote URL : {remote_url}\n")
+        git_config_message += f"{GREEN}Remote URL : {remote_url}{CLEAR}\n"
         if remote_url.startswith("git@"):
-            print_yellow(
-                f"  Warning: Your git remote '{remote_url}' appears to be an SSH URL.\n"
-                f"  To enable CIDAtools GitHub integration, we recommend using Git Credential Manager\n"
-                f"  and HTTPS URLs (i.e https://github.com/CSPH-CIDA/<repo_name>)."
+            git_config_message += (
+                f"\n{YELLOW}Warning: Your git remote '{remote_url}' appears to be an SSH URL.{CLEAR}\n"
+                f"{YELLOW}To enable CIDAtools GitHub integration, we recommend using Git Credential Manager{CLEAR}\n"
+                f"{YELLOW}and HTTPS URLs (i.e https://github.com/CSPH-CIDA/<repo_name>).{CLEAR}\n"
             )
         else:
             if git_location is None:
-                print_yellow(
-                    f"  'git_location' is not set in project config.\n"
-                    f"  Try running 'cidatools set git_location {remote_url}' to fix."
+                git_config_message += (
+                    f"{YELLOW}'git_location' is not set in project config.{CLEAR}\n"
+                    f"{YELLOW}Try running 'cidatools set git_location {remote_url}' to fix.{CLEAR}\n"
                 )
             elif git_location == remote_url:
-                print_green("    Git remote matches project config.")
+                git_config_message += f"{GREEN}Git remote matches project config.{CLEAR}\n"
             else:
-                print_red(
-                    f"    Git repository configured for remote {remote_url}, but git_location is set to {git_location}.\n"
-                    f"    This may be a project configuration error.\n"
-                    f"    If this is not expected, run 'cidatools set git_location {remote_url}' to update project config."
+                git_config_message += (
+                    f"{RED}Git repository configured for remote {remote_url}, but git_location is set to {git_location}.{CLEAR}\n"
+                    f"{RED}This may be a project configuration error.{CLEAR}\n"
+                    f"{RED}If this is not expected, run 'cidatools set git_location {remote_url}' to update project config.{CLEAR}\n"
                 )
+    print_info(git_config_message)
 
 
-def current_project(project_root: pathlib.Path | str | None = None) -> CIDAProject | None:
+def current_project(project_root: pathlib.Path | str | None = None, silent: bool = False) -> CIDAProject | None:
     """Returns the currently active CIDA project or None
 
     Searches recursively for a CIDA project config file, starting at the working directory and working upwards
     toward the root directory.
 
     :param project_root: The root directory for the project.
+    :param silent: If set, suppress info messages when project metadata is reloaded.
+     Mostly used by internal CIDAtools functions which call this function, to keep formatting pretty.
     :return: A CIDAProject object or None
     """
     # Accept a user-provided project path, or use the working directory if none is provided.
@@ -325,7 +332,7 @@ def current_project(project_root: pathlib.Path | str | None = None) -> CIDAProje
             config_path = project_path.joinpath(CIDA_PROJECT_CONFIG_NAME)
             # If the config file exists, parse JSON and return the object.
             if config_path.is_file():
-                return CIDAProject(path=config_path)
+                return CIDAProject(path=config_path, silent=silent)
         project_root = project_root.parent
     # If we find nothing, return None
     return None
