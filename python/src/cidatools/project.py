@@ -7,7 +7,6 @@ import time
 from importlib import resources
 from typing import Literal
 
-from detect_secrets.audit.io import print_error
 from jinja2 import Template
 from pydantic import BaseModel, Field, ValidationError
 
@@ -382,7 +381,7 @@ def create_local_project(
     elif current_project(project_root=_project_root) is not None:
         print_warning(f"A CIDA project already exists at {_project_root}.")
     elif _project_root.is_file():
-        print_error(f"The path '{_project_root}' exists, but is a file!")
+        print_failure(f"The path '{_project_root}' exists, but is a file!")
     else:
         print_info("Project directory already exists.")
 
