@@ -39,12 +39,12 @@ class CIDAProjectModel(BaseModel, frozen=True):
     data_location: str | None = Field(default=None)
     git_location: str | None = Field(default=None)
     analyst: str | list[str] | None = Field(default=None)
+    meta: dict | None = Field(default=None)
 
 
 class CIDAProject(PersistentWrapper):
     # Class Attributes
     __model__ = CIDAProjectModel
-    __parent__ = CIDADefaults(silent=True)
 
     # Persistent fields
     project_name = PersistentField()
@@ -52,6 +52,10 @@ class CIDAProject(PersistentWrapper):
     data_location = PersistentField()
     git_location = PersistentField()
     analyst = PersistentField()
+    meta = PersistentField()
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs, parent=CIDADefaults)
 
 
 def _ensure_config_path(project_root: pathlib.Path) -> pathlib.Path:
@@ -331,7 +335,7 @@ def current_project(project_root: pathlib.Path | str | None = None, silent: bool
             config_path = project_path.joinpath(CIDA_PROJECT_CONFIG_NAME)
             # If the config file exists, parse JSON and return the object.
             if config_path.is_file():
-                return CIDAProject(path=config_path, silent=silent)
+                return CIDAProject(path=config_path)
         project_root = project_root.parent
     # If we find nothing, return None
     return None

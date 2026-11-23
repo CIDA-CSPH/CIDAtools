@@ -2,10 +2,24 @@ import pathlib
 import tempfile
 
 import pytest
+from pydantic import ValidationError
+
 from cidatools import project
 from cidatools.consts import CIDA_DIRECTORY_NAME, CIDA_PROJECT_CONFIG_NAME
 from cidatools.project import CIDAProjectModel
-from pydantic import ValidationError
+
+
+@pytest.fixture()
+def empty_defaults_path(mocker):
+    # Make a temporary directory
+    tmpdir = tempfile.TemporaryDirectory()
+    fake_defaults_path = pathlib.Path(tmpdir.name).joinpath("project_defaults.json")
+    # Patch the defaults path so we reference the correct location in tests.
+    mocker.patch("cidatools.defaults.CIDA_PROJECT_DEFAULTS_PATH", fake_defaults_path)
+    # Yield the defaults
+    yield fake_defaults_path
+    # Clean up the defaults after test is complete
+    tmpdir.cleanup()
 
 
 @pytest.fixture(
@@ -40,11 +54,9 @@ from pydantic import ValidationError
         },
     ]
 )
-def local_project(request):
+def local_project(mocker, request, empty_defaults_path):
     # Unpack parameters
-    project_name, principal_investigator, analyst, data_location, git_location = (
-        request.param.values()
-    )
+    project_name, principal_investigator, analyst, data_location, git_location = request.param.values()
 
     # Make a temporary directory
     tmpdir = tempfile.TemporaryDirectory()
@@ -91,12 +103,8 @@ def test_create_local_project(local_project):
 
 def test_double_create_local_project():
     with tempfile.TemporaryDirectory() as tmpdir:
-        project.create_local_project(
-            project_name="MyNewProject", project_root=pathlib.Path(tmpdir)
-        )
-        project.create_local_project(
-            project_name="MyNewProject", project_root=pathlib.Path(tmpdir)
-        )
+        project.create_local_project(project_name="MyNewProject", project_root=pathlib.Path(tmpdir))
+        project.create_local_project(project_name="MyNewProject", project_root=pathlib.Path(tmpdir))
         print("Done!")
 
 

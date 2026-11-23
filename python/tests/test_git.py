@@ -5,6 +5,7 @@ from posixpath import join as posixjoin
 from typing import Literal
 
 import pytest
+from keyring.credentials import SimpleCredential
 
 from cidatools.consts import CIDA_GITHUB_ORGANIZATION
 from cidatools.defaults import CIDADefaultsModel, GithubCredentials
@@ -22,7 +23,7 @@ def test_retrieve_gcm_creds(mocker):
         fake_defaults_path = pathlib.Path(tmpdir).joinpath("project_defaults.json")
         # Patch the default path, but don't instance the wrapper.
         mocker.patch("cidatools.defaults.CIDA_PROJECT_DEFAULTS_PATH", fake_defaults_path)
-        mock_gcm = mocker.patch("subprocess.run")
+        mock_gcm = mocker.patch("cidatools.git.subprocess.run")
         mock_gcm.return_value.stdout = (
             b"protocol=https\nhost=github.com\nusername=Andrew0Hill\npassword=gho_FaKeTokeN\n\n"
         )
@@ -45,10 +46,13 @@ def test_retrieve_default_creds(mocker):
             password="gho_deFaULTPassWord",
         )
         # Fake defaults
-        fake_defaults = CIDADefaultsModel(github_username=fake_creds.username, github_password=fake_creds.password)
+        fake_defaults = CIDADefaultsModel(github_username=fake_creds.username)
         # Write defaults
         with open(fake_defaults_path, "w") as f:
             f.write(fake_defaults.model_dump_json())
+        # Patch the keyring call to return our credentials.
+        fake_keyring = mocker.patch("cidatools.git.keyring.get_credential")
+        fake_keyring.return_value = SimpleCredential(username=fake_creds.username, password=fake_creds.password)
         # Patch the default path, but don't instance the wrapper.
         mocker.patch("cidatools.defaults.CIDA_PROJECT_DEFAULTS_PATH", fake_defaults_path)
         # Call the cred function

@@ -4,7 +4,7 @@ from pydantic import BaseModel, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from cidatools.persistence import PersistentField, PersistentWrapper
-from cidatools.utils import print_failure
+from cidatools.utils import print_failure, print_info
 
 CIDA_PROJECT_DEFAULTS_PATH = pathlib.Path("~/.cida/project_defaults.json").expanduser()
 
@@ -36,7 +36,6 @@ class CIDADefaultsModel(BaseSettings, frozen=True):
     github_protocol: str = Field(default="https")
     # Username and token will need to be set by the user.
     github_username: str | None = Field(default=None)
-    github_password: str | None = Field(default=None)
 
 
 class CIDADefaults(PersistentWrapper):
@@ -45,25 +44,12 @@ class CIDADefaults(PersistentWrapper):
 
     # Defaults
     analyst: str | list[str] | None = PersistentField()
-
-    github_host: str = PersistentField()
-    github_protocol: str = PersistentField()
-    github_username: str = PersistentField()
-    github_password: str = PersistentField()
-
-    @property
-    def github_creds(self) -> GithubCredentials:
-        # TODO: This reads the defaults file 4 times.
-        return GithubCredentials(
-            host=self.github_host,
-            protocol=self.github_protocol,
-            username=self.github_username,
-            password=self.github_password,
-        )
+    github_username: str | None = PersistentField()
 
     def __init__(self, silent: bool = False):
         # Try to create the defaults path
         try:
+            print_info(f"defaults path: {CIDA_PROJECT_DEFAULTS_PATH}")
             if not CIDA_PROJECT_DEFAULTS_PATH.exists():
                 CIDA_PROJECT_DEFAULTS_PATH.parent.mkdir(parents=True, exist_ok=True)
                 temp_model = CIDADefaultsModel()
@@ -72,4 +58,4 @@ class CIDADefaults(PersistentWrapper):
         except (PermissionError, FileNotFoundError, FileExistsError, NotADirectoryError) as e:
             print_failure(f"Error when initializing CIDADefaults: {e}")
             raise
-        super().__init__(path=CIDA_PROJECT_DEFAULTS_PATH, silent=silent)
+        super().__init__(path=CIDA_PROJECT_DEFAULTS_PATH, silent=silent, parent=None)

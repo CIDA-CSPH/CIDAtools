@@ -7,6 +7,7 @@ requires-python = ">=3.10"
 
 dependencies = [
     "jinja2>=3.1.6",
+    "keyring>=25.7.0",
     "pydantic>=2.13.4",
     "pydantic-settings>=2.14.2",
     "requests>=2.34.2",
@@ -23,6 +24,7 @@ dev = [
     "pytest-cov>=7.1.0",
     "pytest-mock>=3.15.1",
     "texsoup>=0.3.3",
+    "zensical>=0.0.67",
 ]
 
 [project.scripts]

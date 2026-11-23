@@ -8,7 +8,7 @@
     <h4>Usage</h4>
     ```python
     setup_github(
-        force_pat: bool = True
+        force_pat: bool = False
     )
     ```
     <h4>Arguments</h4>

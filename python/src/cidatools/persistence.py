@@ -2,6 +2,7 @@ import abc
 import json
 import os
 import pathlib
+from collections.abc import Callable
 from typing import TypeVar
 
 from pydantic import BaseModel
@@ -13,15 +14,30 @@ T = TypeVar("T", bound=BaseModel)
 
 class PersistentWrapper(abc.ABC):
     __model__: type[T] = None
-    __parent__: "PersistentWrapper" = None
 
-    def __init__(self, path: pathlib.Path, silent: bool = False):
+    def __init__(
+        self,
+        path: pathlib.Path,
+        silent: bool = False,
+        parent: "Callable[[], PersistentWrapper] | PersistentWrapper" = None,
+    ):
         self._path = path
         self._silent = silent
         self._model = None
         self._key_mtime = None
         self._key_size = None
         self._internal_cache = None
+        # TODO: is this correct?
+        if isinstance(parent, PersistentWrapper):
+            self._parent = parent
+        elif callable(parent):
+            self._parent = parent()
+        elif parent is None:
+            self._parent = None
+        else:
+            raise ValueError("Parent must be callable, an instance of PersistentWrapper, or None.")
+
+        self._parent = parent() if parent is not None else None
 
     def __init_subclass__(cls, **kwargs):
         super().__init_subclass__(**kwargs)
@@ -29,12 +45,13 @@ class PersistentWrapper(abc.ABC):
         if "__model__" not in cls.__dict__ or cls.__dict__["__model__"] is None:
             raise TypeError("Subclass of PersistentWrapper must set '__model__' to a non-None value.")
 
-        if "__parent__" not in cls.__dict__:
-            raise TypeError("Subclass of PersistentWrapper must define '__parent__'.")
-
     @property
     def path(self):
         return self._path
+
+    @property
+    def parent(self):
+        return self._parent
 
     @property
     def silent(self):
@@ -53,7 +70,8 @@ class PersistentWrapper(abc.ABC):
         if force or self.needs_reload():
             with open(self.path, "r") as f:
                 # Load the model from file.
-                self._model = self.__model__.model_validate(json.load(f))
+                tmp_json = json.load(f)
+                self._model = self.__model__.model_validate(tmp_json)
                 # Update file stats
                 file_stats = os.fstat(f.fileno())
                 self._key_mtime = file_stats.st_mtime
@@ -95,7 +113,7 @@ class PersistentWrapper(abc.ABC):
 
 
 def _check_attrs(obj):
-    for attr in ["__parent__", "__model__"]:
+    for attr in ["__model__"]:
         if not hasattr(obj, attr):
             raise ValueError(f"{obj} has no attribute '{attr}'.")
 
@@ -127,8 +145,8 @@ class PersistentField:
         def getter(instance):
             # Return the loaded value.
             tmp_get = instance._get_model_attr(name)
-            if tmp_get is None and instance.__parent__ is not None and hasattr(instance.__parent__, name):
-                tmp_get = instance.__parent__._get_model_attr(name)
+            if tmp_get is None and instance.parent is not None and hasattr(instance.parent, name):
+                tmp_get = instance.parent._get_model_attr(name)
             return tmp_get
 
         # Return the constructed function
