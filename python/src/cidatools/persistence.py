@@ -7,7 +7,7 @@ from typing import TypeVar
 
 from pydantic import BaseModel
 
-from cidatools.utils import print_info
+from cidatools.utils import print_refresh
 
 T = TypeVar("T", bound=BaseModel)
 
@@ -77,7 +77,7 @@ class PersistentWrapper(abc.ABC):
                 self._key_mtime = file_stats.st_mtime
                 self._key_size = file_stats.st_size
                 if not self._silent:
-                    print_info(f"{self.path} reloaded.")
+                    print_refresh(f"{self.path} reloaded.")
 
     def ensure_loaded(self):
         # Load model on first access.

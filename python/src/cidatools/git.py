@@ -206,7 +206,7 @@ def get_default_credentials() -> GithubCredentials | None:
         return None
 
     if defaults.github_username is None:
-        print_failure("There is no GitHub username set in CIDA defaults.")
+        # print_failure("There is no GitHub username set in CIDA defaults.")
         return None
 
     # Pull token from credential store using given username.

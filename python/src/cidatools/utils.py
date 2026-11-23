@@ -1,15 +1,19 @@
 from collections.abc import Sequence
 from importlib import resources
 
-GREEN_CHECK = "\x1b[1m\x1b[32m\u2713\x1b[0m"
-RED_XMARK = "\x1b[1m\x1b[31m\u2717\x1b[0m"
-YELLOW_TRIANGLE = "\x1b[1m\x1b[33m\u26a0\x1b[0m"
-BLUE_INFO = "\x1b[1m\x1b[34m\u2139\x1b[0m"
-
+BOLD = "\x1b[1m"
 RED = "\x1b[31m"
-YELLOW = "\x1b[33m"
 GREEN = "\x1b[32m"
+YELLOW = "\x1b[33m"
+BLUE = "\x1b[34m"
+GRAY = "\x1b[37m"
 CLEAR = "\x1b[0m"
+
+GRAY_REFRESH = f"{BOLD}{GRAY}\u27f3{CLEAR}"
+GREEN_CHECK = f"{BOLD}{GREEN}\u2713{CLEAR}"
+RED_XMARK = f"{BOLD}{RED}\u2717{CLEAR}"
+YELLOW_TRIANGLE = f"{BOLD}{YELLOW}\u26a0{CLEAR}"
+BLUE_INFO = f"{BOLD}{BLUE}\u2139{CLEAR}"
 
 
 def get_user_prompt_by_name(name: str) -> str:
@@ -36,6 +40,14 @@ def print_icon(icon, message):
             for i, message_line in enumerate(tmp_lines)
         )
     )
+
+
+def print_refresh(message: str):
+    """Prints a refresh message.
+    :param message:
+    :return:
+    """
+    print_icon(GRAY_REFRESH, message)
 
 
 def print_success(message: str):

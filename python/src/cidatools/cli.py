@@ -8,7 +8,12 @@ from collections.abc import Sequence
 from importlib.metadata import version
 
 from cidatools.defaults import CIDA_PROJECT_DEFAULT_FOLDERS, CIDADefaults
-from cidatools.git import create_empty_github_repository, create_github_repository_from_template, setup_github
+from cidatools.git import (
+    create_empty_github_repository,
+    create_github_repository_from_template,
+    list_github_templates,
+    setup_github,
+)
 from cidatools.project import create_github_project, create_local_project, current_project, project_status
 from cidatools.utils import lerp_rgb_1d, parse_rgb, print_failure
 
@@ -42,6 +47,15 @@ Found a bug? https://github.com/CIDA-CSPH/CIDAtools/issues
 
 # This is the 'Vibrant Summer' palette from https://coolors.co/palette/ff595e-ffca3a-8ac926-1982c4-6a4c93
 CIDATOOLS_DEFAULT_COLOR_PALETTE = ("FF595E", "FFCA3A", "8AC926", "1982C4", "6A4C93")
+
+
+class ListTemplatesAction(argparse.Action):
+    def __init__(self, option_strings: Sequence[str], dest: str, **kwargs):
+        super().__init__(option_strings, dest, nargs=0)
+
+    def __call__(self, parser: ArgumentParser, namespace: argparse.Namespace, values: dict, option_string=None) -> None:
+        list_github_templates(display=True, include_empty=True)
+        parser.exit(0)
 
 
 class CLI:
@@ -109,14 +123,19 @@ class CLI:
         # Required arguments for project/repo creation.
         create.add_argument("target", choices=["github-project", "github-repo", "project"])
         create.add_argument(
-            "directory",
-            type=pathlib.Path,
+            "directory_or_repo_name",
+            type=str,
             default=None,
-            help="The directory where the new project will be created. By default, the current working directory will be used.",
+            help="For 'create github-project' and create 'github-repo', this is the directory where the new project will be created. By default, the current working directory will be used.",
         )
         # Optional arguments for project/repo creation.
         create.add_argument(
             "--template", type=str, help="If specified, will to create the new repository using this template name."
+        )
+        create.add_argument(
+            "--list-templates",
+            help="List available GitHub templates.",
+            action=ListTemplatesAction,
         )
         create.add_argument(
             "--description",
@@ -290,14 +309,17 @@ class CLI:
         :param args: The parsed argument namespace.
         :return: Integer status code
         """
-        project_directory = args.directory.absolute()
+        if args.list_templates:
+            list_github_templates(display=True, include_empty=True)
+            return 0
         if args.target == "github-project":
             # If not specified, we create a default (empty) repository.
             # template_name = "empty" if args.template is None else args.template
             # Create a new GitHub project.
+            directory_name = pathlib.Path(args.directory_or_repo_name).absolute()
             create_result = create_github_project(
-                project_name=project_directory.name if args.project_name is None else args.project_name,
-                project_root=project_directory,
+                project_name=directory_name.name if args.project_name is None else args.project_name,
+                project_root=directory_name,
                 repository_name=args.repo_name,
                 template_name=args.template,
                 description=args.description,
@@ -312,9 +334,10 @@ class CLI:
             else:
                 return 0
         elif args.target == "project":
+            directory_name = pathlib.Path(args.directory_or_repo_name).absolute()
             create_result = create_local_project(
-                project_name=project_directory.name if args.project_name is None else args.project_name,
-                project_root=project_directory,
+                project_name=directory_name.name if args.project_name is None else args.project_name,
+                project_root=directory_name,
                 principal_investigator=args.pi,
                 analyst=args.analyst,
                 data_location=args.data_location,
@@ -325,19 +348,16 @@ class CLI:
             else:
                 return 0
         elif args.target == "github-repo":
+            repo_name = args.directory_or_repo_name if args.repo_name is None else args.repo_name
+            create_args = {
+                "name": repo_name,
+                "description": args.description,
+                "visibility": "private" if args.private else "internal" if args.internal else "public",
+            }
             if args.template is None:
-                repo_url = create_empty_github_repository(
-                    name=project_directory.name if args.repo_name is None else args.repo_name,
-                    description=args.description,
-                    visibility="private" if args.private else "internal" if args.internal else "public",
-                )
+                repo_url = create_empty_github_repository(**create_args)
             else:
-                repo_url = create_github_repository_from_template(
-                    name=project_directory.name if args.repo_name is None else args.repo_name,
-                    description=args.description,
-                    visibility="private" if args.private else "internal" if args.internal else "public",
-                    template_name=args.template,
-                )
+                repo_url = create_github_repository_from_template(**create_args, template_name=args.template)
             if repo_url is None:
                 return 1
             else:
