@@ -34,7 +34,9 @@ class CIDADefaultsModel(BaseSettings, frozen=True):
     # Host and protocol generally shouldn't need to be set.
     github_host: str = Field(default="github.com")
     github_protocol: str = Field(default="https")
-    # Username and token will need to be set by the user.
+    # Username will need to be set by the user.
+    # TODO: we could remove username entirely from the model if keyring.get_credential worked correctly
+    #  when username=None on Mac. Revisit if/when https://github.com/jaraco/keyring/issues/784 is addressed.
     github_username: str | None = Field(default=None)
 
 

@@ -10,7 +10,6 @@ from typing import Any, Literal
 
 import keyring
 import requests
-from keyring.credentials import Credential
 from pydantic import BaseModel, ValidationError, field_validator
 
 from cidatools.consts import (
@@ -121,18 +120,6 @@ def _check_git_integration() -> GitStatus:
 
     # Return the result
     return git_status
-
-
-# def write_default_credentials(github_creds: GithubCredentials) -> None:
-#     """Writes the GitHub token to the CIDA defaults file.
-#     :return: The GitHub token to write.
-#     """
-#     defaults = CIDADefaults()
-#     try:
-#         defaults.github_creds = github_creds
-#     except (AttributeError, FileNotFoundError, ValidationError):
-#         print_failure("Unable to set GitHub token.")
-#     print_success(f"Github token has been written to {defaults.path}")
 
 
 def setup_github(force_pat: bool = False):
@@ -263,7 +250,7 @@ def get_gcm_credentials() -> GithubCredentials | None:
     return tmp_creds
 
 
-def get_github_credentials() -> Credential | None:
+def get_github_credentials() -> GithubCredentials | None:
     """Retrieves a GitHub token to be used for CIDAtools functionality
     This function will first attempt to retrieve a GitHub token from CIDADefaults, but will fall back to Git Credential Manager.
     """
